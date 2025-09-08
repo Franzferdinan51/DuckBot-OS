@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🦆 DuckBot v3.0.7 Professional AI Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/modern-styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1>
+        <span class="status-indicator {% if state.bucket_tokens > 5 %}status-online{% elif state.bucket_tokens > 0 %}status-warning{% else %}status-offline{% endif %}"></span>
+        DuckBot AI Manager
+      </h1>
+      
+      <nav class="header-nav">
+        <a href="/" class="nav-link active">📊 Dashboard</a>
+        <a href="/settings" class="nav-link">⚙️ Settings</a>
+        <a href="/cost" class="nav-link">💰 Cost Analysis</a>
+        <a href="/action-logs" class="nav-link">🔍 Action Logs</a>
+        <a href="/companion" class="nav-link" title="3D AI Companion - Clippy-like assistant">🤖 Companion</a>
+        
+        <button id="clearCache" class="nav-btn warning">🗑️ Clear Cache</button>
+        <button id="resetBreakers" class="nav-btn danger">🔄 Reset Breakers</button>
+        <button id="refreshModel" class="nav-btn primary">🔄 Refresh Model</button>
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <div class="dashboard-grid">
+      
+      <!-- System Overview -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">🎯 System Overview</h2>
+        </div>
+        <div class="card-content">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-value">{{state.bucket_tokens}}</div>
+              <div class="stat-label">Available Tokens</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">{{state.cache_size}}</div>
+              <div class="stat-label">Cache Entries</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value">{% if state.breakers %}{{state.breakers|length}}{% else %}0{% endif %}</div>
+              <div class="stat-label">Circuit Breakers</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-value" id="uptime">Loading...</div>
+              <div class="stat-label">System Uptime</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI Providers & Services -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--spacing-lg); min-height: 0;">
+        
+        <!-- AI Providers -->
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🤖 AI Providers</h2>
+          </div>
+          <div class="card-content">
+            <!-- Local Provider -->
+            <div class="service-card" style="margin-bottom: var(--spacing-md);">
+              <div class="service-header">
+                <div class="service-name">
+                  <span class="status-indicator {% if state.lm_studio_status and state.lm_studio_status.status == "running" and state.lm_studio_status.models_loaded > 0 %}status-online{% elif state.lm_studio_status and state.lm_studio_status.status == "running" %}status-warning{% else %}status-offline{% endif %}"></span>
+                  Local LM Studio
+                </div>
+                <span class="service-port">:1234</span>
+              </div>
+              {% if state.lm_studio_status and state.lm_studio_status.status == "running" and state.lm_studio_status.models_loaded > 0 %}
+                <div style="font-size: 12px; color: var(--success); margin-bottom: 4px;">
+                  {{state.lm_studio_status.models_loaded}} model(s) loaded
+                </div>
+                {% if state.current_lm_model and not (state.current_lm_model.startswith("qwen/") or state.current_lm_model.startswith("glm/")) %}
+                  <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono);">{{state.current_lm_model}}</div>
+                {% endif %}
+              {% elif state.lm_studio_status and state.lm_studio_status.status == "running" %}
+                <div style="font-size: 12px; color: var(--warning);">Running, no models loaded</div>
+              {% else %}
+                <div style="font-size: 12px; color: var(--text-muted);">Not running</div>
+              {% endif %}
+            </div>
+
+            <!-- Cloud Provider -->
+            <div class="service-card">
+              <div class="service-header">
+                <div class="service-name">
+                  <span class="status-indicator {% if state.bucket_tokens > 0 %}status-online{% else %}status-offline{% endif %}"></span>
+                  Cloud OpenRouter
+                </div>
+              </div>
+              {% if state.current_lm_model and (state.current_lm_model.startswith("qwen/") or state.current_lm_model.startswith("glm/")) %}
+                <div style="font-size: 11px; color: var(--text-muted); font-family: var(--font-mono); margin-bottom: 8px;">{{state.current_lm_model}}</div>
+              {% endif %}
+              
+              <div style="margin-bottom: var(--spacing-xs);">
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">General: {{state.bucket_tokens}}/{{state.bucket_limit}}</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: {{(state.bucket_tokens/state.bucket_limit*100)|round(1)}}%;"></div>
+                </div>
+              </div>
+              
+              <div style="margin-bottom: var(--spacing-xs);">
+                <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 2px;">Chat: {{state.chat_bucket_tokens}}/{{state.chat_bucket_limit}}</div>
+                <div class="progress-bar">
+                  <div class="progress-fill" style="width: {{(state.chat_bucket_tokens/state.chat_bucket_limit*100)|round(1)}}%; background: var(--info);"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Services Status -->
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🔧 Services</h2>
+          </div>
+          <div class="card-content">
+            <div id="servicesStatus" class="services-container loading">Loading services...</div>
+            <div class="actions" style="margin-top: var(--spacing-md);">
+              <button id="refreshServices" class="btn btn-primary">🔄 Refresh</button>
+              <button id="startAllServices" class="btn btn-success">▶️ Start All</button>
+              <button id="stopAllServices" class="btn btn-danger">⏹️ Stop All</button>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- Circuit Breakers -->
+      {% if state.breakers %}
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">⚡ Circuit Breakers</h2>
+        </div>
+        <div class="card-content">
+          <div class="service-grid">
+            {% for name, ts in state.breakers.items() %}
+            <div class="service-card">
+              <div class="service-header">
+                <div class="service-name">
+                  <span class="status-indicator status-offline"></span>
+                  {{name}}
+                </div>
+              </div>
+              <div style="font-size: 11px; color: var(--text-muted);">Until {{ts}}</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </section>
+      {% endif %}
+
+      <!-- AI Chat Interface -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">💬 AI Chat Interface</h2>
+        </div>
+        <div class="card-content">
+          <div class="chat-container">
+            <div class="chat-header">
+              <label style="font-weight: 500;">Task Type:</label>
+              <select id="chat-kind" style="padding: var(--spacing-xs) var(--spacing-sm); border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg-primary);">
+                {% set kinds = ["status","summary","json_format","code","policy","long_form","arbiter","reasoning","*"] %}
+                {% for k in kinds %}
+                  <option value="{{k}}" {% if k == "*" %}selected{% endif %}>{{k}}</option>
+                {% endfor %}
+              </select>
+              <button id="autoRefresh" class="btn btn-secondary">⏱️ Auto Refresh</button>
+            </div>
+            
+            <!-- Chat messages window (above input) -->
+            <div id="chat-response" style="margin-bottom: var(--spacing-md); padding: var(--spacing-md); background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius); min-height: 140px; max-height: 420px; overflow-y: auto; display: none; box-shadow: var(--shadow-sm);">
+              <div class="loading" id="chat-loading" style="display: none;">Processing request...</div>
+              <div id="chat-content"></div>
+            </div>
+
+            <!-- Chat input below the messages window -->
+            <form id="chat-form" class="chat-form">
+              <textarea id="chat-input" class="chat-input" name="message" placeholder="Enter your message here... (Press Enter to send, Shift+Enter for new line)" required></textarea>
+              <div class="actions" style="margin-top: var(--spacing-md);">
+                <button type="submit" class="btn btn-primary">💬 Send Message</button>
+                <button type="button" id="clearChat" class="btn btn-secondary">🗑️ Clear</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Actions -->
+      <section class="card">
+        <div class="card-header">
+          <h2 class="card-title">🚀 Quick Actions</h2>
+        </div>
+        <div class="card-content">
+          <div class="actions">
+            <button id="ragReindex" class="btn btn-primary">📚 Reindex RAG</button>
+            <button id="ragStatus" class="btn btn-secondary">ℹ️ RAG Status</button>
+            <button id="testSystem" class="btn btn-secondary">🧪 Test System</button>
+            <button id="viewLogs" class="btn btn-secondary">📋 View Logs</button>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <script>
+    // Theme Toggle
+    const themeToggle = document.getElementById('themeToggle');
+    const html = document.documentElement;
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = html.getAttribute('data-theme');
+      const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+      html.setAttribute('data-theme', newTheme);
+      themeToggle.textContent = newTheme === 'light' ? '🌙' : '☀️';
+      localStorage.setItem('theme', newTheme);
+    });
+    
+    // Load saved theme
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    themeToggle.textContent = savedTheme === 'light' ? '🌙' : '☀️';
+
+    // Auto-refresh toggle
+    let autoRefreshInterval;
+    let isAutoRefreshEnabled = false;
+    
+    document.getElementById('autoRefresh').addEventListener('click', function() {
+      isAutoRefreshEnabled = !isAutoRefreshEnabled;
+      if (isAutoRefreshEnabled) {
+        this.textContent = '⏹️ Stop Auto';
+        this.classList.add('btn-warning');
+        this.classList.remove('btn-secondary');
+        autoRefreshInterval = setInterval(() => {
+          loadServices();
+        }, 10000);
+      } else {
+        this.textContent = '⏱️ Auto Refresh';
+        this.classList.add('btn-secondary');
+        this.classList.remove('btn-warning');
+        clearInterval(autoRefreshInterval);
+      }
+    });
+
+    // Chat form handling
+    document.getElementById('chat-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      const kind = document.getElementById('chat-kind').value;
+      formData.append('kind', kind);
+      
+      const responseDiv = document.getElementById('chat-response');
+      const loadingDiv = document.getElementById('chat-loading');
+      const contentDiv = document.getElementById('chat-content');
+      
+      responseDiv.style.display = 'block';
+      loadingDiv.style.display = 'flex';
+      contentDiv.innerHTML = '';
+      
+      try {
+        const response = await fetch('/chat', {
+          method: 'POST',
+          body: formData
+        });
+        const result = await response.json();
+        
+        loadingDiv.style.display = 'none';
+        
+        if (result.success) {
+          // Display the AI response with proper formatting
+          contentDiv.innerHTML = `
+            <div style="margin-bottom: var(--spacing-sm);">
+              <strong>🤖 ${result.model || 'AI'}:</strong> 
+              <span style="font-size: 11px; color: var(--text-muted); margin-left: var(--spacing-xs);">(${result.confidence || 0.0} confidence${result.cached ? ', cached' : ''})</span>
+            </div>
+            <div style="white-space: pre-wrap; line-height: 1.4;">${result.response}</div>
+          `;
+        } else {
+          contentDiv.innerHTML = `<div class="error">Error: ${result.response}</div>`;
+        }
+        
+        // Clear input after successful send
+        document.getElementById('chat-input').value = '';
+      } catch (error) {
+        loadingDiv.style.display = 'none';
+        contentDiv.innerHTML = `<div class="error">Error: ${error.message}</div>`;
+      }
+    });
+
+    // Enter key handling for chat
+    document.getElementById('chat-input').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        document.getElementById('chat-form').dispatchEvent(new Event('submit'));
+      }
+    });
+
+    // Clear chat
+    document.getElementById('clearChat').addEventListener('click', function() {
+      document.getElementById('chat-input').value = '';
+      const responseDiv = document.getElementById('chat-response');
+      responseDiv.style.display = 'none';
+    });
+
+    // Service management
+    async function loadServices() {
+      const container = document.getElementById('servicesStatus');
+      try {
+        const response = await fetch('/api/services');
+        const data = await response.json();
+        
+        if (data.ok) {
+          const servicesHtml = data.services.map(service => `
+            <div class="service-card">
+              <div class="service-header">
+                <div class="service-name" style="max-width: 65%; font-size: 13px;">
+                  <span class="status-indicator ${service.status === 'running' ? 'status-online' : 'status-offline'}"></span>
+                  <span style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${service.name}</span>
+                </div>
+                <span class="service-port" style="flex-shrink: 0; font-size: 10px;">${service.port ? ':' + service.port : ''}</span>
+              </div>
+              <div style="font-size: 10px; color: var(--text-muted); line-height: 1.2; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; margin-top: 2px;">${service.description || 'Service'}</div>
+            </div>
+          `).join('');
+          container.innerHTML = servicesHtml;
+        } else {
+          container.innerHTML = `<div class="error">Error loading services: ${data.error}</div>`;
+        }
+      } catch (error) {
+        container.innerHTML = `<div class="error">Network error: ${error.message}</div>`;
+      }
+    }
+
+    // API button handlers
+    async function makeApiCall(endpoint, button) {
+      const originalText = button.textContent;
+      button.disabled = true;
+      button.textContent = '⏳ Processing...';
+      
+      try {
+        const response = await fetch(endpoint, { method: 'POST' });
+        const result = await response.json();
+        
+        if (result.ok) {
+          button.textContent = '✅ Done';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        } else {
+          button.textContent = '❌ Failed';
+          setTimeout(() => {
+            button.textContent = originalText;
+            button.disabled = false;
+          }, 2000);
+        }
+      } catch (error) {
+        button.textContent = '❌ Error';
+        setTimeout(() => {
+          button.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      }
+    }
+
+    // Button event listeners
+    document.getElementById('clearCache').addEventListener('click', function() {
+      makeApiCall('/cache/clear', this);
+    });
+
+    document.getElementById('resetBreakers').addEventListener('click', function() {
+      makeApiCall('/breakers/reset', this);
+    });
+
+    document.getElementById('refreshModel').addEventListener('click', function() {
+      makeApiCall('/models/refresh', this);
+    });
+
+    document.getElementById('refreshServices').addEventListener('click', function() {
+      loadServices();
+    });
+
+    document.getElementById('ragReindex').addEventListener('click', function() {
+      makeApiCall('/rag/reindex', this);
+    });
+
+    // Real-time system status updates
+    async function updateSystemStatus() {
+      try {
+        const response = await fetch('/api/system-status');
+        const data = await response.json();
+        
+        if (data.ok) {
+          const status = data.status;
+          
+          // Update token counts
+          const tokenElements = document.querySelectorAll('.stat-value');
+          if (tokenElements[0]) tokenElements[0].textContent = status.bucket_tokens;
+          if (tokenElements[1]) tokenElements[1].textContent = status.cache_size;
+          if (tokenElements[2]) tokenElements[2].textContent = Object.keys(status.breakers).length;
+          
+          // Update progress bars
+          const progressBars = document.querySelectorAll('.progress-fill');
+          if (progressBars[0]) {
+            const percentage = Math.round((status.bucket_tokens / status.bucket_limit) * 100);
+            progressBars[0].style.width = `${percentage}%`;
+          }
+          if (progressBars[1]) {
+            const percentage = Math.round((status.chat_bucket_tokens / status.chat_bucket_limit) * 100);
+            progressBars[1].style.width = `${percentage}%`;
+          }
+          
+          // Update status indicators
+          const indicators = document.querySelectorAll('.status-indicator');
+          indicators.forEach(indicator => {
+            indicator.className = 'status-indicator ' + 
+              (status.bucket_tokens > 5 ? 'status-online' : 
+               status.bucket_tokens > 0 ? 'status-warning' : 'status-offline');
+          });
+          
+          // Update token display text
+          const tokenDisplays = document.querySelectorAll('.token-display');
+          tokenDisplays.forEach(display => {
+            if (display.classList.contains('general')) {
+              display.textContent = `General: ${status.bucket_tokens}/${status.bucket_limit}`;
+            } else if (display.classList.contains('chat')) {
+              display.textContent = `Chat: ${status.chat_bucket_tokens}/${status.chat_bucket_limit}`;
+            }
+          });
+        }
+      } catch (error) {
+        console.warn('Failed to update system status:', error);
+      }
+    }
+
+    // Initial load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadServices();
+      updateSystemStatus();
+      
+      // Auto-update system status every 5 seconds
+      setInterval(updateSystemStatus, 5000);
+      
+      // Update uptime
+      const startTime = Date.now();
+      setInterval(() => {
+        const uptime = Math.floor((Date.now() - startTime) / 1000);
+        const hours = Math.floor(uptime / 3600);
+        const minutes = Math.floor((uptime % 3600) / 60);
+        document.getElementById('uptime').textContent = `${hours}h ${minutes}m`;
+      }, 60000);
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+2025-08-28 00:00:26,625 - DuckBot.Ecosystem - ERROR - [PID:31992] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:00:26,655 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:01:26,685 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:01:26,690 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:01:57,721 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:01:57,726 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:02:27,749 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:02:27,755 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:02:58,794 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:02:58,799 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:03:28,829 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:03:28,835 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:03:59,873 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:03:59,949 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:04:29,972 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:04:29,977 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:05:01,008 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:05:55,341 - DuckBot.Ecosystem - ERROR - [PID:31992] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:05:55,348 - DuckBot.Ecosystem - ERROR - [PID:31992] - 💀 duckbot process died (exit code: 1)
+2025-08-28 00:11:37,992 - DuckBot.Ecosystem - ERROR - [PID:34564] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:22:28,035 - DuckBot.Ecosystem - ERROR - [PID:17524] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:27:04,810 - DuckBot.Ecosystem - ERROR - [PID:34564] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 00:27:04,823 - DuckBot.Ecosystem - ERROR - [PID:34564] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:27:59,202 - DuckBot.Ecosystem - ERROR - [PID:34564] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:27:59,206 - DuckBot.Ecosystem - ERROR - [PID:34564] - 💀 n8n process died (exit code: 0)
+2025-08-28 00:28:04,225 - DuckBot.Ecosystem - ERROR - [PID:34564] - ❌ Failed to restart n8n
+2025-08-28 00:30:04,458 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:45:41,000 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 00:45:41,014 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:46:35,378 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:46:35,386 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 lm_studio process died (exit code: 0)
+2025-08-28 00:46:50,403 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to restart lm_studio
+2025-08-28 00:46:50,403 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 n8n process died (exit code: 0)
+2025-08-28 00:46:55,420 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to restart n8n
+2025-08-28 00:47:25,462 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:47:56,511 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:48:26,542 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:48:57,574 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:49:27,586 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:49:58,635 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:50:28,672 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:50:59,725 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:51:54,058 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:52:24,082 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:52:55,129 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:53:25,157 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:53:56,198 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:54:26,223 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:54:57,265 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:55:27,298 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:55:58,335 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:56:28,366 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:57:22,693 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 00:57:53,729 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:58:24,777 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:58:54,804 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:59:25,854 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 00:59:55,890 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:00:26,939 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:00:56,974 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:01:28,022 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:01:38,810 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 01:01:58,052 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:02:29,099 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:02:59,126 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:03:30,157 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:04:00,200 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:04:31,243 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:05:01,271 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:05:32,303 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:06:02,341 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:06:33,395 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:06:57,447 - DuckBot.Ecosystem - ERROR - [PID:30212] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 01:07:03,424 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:07:34,482 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 01:08:04,504 - DuckBot.Ecosystem - ERROR - [PID:30212] - 💀 comfyui process died (exit code: 1)
+2025-08-28 02:44:09,362 - DuckBot.Ecosystem - ERROR - [PID:11708] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 04:15:59,824 - DuckBot.Ecosystem - ERROR - [PID:21520] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 04:31:25,459 - DuckBot.Ecosystem - ERROR - [PID:21520] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 04:31:25,471 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:32:19,691 - DuckBot.Ecosystem - ERROR - [PID:21520] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 04:32:19,697 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 n8n process died (exit code: 0)
+2025-08-28 04:32:24,711 - DuckBot.Ecosystem - ERROR - [PID:21520] - ❌ Failed to restart n8n
+2025-08-28 04:32:54,737 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:33:25,766 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:33:55,796 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:34:26,825 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:34:56,834 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:35:27,897 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:35:57,908 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:36:28,952 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 04:37:23,183 - DuckBot.Ecosystem - ERROR - [PID:21520] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 04:37:53,191 - DuckBot.Ecosystem - ERROR - [PID:21520] - 💀 comfyui process died (exit code: 1)
+2025-08-28 13:59:44,158 - DuckBot.Ecosystem - ERROR - [PID:15048] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 14:15:20,188 - DuckBot.Ecosystem - ERROR - [PID:15048] - ❌ comfyui health check failed after 30 attempts
+2025-08-28 14:15:26,323 - DuckBot.Ecosystem - ERROR - [PID:15048] - 💀 n8n process died (exit code: 0)
+2025-08-28 14:15:31,336 - DuckBot.Ecosystem - ERROR - [PID:15048] - ❌ Failed to restart n8n
+2025-08-28 14:20:43,587 - DuckBot.Ecosystem - ERROR - [PID:34068] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 21:34:38,803 - DuckBot.Ecosystem - ERROR - [PID:26596] - ❌ Failed to load configuration: ServiceConfig.__init__() got an unexpected keyword argument 'startup_command'
+2025-08-28 23:11:06,204 - DuckBot.Ecosystem - ERROR - [PID:12064] - 💀 n8n process died (exit code: 0)
+2025-08-28 23:11:11,221 - DuckBot.Ecosystem - ERROR - [PID:12064] - ❌ Failed to restart n8n
+2025-08-28 23:32:01,388 - DuckBot.Ecosystem - ERROR - [PID:25732] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 23:38:09,848 - DuckBot.Ecosystem - ERROR - [PID:25732] - 💀 n8n process died (exit code: 0)
+2025-08-28 23:38:14,863 - DuckBot.Ecosystem - ERROR - [PID:25732] - ❌ Failed to restart n8n
+2025-08-28 23:42:27,947 - DuckBot.Ecosystem - ERROR - [PID:34528] - ❌ Failed to start local ComfyUI: ComfyUI started but not responding to health checks
+2025-08-28 23:46:54,099 - DuckBot.Ecosystem - ERROR - [PID:34528] - 💀 n8n process died (exit code: 0)
+2025-08-28 23:46:59,113 - DuckBot.Ecosystem - ERROR - [PID:34528] - ❌ Failed to restart n8n
+2025-08-28 23:54:28,989 - DuckBot.Ecosystem - ERROR - [PID:34528] - 💀 open_notebook process died (exit code: 0)
+2025-08-28 23:54:44,008 - DuckBot.Ecosystem - ERROR - [PID:34528] - ❌ Failed to restart open_notebook

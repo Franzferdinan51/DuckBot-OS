@@ -1,0 +1,461 @@
+{
+  "package_name": "DuckBot-v3.1.0-Ultimate-20250907_235132",
+  "version": "3.1.0+",
+  "created": "2025-09-07T23:51:32.633185",
+  "total_files": 90,
+  "total_size": 13759650,
+  "files": {
+    ".gitignore": {
+      "size": 575,
+      "modified": "2025-09-07T23:51:32.633186"
+    },
+    "create_ultimate_distribution.py": {
+      "size": 25948,
+      "modified": "2025-09-07T23:51:26.639695"
+    },
+    "INSTALLATION_GUIDE.md": {
+      "size": 5231,
+      "modified": "2025-09-07T23:51:32.632677"
+    },
+    "LICENSE": {
+      "size": 1090,
+      "modified": "2025-09-07T23:51:32.633186"
+    },
+    "PACKAGE_INFO.json": {
+      "size": 1321,
+      "modified": "2025-09-07T23:51:32.633186"
+    },
+    "README.md": {
+      "size": 0,
+      "modified": "2025-09-07T23:50:52.682889"
+    },
+    "requirements.txt": {
+      "size": 836,
+      "modified": "2025-09-07T23:50:52.681883"
+    },
+    "duckbot\\action_reasoning_logger.py": {
+      "size": 14333,
+      "modified": "2025-08-28T23:23:22"
+    },
+    "duckbot\\ai_manager_settings.json": {
+      "size": 1152,
+      "modified": "2025-08-28T23:13:16"
+    },
+    "duckbot\\ai_router_gpt.py": {
+      "size": 88540,
+      "modified": "2025-09-07T22:11:28.491839"
+    },
+    "duckbot\\archon_integration.py": {
+      "size": 16250,
+      "modified": "2025-09-07T22:32:23.012175"
+    },
+    "duckbot\\bytebot_integration.py": {
+      "size": 15433,
+      "modified": "2025-09-07T22:31:34.808461"
+    },
+    "duckbot\\charm_terminal_ui.py": {
+      "size": 19453,
+      "modified": "2025-09-07T23:41:55.353640"
+    },
+    "duckbot\\chromium_integration.py": {
+      "size": 18995,
+      "modified": "2025-09-07T22:34:13.296765"
+    },
+    "duckbot\\claude_code_integration.py": {
+      "size": 12242,
+      "modified": "2025-09-03T15:19:20.818538"
+    },
+    "duckbot\\context_manager.py": {
+      "size": 28362,
+      "modified": "2025-09-06T22:49:30.762465"
+    },
+    "duckbot\\cost_commands.py": {
+      "size": 17848,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\cost_tracker.py": {
+      "size": 21790,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\cost_visualizer.py": {
+      "size": 20928,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\dynamic_model_manager.py": {
+      "size": 28835,
+      "modified": "2025-09-07T13:23:35.162443"
+    },
+    "duckbot\\enhanced_webui.py": {
+      "size": 36176,
+      "modified": "2025-09-07T23:43:48.409222"
+    },
+    "duckbot\\hardware_detector.py": {
+      "size": 24435,
+      "modified": "2025-09-06T23:29:40.569524"
+    },
+    "duckbot\\intelligent_agents.py": {
+      "size": 36202,
+      "modified": "2025-09-03T17:22:49.141401"
+    },
+    "duckbot\\learning_system.py": {
+      "size": 29372,
+      "modified": "2025-09-03T17:29:53.311067"
+    },
+    "duckbot\\local_feature_parity.py": {
+      "size": 13834,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\logging_setup.py": {
+      "size": 4114,
+      "modified": "2025-08-24T19:16:26"
+    },
+    "duckbot\\n8n_agent_integration.py": {
+      "size": 31155,
+      "modified": "2025-09-03T17:32:24.268671"
+    },
+    "duckbot\\notebook_commands.py": {
+      "size": 3872,
+      "modified": "2025-08-28T21:38:34"
+    },
+    "duckbot\\observability.py": {
+      "size": 4051,
+      "modified": "2025-08-24T19:26:44"
+    },
+    "duckbot\\provider_connectors.py": {
+      "size": 26459,
+      "modified": "2025-09-07T20:52:01.379534"
+    },
+    "duckbot\\qwen_agent_integration.py": {
+      "size": 13722,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\qwen_diagnostics.py": {
+      "size": 17137,
+      "modified": "2025-08-25T21:36:18"
+    },
+    "duckbot\\rag.py": {
+      "size": 11621,
+      "modified": "2025-09-07T21:28:41.570989"
+    },
+    "duckbot\\rate_limit.py": {
+      "size": 4695,
+      "modified": "2025-08-24T19:01:56"
+    },
+    "duckbot\\server_manager.py": {
+      "size": 25541,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\service_detector.py": {
+      "size": 11193,
+      "modified": "2025-08-28T14:17:44"
+    },
+    "duckbot\\settings_gpt.py": {
+      "size": 4921,
+      "modified": "2025-08-27T04:35:30"
+    },
+    "duckbot\\settings_menu.py": {
+      "size": 2007,
+      "modified": "2025-08-24T03:23:50"
+    },
+    "duckbot\\vibevoice_client.py": {
+      "size": 14621,
+      "modified": "2025-08-29T17:25:10"
+    },
+    "duckbot\\vibevoice_commands.py": {
+      "size": 16545,
+      "modified": "2025-08-29T17:26:24"
+    },
+    "duckbot\\visual_workflow_designer.py": {
+      "size": 34636,
+      "modified": "2025-09-03T17:26:36.721898"
+    },
+    "duckbot\\webui.py": {
+      "size": 86100,
+      "modified": "2025-09-07T22:35:15.294609"
+    },
+    "duckbot\\webui_enhanced.py": {
+      "size": 31843,
+      "modified": "2025-08-28T23:04:16"
+    },
+    "duckbot\\webui_token.txt": {
+      "size": 43,
+      "modified": "2025-08-25T00:55:34"
+    },
+    "duckbot\\web_dashboard.py": {
+      "size": 5019,
+      "modified": "2025-08-24T23:36:22"
+    },
+    "duckbot\\wsl_integration.py": {
+      "size": 12134,
+      "modified": "2025-09-07T22:30:25.111082"
+    },
+    "duckbot\\__init__.py": {
+      "size": 78,
+      "modified": "2025-08-25T16:18:42"
+    },
+    "duckbot\\ai\\__init__.py": {
+      "size": 21,
+      "modified": "2025-09-07T23:50:52.625710"
+    },
+    "duckbot\\core\\__init__.py": {
+      "size": 21,
+      "modified": "2025-09-07T23:50:52.626710"
+    },
+    "duckbot\\integrations\\__init__.py": {
+      "size": 21,
+      "modified": "2025-09-07T23:50:52.625710"
+    },
+    "duckbot\\react-webui\\package.json": {
+      "size": 1697,
+      "modified": "2025-09-06T00:58:14.780547"
+    },
+    "duckbot\\react-webui\\src\\App.css": {
+      "size": 7553,
+      "modified": "2025-09-06T00:59:02.741814"
+    },
+    "duckbot\\react-webui\\src\\App.js": {
+      "size": 2488,
+      "modified": "2025-09-06T00:58:25.420431"
+    },
+    "duckbot\\react-webui\\src\\components\\Desktop.js": {
+      "size": 18119,
+      "modified": "2025-09-07T03:18:47.148139"
+    },
+    "duckbot\\react-webui\\src\\components\\LoadingScreen.js": {
+      "size": 7528,
+      "modified": "2025-09-06T01:03:11.346002"
+    },
+    "duckbot\\react-webui\\src\\components\\LoginScreen.js": {
+      "size": 9874,
+      "modified": "2025-09-06T01:03:44.787429"
+    },
+    "duckbot\\react-webui\\src\\components\\NeuralBackground.js": {
+      "size": 6006,
+      "modified": "2025-09-06T01:06:38.951172"
+    },
+    "duckbot\\react-webui\\src\\components\\Taskbar.js": {
+      "size": 10561,
+      "modified": "2025-09-06T01:06:13.609023"
+    },
+    "duckbot\\react-webui\\src\\components\\applications\\AIAssistant.js": {
+      "size": 23276,
+      "modified": "2025-09-06T01:05:14.504364"
+    },
+    "duckbot\\react-webui\\src\\components\\applications\\Avatar3D.js": {
+      "size": 19802,
+      "modified": "2025-09-07T03:18:18.404185"
+    },
+    "duckbot\\react-webui\\src\\components\\applications\\FileManager.js": {
+      "size": 4193,
+      "modified": "2025-09-07T03:30:17.612971"
+    },
+    "duckbot\\react-webui\\src\\components\\applications\\SystemMonitor.js": {
+      "size": 19222,
+      "modified": "2025-09-06T01:07:43.786278"
+    },
+    "duckbot\\react-webui\\src\\components\\applications\\Terminal.js": {
+      "size": 7066,
+      "modified": "2025-09-07T03:32:12.923361"
+    },
+    "duckbot\\react-webui\\src\\contexts\\AIContext.js": {
+      "size": 11794,
+      "modified": "2025-09-06T01:00:58.745506"
+    },
+    "duckbot\\react-webui\\src\\contexts\\AuthContext.js": {
+      "size": 4861,
+      "modified": "2025-09-06T00:59:41.772807"
+    },
+    "duckbot\\react-webui\\src\\contexts\\SystemContext.js": {
+      "size": 8130,
+      "modified": "2025-09-06T01:00:17.188006"
+    },
+    "duckbot\\static\\modern-styles.css": {
+      "size": 12157,
+      "modified": "2025-08-28T04:54:00"
+    },
+    "duckbot\\static\\styles.css": {
+      "size": 11242,
+      "modified": "2025-08-25T04:27:46"
+    },
+    "duckbot\\templates\\action_logs.html": {
+      "size": 19505,
+      "modified": "2025-08-28T23:30:00"
+    },
+    "duckbot\\templates\\companion.html": {
+      "size": 47660,
+      "modified": "2025-09-07T02:55:29.086083"
+    },
+    "duckbot\\templates\\cost_dashboard.html": {
+      "size": 15593,
+      "modified": "2025-08-24T23:36:16"
+    },
+    "duckbot\\templates\\dashboard.html": {
+      "size": 23293,
+      "modified": "2025-08-27T20:57:54"
+    },
+    "duckbot\\templates\\dashboard_enhanced.html": {
+      "size": 34001,
+      "modified": "2025-09-07T02:57:41.266518"
+    },
+    "duckbot\\templates\\dashboard_modern.html": {
+      "size": 21036,
+      "modified": "2025-09-07T02:59:35.837639"
+    },
+    "duckbot\\templates\\settings.html": {
+      "size": 10968,
+      "modified": "2025-08-27T05:01:44"
+    },
+    "duckbot\\ui\\__init__.py": {
+      "size": 21,
+      "modified": "2025-09-07T23:50:52.624710"
+    },
+    "logs\\ecosystem_errors.log.2025-08-25": {
+      "size": 892,
+      "modified": "2025-08-25T22:17:30"
+    },
+    "logs\\ecosystem_errors.log.2025-08-26": {
+      "size": 373055,
+      "modified": "2025-08-26T23:39:30"
+    },
+    "logs\\ecosystem_errors.log.2025-08-27": {
+      "size": 212296,
+      "modified": "2025-08-27T23:59:32"
+    },
+    "logs\\ecosystem_errors.log.2025-08-28": {
+      "size": 12758,
+      "modified": "2025-08-28T23:54:44"
+    },
+    "logs\\ecosystem_errors.log.2025-09-03": {
+      "size": 1353,
+      "modified": "2025-09-03T20:23:48.845896"
+    },
+    "logs\\ecosystem_main.log.1": {
+      "size": 11565042,
+      "modified": "2025-08-27T01:32:30"
+    },
+    "scripts\\make_release_zip.bat": {
+      "size": 177,
+      "modified": "2025-08-28T22:30:06"
+    },
+    "scripts\\make_release_zip.ps1": {
+      "size": 1777,
+      "modified": "2025-08-28T22:44:42"
+    },
+    "scripts\\make_release_zip.py": {
+      "size": 1422,
+      "modified": "2025-08-28T22:33:36"
+    },
+    "scripts\\reset_open_notebook_db.py": {
+      "size": 3820,
+      "modified": "2025-08-29T00:46:02"
+    },
+    "scripts\\run_migrations.py": {
+      "size": 671,
+      "modified": "2025-08-29T00:47:50"
+    },
+    "scripts\\verify_open_notebook.py": {
+      "size": 633,
+      "modified": "2025-08-28T23:59:20"
+    },
+    "workflows\\DuckBot-Audio-DuckTown-Integration.json": {
+      "size": 196406,
+      "modified": "2025-08-24T18:19:28"
+    },
+    "workflows\\OpenRouter Trading  Analysis Bot Beta.json": {
+      "size": 190951,
+      "modified": "2025-08-24T16:29:40"
+    }
+  },
+  "checksums": {
+    ".gitignore": "184a2ea0f7f2d133dc4e14bc3d62178342fd5244efd6305c8d2389e8f100d8ca",
+    "create_ultimate_distribution.py": "6e1ca2eaefb681a659965e0cd97a985ceced433d331e3dbdf372240a491463d2",
+    "INSTALLATION_GUIDE.md": "ae3b720592cebbaa14b6a35ae0f950ae3c264c28b38e460456e2cbf0bc0532b8",
+    "LICENSE": "ccdbbc7ac2e4338bd50a02dffeb554ba137c5057e1ae986d4d6431c17c68cfdf",
+    "PACKAGE_INFO.json": "300ba7fdaffab267bc6aaf18efed6a03134a2fc60e877f1c1a41b37f262bfd25",
+    "README.md": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "requirements.txt": "6ddd4ed3f0686264055dc33e967e623a6c6d08b659c0af2492fbab1f8d0ffa72",
+    "duckbot\\action_reasoning_logger.py": "dcb483ae048e8f4ff71a49fcdd5f97aeaa7476e80557811a1c993a30458b68d0",
+    "duckbot\\ai_manager_settings.json": "12822193f483e6d4130ccb00d2c9ddd4b226cd3829a1d9629970bc8ae96e9e69",
+    "duckbot\\ai_router_gpt.py": "77765e1b0ad230e5e5bd40711d17a6f4fa95de900ea246db2e8253b35633e6f1",
+    "duckbot\\archon_integration.py": "244c0b37d048effa54079e892814a57eacd5dba00ea80a9f4a8a8909bd4c3fe7",
+    "duckbot\\bytebot_integration.py": "2b542636cb0f5558b4f3b9d0f182e3f402e76cd328e2c9665edf04f1312b6885",
+    "duckbot\\charm_terminal_ui.py": "2b286f38a18093d1a37916b9c4c12724c7bb8d3eaacd29035811d8d67707c4ee",
+    "duckbot\\chromium_integration.py": "1741ca292672d8e86286ccc441de064caef5936ae6a16e77460e387f24e2d483",
+    "duckbot\\claude_code_integration.py": "4be0ec2555f3ada53721fd37c945127141a2bc11493d51fc7cb5ff267507f28b",
+    "duckbot\\context_manager.py": "5a549d65ece7901bca3688c41ebd4d367a659b19644554edff58290cbaa46434",
+    "duckbot\\cost_commands.py": "a5056a7b864545fd7ecaaf077f8c1384b8de35fac4ef0f616730c57b09c173a7",
+    "duckbot\\cost_tracker.py": "b49e5682bee7e3e9083ef903c18b8a3cfae18562a13e93ee51f7b087e27c929d",
+    "duckbot\\cost_visualizer.py": "8e43a08f1c24ed8345efd4979d16cd6c15d8efd95e51d41bfbc979efe81b9d0a",
+    "duckbot\\dynamic_model_manager.py": "8a010e24d5b24c653bc659ff71b6e400de7b7cd74a764a0d0786e659754f04de",
+    "duckbot\\enhanced_webui.py": "2007928ecbc515aee6e1613e8ede1f1f6455aaaa24c442c080391991ac64cf3f",
+    "duckbot\\hardware_detector.py": "f3bd7346d82478feb94ee019cadd1c742c084feb1b4d0609d46e52af9d9231c8",
+    "duckbot\\intelligent_agents.py": "701033226a1c59b3aac5dea5616e26943c96529c1b1cf2e5ce1b595131084cbf",
+    "duckbot\\learning_system.py": "c02240f04976e9a4c322ffcc89694637baf4d015cb0af7a682b3a7fa512920d7",
+    "duckbot\\local_feature_parity.py": "40339a427572058af7cc372968c0aebec18f5ce6cdfd475464957245ef440873",
+    "duckbot\\logging_setup.py": "2f4ba52b26f73955b2a430e718e5610bdc51841610f151db21f480d46a97dd48",
+    "duckbot\\n8n_agent_integration.py": "49eb965ce515162605c324b509a2d83004ec421ef86b497823bc282d46447fd8",
+    "duckbot\\notebook_commands.py": "24e02252311613f947c7eb629d32885bbabd2cab8760b842bfaaa23e83fc29da",
+    "duckbot\\observability.py": "4d59fb5e0bb393b40d8ac1363491590979016cd49d9754ceaa18fa862eb8d452",
+    "duckbot\\provider_connectors.py": "7abea8b17959d6743f6e0c1344125b4b4ea764e72dfca097e8b466965fe86b1d",
+    "duckbot\\qwen_agent_integration.py": "2567fac8508c059af437557a44367bb1cb97d7124656d3999b14e269108e9a4b",
+    "duckbot\\qwen_diagnostics.py": "7d1e9bbb6cf702add487cc54c801eb4349e791a3cd0f1b514fb50ee31a8f9b04",
+    "duckbot\\rag.py": "0e0ce06efb15b7b581c3993ec9334e662dd0785dd0418a74ae36ffcd277d0571",
+    "duckbot\\rate_limit.py": "41957760c249aa75d214d5db0d24e9f95355a6de7bc6028c19e47ea1af3661cb",
+    "duckbot\\server_manager.py": "4a228b93db0ff003d216aaf59da83ef68a63a6d7a9f15697b54b283159a55c43",
+    "duckbot\\service_detector.py": "501b07ea3e4fd20aeda4ac01efae3709cae179ba9142b0bb8a8ba6f81c2add58",
+    "duckbot\\settings_gpt.py": "3d4e346b5202c261d00ca7531aa053e8d241d8b973660bfc416edecd1e56de3d",
+    "duckbot\\settings_menu.py": "8d176926be7a45f08ab8a7f6c187147ac80cea082dd293feff796881ae507e0a",
+    "duckbot\\vibevoice_client.py": "6f075fc33fe6c893df254e1f3dbe2d0742fac9a7bd7dc8cf1f94207bad8ce59c",
+    "duckbot\\vibevoice_commands.py": "ed317d9de60149331411c99e28312d18803aedcd6e3823d7d94b12eda8eede91",
+    "duckbot\\visual_workflow_designer.py": "782abd3ac2b08137201b1112c3fa3d3d2f416a0642807e9c02a0a130a3ffc28f",
+    "duckbot\\webui.py": "a7614b58a0a8368c2bc91c414b3acd4bb17f48c8149e13d28afad088e5418fe0",
+    "duckbot\\webui_enhanced.py": "dbb70aed925913735edcf12665f6d8c46da3702cc5990a80ce10f714f9872cc1",
+    "duckbot\\webui_token.txt": "df4108cf10202d2ee9b1bdf41d0159374af2b05c1d17807bf9beaf048ca6c61b",
+    "duckbot\\web_dashboard.py": "060b843d63886496520c24048ce066270b2c9a53dc1d35c2a89d8b6ac13cd501",
+    "duckbot\\wsl_integration.py": "798f526a831dcb6ab87544cdd290d9f8ff42123fa7058bbf7de433455c34e174",
+    "duckbot\\__init__.py": "415a70e0402ce34d0e4a9d18f82f7bdd0c0ee856bb29e4c1d9836fd604324ce4",
+    "duckbot\\ai\\__init__.py": "ce31f6c3a2114c507a98234bb0b0fcb441a5b7a2647352b31f47b20c7f4690e3",
+    "duckbot\\core\\__init__.py": "ce31f6c3a2114c507a98234bb0b0fcb441a5b7a2647352b31f47b20c7f4690e3",
+    "duckbot\\integrations\\__init__.py": "ce31f6c3a2114c507a98234bb0b0fcb441a5b7a2647352b31f47b20c7f4690e3",
+    "duckbot\\react-webui\\package.json": "f053b60bec555256c3e7dd616603727fd88db9ef07a51313a37942c79e98f998",
+    "duckbot\\react-webui\\src\\App.css": "fba71ec5b220024ed413ea58206ea48f3426b65fdc4dce7ed09b51cca95df094",
+    "duckbot\\react-webui\\src\\App.js": "24c0c9545492c3819ea66f1f64fa6419994e655274eb59cb43fe041de067b7a1",
+    "duckbot\\react-webui\\src\\components\\Desktop.js": "dc537c2a290e9391736a66512f2923440ed49f663649e8d20a878d5e00815eeb",
+    "duckbot\\react-webui\\src\\components\\LoadingScreen.js": "c6d217791bde5bfc800e430bff38374d7742d256c9c16573a54561fc33610561",
+    "duckbot\\react-webui\\src\\components\\LoginScreen.js": "6ad42cb5fde3153007af2c3c93cbd20d62c06384ddc82fe845c0194e9297e9ff",
+    "duckbot\\react-webui\\src\\components\\NeuralBackground.js": "167b763639c56686bced2c178d77e7a4ff3957f3213bc80ab009c9166b387ba1",
+    "duckbot\\react-webui\\src\\components\\Taskbar.js": "f564163efc3f5139d6d72342d57f6087a2d3347ff9b5cf6c5dadca28f5abbbfc",
+    "duckbot\\react-webui\\src\\components\\applications\\AIAssistant.js": "d5e71384479e68815368251c4affb37c54d701f01bc488b380daa5563b4befc4",
+    "duckbot\\react-webui\\src\\components\\applications\\Avatar3D.js": "6e128820f4d4dd404215dd32d390efafe8d94dfc3edd6dd18a7c5de6e898f22c",
+    "duckbot\\react-webui\\src\\components\\applications\\FileManager.js": "f4073dd97f574c2fb7b7b7a04f6d9dcd41d0924dd6b8a5a8ec21dcf9387dfd5f",
+    "duckbot\\react-webui\\src\\components\\applications\\SystemMonitor.js": "5e52745eaf8c5d014ea48ff65cf0d43102413100c90969d2b927c0dbb3fc891a",
+    "duckbot\\react-webui\\src\\components\\applications\\Terminal.js": "ab950d41e293e1994163b737fa1c38df7f2291d121002c6f6e61a0f5f35f5c00",
+    "duckbot\\react-webui\\src\\contexts\\AIContext.js": "83b539447b9d82b3f342cc012365ecc04fb8b848aaa55f317638ca77d9248456",
+    "duckbot\\react-webui\\src\\contexts\\AuthContext.js": "451c9a212aac4aac5e14c6a280ea62cf111c08aecfb471375fbbb7f6994e9d9b",
+    "duckbot\\react-webui\\src\\contexts\\SystemContext.js": "1128fded1c71199eca98f136a16cb43803492d81a47e136d3fa7d8cbc0c34e31",
+    "duckbot\\static\\modern-styles.css": "dc3c1f0f83f6615b1193e55d178fb13ada0cba4392aeed9cb7efa005a730b55b",
+    "duckbot\\static\\styles.css": "23b49aebe3eb574615b9039ee1b0c6441409ac68db53fb3e31d8304dba593bd7",
+    "duckbot\\templates\\action_logs.html": "c6ab8472cd4adb45dc13937a6d0ff1cf88c57ce40b3a66e4df04f70167017c80",
+    "duckbot\\templates\\companion.html": "a9d89e62fda234a354a20ae95ccd71589681b36ecad780ebc7a1fc17f5431ce8",
+    "duckbot\\templates\\cost_dashboard.html": "e8148c47e6c20fbf3747681bbcf6a4fe27bf4e8003498ee72c4ce68407f87f06",
+    "duckbot\\templates\\dashboard.html": "5f038c27ce737f486d8c24f9c1b6d0abb6e361746e60e812c2fc348766985d05",
+    "duckbot\\templates\\dashboard_enhanced.html": "dc6fb51f06516309164a1cd31fdd7b33e91e8eb2a2915cdcc5e08a01aa05bb05",
+    "duckbot\\templates\\dashboard_modern.html": "3304893dd02c131a4217e0851a1715180b046680aad16afa35bd973268e60613",
+    "duckbot\\templates\\settings.html": "213791e8d04b8d2d119b7e897d9e11ba20231701eb1a2d9b79e01c02fe5ffdd0",
+    "duckbot\\ui\\__init__.py": "ce31f6c3a2114c507a98234bb0b0fcb441a5b7a2647352b31f47b20c7f4690e3",
+    "logs\\ecosystem_errors.log.2025-08-25": "fcabf9a241dd4ac877aa8b5105cb295bab8f24cf47308c1df3021c85828aef56",
+    "logs\\ecosystem_errors.log.2025-08-26": "a79b48e2dbc0fca6e52bcf8a1c8d6c29915c7bb5309f8a54e9631c3d84b94c04",
+    "logs\\ecosystem_errors.log.2025-08-27": "f3072e868c5e8918396b8dc74f8a2a3c5df96a1e1b8927b97f8883caf90cff80",
+    "logs\\ecosystem_errors.log.2025-08-28": "c76741da119d82cbbca8b4581f7f4de82a174ca9fbde49ef9ae61dffc1329f2f",
+    "logs\\ecosystem_errors.log.2025-09-03": "5abf91f1edbd0973bd44dde3d1e756b4f1051177073c4587bfb08099f8bb65cb",
+    "logs\\ecosystem_main.log.1": "78225721a570ddb795bd758718a288737aad73bf0605dc5eba43fe28a2b6b434",
+    "scripts\\make_release_zip.bat": "e7a27eae49f81f5758c94bf94b591237cc9f1c2a188d60e69c6a26b410d94cc0",
+    "scripts\\make_release_zip.ps1": "e95f5ce36fc1e406dfaca2a23dca6a347140436ef10e68ff52e2ee00bd6908b5",
+    "scripts\\make_release_zip.py": "11b187434a5e5218f0283381e4060d88a6c7fd75449117384a597c7bc611d06e",
+    "scripts\\reset_open_notebook_db.py": "93ea3ec923eaa5035347ac39a32a750efb3ec3c152a9190442e5becce93fe31f",
+    "scripts\\run_migrations.py": "8842a1ffef4b7d62972c7e355ac8ddcbe34a753f1ec81307855fd64a49ab5ebf",
+    "scripts\\verify_open_notebook.py": "8a1bd26bcf47f7e259576491a919783fc0b28d8ab0e49753608fa70c56259f73",
+    "workflows\\DuckBot-Audio-DuckTown-Integration.json": "dc5a1996911c5086cd46ff4c4d6a070f2f294e9edbc6fccdd6bd547daa221619",
+    "workflows\\OpenRouter Trading  Analysis Bot Beta.json": "292cd46c6236a3064920f7530b71b65a93fdf9dac0302be78c15be12f845081c"
+  }
+}

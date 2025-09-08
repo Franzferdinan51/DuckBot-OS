@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckBot - Action & Reasoning Logs</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0 0 10px 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .nav-buttons {
+            background: #f8f9fa;
+            padding: 15px 30px;
+            border-bottom: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        .nav-buttons a {
+            display: inline-block;
+            padding: 8px 20px;
+            margin: 0 10px;
+            background: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .nav-buttons a:hover {
+            background: #0056b3;
+        }
+
+        .nav-buttons a.active {
+            background: #28a745;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .filters {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid #dee2e6;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-weight: 500;
+            color: #495057;
+            font-size: 0.9em;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+            background: white;
+            min-width: 150px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.3s;
+        }
+
+        .btn:hover {
+            background: #0056b3;
+        }
+
+        .btn.secondary {
+            background: #6c757d;
+        }
+
+        .btn.secondary:hover {
+            background: #545b62;
+        }
+
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .summary-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #dee2e6;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            margin: 0 0 10px 0;
+            color: #495057;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .summary-card .value {
+            font-size: 2em;
+            font-weight: bold;
+            color: #007bff;
+        }
+
+        .logs-table {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid #dee2e6;
+        }
+
+        .table-header {
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-bottom: 1px solid #dee2e6;
+            font-weight: 500;
+        }
+
+        .log-entry {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f3f4;
+            transition: background 0.2s;
+        }
+
+        .log-entry:hover {
+            background: #f8f9fa;
+        }
+
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .log-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .log-type {
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .log-type.AI_ROUTING { background: #d4edda; color: #155724; }
+        .log-type.FALLBACK { background: #fff3cd; color: #856404; }
+        .log-type.RATE_LIMITING { background: #f8d7da; color: #721c24; }
+        .log-type.SERVER_MGMT { background: #d1ecf1; color: #0c5460; }
+
+        .log-component {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .log-timestamp {
+            color: #6c757d;
+            font-size: 0.9em;
+        }
+
+        .log-action {
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .log-reasoning {
+            color: #495057;
+            margin-bottom: 10px;
+            line-height: 1.5;
+        }
+
+        .log-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+            font-size: 0.9em;
+        }
+
+        .detail-item {
+            color: #6c757d;
+        }
+
+        .detail-label {
+            font-weight: 500;
+            color: #495057;
+        }
+
+        .severity {
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .severity.INFO { background: #d1ecf1; color: #0c5460; }
+        .severity.WARNING { background: #fff3cd; color: #856404; }
+        .severity.ERROR { background: #f8d7da; color: #721c24; }
+        .severity.CRITICAL { background: #f5c6cb; color: #721c24; }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+
+        .no-logs {
+            text-align: center;
+            padding: 40px;
+            color: #6c757d;
+        }
+
+        @media (max-width: 768px) {
+            .filter-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .log-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .log-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Action & Reasoning Logs</h1>
+            <p>Comprehensive AI decision tracking and system behavior analysis</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="/" id="nav-dashboard">Dashboard</a>
+            <a href="/settings" id="nav-settings">Settings</a>
+            <a href="/cost" id="nav-cost">Cost Analysis</a>
+            <a href="/action-logs" class="active" id="nav-action-logs">Action Logs</a>
+        </div>
+
+        <div class="content">
+            {% if not action_logging_available %}
+            <div class="error">
+                <strong>Action Logging Unavailable:</strong> The action and reasoning logger is not properly configured. Please check the system configuration.
+            </div>
+            {% endif %}
+
+            <div class="filters">
+                <div class="filter-row">
+                    <div class="filter-group">
+                        <label for="hours">Time Period</label>
+                        <select id="hours">
+                            <option value="1">Last Hour</option>
+                            <option value="6">Last 6 Hours</option>
+                            <option value="24" selected>Last 24 Hours</option>
+                            <option value="72">Last 3 Days</option>
+                            <option value="168">Last Week</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label for="actionType">Action Type</label>
+                        <select id="actionType">
+                            <option value="">All Types</option>
+                            <option value="AI_ROUTING">AI Routing</option>
+                            <option value="FALLBACK">Fallbacks</option>
+                            <option value="RATE_LIMITING">Rate Limiting</option>
+                            <option value="SERVER_MGMT">Server Management</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="component">Component</label>
+                        <select id="component">
+                            <option value="">All Components</option>
+                            <option value="ai_router_gpt">AI Router</option>
+                            <option value="webui">WebUI</option>
+                            <option value="server_manager">Server Manager</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="limit">Limit</label>
+                        <select id="limit">
+                            <option value="50">50 entries</option>
+                            <option value="100" selected>100 entries</option>
+                            <option value="250">250 entries</option>
+                            <option value="500">500 entries</option>
+                        </select>
+                    </div>
+
+                    <div class="filter-group">
+                        <label>&nbsp;</label>
+                        <button class="btn" onclick="loadLogs()">Apply Filters</button>
+                        <button class="btn secondary" onclick="refreshLogs()">Refresh</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary" id="summary">
+                <!-- Summary cards will be populated by JavaScript -->
+            </div>
+
+            <div class="logs-table">
+                <div class="table-header">Action Log Entries</div>
+                <div id="logsContainer">
+                    <div class="loading">Loading action logs...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentLogs = [];
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const urlToken = urlParams.get('token');
+
+        function authHeaders() {
+            const headers = {};
+            if (urlToken) headers['Authorization'] = `Bearer ${urlToken}`;
+            return headers;
+        }
+
+        function appendTokenToNav() {
+            if (!urlToken) return;
+            const ids = ['nav-dashboard','nav-settings','nav-cost','nav-action-logs'];
+            for (const id of ids) {
+                const a = document.getElementById(id);
+                if (a && !a.href.includes('token=')) {
+                    const u = new URL(a.getAttribute('href', 2), window.location.origin);
+                    u.searchParams.set('token', urlToken);
+                    a.href = u.pathname + u.search;
+                }
+            }
+        }
+
+        async function loadSummary() {
+            const hours = document.getElementById('hours').value;
+            
+            try {
+                const response = await fetch(`/api/action-logs/summary?hours=${hours}` , { headers: authHeaders() });
+                const data = await response.json();
+                
+                if (!data.ok) {
+                    document.getElementById('summary').innerHTML = `<div class="error">Failed to load summary: ${data.error}</div>`;
+                    return;
+                }
+
+                const summary = data.summary;
+                const summaryHtml = `
+                    <div class="summary-card">
+                        <h3>Total Actions</h3>
+                        <div class="value">${summary.total_actions}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Routing Decisions</h3>
+                        <div class="value">${summary.actions_by_type.AI_ROUTING || 0}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Fallbacks</h3>
+                        <div class="value">${summary.actions_by_type.FALLBACK || 0}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Rate Limits</h3>
+                        <div class="value">${summary.actions_by_type.RATE_LIMITING || 0}</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Errors</h3>
+                        <div class="value">${(summary.actions_by_severity.ERROR || 0) + (summary.actions_by_severity.CRITICAL || 0)}</div>
+                    </div>
+                `;
+                
+                document.getElementById('summary').innerHTML = summaryHtml;
+            } catch (error) {
+                document.getElementById('summary').innerHTML = `<div class="error">Network error loading summary: ${error.message}</div>`;
+            }
+        }
+
+        async function loadLogs() {
+            const hours = document.getElementById('hours').value;
+            const actionType = document.getElementById('actionType').value;
+            const component = document.getElementById('component').value;
+            const limit = document.getElementById('limit').value;
+
+            const params = new URLSearchParams({
+                hours,
+                limit
+            });
+
+            if (actionType) params.append('action_type', actionType);
+            if (component) params.append('component', component);
+
+            document.getElementById('logsContainer').innerHTML = '<div class="loading">Loading action logs...</div>';
+
+            try {
+                const response = await fetch(`/api/action-logs?${params}` , { headers: authHeaders() });
+                const data = await response.json();
+
+                if (!data.ok) {
+                    document.getElementById('logsContainer').innerHTML = `<div class="error">Failed to load logs: ${data.error}</div>`;
+                    return;
+                }
+
+                currentLogs = data.logs;
+                renderLogs(currentLogs);
+                loadSummary(); // Update summary with current filters
+            } catch (error) {
+                document.getElementById('logsContainer').innerHTML = `<div class="error">Network error loading logs: ${error.message}</div>`;
+            }
+        }
+
+        function renderLogs(logs) {
+            if (logs.length === 0) {
+                document.getElementById('logsContainer').innerHTML = '<div class="no-logs">No action logs found for the selected criteria.</div>';
+                return;
+            }
+
+            const logsHtml = logs.map(log => {
+                const timestamp = new Date(log.timestamp).toLocaleString();
+                const contextData = log.context_data || {};
+                
+                return `
+                    <div class="log-entry">
+                        <div class="log-header">
+                            <div class="log-info">
+                                <span class="log-type ${log.action_type}">${log.action_type}</span>
+                                <span class="log-component">${log.component}</span>
+                                <span class="severity ${log.severity}">${log.severity}</span>
+                            </div>
+                            <div class="log-timestamp">${timestamp}</div>
+                        </div>
+                        
+                        <div class="log-action">${log.action_description}</div>
+                        <div class="log-reasoning"><strong>Reasoning:</strong> ${log.reasoning}</div>
+                        
+                        <div class="log-details">
+                            ${log.outcome ? `<div class=\"detail-item\"><span class=\"detail-label\">Outcome:</span> ${log.outcome}</div>` : ''}
+                            ${log.execution_time_ms ? `<div class=\"detail-item\"><span class=\"detail-label\">Duration:</span> ${log.execution_time_ms}ms</div>` : ''}
+                            ${log.user_id ? `<div class=\"detail-item\"><span class=\"detail-label\">User:</span> ${log.user_id}</div>` : ''}
+                            ${contextData.prompt_length ? `<div class=\"detail-item\"><span class=\"detail-label\">Prompt Length:</span> ${contextData.prompt_length} chars</div>` : ''}
+                            ${contextData.prompt || contextData.prompt_preview ? `<div class=\"detail-item\"><span class=\"detail-label\">Prompt:</span> <details><summary>show</summary><pre style=\"white-space:pre-wrap;margin:6px 0 0 0;\">${String(contextData.prompt || contextData.prompt_preview).replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre></details></div>` : ''}
+                            ${contextData.chosen_model ? `<div class=\"detail-item\"><span class=\"detail-label\">Model:</span> ${contextData.chosen_model}</div>` : ''}
+                            ${contextData.bucket_type ? `<div class=\"detail-item\"><span class=\"detail-label\">Bucket:</span> ${contextData.bucket_type}</div>` : ''}
+                            ${contextData.action ? `<div class=\"detail-item\"><span class=\"detail-label\">Action:</span> ${contextData.action}</div>` : ''}
+                            ${contextData.server_name ? `<div class=\"detail-item\"><span class=\"detail-label\">Server:</span> ${contextData.server_name}</div>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('logsContainer').innerHTML = logsHtml;
+        }
+
+        function refreshLogs() {
+            loadLogs();
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(refreshLogs, 30000);
+
+        // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            appendTokenToNav();
+            loadLogs();
+        });
+    </script>
+</body>
+</html>

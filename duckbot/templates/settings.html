@@ -1,0 +1,268 @@
+
+<!-- duckbot/templates/settings.html -->
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Settings — DuckBot v3.0.5 AI Manager</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header>
+    <h1>⚙️ Settings — DuckBot AI Manager</h1>
+    <nav>
+      <a href="/">Dashboard</a>
+      <a href="/settings">Settings</a>
+      <a href="/cost">Cost Analysis</a>
+    </nav>
+  </header>
+
+  <section class="panel">
+    <h2>Model & Routing</h2>
+    <div style="margin-bottom: 12px;">
+      <label>Routing Mode
+        <select id="routing-mode-select">
+          <option value="cloud_first">cloud_first</option>
+          <option value="local_first">local_first</option>
+        </select>
+      </label>
+    </div>
+    <div style="margin-bottom: 12px;">
+      <label>Cloud Main Model (AI_MODEL_MAIN_BRAIN)
+        <input type="text" id="cloud-model-input" placeholder="qwen/qwen3-coder:free" />
+      </label>
+    </div>
+    <div class="grid grid-2" style="gap:12px; margin-bottom: 12px;">
+      <label>Code Model (AI_MODEL_CODE)
+        <input type="text" id="cloud-model-code" placeholder="qwen/qwen3-coder:free" />
+      </label>
+      <label>Analysis Model (AI_MODEL_ANALYSIS)
+        <input type="text" id="cloud-model-analysis" placeholder="z-ai/glm-4.5-air:free" />
+      </label>
+      <label>Debug Model (AI_MODEL_DEBUG)
+        <input type="text" id="cloud-model-debug" placeholder="qwen/qwen3-coder:free" />
+      </label>
+      <label>Server Brain (AI_MODEL_SERVER_BRAIN)
+        <input type="text" id="cloud-model-server" placeholder="qwen/qwen3-coder:free" />
+      </label>
+    </div>
+    <div style="margin-bottom: 12px;">
+      <label>Reasoning Model (AI_MODEL_REASONING)
+        <input type="text" id="reasoning-model-input" placeholder="qwen/qwq-32b:free" />
+      </label>
+    </div>
+    <div style="margin-bottom: 12px;">
+      <label>Local Main Brain (LM Studio fallback)
+        <select id="local-model-select"><option>Loading…</option></select>
+        <button type="button" id="apply-local-model">Set Local Model</button>
+      </label>
+      <small id="local-model-note"></small>
+    </div>
+    <div style="margin-top: 12px;">
+      <label>
+        <input type="checkbox" id="force-cloud-chat-toggle" /> Force Cloud for Chat (/chat)
+      </label>
+    </div>
+    <div style="margin-top: 8px; display:flex; gap:18px; align-items:center;">
+      <label>
+        <input type="checkbox" id="enable-qwq-toggle" /> Enable QwQ for reasoning
+      </label>
+      <label>
+        <input type="checkbox" id="paid-variants-toggle" /> Use paid variants (strip ":free")
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>OpenRouter Tier Overrides</h2>
+    <div class="grid grid-2" style="gap:12px;">
+      <label>OR_QWEN_CODER
+        <input type="text" id="or-qwen" placeholder="qwen/qwen3-coder:free" />
+      </label>
+      <label>OR_GLM_AIR
+        <input type="text" id="or-glm" placeholder="z-ai/glm-4.5-air:free" />
+      </label>
+      <label>OR_NEMO
+        <input type="text" id="or-nemo" placeholder="qwen/qwen3-coder:free" />
+      </label>
+      <label>OR_KIMI
+        <input type="text" id="or-kimi" placeholder="moonshot/kimi-k2:free" />
+      </label>
+      <label>OR_R1
+        <input type="text" id="or-r1" placeholder="deepseek/deepseek-r1:free" />
+      </label>
+      <label>OR_QWQ
+        <input type="text" id="or-qwq" placeholder="qwen/qwq-32b:free" />
+      </label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <form method="post">
+      {% for k,v in settings.items() %}
+      <label>{{k}} <input type="text" name="{{k}}" value="{{v}}"></label>
+      {% endfor %}
+      <div class="actions">
+        <button type="submit">Save</button>
+      </div>
+    </form>
+  </section>
+
+  <script>
+    // Token persistence for settings page
+    function ensureTokenInUrl() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentToken = urlParams.get('token');
+      if (!currentToken) {
+        fetch('/token')
+          .then(response => response.json())
+          .then(data => {
+            if (data.token) {
+              urlParams.set('token', data.token);
+              const newUrl = window.location.pathname + '?' + urlParams.toString();
+              window.history.replaceState({}, '', newUrl);
+              updateLinksWithToken(data.token);
+            }
+          })
+          .catch(error => console.log('Token fetch failed:', error));
+      }
+    }
+
+    function updateLinksWithToken(token = null) {
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentToken = token || urlParams.get('token');
+      if (currentToken) {
+        document.querySelectorAll('nav a').forEach(link => {
+          const href = new URL(link.href, window.location.origin);
+          href.searchParams.set('token', currentToken);
+          link.href = href.toString();
+        });
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      ensureTokenInUrl();
+      updateLinksWithToken();
+      // Enhance routing + model controls by reflecting into the settings form inputs
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token') || '';
+      const form = document.querySelector('form');
+      const getInput = (name) => form.querySelector(`input[name="${name}"]`);
+
+      // Routing mode select mirrors AI_ROUTING_MODE
+      const rmSelect = document.getElementById('routing-mode-select');
+      const rmInput = getInput('AI_ROUTING_MODE');
+      if (rmInput) {
+        rmSelect.value = (rmInput.value || 'cloud_first');
+        rmSelect.addEventListener('change', () => { rmInput.value = rmSelect.value; });
+      }
+
+      // Cloud main model input mirrors AI_MODEL_MAIN_BRAIN
+      const cloudInputEl = document.getElementById('cloud-model-input');
+      const cloudFormInput = getInput('AI_MODEL_MAIN_BRAIN');
+      if (cloudFormInput) {
+        cloudInputEl.value = cloudFormInput.value || 'qwen/qwen3-coder:free';
+        cloudInputEl.addEventListener('input', () => { cloudFormInput.value = cloudInputEl.value; });
+      }
+      // Cloud model advanced fields
+      const mapFields = [
+        ['cloud-model-code', 'AI_MODEL_CODE'],
+        ['cloud-model-analysis', 'AI_MODEL_ANALYSIS'],
+        ['cloud-model-debug', 'AI_MODEL_DEBUG'],
+        ['cloud-model-server', 'AI_MODEL_SERVER_BRAIN'],
+        ['or-qwen', 'OR_QWEN_CODER'],
+        ['or-glm', 'OR_GLM_AIR'],
+        ['or-nemo', 'OR_NEMO'],
+        ['or-kimi', 'OR_KIMI'],
+        ['or-r1', 'OR_R1'],
+        ['or-qwq', 'OR_QWQ'],
+      ];
+      mapFields.forEach(([inputId, settingKey]) => {
+        const el = document.getElementById(inputId);
+        const hidden = getInput(settingKey);
+        if (el && hidden) {
+          el.value = hidden.value || el.placeholder || '';
+          el.addEventListener('input', () => { hidden.value = el.value; });
+        }
+      });
+      // Reasoning model mirrors AI_MODEL_REASONING
+      const reasonInputEl = document.getElementById('reasoning-model-input');
+      const reasonFormInput = getInput('AI_MODEL_REASONING');
+      if (reasonFormInput) {
+        reasonInputEl.value = reasonFormInput.value || 'qwen/qwq-32b:free';
+        reasonInputEl.addEventListener('input', () => { reasonFormInput.value = reasonInputEl.value; });
+      }
+
+      // Local model picker uses API /models/available and /models/set
+      const localSelect = document.getElementById('local-model-select');
+      const localNote = document.getElementById('local-model-note');
+      const applyLocalBtn = document.getElementById('apply-local-model');
+      fetch(`/models/available${token ? ('?token=' + token) : ''}`)
+        .then(r => r.json())
+        .then(data => {
+          console.log('Models API response:', data);
+          const models = (data && data.models) || [];
+          localSelect.innerHTML = '';
+          if (!models.length) {
+            const opt = document.createElement('option');
+            opt.textContent = 'No local models detected - Start LM Studio first';
+            localSelect.appendChild(opt);
+            localNote.textContent = 'Make sure LM Studio is running with models loaded';
+            return;
+          }
+          models.forEach(m => {
+            const opt = document.createElement('option');
+            opt.value = m.id;
+            opt.textContent = `${m.name || m.id} (${m.size || 'Unknown size'})`;
+            localSelect.appendChild(opt);
+          });
+          localNote.textContent = `Found ${models.length} local model(s). Select one for LM Studio fallback.`;
+        })
+        .catch(err => { 
+          console.error('Local models fetch error:', err);
+          localSelect.innerHTML = '<option>Failed to load - Check LM Studio</option>'; 
+          localNote.textContent = 'Error: Make sure LM Studio is running on localhost:1234';
+        });
+
+      applyLocalBtn.addEventListener('click', () => {
+        const formData = new URLSearchParams();
+        formData.set('model_id', localSelect.value || '');
+        fetch(`/models/set${token ? ('?token=' + token) : ''}`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: formData.toString()
+        })
+        .then(r => r.json())
+        .then(data => {
+          localNote.textContent = data.ok ? `Local model set: ${data.model_set}` : `Error: ${data.error || 'Unknown'}`;
+        })
+        .catch(e => { localNote.textContent = 'Request failed: ' + e; })
+      });
+
+      // Force cloud for chat toggle mirrors FORCE_CLOUD_FOR_CHAT
+      const toggle = document.getElementById('force-cloud-chat-toggle');
+      const hiddenForce = getInput('FORCE_CLOUD_FOR_CHAT');
+      if (hiddenForce) {
+        toggle.checked = (hiddenForce.value === '1' || hiddenForce.value.toLowerCase?.() === 'true');
+        toggle.addEventListener('change', () => { hiddenForce.value = toggle.checked ? '1' : '0'; });
+      }
+      // Enable QwQ mirrors ENABLE_QWQ_REASONING
+      const qwqToggle = document.getElementById('enable-qwq-toggle');
+      const hiddenQwq = getInput('ENABLE_QWQ_REASONING');
+      if (hiddenQwq) {
+        const val = (hiddenQwq.value || '0').toString().toLowerCase();
+        qwqToggle.checked = (val === '1' || val === 'true');
+        qwqToggle.addEventListener('change', () => { hiddenQwq.value = qwqToggle.checked ? '1' : '0'; });
+      }
+      // Paid variants mirrors USE_PAID_MODEL_VARIANTS
+      const paidToggle = document.getElementById('paid-variants-toggle');
+      const hiddenPaid = getInput('USE_PAID_MODEL_VARIANTS');
+      if (hiddenPaid) {
+        const val = (hiddenPaid.value || '0').toString().toLowerCase();
+        paidToggle.checked = (val === '1' || val === 'true');
+        paidToggle.addEventListener('change', () => { hiddenPaid.value = paidToggle.checked ? '1' : '0'; });
+      }
+    });
+  </script>
+</body>
+</html>
