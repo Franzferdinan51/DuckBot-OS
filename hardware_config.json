@@ -1,0 +1,92 @@
+{
+  "hardware_info": {
+    "system": {
+      "platform": "Windows",
+      "release": "10",
+      "version": "10.0.26100",
+      "machine": "AMD64",
+      "processor": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+      "python_version": "3.11.9",
+      "architecture": "64bit"
+    },
+    "gpu": {
+      "nvidia": [
+        {
+          "name": "NVIDIA GeForce RTX 3080",
+          "vram_mb": 10240,
+          "vram_gb": 10.0,
+          "driver_version": "580.97",
+          "compute_capability": "8.6"
+        }
+      ],
+      "amd": [],
+      "intel": [],
+      "total_vram_gb": 10.0,
+      "primary_gpu": "NVIDIA GeForce RTX 3080",
+      "compute_capability": "8.6"
+    },
+    "cpu": {
+      "model": "AMD64 Family 25 Model 97 Stepping 2, AuthenticAMD",
+      "cores_physical": 16,
+      "cores_logical": 32,
+      "max_frequency_mhz": 4201.0,
+      "current_frequency_mhz": 4201.0,
+      "usage_percent": 3.1,
+      "max_clock_speed": 4201,
+      "name": "9 7950X3D 16-Core Processor 16 32"
+    },
+    "memory": {
+      "total_gb": 127.6,
+      "available_gb": 88.2,
+      "used_gb": 39.4,
+      "usage_percent": 30.9,
+      "swap_total_gb": 8.0,
+      "swap_used_gb": 1.9,
+      "swap_usage_percent": 23.4
+    },
+    "storage": {
+      "disks": [
+        {
+          "device": "C:\\",
+          "mountpoint": "C:\\",
+          "fstype": "NTFS",
+          "total_gb": 930.7,
+          "used_gb": 848.9,
+          "free_gb": 81.7,
+          "usage_percent": 91.2
+        },
+        {
+          "device": "D:\\",
+          "mountpoint": "D:\\",
+          "fstype": "NTFS",
+          "total_gb": 910.2,
+          "used_gb": 221.9,
+          "free_gb": 688.3,
+          "usage_percent": 24.4
+        }
+      ],
+      "total_space_gb": 1840.9,
+      "free_space_gb": 770.0
+    }
+  },
+  "performance_tier": "high_end",
+  "model_recommendations": {
+    "local_models_capable": [
+      "qwen/qwen3-coder-7b",
+      "google/gemma-2-9b-it",
+      "microsoft/phi-3-medium",
+      "meta/llama-3-8b-instruct",
+      "qwen/qwen2.5-coder-7b"
+    ],
+    "main_brain_candidates": [
+      "qwen/qwen3-coder-7b",
+      "google/gemma-2-9b-it",
+      "microsoft/phi-3-medium"
+    ],
+    "max_vram_allocation": 8.0,
+    "recommended_quantization": "Q6_K",
+    "concurrent_models": 3,
+    "local_fallback_model": "microsoft/phi-3-mini-4k-instruct-q4.gguf"
+  },
+  "detection_timestamp": "2025-09-08T12:50:00.855678"
+}

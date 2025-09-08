@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckBot OS - Complete AI Management Console</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .window { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 15px rgba(0, 200, 255, 0.1); }
+        .animate-pulse-slow { animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        @keyframes pulse { 50% { opacity: .8; } }
+        .dragging { opacity: 0.7; cursor: grabbing !important; }
+        .window-header { cursor: grab; }
+        .window-header:active { cursor: grabbing; }
+        .ai-assistant-panel {
+            transition: all 0.3s ease-in-out;
+            bottom: 1rem;
+        }
+        #duckbot-3d-canvas {
+            width: 150px;
+            height: 150px;
+            cursor: grab;
+        }
+        #duckbot-3d-canvas:active {
+            cursor: grabbing;
+        }
+        .status-indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        .status-running { background-color: #22c55e; }
+        .status-stopped { background-color: #ef4444; }
+        .status-loading { background-color: #f59e0b; animation: pulse 2s infinite; }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white overflow-hidden">
+    <div id="loading-screen" class="w-full h-screen bg-slate-900 flex items-center justify-center">
+        <div class="text-center">
+            <div class="relative w-32 h-32 mx-auto mb-8">
+                <div class="absolute inset-0 border-4 border-yellow-500 rounded-full animate-spin"></div>
+                <div class="absolute inset-4 border-4 border-amber-400 rounded-full animate-spin" style="animation-direction: reverse; animation-duration: 1.5s;"></div>
+                <div class="absolute inset-8 border-4 border-orange-400 rounded-full animate-spin" style="animation-duration: 0.8s;"></div>
+                <div class="absolute inset-12 flex items-center justify-center text-4xl">🦆</div>
+            </div>
+            <h2 class="text-4xl font-bold text-white mb-4">DuckBot OS</h2>
+            <p class="text-slate-400 text-sm mb-6">Initializing Complete AI Management Console...</p>
+        </div>
+    </div>
+
+    <div id="desktop-container" class="hidden w-full h-screen text-white overflow-hidden">
+        <canvas id="canvas-bg" class="absolute inset-0 w-full h-full"></canvas>
+        <div id="desktop" class="relative z-10 h-full flex flex-col">
+            <!-- Top Bar -->
+            <div id="top-bar" class="bg-slate-900/80 backdrop-blur-sm border-b border-slate-700 px-4 py-1 flex items-center justify-between text-sm shadow-lg">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xl font-bold">🦆 OS</div>
+                    <div>Model: <span id="current-model-status" class="bg-slate-700 px-2 py-1 rounded">...</span></div>
+                    <div>Status: <span id="agent-status-indicator" class="text-green-400">Ready</span></div>
+                    <div>Cost: $<span id="cost-indicator">0.00</span></div>
+                    <div>Queue: <span id="queue-indicator">0</span></div>
+                </div>
+                <div id="time-display" class="font-mono text-base"></div>
+            </div>
+
+            <!-- Desktop Icons -->
+            <div id="icons-grid" class="flex-1 p-8 grid grid-cols-8 gap-6"></div>
+
+            <!-- Windows Container -->
+            <div id="windows-container" class="absolute inset-0"></div>
+            
+            <!-- AI Assistant Panel -->
+            <div id="ai-assistant-panel" class="ai-assistant-panel fixed left-1/2 -translate-x-1/2 w-full max-w-4xl bg-slate-800/80 backdrop-blur-xl border border-slate-600 rounded-xl p-4 shadow-2xl">
+                <div id="conversation-log" class="h-40 overflow-y-auto mb-3 p-2 bg-slate-900/50 rounded-lg space-y-3 scrollbar-hide"></div>
+                <div class="flex space-x-2 mb-2">
+                    <select id="task-type-select" class="bg-slate-700 border border-slate-600 rounded px-3 py-1 text-sm">
+                        <option value="*">Auto-detect</option>
+                        <option value="code">Code</option>
+                        <option value="reasoning">Reasoning</option>
+                        <option value="status">Status</option>
+                        <option value="summary">Summary</option>
+                    </select>
+                    <select id="risk-level-select" class="bg-slate-700 border border-slate-600 rounded px-3 py-1 text-sm">
+                        <option value="low">Low Risk</option>
+                        <option value="medium">Medium Risk</option>
+                        <option value="high">High Risk</option>
+                    </select>
+                    <button id="voice-toggle" class="bg-slate-700 hover:bg-slate-600 px-3 py-1 rounded text-sm">🔊 Voice</button>
+                </div>
+                <form id="command-form" class="flex space-x-2 items-center">
+                    <input id="command-input" type="text" placeholder="What can I help you with today? Ask me anything..." class="flex-1 bg-slate-700/50 border border-slate-600 rounded-lg px-4 py-2.5 focus:outline-none focus:border-yellow-500 text-sm transition-colors" />
+                    <button type="submit" id="send-btn" class="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 px-5 py-2.5 rounded-lg font-medium flex items-center space-x-2 transition-all">
+                        <span>Send</span>
+                    </button>
+                     <button type="button" id="stop-btn" class="bg-red-600 hover:bg-red-700 disabled:opacity-50 px-4 py-2.5 rounded-lg font-medium hidden items-center space-x-2 transition-all">
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1zm4 0a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                    </button>
+                    <button type="button" id="pause-btn" class="bg-yellow-600 hover:bg-yellow-700 disabled:opacity-50 px-4 py-2.5 rounded-lg font-medium flex items-center space-x-2 transition-all">
+                        <span>Pause</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- 3D DuckBot "Clippy" Helper -->
+            <div id="duckbot-clippy-container" class="fixed bottom-20 right-5 z-50 cursor-move select-none">
+                <div id="duckbot-speech-bubble" class="hidden absolute bottom-full mb-3 right-0 bg-white text-black p-3 rounded-lg shadow-lg max-w-xs text-sm">
+                    <p id="duckbot-message"></p>
+                    <div class="absolute bottom-[-10px] right-4 w-0 h-0 border-l-[10px] border-l-transparent border-t-[10px] border-t-white border-r-[10px] border-r-transparent"></div>
+                </div>
+                <div id="duckbot-3d-canvas-container">
+                    <canvas id="duckbot-3d-canvas"></canvas>
+                </div>
+                 <button id="hide-duckbot-btn" class="absolute -top-2 -right-2 w-6 h-6 bg-red-600 text-white rounded-full text-xs hover:bg-red-700 transition">✕</button>
+            </div>
+            <button id="show-duckbot-btn" class="hidden fixed bottom-4 right-4 w-14 h-14 bg-yellow-400 hover:bg-yellow-500 text-black rounded-full shadow-lg z-40 flex items-center justify-center text-3xl transition-all duration-200 hover:scale-110">🦆</button>
+        </div>
+    </div>
+    
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.165.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.165.0/examples/jsm/"
+            }
+        }
+    </script>
+    <script type="module" src="DuckBotOS-Complete.js"></script>
+</body>
+</html>
