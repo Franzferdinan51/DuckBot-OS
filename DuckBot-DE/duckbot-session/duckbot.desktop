@@ -1,0 +1,13 @@
+[Desktop Entry]
+Name=DuckBot AI Desktop
+Comment=AI-Native Desktop Environment based on GNOME
+Exec=/usr/bin/duckbot-session
+TryExec=/usr/bin/duckbot-session
+Icon=duckbot-de
+Type=Application
+DesktopNames=DuckBot;GNOME;
+
+# Session management
+X-LightDM-DesktopName=DuckBot AI Desktop
+X-GDM-SessionRegisters=true
+X-Ubuntu-Gettext-Domain=duckbot-session

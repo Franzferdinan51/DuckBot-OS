@@ -1,0 +1,31 @@
+{
+  "name": "DuckBot",
+  "version": "3.1.0+",
+  "description": "Enhanced AI ecosystem with ByteBot, Archon, and Charm integrations",
+  "author": "DuckBot Team",
+  "license": "MIT",
+  "requires_python": ">=3.8",
+  "platforms": [
+    "Windows",
+    "Linux",
+    "WSL"
+  ],
+  "features": [
+    "Multi-agent AI orchestration",
+    "Desktop automation (ByteBot)",
+    "Beautiful terminal interfaces (Charm)",
+    "WSL integration",
+    "Real-time WebUI",
+    "Local-first privacy mode",
+    "Hybrid cloud+local AI routing"
+  ],
+  "integrations": [
+    "ByteBot - Desktop automation",
+    "Archon - Multi-agent systems",
+    "Charm Crush - Terminal UI",
+    "ChromiumOS - System features",
+    "OpenWebUI - Web interface"
+  ],
+  "created": "2025-09-07T23:50:52.681883",
+  "organized": true
+}

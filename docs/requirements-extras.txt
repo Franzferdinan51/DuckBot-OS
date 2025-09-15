@@ -1,0 +1,71 @@
+# DuckBot v3.0.4 - Extra Dependencies
+# Optional providers, tools, and development dependencies
+
+# AI Provider APIs
+openai>=1.3.0
+anthropic>=0.7.0
+groq>=0.4.0
+
+# Enhanced HTTP client features
+httpx>=0.25.0
+
+# Advanced data science
+pandas>=2.1.0
+numpy>=1.24.0
+
+# Image processing (for ComfyUI integration)
+Pillow>=10.1.0
+
+# Web scraping and parsing
+beautifulsoup4>=4.12.0
+lxml>=4.9.0
+
+# Streamlit for additional UI options
+streamlit>=1.28.0
+
+# LangChain ecosystem (optional)
+langchain>=0.0.350
+langchain-openai>=0.0.2
+
+# Database support
+sqlite3  # built-in, but listed for clarity
+sqlalchemy>=2.0.0  # if needed for advanced DB features
+
+# Development and testing tools
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-mock>=3.12.0
+
+# Code quality tools
+black>=23.10.0
+isort>=5.12.0
+flake8>=6.1.0
+
+# Documentation tools
+mkdocs>=1.5.0
+mkdocs-material>=9.4.0
+
+# Jupyter notebook support
+jupyter>=1.0.0
+ipykernel>=6.26.0
+
+# Advanced logging
+loguru>=0.7.0  # Alternative to built-in logging
+
+# YAML configuration
+pyyaml>=6.0.0
+
+# Rich terminal output
+rich>=13.7.0
+
+# Discord bot (if used)
+discord.py>=2.3.0
+
+# Telegram bot (if used)
+python-telegram-bot>=20.7.0
+
+# n8n workflow integration
+# (REST API based, no specific package needed)
+
+# ComfyUI integration
+# (REST API based, requests handles this)

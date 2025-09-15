@@ -1,0 +1,126 @@
+#!/bin/bash
+# DuckBot AI Desktop Environment Session Script
+
+# Set up environment variables
+export XDG_CURRENT_DESKTOP=DuckBot:GNOME
+export XDG_SESSION_DESKTOP=duckbot
+export GNOME_SHELL_SESSION_MODE=duckbot
+export XDG_CONFIG_DIRS=/etc/duckbot-de/xdg:${XDG_CONFIG_DIRS:-/etc/xdg}
+export XDG_DATA_DIRS=/usr/share/duckbot-de:${XDG_DATA_DIRS:-/usr/share:/usr/local/share}
+
+# DuckBot-specific environment
+export DUCKBOT_DE_MODE=true
+export DUCKBOT_AI_SERVICES=true
+export DUCKBOT_DESKTOP_SESSION=true
+
+# Initialize logging
+LOGDIR="$HOME/.local/share/duckbot-de/logs"
+mkdir -p "$LOGDIR"
+SESSION_LOG="$LOGDIR/session-$(date +%Y%m%d-%H%M%S).log"
+
+echo "$(date): Starting DuckBot AI Desktop Environment" >> "$SESSION_LOG"
+
+# Function to log and execute commands
+log_exec() {
+    echo "$(date): Executing: $*" >> "$SESSION_LOG"
+    "$@" 2>&1 | tee -a "$SESSION_LOG"
+    local exit_code=${PIPESTATUS[0]}
+    if [ $exit_code -ne 0 ]; then
+        echo "$(date): Command failed with exit code $exit_code: $*" >> "$SESSION_LOG"
+    fi
+    return $exit_code
+}
+
+# Start DuckBot AI services before GNOME Shell
+echo "$(date): Initializing DuckBot AI services..." >> "$SESSION_LOG"
+
+# Start DuckBot core services
+if [ -x "/usr/bin/duckbot-ai-service" ]; then
+    log_exec /usr/bin/duckbot-ai-service --desktop-mode &
+    DUCKBOT_AI_PID=$!
+    echo "Started DuckBot AI service (PID: $DUCKBOT_AI_PID)"
+fi
+
+# Start AI Window Manager
+if [ -x "/usr/bin/duckbot-window-manager" ]; then
+    log_exec /usr/bin/duckbot-window-manager &
+    WINDOW_MANAGER_PID=$!
+    echo "Started AI Window Manager (PID: $WINDOW_MANAGER_PID)"
+fi
+
+# Start Voice Control Service
+if [ -x "/usr/bin/duckbot-voice-service" ]; then
+    log_exec /usr/bin/duckbot-voice-service &
+    VOICE_SERVICE_PID=$!
+    echo "Started Voice Control Service (PID: $VOICE_SERVICE_PID)"
+fi
+
+# Start Memory Service (Memento)
+if [ -x "/usr/bin/duckbot-memory-service" ]; then
+    log_exec /usr/bin/duckbot-memory-service &
+    MEMORY_SERVICE_PID=$!
+    echo "Started Memory Service (PID: $MEMORY_SERVICE_PID)"
+fi
+
+# Wait for services to initialize
+sleep 2
+
+# Start GNOME Session with DuckBot extensions
+echo "$(date): Starting GNOME Shell with DuckBot extensions..." >> "$SESSION_LOG"
+
+# Enable DuckBot GNOME Shell extension
+if [ -x "/usr/bin/gnome-extensions" ]; then
+    gnome-extensions enable duckbot-ai@duckbot-de 2>/dev/null
+fi
+
+# Start GNOME Shell session
+if [ -x "/usr/bin/gnome-session" ]; then
+    # Custom GNOME session for DuckBot
+    exec gnome-session --builtin --session=duckbot --debug 2>&1 | tee -a "$SESSION_LOG"
+else
+    echo "$(date): GNOME Session not found, falling back to basic session" >> "$SESSION_LOG"
+    
+    # Fallback: Start components manually
+    if [ -x "/usr/bin/gnome-shell" ]; then
+        # Start window manager
+        if [ -x "/usr/bin/mutter" ]; then
+            log_exec mutter --replace &
+            WM_PID=$!
+        fi
+        
+        # Start GNOME Shell
+        log_exec gnome-shell --replace &
+        SHELL_PID=$!
+        
+        # Start panel and other components
+        if [ -x "/usr/libexec/gnome-shell-calendar-server" ]; then
+            /usr/libexec/gnome-shell-calendar-server &
+        fi
+        
+        # Wait for shell to exit
+        wait $SHELL_PID
+    else
+        echo "$(date): GNOME Shell not found!" >> "$SESSION_LOG"
+        exit 1
+    fi
+fi
+
+# Cleanup function
+cleanup() {
+    echo "$(date): Cleaning up DuckBot AI Desktop session..." >> "$SESSION_LOG"
+    
+    # Stop DuckBot services
+    [ ! -z "$DUCKBOT_AI_PID" ] && kill $DUCKBOT_AI_PID 2>/dev/null
+    [ ! -z "$WINDOW_MANAGER_PID" ] && kill $WINDOW_MANAGER_PID 2>/dev/null
+    [ ! -z "$VOICE_SERVICE_PID" ] && kill $VOICE_SERVICE_PID 2>/dev/null
+    [ ! -z "$MEMORY_SERVICE_PID" ] && kill $MEMORY_SERVICE_PID 2>/dev/null
+    [ ! -z "$WM_PID" ] && kill $WM_PID 2>/dev/null
+    
+    echo "$(date): DuckBot AI Desktop session ended" >> "$SESSION_LOG"
+}
+
+# Set up signal handlers for clean shutdown
+trap cleanup EXIT INT TERM
+
+# Keep session alive
+wait

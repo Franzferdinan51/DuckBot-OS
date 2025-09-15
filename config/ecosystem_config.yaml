@@ -1,0 +1,15 @@
+services:
+  webui:
+    port: 8787
+    host: 127.0.0.1
+  monitor:
+    port: 8789
+    host: 127.0.0.1
+
+ai:
+  routing_mode: cloud_first
+  main_brain: qwen/qwen3-coder:free
+
+logging:
+  level: INFO
+  directory: logs

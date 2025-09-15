@@ -1,0 +1,180 @@
+{
+  "id": "duckbot_control",
+  "name": "DuckBot Control",
+  "description": "Complete DuckBot ecosystem control - AI chat, services, cost tracking, RAG search",
+  "version": "3.0.0",
+  "author": "DuckBot Team",
+  "functions": [
+    {
+      "name": "duckbot_ai_chat",
+      "description": "Chat with DuckBot AI system",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Your message or question for DuckBot AI"
+          },
+          "task_type": {
+            "type": "string",
+            "enum": ["auto", "code", "reasoning", "summary", "long_form", "json_format"],
+            "default": "auto",
+            "description": "Type of AI task"
+          }
+        },
+        "required": ["message"]
+      },
+      "implementation": {
+        "type": "http",
+        "method": "POST",
+        "url": "http://localhost:8787/chat",
+        "headers": {
+          "Authorization": "Bearer {{duckbot_token}}"
+        },
+        "body": {
+          "message": "{{message}}",
+          "kind": "{{task_type}}",
+          "risk": "medium"
+        },
+        "response_parser": "json",
+        "success_condition": "response.success == true"
+      }
+    },
+    {
+      "name": "duckbot_system_status",
+      "description": "Get DuckBot system status",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "implementation": {
+        "type": "http",
+        "method": "GET",
+        "url": "http://localhost:8787/api/system-status",
+        "headers": {
+          "Authorization": "Bearer {{duckbot_token}}"
+        },
+        "response_parser": "json"
+      }
+    },
+    {
+      "name": "duckbot_start_service",
+      "description": "Start a DuckBot service",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "enum": ["comfyui", "n8n", "jupyter", "lm_studio", "webui", "open_notebook"],
+            "description": "Service to start"
+          }
+        },
+        "required": ["service_name"]
+      },
+      "implementation": {
+        "type": "http",
+        "method": "POST",
+        "url": "http://localhost:8787/api/services/{{service_name}}/start",
+        "headers": {
+          "Authorization": "Bearer {{duckbot_token}}"
+        },
+        "response_parser": "json"
+      }
+    },
+    {
+      "name": "duckbot_cost_summary",
+      "description": "Get DuckBot cost and usage summary",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365,
+            "default": 7,
+            "description": "Number of days to analyze"
+          }
+        }
+      },
+      "implementation": {
+        "type": "http",
+        "method": "GET",
+        "url": "http://localhost:8787/api/cost_summary?days={{days}}",
+        "headers": {
+          "Authorization": "Bearer {{duckbot_token}}"
+        },
+        "response_parser": "json"
+      }
+    },
+    {
+      "name": "duckbot_rag_search",
+      "description": "Search DuckBot's RAG knowledge base",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query"
+          },
+          "top_k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 5,
+            "description": "Number of results"
+          }
+        },
+        "required": ["query"]
+      },
+      "implementation": {
+        "type": "http",
+        "method": "POST",
+        "url": "http://localhost:8787/rag/search",
+        "headers": {
+          "Authorization": "Bearer {{duckbot_token}}"
+        },
+        "body": {
+          "q": "{{query}}",
+          "top_k": "{{top_k}}"
+        },
+        "response_parser": "json"
+      }
+    }
+  ],
+  "authentication": {
+    "type": "token",
+    "token_endpoint": "http://localhost:8787/token",
+    "token_field": "token"
+  },
+  "examples": [
+    {
+      "function": "duckbot_ai_chat",
+      "parameters": {
+        "message": "Explain machine learning in simple terms",
+        "task_type": "long_form"
+      }
+    },
+    {
+      "function": "duckbot_system_status"
+    },
+    {
+      "function": "duckbot_start_service",
+      "parameters": {
+        "service_name": "comfyui"
+      }
+    },
+    {
+      "function": "duckbot_cost_summary",
+      "parameters": {
+        "days": 30
+      }
+    },
+    {
+      "function": "duckbot_rag_search",
+      "parameters": {
+        "query": "DuckBot configuration guide",
+        "top_k": 5
+      }
+    }
+  ]
+}

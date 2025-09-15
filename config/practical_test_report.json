@@ -1,0 +1,346 @@
+{
+  "summary": {
+    "total_tests": 29,
+    "passed_tests": 25,
+    "failed_tests": 4,
+    "success_rate": 86.20689655172413,
+    "system_status": "GOOD",
+    "timestamp": "2025-09-15T00:42:18.421277"
+  },
+  "category_results": {
+    "available_modules": {
+      "passed": true,
+      "description": "Available Module Imports"
+    },
+    "ai_routing": {
+      "passed": true,
+      "description": "AI Router System"
+    },
+    "webui": {
+      "passed": false,
+      "description": "WebUI Implementations"
+    },
+    "system_integration": {
+      "passed": true,
+      "description": "System Integration"
+    },
+    "external_deps": {
+      "passed": true,
+      "description": "External Dependencies"
+    },
+    "configuration": {
+      "passed": true,
+      "description": "Configuration Files"
+    }
+  },
+  "category_stats": {
+    "available_modules": {
+      "total_tests": 11,
+      "passed_tests": 9,
+      "failed_tests": 2,
+      "success_rate": 81.81818181818183,
+      "status": "PASS"
+    },
+    "ai_routing": {
+      "total_tests": 3,
+      "passed_tests": 3,
+      "failed_tests": 0,
+      "success_rate": 100.0,
+      "status": "PASS"
+    },
+    "webui": {
+      "total_tests": 4,
+      "passed_tests": 2,
+      "failed_tests": 2,
+      "success_rate": 50.0,
+      "status": "FAIL"
+    },
+    "system_integration": {
+      "total_tests": 4,
+      "passed_tests": 4,
+      "failed_tests": 0,
+      "success_rate": 100.0,
+      "status": "PASS"
+    },
+    "external_deps": {
+      "total_tests": 3,
+      "passed_tests": 3,
+      "failed_tests": 0,
+      "success_rate": 100.0,
+      "status": "PASS"
+    },
+    "configuration": {
+      "total_tests": 4,
+      "passed_tests": 4,
+      "failed_tests": 0,
+      "success_rate": 100.0,
+      "status": "PASS"
+    }
+  },
+  "detailed_results": [
+    {
+      "test_name": "module_ai_cache_manager",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.10822415351867676,
+      "error": null,
+      "details": "AI Cache Manager available",
+      "timestamp": "2025-09-15T00:41:03.955454"
+    },
+    {
+      "test_name": "module_start_ai_ecosystem",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.5050623416900635,
+      "error": null,
+      "details": "Start AI Ecosystem available",
+      "timestamp": "2025-09-15T00:41:04.460516"
+    },
+    {
+      "test_name": "module_start_ecosystem",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.15515637397766113,
+      "error": null,
+      "details": "Start Ecosystem available",
+      "timestamp": "2025-09-15T00:41:04.615673"
+    },
+    {
+      "test_name": "module_ai_ecosystem_manager",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.14962100982666016,
+      "error": null,
+      "details": "AI Ecosystem Manager available",
+      "timestamp": "2025-09-15T00:41:04.765294"
+    },
+    {
+      "test_name": "module_doctor_check_imports",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.07670331001281738,
+      "error": null,
+      "details": "Doctor Check Imports available",
+      "timestamp": "2025-09-15T00:41:04.842996"
+    },
+    {
+      "test_name": "module_doctor_check_services",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.45038270950317383,
+      "error": null,
+      "details": "Doctor Check Services available",
+      "timestamp": "2025-09-15T00:41:05.293379"
+    },
+    {
+      "test_name": "module_ai_router_gpt",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.47500157356262207,
+      "error": null,
+      "details": "AI Router GPT available",
+      "timestamp": "2025-09-15T00:41:05.769380"
+    },
+    {
+      "test_name": "module_charm_terminal_ui",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 0.16156840324401855,
+      "error": null,
+      "details": "Charm Terminal UI available",
+      "timestamp": "2025-09-15T00:41:05.930949"
+    },
+    {
+      "test_name": "module_enhanced_webui",
+      "category": "available_modules",
+      "passed": true,
+      "duration": 4.008523941040039,
+      "error": null,
+      "details": "Enhanced WebUI available",
+      "timestamp": "2025-09-15T00:41:09.939473"
+    },
+    {
+      "test_name": "module_webui_enhanced",
+      "category": "available_modules",
+      "passed": false,
+      "duration": 15.107709169387817,
+      "error": "Timeout after 15 seconds",
+      "details": null,
+      "timestamp": "2025-09-15T00:41:25.047182"
+    },
+    {
+      "test_name": "module_webui_modern",
+      "category": "available_modules",
+      "passed": false,
+      "duration": 15.106310844421387,
+      "error": "Timeout after 15 seconds",
+      "details": null,
+      "timestamp": "2025-09-15T00:41:40.153493"
+    },
+    {
+      "test_name": "ai_routing_ai_router_import",
+      "category": "ai_routing",
+      "passed": true,
+      "duration": 0.505842924118042,
+      "error": null,
+      "details": "AI Router initialized with 0 models",
+      "timestamp": "2025-09-15T00:41:40.659336"
+    },
+    {
+      "test_name": "ai_routing_model_config",
+      "category": "ai_routing",
+      "passed": true,
+      "duration": 0.4738736152648926,
+      "error": null,
+      "details": "Model config created: openai - gpt-3.5-turbo",
+      "timestamp": "2025-09-15T00:41:41.133209"
+    },
+    {
+      "test_name": "ai_routing_basic_routing",
+      "category": "ai_routing",
+      "passed": true,
+      "duration": 0.4670121669769287,
+      "error": null,
+      "details": "Router usage stats: {}\nRouter cost tracker: {}",
+      "timestamp": "2025-09-15T00:41:41.600222"
+    },
+    {
+      "test_name": "webui_enhanced_webui_import",
+      "category": "webui",
+      "passed": true,
+      "duration": 3.9128193855285645,
+      "error": null,
+      "details": "Enhanced WebUI loaded with 11 routes",
+      "timestamp": "2025-09-15T00:41:45.513041"
+    },
+    {
+      "test_name": "webui_webui_enhanced_import",
+      "category": "webui",
+      "passed": false,
+      "duration": 15.086421251296997,
+      "error": "Timeout after 15 seconds",
+      "details": null,
+      "timestamp": "2025-09-15T00:42:00.600467"
+    },
+    {
+      "test_name": "webui_webui_modern_import",
+      "category": "webui",
+      "passed": false,
+      "duration": 15.079784154891968,
+      "error": "Timeout after 15 seconds",
+      "details": null,
+      "timestamp": "2025-09-15T00:42:15.680251"
+    },
+    {
+      "test_name": "webui_charm_terminal_ui",
+      "category": "webui",
+      "passed": true,
+      "duration": 1.9292848110198975,
+      "error": null,
+      "details": "Charm Terminal UI available",
+      "timestamp": "2025-09-15T00:42:17.609536"
+    },
+    {
+      "test_name": "system_ai_ecosystem_manager",
+      "category": "system_integration",
+      "passed": true,
+      "duration": 0.14408588409423828,
+      "error": null,
+      "details": "AI Ecosystem Manager error: cannot import name 'get_ecosystem_status' from 'ai_ecosystem_manager' (C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\ai_ecosystem_manager.py)",
+      "timestamp": "2025-09-15T00:42:17.753622"
+    },
+    {
+      "test_name": "system_start_ecosystem",
+      "category": "system_integration",
+      "passed": true,
+      "duration": 0.14432358741760254,
+      "error": null,
+      "details": "Start Ecosystem available",
+      "timestamp": "2025-09-15T00:42:17.898946"
+    },
+    {
+      "test_name": "system_ai_cache_manager",
+      "category": "system_integration",
+      "passed": true,
+      "duration": 0.10655426979064941,
+      "error": null,
+      "details": "AI Cache Manager available",
+      "timestamp": "2025-09-15T00:42:18.005501"
+    },
+    {
+      "test_name": "system_doctor_check_imports",
+      "category": "system_integration",
+      "passed": true,
+      "duration": 0.07465767860412598,
+      "error": null,
+      "details": "Doctor Check Imports available",
+      "timestamp": "2025-09-15T00:42:18.080158"
+    },
+    {
+      "test_name": "dep_node.js",
+      "category": "external_deps",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "Node.js: v22.17.0",
+      "timestamp": "2025-09-15T00:42:18.125739"
+    },
+    {
+      "test_name": "dep_npm",
+      "category": "external_deps",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "npm: 11.5.2",
+      "timestamp": "2025-09-15T00:42:18.361397"
+    },
+    {
+      "test_name": "dep_python",
+      "category": "external_deps",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "Python: Python 3.11.9",
+      "timestamp": "2025-09-15T00:42:18.420273"
+    },
+    {
+      "test_name": "config_ai_config_json",
+      "category": "configuration",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "ai_config.json: 568 bytes",
+      "timestamp": "2025-09-15T00:42:18.420273"
+    },
+    {
+      "test_name": "config_ecosystem_config_yaml",
+      "category": "configuration",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "ecosystem_config.yaml: 211 bytes",
+      "timestamp": "2025-09-15T00:42:18.421277"
+    },
+    {
+      "test_name": "config_requirements_txt",
+      "category": "configuration",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": "requirements.txt: 1653 bytes",
+      "timestamp": "2025-09-15T00:42:18.421277"
+    },
+    {
+      "test_name": "config__env",
+      "category": "configuration",
+      "passed": true,
+      "duration": 0,
+      "error": null,
+      "details": ".env: 1408 bytes",
+      "timestamp": "2025-09-15T00:42:18.421277"
+    }
+  ],
+  "recommendations": [
+    "System is in good working condition"
+  ]
+}

@@ -1,0 +1,218 @@
+1756188492.3994002: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756188502.5116425: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756264687.5482483: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756264885.0749733: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756268913.995452: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756272585.255567: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756273337.5510504: Router exception: lmstudio timeout
+Traceback (most recent call last):
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connectionpool.py", line 534, in _make_request
+    response = conn.getresponse()
+  File "C:\Users\Duck1\AppData\Roaming\Python\Python313\site-packages\urllib3\connection.py", line 565, in getresponse
+    httplib_response = super().getresponse()
+  File "C:\Python313\Lib\http\client.py", line 1430, in getresponse
+    response.begin()
+    ~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 331, in begin
+    version, status, reason = self._read_status()
+                              ~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\http\client.py", line 292, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+               ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^
+  File "C:\Python313\Lib\socket.py", line 719, in readinto
+    return self._sock.recv_into(b)
+           ~~~~~~~~~~~~~~~~~~~~^^^
+TimeoutError: timed out
+
+The above exception was the direct cause o...
+---
+1756275293.2237182: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1467, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756275297.7409005: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1467, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756275445.9811635: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1467, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756275450.5729597: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1467, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756285441.824853: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1508, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756285451.98237: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1508, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756285522.7154002: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1508, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---
+1756285523.1129405: Router exception: 'int' object has no attribute 'get'
+Traceback (most recent call last):
+  File "C:\Users\Duck1\Desktop\DuckBotComplete\duckbot\ai_router_gpt.py", line 1508, in route_task
+    "chat_tokens": _bucket_tokens.get("chat", 0),
+                   ^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'get'
+
+---

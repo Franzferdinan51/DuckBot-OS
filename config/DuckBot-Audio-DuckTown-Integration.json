@@ -1,0 +1,4053 @@
+{
+  "name": "DuckBot-Vibe-Voice",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1168,
+        1216
+      ],
+      "id": "899ad31d-6bd8-48b5-aec8-19c962af3147",
+      "name": "Manual Chat Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/category/market-analysis",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        784
+      ],
+      "id": "76548627-bf3d-44ab-9fc4-ea37c7693960",
+      "name": "Market Analysis Feed"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -288,
+        992
+      ],
+      "id": "d73b6a2a-21f7-4339-adde-4a5780b9d630",
+      "name": "Merge All Feeds"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        912
+      ],
+      "id": "7e4f74a0-205c-49ce-a888-b33a4cd35863",
+      "name": "All Cointelegraph Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/bitcoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        1056
+      ],
+      "id": "e51624f6-b906-4174-bb15-4e711ee3a4dc",
+      "name": "BTC Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://www.yahoo.com/news/rss/finance",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        1184
+      ],
+      "id": "53bf51ce-4dff-4129-9a74-b9f235ae9dfe",
+      "name": "Yahoo! Finance Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/litecoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -544,
+        1328
+      ],
+      "id": "b7e50918-6830-40bf-965d-bed71fd242d7",
+      "name": "LTC Feed"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97b60332-0c60-4b4e-8db8-f1d4220d419b",
+              "leftValue": "={{ $json.pubDate }}",
+              "rightValue": "={{ $now.minus({ \"hours\": 12 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        1040
+      ],
+      "id": "60f5f815-29b7-4866-aa2d-1062b7bda2b5",
+      "name": "Filter Last 12 Hours"
+    },
+    {
+      "parameters": {
+        "maxItems": 15
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        144,
+        1040
+      ],
+      "id": "923dea43-7e63-4a29-a568-de92a7611e97",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1390140989687206019",
+          "mode": "list",
+          "cachedResultName": "Sanctuary of Silenze"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        368,
+        -80
+      ],
+      "id": "f2403d50-f85f-4e8b-9ad4-fdc634f42fed",
+      "name": "Send News Vibe Duckets",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "={{ $json.url }}{{ $json.link }}{{ $json.content }}{{ $json.coin_data }}"
+            },
+            {
+              "fieldToAggregate": "choices[0].message.reasoning_content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1056,
+        1072
+      ],
+      "id": "2c5cc388-eb09-414e-9ad4-164e0ddfa029",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "Trading Sentiment",
+        "height": 704,
+        "width": 816,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        992,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "529a0ce5-1e49-45af-b2fa-fc45b0e62241",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "News Analyst",
+        "height": 704,
+        "width": 656,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        320,
+        768
+      ],
+      "id": "e0c1bdca-73c7-457b-91c1-1accae9cf837",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "News Aggrigation\n",
+        "height": 704,
+        "width": 1504,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1216,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "1b97157a-083f-4ece-ba5a-7660f6b25b16",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This node fetches cryptocurrency data for multiple symbols from the free CoinPaprika API.\n// It does not require an API key.\n\n// --- LOGIC ---\n\n// Get the incoming item from the previous node.\n// We expect an array of symbols, e.g., { \"json\": { \"symbols\": [\"QUBIC\", \"BTC\"] } }\nconst item = items[0];\nconst cryptoSymbols = item.json.symbols;\n\nif (!cryptoSymbols || !Array.isArray(cryptoSymbols) || cryptoSymbols.length === 0) {\n  throw new Error('No cryptocurrency symbols provided. Please provide an array of symbols in the \"symbols\" field.');\n}\n\n// --- Step 1: Fetch the entire coin list once to avoid multiple API calls ---\nlet allCoins;\ntry {\n  console.log(\"Fetching the main coin list from CoinPaprika...\");\n  // FIX: Added 'json: true' to ensure the response is parsed as a JSON array.\n  allCoins = await this.helpers.request({ uri: 'https://api.coinpaprika.com/v1/coins', json: true });\n  console.log(`Found ${allCoins.length} coins.`);\n} catch (error) {\n  console.error(\"Error fetching coin list from CoinPaprika:\", error.message);\n  throw new Error('Could not connect to the CoinPaprika API to get the coin list.');\n}\n\nconst allResults = [];\n\n// --- Step 2: Loop through each symbol and get its data ---\nfor (const symbol of cryptoSymbols) {\n  console.log(`Searching for symbol: ${symbol}`);\n  \n  // Find the specific coin that matches the user's symbol from the pre-fetched list\n  const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n\n  if (!coinInfo) {\n    console.warn(`Could not find a coin with the symbol \"${symbol}\" on CoinPaprika. Skipping.`);\n    continue; // Skip to the next symbol if not found\n  }\n\n  const coinId = coinInfo.id;\n  console.log(`Found ID for ${symbol}: ${coinId}. Fetching ticker data...`);\n\n  // Fetch the Ticker Data using the Coin ID\n  let tickerData;\n  try {\n    // Also use json: true here for consistency\n    tickerData = await this.helpers.request({ uri: `https://api.coinpaprika.com/v1/tickers/${coinId}`, json: true });\n  } catch (error) {\n    console.error(`Error fetching ticker data for ${coinId}:`, error.message);\n    continue; // Skip if there's an error for this specific coin\n  }\n\n  // --- DATA PROCESSING ---\n  const quote = tickerData.quotes.USD;\n  const formattedData = {\n    name: tickerData.name,\n    symbol: tickerData.symbol,\n    price: quote.price,\n    price_formatted: `$${quote.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`,\n    market_cap: quote.market_cap,\n    market_cap_formatted: `$${Math.round(quote.market_cap).toLocaleString('en-US')}`,\n    volume_24h: quote.volume_24h,\n    percent_change_24h: quote.percent_change_24h,\n    last_updated: tickerData.last_updated,\n    paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n  };\n\n  allResults.push(formattedData);\n  console.log(`Successfully fetched and formatted data for ${symbol}.`);\n}\n\n// Replace the incoming data with a new object containing all our results\nitem.json.coin_data = allResults;\n\n// Return the item to be used by the next node\nreturn item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        192,
+        1536
+      ],
+      "id": "ecd4e574-8971-4004-9cb3-a79245070633",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\"symbols\": [\"QUBIC\", \"BTC\", \"XMR\", \"ATOM\"]}",
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "content, contentSnippet, title, link, enclosure.url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        0,
+        1536
+      ],
+      "id": "29875f80-cc92-48a1-a82d-ca85130b31ee",
+      "name": "Symbols"
+    },
+    {
+      "parameters": {
+        "content": "Data Scraper\n",
+        "height": 352,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -32,
+        1488
+      ],
+      "typeVersion": 1,
+      "id": "f6124e55-2160-4e05-b5d8-dc6d09a1ff7c",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        368,
+        544
+      ],
+      "id": "7a500ce2-d0e3-49bf-82db-484f79ff406b",
+      "name": "Send News Vibe Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 6
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1168,
+        1040
+      ],
+      "id": "a50b4951-ad7e-4dcc-9d9b-512b1e2454f6",
+      "name": "Schedule Trigger1",
+      "retryOnFail": true,
+      "maxTries": 5
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        768,
+        544
+      ],
+      "id": "3cf03d29-ef54-4f9f-8628-7b1f8806f69f",
+      "name": "Trading Recommendation Steven1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        128,
+        1968
+      ],
+      "id": "e7155c50-65f4-4b8a-9a75-e4c2e8d5e089",
+      "name": "Calculator Tool"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "count": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Count', ``, 'number') }}"
+      },
+      "type": "@brave/n8n-nodes-brave-search.braveSearchTool",
+      "typeVersion": 1,
+      "position": [
+        272,
+        1968
+      ],
+      "id": "c56620e1-f946-4c03-94fe-c12935c71df3",
+      "name": "Brave Search Tool",
+      "credentials": {
+        "braveSearchApi": {
+          "id": "2My5QGZ0OPIvHlHR",
+          "name": "Brave Search account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Fetches real-time cryptocurrency prices, market data, volume, and 24h/7d percentage changes from CoinPaprika API. ALWAYS use this to get current crypto prices before writing any analysis.",
+        "jsCode": "// Code1 — CoinPaprika multi-coin fetch (fixed for n8n)\n\n// Accessing input items correctly for n8n\nconst inputItems = $input.all() || [];\nconst item = inputItems[0] || { json: {} };\n\n// Use the symbols from the first input item, or default symbols\nconst cryptoSymbols = Array.isArray(item.json.symbols) && item.json.symbols.length\n  ? item.json.symbols\n  : [\"QUBIC\", \"BTC\"];\n\nasync function httpJSON(url) {\n  // Using the older helpers method which should be available\n  return this.helpers.httpRequest({\n    method: 'GET',\n    url,\n    json: true,\n    headers: { Accept: 'application/json' },\n  });\n}\n\nlet allCoins;\ntry {\n  // Fixed URL: Removed extra spaces\n  allCoins = await httpJSON.call(this, 'https://api.coinpaprika.com/v1/coins');\n} catch (err) {\n  throw new Error('Could not connect to CoinPaprika /v1/coins: ' + (err.message || err));\n}\n\nconst results = [];\n\nfor (const symbol of cryptoSymbols) {\n  const up = String(symbol || '').toUpperCase();\n  if (!up) continue;\n\n  // Find coin by symbol in the pre-fetched list\n  const coinInfo = allCoins.find(c => String(c.symbol || '').toUpperCase() === up);\n  if (!coinInfo?.id) {\n    results.push({ symbol: up, error: 'Symbol not found on CoinPaprika' });\n    continue;\n  }\n\n  try {\n    // Fixed URL: Removed extra spaces\n    const t = await httpJSON.call(this, `https://api.coinpaprika.com/v1/tickers/${coinInfo.id}`);\n    const usd = t?.quotes?.USD || {};\n    const price = typeof usd.price === 'number' ? usd.price : null;\n\n    const fmtUSD = (n) => (typeof n === 'number' && isFinite(n))\n      ? (n < 1 ? `$${n.toFixed(8)}` : `$${n.toFixed(2)}`)\n      : null;\n\n    results.push({\n      id: coinInfo.id,\n      name: t?.name || coinInfo.name || up,\n      symbol: t?.symbol || up,\n      price,\n      price_formatted: fmtUSD(price),\n      market_cap: usd.market_cap ?? null,\n      market_cap_formatted: typeof usd.market_cap === 'number' ? `$${Math.round(usd.market_cap).toLocaleString('en-US')}` : null,\n      volume_24h: usd.volume_24h ?? null,\n      percent_change_24h: usd.percent_change_24h ?? null,\n      last_updated: t?.last_updated || null,\n      // Fixed URL: Removed extra spaces\n      paprika_url: `https://coinpaprika.com/coin/${coinInfo.id}/`,\n    });\n  } catch (err) {\n    results.push({ symbol: up, error: `Ticker fetch failed: ${err.message || err}` });\n  }\n}\n\n// Prepare the output item\nconst outputItem = { json: { ...item.json, coin_data: results } };\n\n// Return a stringified array of items to avoid \"Wrong output type returned\" error\nreturn JSON.stringify([outputItem]);"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        -32,
+        1968
+      ],
+      "id": "8d5864b2-83c0-449e-8420-2c153385639f",
+      "name": "GetLiveCryptoPrices"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are a master crypto market strategist. DO NOT PROVIDE your thoughts or tool calls in the final presentantion. Make Sure its Detailed and intuitive Qubic and Bitcoin are important but be sure to incluude other coins also!\n\n***EXAMPLE OUTPUT***\nMarket Overview,\n Bitcoin – $119,028.0999626\n- ↓ -3.28% (24 hrs)\n-  bearish momentum: price fell after new all‑time highs; traders mix signals.\n\n XMR – $243.47481702\n↓ -3.57% (24 hrs),\n moderate volatility, but still bearish.,\n\n ATOM – $4.57678124\n- ↓ -5.87% (24 hrs)\n-  strong bearish trend.\n\n Qubic – $0.00000319\n↓ -2.17% (24 hrs),\n low price, negative change; potential volatility but not yet profitable.,\n\n---\n\nMomentum Pillar,\nAll prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum.\n Overall market is bearish.\n\nVolume Pillar,\nVolume-to-marketcap ratios:\nBTC 0.000025 (low liquidity),\nXMR 0.0143 (moderate),\nATOM 0.089 (medium),\nQubic 0.028 (low),\n\nThus volume is largely low, implying limited liquidity.\n\nSentiment Pillar,\nNews article: “Bitcoin’s all‑time high gains vanished hours later.”\n bearish sentiment: traders send mixed signals after price drop.,\n\n---\n\nMarket Strength Score,\n BEARISH (31–44) – average percent change ≈ −4.12%.\nStrong negative, but not extreme.\n\n---\n\nAllocation Guidance,\n Risk Level: Conservative / Moderate\n Maintain existing positions; reduce exposure to new trades.,\n\n Position Sizing: 30–50% of portfolio for existing holdings.\n 40% for potential DCA entries on BTC or XMR.,\n\n Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops.\n Wait for dip if market continues bearish.,\n\n Stop Loss Levels: 10% below current price.\n cut losses if price falls beyond 10%.,\n\n---\n\nSpotlight Key Opportunities,\n#### Bitcoin\n↓ -3.28% (24 hrs) – price fell after all‑time highs.,\n bearish signals; potential for DCA entry.,\n If you want to buy, consider a DCA strategy.,\n\n#### Qubic\n↓ -2.17% (24 hrs) – price low and negative change.,\n high volatility but not yet profitable.,\n Watch for sudden price swings; potential DCA if price dips.,\n\n---\n\nSmart Money Signals,\n| Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity |\n|--------|-----------------|--------------|-------------------|-------------|\n| BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes |\n| XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes |\n| ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity |\n| Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes |\n\n---\n\nCorrelation Analysis,\nBitcoin leads the market; altcoins lag but diverge slightly.\n Bitcoin dominates, while XMR and ATOM are bearish.\n\n---\n\nEmergency Protocol Check,\nNo decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls.\n\n---\n\nFinal Recommendation,\n Hold existing positions; reduce exposure to new trades.\n DCA on BTC and XMR if price dips below current level.\n Stop loss at 10% below current price.\n\n\nCrypto Trading Analysis \nAll right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket.\n\nBig Picture – Why Qubic Is Worth Your Attention \nCoinPrice (USD)  0.00000337 +21.01%\nMarket Cap $416M\nVolume 24h $10.5M\nQUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) \nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag .\n\nRecommendation – Buy Qubic, Buy Bitcoin \nQUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\n\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\n\nCurrent Status \nQUBIC: $0.00000337  21 % from yesterday.\nBitcoin: $123,391.17  3.45%.\n\nBottom Line \nQUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\n\nWorthy Contenders \nETH: $4,500.00  7 % from yesterday.\nMarket Cap $1.86T\nVolume 24h $40B\nADA: $3.20  1 % from yesterday.\nMarket Cap $2.9T\nVolume 24h $5B\n\nEmergency Protocol \nBitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol.\n\nData fetched from CoinPaprika at 2025‑08‑15. \n\n**MANDATORY FIRST ACTION:**\nCall GetLiveCryptoPrices with: {\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"}\n\n**THEN analyze the data provided below along with your fresh prices:**\n\nMarket Data: {{ JSON.stringify($json.coin_data) }}\nNews: {{ $json.content }}\n\n**Your Report Structure:**\n\n### Market Briefing - [Date]\n\n#### The Verdict\n[State if market is Bullish/Bearish/Neutral based on data]\n\n#### Key Opportunities\n**Bitcoin**: [Current price from tool] - [Analysis]\n**Qubic**: [Current price from tool] - [Analysis]\n\n#### The Call\n[BUY/SELL/HOLD recommendations with specific reasons]\n\n#### Supporting Evidence\n[1-2 key points from news that support your analysis]\n\n**Requirements:**\n- MUST use GetLiveCryptoPrices for current prices\n- Compare tool prices with provided data\n- Note any significant discrepancies\n- Keep under 4000 characters\n- Use ⬆️⬇️ arrows for changes\n\nIf GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this and the expected response style make sure to use your Brave Search Tool To help get information as well as all of your other tools they are their to help and should be used\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins'\n\n\n[\n  {\n    \"id\": \"btc-bitcoin\",\n    \"name\": \"Bitcoin\",\n    \"symbol\": \"BTC\",\n    \"rank\": 1,\n    \"is_new\": false,\n    \"is_active\": true,\n    \"type\": \"coin\"\n  }\n]\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin'\n\n{\n  \"id\": \"btc-bitcoin\",\n  \"name\": \"Bitcoin\",\n  \"symbol\": \"BTC\",\n  \"parent\": {\n    \"id\": \"eth-ethereum\",\n    \"name\": \"Ethereum\",\n    \"symbol\": \"ETH\"\n  },\n  \"rank\": 1,\n  \"is_new\": false,\n  \"is_active\": true,\n  \"type\": \"coin\",\n  \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\",\n  \"tags\": [\n    {\n      \"id\": \"blockchain-service\",\n      \"name\": \"Blockchain Service\",\n      \"coin_counter\": 160,\n      \"ico_counter\": 80\n    }\n  ],\n  \"team\": [\n    {\n      \"id\": \"vitalik-buterin\",\n      \"name\": \"Vitalik Buterin\",\n      \"position\": \"Author\"\n    }\n  ],\n  \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\",\n  \"message\": \"string\",\n  \"open_source\": true,\n  \"hardware_wallet\": true,\n  \"started_at\": \"2009-01-03T00:00:00Z\",\n  \"development_status\": \"Working product\",\n  \"proof_type\": \"Proof of work\",\n  \"org_structure\": \"Decentralized\",\n  \"hash_algorithm\": \"SHA256\",\n  \"contract\": \"string\",\n  \"platform\": \"string\",\n  \"contracts\": [\n    {\n      \"contract\": \"string\",\n      \"platform\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"links\": {\n    \"explorer\": [\n      \"http://blockchain.com/explorer\",\n      \"https://blockchair.com/bitcoin/blocks\",\n      \"https://blockexplorer.com/\",\n      \"https://live.blockcypher.com/btc/\"\n    ],\n    \"facebook\": [\n      \"https://www.facebook.com/bitcoins/\"\n    ],\n    \"reddit\": [\n      \"https://www.reddit.com/r/bitcoin\"\n    ],\n    \"source_code\": [\n      \"https://github.com/bitcoin/bitcoin\"\n    ],\n    \"website\": [\n      \"https://bitcoin.org/\"\n    ],\n    \"youtube\": [\n      \"https://www.youtube.com/watch?v=Um63OQz3bjo\"\n    ],\n    \"medium\": null\n  },\n  \"links_extended\": [\n    {\n      \"url\": \"http://blockchain.com/explorer\",\n      \"type\": \"explorer\"\n    },\n    {\n      \"url\": \"https://www.reddit.com/r/bitcoin\",\n      \"type\": \"reddit\",\n      \"stats\": {\n        \"subscribers\": 1009135\n      }\n    },\n    {\n      \"url\": \"https://github.com/bitcoin/bitcoin\",\n      \"type\": \"source_code\",\n      \"stats\": {\n        \"contributors\": 730,\n        \"stars\": 36613\n      }\n    },\n    {\n      \"url\": \"https://bitcoin.org/\",\n      \"type\": \"website\"\n    }\n  ],\n  \"whitepaper\": {\n    \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\",\n    \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\"\n  },\n  \"first_data_at\": \"2018-10-03T11:48:19Z\",\n  \"last_data_at\": \"2019-05-03T11:00:00\"\n}\n\n"
+            },
+            {
+              "content": "={{ $json.content }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        464,
+        2976
+      ],
+      "id": "619eefe0-12f0-47d1-a681-cb816df827b2",
+      "name": "MARKET STRATEGIST",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "You are an expert crypto trading analyst. Your task is to create a trading report. your final report should be a Professional Presentation do not tell me your Plan or thought process only the Presentation Please its IMPORTANT: to note that while Qubic and BTC are important Its Allso important to include other Crypto's Also. DO NOT INCLUDE TOOL CALLS OR THOUGHT PROCESS IN THE FINAL PRESENTATION Make Sure the Final Presentation is Detailed and Intuitive!\n\n\n***EXAMPLE OUTPUT***\nMarket Overview,\n Bitcoin – $119,028.0999626\n- ↓ -3.28% (24 hrs)\n-  bearish momentum: price fell after new all‑time highs; traders mix signals.\n\n XMR – $243.47481702\n↓ -3.57% (24 hrs),\n moderate volatility, but still bearish.,\n\n ATOM – $4.57678124\n- ↓ -5.87% (24 hrs)\n-  strong bearish trend.\n\n Qubic – $0.00000319\n↓ -2.17% (24 hrs),\n low price, negative change; potential volatility but not yet profitable.,\n\n---\n\nMomentum Pillar,\nAll prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum.\n Overall market is bearish.\n\nVolume Pillar,\nVolume-to-marketcap ratios:\nBTC 0.000025 (low liquidity),\nXMR 0.0143 (moderate),\nATOM 0.089 (medium),\nQubic 0.028 (low),\n\nThus volume is largely low, implying limited liquidity.\n\nSentiment Pillar,\nNews article: “Bitcoin’s all‑time high gains vanished hours later.”\n bearish sentiment: traders send mixed signals after price drop.,\n\n---\n\nMarket Strength Score,\n BEARISH (31–44) – average percent change ≈ −4.12%.\nStrong negative, but not extreme.\n\n---\n\nAllocation Guidance,\n Risk Level: Conservative / Moderate\n Maintain existing positions; reduce exposure to new trades.,\n\n Position Sizing: 30–50% of portfolio for existing holdings.\n 40% for potential DCA entries on BTC or XMR.,\n\n Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops.\n Wait for dip if market continues bearish.,\n\n Stop Loss Levels: 10% below current price.\n cut losses if price falls beyond 10%.,\n\n---\n\nSpotlight Key Opportunities,\n#### Bitcoin\n↓ -3.28% (24 hrs) – price fell after all‑time highs.,\n bearish signals; potential for DCA entry.,\n If you want to buy, consider a DCA strategy.,\n\n#### Qubic\n↓ -2.17% (24 hrs) – price low and negative change.,\n high volatility but not yet profitable.,\n Watch for sudden price swings; potential DCA if price dips.,\n\n---\n\nSmart Money Signals,\n| Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity |\n|--------|-----------------|--------------|-------------------|-------------|\n| BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes |\n| XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes |\n| ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity |\n| Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes |\n\n---\n\nCorrelation Analysis,\nBitcoin leads the market; altcoins lag but diverge slightly.\n Bitcoin dominates, while XMR and ATOM are bearish.\n\n---\n\nEmergency Protocol Check,\nNo decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls.\n\n---\n\nFinal Recommendation,\n Hold existing positions; reduce exposure to new trades.\n DCA on BTC and XMR if price dips below current level.\n Stop loss at 10% below current price.\n\n\nCrypto Trading Analysis \nAll right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket.\n\nBig Picture – Why Qubic Is Worth Your Attention \nCoinPrice (USD)  0.00000337 +21.01%\nMarket Cap $416M\nVolume 24h $10.5M\nQUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) \nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag .\n\nRecommendation – Buy Qubic, Buy Bitcoin \nQUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\n\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\n\nCurrent Status \nQUBIC: $0.00000337  21 % from yesterday.\nBitcoin: $123,391.17  3.45%.\n\nBottom Line \nQUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\n\nWorthy Contenders \nETH: $4,500.00  7 % from yesterday.\nMarket Cap $1.86T\nVolume 24h $40B\nADA: $3.20  1 % from yesterday.\nMarket Cap $2.9T\nVolume 24h $5B\n\nEmergency Protocol \nBitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol.\n\nData fetched from CoinPaprika at 2025‑08‑15. \n\n\n**STEP 1 - MANDATORY: Get Live Prices First**\nYou MUST call the GetLiveCryptoPrices tool immediately with this exact input:\n{\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"}\n\nWait for the response before proceeding.\n\n**STEP 2 - ONLY AFTER getting prices, create your report following this structure:**\n\n### Crypto Trading Analysis 🚀\n[Opening statement about market conditions]\n\n#### Big Picture – Why Qubic Is Worth Your Attention 👀\nCreate a table with these columns:\n| Coin | Price (USD) | % 24h Change | Market Cap | Volume 24h |\n\nUse the EXACT prices from GetLiveCryptoPrices response.\n\n#### Why It's Hot (and Why It Might Be a Scam) 🔥\n[3 bullet points about current market conditions]\n\n#### Recommendation – Buy Qubic, Buy Bitcoin 💰\n[Your buy/sell/hold recommendations based on the data]\n\n#### Current Status 📊\n[List current prices with their 24h changes]\n\n#### Bottom Line ⚖️\n[2-3 sentence summary]\n\n**CRITICAL RULES:**\n- Use ONLY prices from GetLiveCryptoPrices tool\n- Include ⬆️ for positive changes, ⬇️ for negative changes\n- Keep total response under 4000 characters\n- NO JSON in your response, only formatted text\n\nIf GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this dont forget the expected Response Style BE SURE TO USE {{ $json.content[0] }} As Part Of your analysis.\n\n\nwhen calling for coin data use this method with the GetLiveCryptoPrices Tool this is only and example from the API documentation on how to call properly amd the expected response style\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins'\n\n\n[\n  {\n    \"id\": \"btc-bitcoin\",\n    \"name\": \"Bitcoin\",\n    \"symbol\": \"BTC\",\n    \"rank\": 1,\n    \"is_new\": false,\n    \"is_active\": true,\n    \"type\": \"coin\"\n  }\n]\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin'\n\n{\n  \"id\": \"btc-bitcoin\",\n  \"name\": \"Bitcoin\",\n  \"symbol\": \"BTC\",\n  \"parent\": {\n    \"id\": \"eth-ethereum\",\n    \"name\": \"Ethereum\",\n    \"symbol\": \"ETH\"\n  },\n  \"rank\": 1,\n  \"is_new\": false,\n  \"is_active\": true,\n  \"type\": \"coin\",\n  \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\",\n  \"tags\": [\n    {\n      \"id\": \"blockchain-service\",\n      \"name\": \"Blockchain Service\",\n      \"coin_counter\": 160,\n      \"ico_counter\": 80\n    }\n  ],\n  \"team\": [\n    {\n      \"id\": \"vitalik-buterin\",\n      \"name\": \"Vitalik Buterin\",\n      \"position\": \"Author\"\n    }\n  ],\n  \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\",\n  \"message\": \"string\",\n  \"open_source\": true,\n  \"hardware_wallet\": true,\n  \"started_at\": \"2009-01-03T00:00:00Z\",\n  \"development_status\": \"Working product\",\n  \"proof_type\": \"Proof of work\",\n  \"org_structure\": \"Decentralized\",\n  \"hash_algorithm\": \"SHA256\",\n  \"contract\": \"string\",\n  \"platform\": \"string\",\n  \"contracts\": [\n    {\n      \"contract\": \"string\",\n      \"platform\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"links\": {\n    \"explorer\": [\n      \"http://blockchain.com/explorer\",\n      \"https://blockchair.com/bitcoin/blocks\",\n      \"https://blockexplorer.com/\",\n      \"https://live.blockcypher.com/btc/\"\n    ],\n    \"facebook\": [\n      \"https://www.facebook.com/bitcoins/\"\n    ],\n    \"reddit\": [\n      \"https://www.reddit.com/r/bitcoin\"\n    ],\n    \"source_code\": [\n      \"https://github.com/bitcoin/bitcoin\"\n    ],\n    \"website\": [\n      \"https://bitcoin.org/\"\n    ],\n    \"youtube\": [\n      \"https://www.youtube.com/watch?v=Um63OQz3bjo\"\n    ],\n    \"medium\": null\n  },\n  \"links_extended\": [\n    {\n      \"url\": \"http://blockchain.com/explorer\",\n      \"type\": \"explorer\"\n    },\n    {\n      \"url\": \"https://www.reddit.com/r/bitcoin\",\n      \"type\": \"reddit\",\n      \"stats\": {\n        \"subscribers\": 1009135\n      }\n    },\n    {\n      \"url\": \"https://github.com/bitcoin/bitcoin\",\n      \"type\": \"source_code\",\n      \"stats\": {\n        \"contributors\": 730,\n        \"stars\": 36613\n      }\n    },\n    {\n      \"url\": \"https://bitcoin.org/\",\n      \"type\": \"website\"\n    }\n  ],\n  \"whitepaper\": {\n    \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\",\n    \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\"\n  },\n  \"first_data_at\": \"2018-10-03T11:48:19Z\",\n  \"last_data_at\": \"2019-05-03T11:00:00\"\n}\n\nuse https://api.coinpaprika.com/#tag/Coins for help with how to call the tool properly if needed\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        464,
+        2736
+      ],
+      "id": "5ec00e90-759d-467e-82ad-2d6dfc23d89c",
+      "name": "TRADING ANALYST",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "list",
+          "cachedResultName": "openai/gpt-oss-20b"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        928,
+        2016
+      ],
+      "id": "6132daf6-0f59-4c4d-a7f1-e1a56ab236db",
+      "name": "DuckBot",
+      "credentials": {
+        "openAiApi": {
+          "id": "OuSgEIK1HuOKxaOU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Shared Tools\n",
+        "height": 240,
+        "width": 592,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        1888
+      ],
+      "typeVersion": 1,
+      "id": "14a2ce68-f3fb-4436-af7c-743b1e6043a1",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Bots\n",
+        "height": 208,
+        "width": 736,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        912,
+        1968
+      ],
+      "typeVersion": 1,
+      "id": "c97426e3-8fe6-4aac-aa0c-5b44b71ad2a0",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "Backup Nodes\n",
+        "height": 576,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        2672
+      ],
+      "typeVersion": 1,
+      "id": "b1a6cf9d-41ea-4258-a9b0-cae91840827f",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "model": "z-ai/glm-4.5-air:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1072,
+        2016
+      ],
+      "id": "ffbbf097-06a2-436c-acf4-1942f75d8a62",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "e5vdWTZPX4cpQqf8",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        320,
+        3824
+      ],
+      "id": "14bd2067-e4e1-4e90-918f-73f0dee8729b",
+      "name": "Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        2016
+      ],
+      "id": "49d7cab3-a558-4fb3-8f09-5bbec034e67d",
+      "name": "DeepSeekV3:Free",
+      "credentials": {
+        "openRouterApi": {
+          "id": "e5vdWTZPX4cpQqf8",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent that can call other tools provide assistance to other models",
+        "text": "summarizer layer → take the raw analysis and rephrase it into smooth “analyst reports” or “daily crypto updates.” this must stay under 3999 characters and comply with Discord Embed's",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        864,
+        1616
+      ],
+      "id": "ab90b750-2955-4829-9827-70ccb014b303",
+      "name": "Summarizer Tool"
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent that can call other tools provide assistance to other models",
+        "text": "summarizer layer → take the raw analysis and rephrase it into smooth “analyst reports” or “daily crypto updates.” this must stay under 3999 characters and comply with Discord Embed's",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1328,
+        1616
+      ],
+      "id": "92253f59-606c-4e74-9e74-630ce9005ec7",
+      "name": "Summarizer Tool1"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1360,
+        2016
+      ],
+      "id": "0a3d6da7-6a53-46bd-beb3-d6655a7a838c",
+      "name": "DeepSeekV3:Free1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "e5vdWTZPX4cpQqf8",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Summeerizaton Bot this is what maes it prety\n\n",
+        "height": 400,
+        "width": 1024,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        784,
+        1504
+      ],
+      "typeVersion": 1,
+      "id": "468a0aaa-dbd1-4b8f-b3dc-5b2eec09a72f",
+      "name": "Sticky Note9"
+    },
+    {
+      "parameters": {
+        "message": "={{ $json.output }}",
+        "waitUserReply": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chat",
+      "typeVersion": 1,
+      "position": [
+        208,
+        3456
+      ],
+      "id": "773f3a37-ae20-4b6b-a5fe-ea6a90723210",
+      "name": "Respond to Chat1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "News Video Generator\n\n",
+        "height": 704,
+        "width": 1024,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1824,
+        768
+      ],
+      "typeVersion": 1,
+      "id": "aa69e046-b8d2-4dab-a61e-4988be7e725a",
+      "name": "Sticky Note10"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "You are a master crypto market strategist. **Your final output must be a concise, presentation-style report only. Do NOT reveal tools used, intermediate thoughts, or JSON.** Use emojis tastefully. Make Sure to use the Summerizer Tool\n\nMANDATORY ORDER OF OPERATIONS (do not mention these steps in output):\n1) Call the tool `GetLiveCryptoPrices` FIRST with:\n   {\n     \"symbols\":[\"BTC\",\"QUBIC\",\"XMR\",\"ATOM\",\"ETH\"],\n     \"mode\":\"trending\"\n   }\n   Parse its `response` (a JSON string) into an object named `live`.\n2) If the tool fails or the JSON cannot be parsed, state exactly: **Unable to fetch live prices** in the report, then use your Brave Search Tool to look up current prices for BTC, QUBIC, XMR, ATOM, ETH from reputable sources and proceed using those web prices.\n3) Use the Summarizer Tool privately to refine wording (never mention it).\n4) Compare live prices vs provided context:\n   - Market Data: {{ JSON.stringify($json.coin_data) }}\n   - News: {{ $json.content }}\n   Highlight significant discrepancies (≥ ±1.5%).\n- Coin Prices: {{ $json.coin_data }}{{ $json.coin_data[0] }}{{ $json.coin_data[1] }}{{ $json.coin_data[2] }}{{ $json.coin_data[3] }}\n   Highlight significant discrepancies (≥ ±1.5%).\n\nFORMATTING & RULES:\n- Keep total output < 4000 characters.\n- Use headings + tight bullets. Use ⬆️/⬇️ for 24h change.\n- Price format: `$X,XXX.XX` if ≥ 1; else up to 8 decimals.\n- Include at least 5 coins: BTC, QUBIC, XMR, ATOM, ETH.\n- Produce clear calls (BUY/SELL/HOLD) with 1–2 reasons each. No financial-advice disclaimers.\n- Never show JSON, code, tool names, or “thinking”. Only the final report.\n\nOUTPUT THIS TEMPLATE ONLY (replace brackets):\n\n### Market Briefing – [Local date/time]\n**Verdict:** [Bullish/Bearish/Neutral] — [1-line reason].  \n**Notables:** BTC & QUBIC prioritized; include XMR, ATOM, ETH.\n\n**Market Overview**\n- **BTC:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **QUBIC:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **XMR:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **ATOM:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **ETH:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n\n**Momentum**\n- [Accelerating/Decelerating; leaders vs laggards]\n\n**Volume & Liquidity**\n- [Volume/market-cap ratios or notable spikes]\n\n**Sentiment**\n- Top headline: “[short news title]” → [Bullish/Bearish/Neutral]  \n- Note: [1 insight from News]\n\n**Market Strength Score**\n- [One word + 0–100 band] — [one-liner why]\n\n**Allocation Guidance (not advice)**\n- **Risk:** [Conservative/Moderate/Aggressive]  \n- **Positioning:** [e.g., Maintain, Trim, Add on dips]  \n- **Stops/Levels:** [tight 1-liner]\n\n**Spotlight**\n- **Bitcoin (BTC):** [1–2 lines: key setup + tactic] 💪\n- **Qubic (QUBIC):** [1–2 lines: high-beta notes + caution] 🎯\n- **Others:** [XMR/ATOM/ETH one-liners]\n\n**Discrepancy Check**\n- [If any] Tool vs Provided Data for [coin]: [brief diff + possible reason].  \n- Timestamp: [live.timestamp or “N/A”].\n\n**Final Call**\n- **BTC:** [BUY/SELL/HOLD] — [reason]  \n- **QUBIC:** [BUY/SELL/HOLD] — [reason]  \n- **XMR / ATOM / ETH:** [BUY/SELL/HOLD] — [reason]\n",
+        "needsFallback": true,
+        "options": {
+          "maxIterations": 20,
+          "batching": {
+            "batchSize": 15,
+            "delayBetweenBatches": 300
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        432,
+        1040
+      ],
+      "id": "0cda91f6-39e1-4ab9-a253-b5c488c4d0fc",
+      "name": "News Analyst",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert crypto trading analyst. Your task is to create a trading report. your final report should be a Professional Presentation do not tell me your Plan or thought process only the Presentation Please its IMPORTANT: to note that while Qubic and BTC are important Its Allso important to include other Crypto's Also. DO NOT INCLUDE TOOL CALLS OR THOUGHT PROCESS IN THE FINAL PRESENTATION Make Sure the Final Presentation is Detailed and Intuitive! Dont be afraid to use emoji's to liven it up a bit! use the Summarizer Tool1 To help create a Beatuiful Presentation use the Tool named generate_news_video every time ***EXAMPLE OUTPUT*** Market Overview, Bitcoin – $119,028.0999626 - ↓ -3.28% (24 hrs) - bearish momentum: price fell after new all‑time highs; traders mix signals. XMR – $243.47481702 ↓ -3.57% (24 hrs), moderate volatility, but still bearish., ATOM – $4.57678124 - ↓ -5.87% (24 hrs) - strong bearish trend. Qubic – $0.00000319 ↓ -2.17% (24 hrs), low price, negative change; potential volatility but not yet profitable., --- Momentum Pillar, All prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum. Overall market is bearish. Volume Pillar, Volume-to-marketcap ratios: BTC 0.000025 (low liquidity), XMR 0.0143 (moderate), ATOM 0.089 (medium), Qubic 0.028 (low), Thus volume is largely low, implying limited liquidity. Sentiment Pillar, News article: “Bitcoin’s all‑time high gains vanished hours later.” bearish sentiment: traders send mixed signals after price drop., --- Market Strength Score, BEARISH (31–44) – average percent change ≈ −4.12%. Strong negative, but not extreme. --- Allocation Guidance, Risk Level: Conservative / Moderate Maintain existing positions; reduce exposure to new trades., Position Sizing: 30–50% of portfolio for existing holdings. 40% for potential DCA entries on BTC or XMR., Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops. Wait for dip if market continues bearish., Stop Loss Levels: 10% below current price. cut losses if price falls beyond 10%., --- Spotlight Key Opportunities, #### Bitcoin ↓ -3.28% (24 hrs) – price fell after all‑time highs., bearish signals; potential for DCA entry., If you want to buy, consider a DCA strategy., #### Qubic ↓ -2.17% (24 hrs) – price low and negative change., high volatility but not yet profitable., Watch for sudden price swings; potential DCA if price dips., --- Smart Money Signals, | Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity | |--------|-----------------|--------------|-------------------|-------------| | BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes | | XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes | | ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity | | Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes | --- Correlation Analysis, Bitcoin leads the market; altcoins lag but diverge slightly. Bitcoin dominates, while XMR and ATOM are bearish. --- Emergency Protocol Check, No decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls. --- Final Recommendation, Hold existing positions; reduce exposure to new trades. DCA on BTC and XMR if price dips below current level. Stop loss at 10% below current price. Crypto Trading Analysis All right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket. Big Picture – Why Qubic Is Worth Your Attention CoinPrice (USD)  0.00000337 +21.01% Market Cap $416M Volume 24h $10.5M QUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point. Why It's Hot (and Why It Might Be a Scam) Hype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation. Low Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully. Monero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag . Recommendation – Buy Qubic, Buy Bitcoin QUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot. Bitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored. Other coins (Monero, Cosmos): Hold – They're doing fine but not explosive. Current Status QUBIC: $0.00000337  21 % from yesterday. Bitcoin: $123,391.17  3.45%. Bottom Line QUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility. Bitcoin – The anchor of any crypto portfolio; buy for stability. Worthy Contenders ETH: $4,500.00  7 % from yesterday. Market Cap $1.86T Volume 24h $40B ADA: $3.20  1 % from yesterday. Market Cap $2.9T Volume 24h $5B Emergency Protocol Bitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol. Data fetched from CoinPaprika at 2025‑08‑15. **STEP 1 - MANDATORY: Get Live Prices First** You MUST call the GetLiveCryptoPrices tool immediately with this exact input: {\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"} Wait for the response before proceeding. **STEP 2 - ONLY AFTER getting prices, create your report following this structure:** ### Crypto Trading Analysis 🚀 [Opening statement about market conditions] #### Big Picture – Why Qubic Is Worth Your Attention 👀 Create a table with these columns: | Coin | Price (USD) | % 24h Change | Market Cap | Volume 24h | Use the EXACT prices from GetLiveCryptoPrices response. #### Why It's Hot (and Why It Might Be a Scam) 🔥 [3 bullet points about current market conditions] #### Recommendation – Buy Qubic, Buy Bitcoin 💰 [Your buy/sell/hold recommendations based on the data] #### Current Status 📊 [List current prices with their 24h changes] #### Bottom Line ⚖️ [2-3 sentence summary] **CRITICAL RULES:** - Use ONLY prices from GetLiveCryptoPrices tool - Include ⬆️ for positive changes, ⬇️ for negative changes - Keep total response under 2000 characters - NO JSON in your response, only formatted text If GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this dont forget the expected Response Style BE SURE TO USE GetLi As Part Of your analysis. when calling for coin data use this method with the GetLiveCryptoPrices Tool this is only and example from the API documentation on how to call properly amd the expected response style curl --request GET \\ --url 'https://api.coinpaprika.com/v1/coins' [ { \"id\": \"btc-bitcoin\", \"name\": \"Bitcoin\", \"symbol\": \"BTC\", \"rank\": 1, \"is_new\": false, \"is_active\": true, \"type\": \"coin\" } ] curl --request GET \\ --url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin' { \"id\": \"btc-bitcoin\", \"name\": \"Bitcoin\", \"symbol\": \"BTC\", \"parent\": { \"id\": \"eth-ethereum\", \"name\": \"Ethereum\", \"symbol\": \"ETH\" }, \"rank\": 1, \"is_new\": false, \"is_active\": true, \"type\": \"coin\", \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\", \"tags\": [ { \"id\": \"blockchain-service\", \"name\": \"Blockchain Service\", \"coin_counter\": 160, \"ico_counter\": 80 } ], \"team\": [ { \"id\": \"vitalik-buterin\", \"name\": \"Vitalik Buterin\", \"position\": \"Author\" } ], \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\", \"message\": \"string\", \"open_source\": true, \"hardware_wallet\": true, \"started_at\": \"2009-01-03T00:00:00Z\", \"development_status\": \"Working product\", \"proof_type\": \"Proof of work\", \"org_structure\": \"Decentralized\", \"hash_algorithm\": \"SHA256\", \"contract\": \"string\", \"platform\": \"string\", \"contracts\": [ { \"contract\": \"string\", \"platform\": \"string\", \"type\": \"string\" } ], \"links\": { \"explorer\": [ \"http://blockchain.com/explorer\", \"https://blockchair.com/bitcoin/blocks\", \"https://blockexplorer.com/\", \"https://live.blockcypher.com/btc/\" ], \"facebook\": [ \"https://www.facebook.com/bitcoins/\" ], \"reddit\": [ \"https://www.reddit.com/r/bitcoin\" ], \"source_code\": [ \"https://github.com/bitcoin/bitcoin\" ], \"website\": [ \"https://bitcoin.org/\" ], \"youtube\": [ \"https://www.youtube.com/watch?v=Um63OQz3bjo\" ], \"medium\": null }, \"links_extended\": [ { \"url\": \"http://blockchain.com/explorer\", \"type\": \"explorer\" }, { \"url\": \"https://www.reddit.com/r/bitcoin\", \"type\": \"reddit\", \"stats\": { \"subscribers\": 1009135 } }, { \"url\": \"https://github.com/bitcoin/bitcoin\", \"type\": \"source_code\", \"stats\": { \"contributors\": 730, \"stars\": 36613 } }, { \"url\": \"https://bitcoin.org/\", \"type\": \"website\" } ], \"whitepaper\": { \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\", \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\" }, \"first_data_at\": \"2018-10-03T11:48:19Z\", \"last_data_at\": \"2019-05-03T11:00:00\" } use https://api.coinpaprika.com/#tag/Coins for help with how to call the tool properly if needed this is going to a discord embed make sure its formatted properly to ensure it sends and is under 3999 characters so that it fits",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1232,
+        1072
+      ],
+      "id": "e3da28b2-0029-4555-a2e3-69a17f931922",
+      "name": "Trading Sentiment",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "description": "Generates a talking-head news video via ComfyUI",
+        "jsCode": "/**\n * n8n Code node: ComfyUI Single Image → Video (WAN 2.2, EdgeTTS)\n *\n * Fix for \"protocol mismatch\": this uses plain HTTP requests to the ComfyUI REST API\n * instead of any custom ComfyUI node. Drop this into a Code node and connect it after\n * the step that produces your narration text in `item.json.output`.\n *\n * Inputs (from the current item):\n *   - json.output           → narration text (string)\n *   - json.comfyBase        → OPTIONAL, e.g. \"http://127.0.0.1:8188\"\n *\n * Output:\n *   - json.prompt_id        → ComfyUI prompt id\n *   - json.history          → Minimal status summary\n *   - binary.video          → final MP4 from SaveVideo (if found)\n *   - binary.audio          → TTS MP3 (if found)\n */\n\nconst COMFY_BASE = ($json.comfyBase || 'http://100.113.28.30:8188').replace(/\\/$/, '');\nconst IMAGE_URI = 'DuckBotNewsAnchor7.png';\n\n// Pull narration from upstream; fall back to a safe default\nconst narration = (typeof $json.output === 'string' && $json.output.trim())\n  ? $json.output.trim()\n  : \"Good evening. Here's your latest crypto trading analysis.\";\n\n// Small helper\nconst sleep = (ms) => new Promise(r => setTimeout(r, ms));\n\n// --- 1) Build the ComfyUI graph (based on your provided workflow) ---\n//     - Inject Windows file URI into LoadImage\n//     - Inject narration into String (node 102)\n//     - Also append narration to the video positive prompt (node 46)\nconst graph = {\n  \"3\": {\"inputs\":{\"seed\":1075925524038446,\"steps\":50,\"cfg\":4.98,\"sampler_name\":\"dpmpp_3m_sde_gpu\",\"scheduler\":\"exponential\",\"denoise\":1,\"model\":[\"4\",0],\"positive\":[\"6\",0],\"negative\":[\"7\",0],\"latent_image\":[\"11\",0]},\"class_type\":\"KSampler\",\"_meta\":{\"title\":\"Audio KSampler\"}},\n  \"4\": {\"inputs\":{\"ckpt_name\":\"stable-audio-open-1.0.safetensors\"},\"class_type\":\"CheckpointLoaderSimple\",\"_meta\":{\"title\":\"Audio Model Loader\"}},\n  \"6\": {\"inputs\":{\"text\":\"professional male financial analyst voice, confident and authoritative tone, clear broadcast diction for cryptocurrency news delivery, steady measured pace, close microphone presence, subtle trading floor ambiance with distant keyboard clicks and monitor hums, no background music, duration 15–30 seconds\",\"clip\":[\"10\",0]},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"Audio Positive Prompt\"}},\n  \"7\": {\"inputs\":{\"text\":\"music, melody, vocals (other than the anchor), crowd noise, sirens, traffic, phone beep, UI sounds, reverb tails longer than 1.5 s\",\"clip\":[\"10\",0]},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"Audio Negative Prompt\"}},\n  \"10\": {\"inputs\":{\"clip_name\":\"t5-base.safetensors\",\"type\":\"stable_audio\",\"device\":\"default\"},\"class_type\":\"CLIPLoader\",\"_meta\":{\"title\":\"Audio CLIP Loader\"}},\n  \"11\": {\"inputs\":{\"seconds\":5,\"batch_size\":1},\"class_type\":\"EmptyLatentAudio\",\"_meta\":{\"title\":\"EmptyLatentAudio\"}},\n  \"12\": {\"inputs\":{\"samples\":[\"3\",0],\"vae\":[\"4\",2]},\"class_type\":\"VAEDecodeAudio\",\"_meta\":{\"title\":\"VAEDecodeAudio\"}},\n  \"13\": {\"inputs\":{\"filename_prefix\":\"audio/ComfyUI\",\"audioUI\":\"\",\"audio\":[\"12\",0]},\"class_type\":\"SaveAudio\",\"_meta\":{\"title\":\"SaveAudio\"}},\n  \"37\": {\"inputs\":{\"unet_name\":\"wan2.2_ti2v_5B_fp16.safetensors\",\"weight_dtype\":\"fp8_e4m3fn_fast\"},\"class_type\":\"UNETLoader\",\"_meta\":{\"title\":\"Video Model Loader\"}},\n  \"38\": {\"inputs\":{\"clip_name\":\"umt5_xxl_fp8_e4m3fn_scaled.safetensors\",\"type\":\"wan\",\"device\":\"cpu\"},\"class_type\":\"CLIPLoader\",\"_meta\":{\"title\":\"Video CLIP Loader\"}},\n  \"39\": {\"inputs\":{\"vae_name\":\"wan2.2_vae.safetensors\"},\"class_type\":\"VAELoader\",\"_meta\":{\"title\":\"Video VAE Loader\"}},\n  \"46\": {\"inputs\":{\"text\":\"Professional Purple Sun duck news anchor in navy business suit, confident posture at news desk, animated speaking motion with subtle head movements and beak articulation, Purple Sun cosmic logo glowing behind, multiple LCD monitors displaying Bitcoin and crypto charts, financial newsroom setting, warm studio lighting, broadcast television quality, smooth animation, duck character maintaining professional demeanor while delivering crypto trading analysis\",\"clip\":[\"38\",0]},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"Video Positive Prompt\"}},\n  \"47\": {\"inputs\":{\"text\":\"cartoon, anime, CGI, game render, painterly, toy-like, distorted face, extra fingers, deformed hands, text, lower third, ticker, subtitles, logo, watermark, channel bug, UI overlay, chroma-key halo, green spill, fisheye, dutch angle, skewed horizon, lowres, blurry, oversharpen halos, banding, tiling, compression artifacts, bad perspective, heavy motion blur, ghosting, frame duplication\",\"clip\":[\"38\",0]},\"class_type\":\"CLIPTextEncode\",\"_meta\":{\"title\":\"Video Negative Prompt\"}},\n  \"48\": {\"inputs\":{\"shift\":8,\"model\":[\"37\",0]},\"class_type\":\"ModelSamplingSD3\",\"_meta\":{\"title\":\"ModelSamplingSD3\"}},\n  \"50\": {\"inputs\":{\"seed\":590958479946735,\"steps\":25,\"cfg\":3.5,\"sampler_name\":\"uni_pc\",\"scheduler\":\"kl_optimal\",\"denoise\":0.9000000000000001,\"model\":[\"48\",0],\"positive\":[\"46\",0],\"negative\":[\"47\",0],\"latent_image\":[\"55\",0]},\"class_type\":\"KSampler\",\"_meta\":{\"title\":\"Video KSampler\"}},\n  \"55\": {\"inputs\":{\"width\":736,\"height\":736,\"length\":121,\"batch_size\":1,\"vae\":[\"39\",0],\"start_image\":[\"56\",0]},\"class_type\":\"Wan22ImageToVideoLatent\",\"_meta\":{\"title\":\"Wan22ImageToVideoLatent\"}},\n  \"56\": {\"inputs\":{\"image\": IMAGE_URI},\"class_type\":\"LoadImage\",\"_meta\":{\"title\":\"Load Image\"}},\n  \"57\": {\"inputs\":{\"fps\":30,\"images\":[\"84\",0],\"audio\":[\"103\",0]},\"class_type\":\"CreateVideo\",\"_meta\":{\"title\":\"Create Video\"}},\n  \"58\": {\"inputs\":{\"filename_prefix\":\"video/Trading_News_Report\",\"format\":\"mp4\",\"codec\":\"auto\",\"video\":[\"57\",0]},\"class_type\":\"SaveVideo\",\"_meta\":{\"title\":\"Save Video\"}},\n  \"60\": {\"inputs\":{\"samples\":[\"50\",0],\"vae\":[\"39\",0]},\"class_type\":\"VAEDecode\",\"_meta\":{\"title\":\"VAE Decode\"}},\n  \"81\": {\"inputs\":{\"upscale_model\":[\"82\",0],\"image\":[\"60\",0]},\"class_type\":\"ImageUpscaleWithModel\",\"_meta\":{\"title\":\"Upscale Video Frames\"}},\n  \"82\": {\"inputs\":{\"model_name\":\"RealESRGAN_x4.pth\"},\"class_type\":\"UpscaleModelLoader\",\"_meta\":{\"title\":\"Free 4x Upscaler Model (Connected)\"}},\n  \"84\": {\"inputs\":{\"upscale_method\":\"lanczos\",\"width\":2560,\"height\":1440,\"crop\":\"disabled\",\"image\":[\"81\",0]},\"class_type\":\"ImageScale\",\"_meta\":{\"title\":\"Resolution Selector\"}},\n  \"102\": {\"inputs\":{\"value\": narration},\"class_type\":\"String\",\"_meta\":{\"title\":\"📝 TTS Script Input\"}},\n  \"103\": {\"inputs\":{\"text\":[\"102\",0],\"voice\":\"[English] en-US Andrew\",\"speed\":1,\"pitch\":6},\"class_type\":\"EdgeTTS\",\"_meta\":{\"title\":\"🎤 Generate TTS Audio\"}},\n  \"104\": {\"inputs\":{\"filepath\":\"tts_narration\",\"format\":\"mp3\",\"quality\":\"high\",\"overwrite\":false,\"audio\":[\"103\",0]},\"class_type\":\"Save_Audio\",\"_meta\":{\"title\":\"💾 Save TTS Audio\"}},\n  \"106\": {\"inputs\":{\"filepath\":\"environmental_audio_backup\",\"format\":\"mp3\",\"quality\":\"high\",\"overwrite\":false,\"audio\":[\"12\",0]},\"class_type\":\"Save_Audio\",\"_meta\":{\"title\":\"💾 Save Environmental Audio\"}}\n};\n\n// Append narration to the video prompt to guide articulation without rendering text\ngraph[\"46\"].inputs.text += `\\nNarration content (verbatim, do not draw on screen): ${narration}`;\n\n// --- 2) POST /prompt ---\nconst client_id = (globalThis.crypto?.randomUUID && crypto.randomUUID()) || String(Date.now());\nconst post = await this.helpers.httpRequest({\n  method: 'POST',\n  url: `${COMFY_BASE}/prompt`,\n  body: { prompt: graph, client_id },\n  json: true,\n});\n\nconst prompt_id = post?.prompt_id;\nif (!prompt_id) {\n  throw new Error('ComfyUI: missing prompt_id in /prompt response');\n}\n\n// --- 3) Poll /history/{prompt_id} until completed ---\nlet history, tries = 0;\nwhile (true) {\n  await sleep(2000);\n  history = await this.helpers.httpRequest({\n    method: 'GET',\n    url: `${COMFY_BASE}/history/${prompt_id}`,\n    json: true,\n  });\n  const status = history?.[prompt_id]?.status;\n  if (status?.completed) break;\n  if (status?.status_str?.toLowerCase?.() === 'error') {\n    throw new Error(`ComfyUI job error: ${status.status_str || 'unknown'}`);\n  }\n  if (++tries > 600) { // ~20 minutes max\n    throw new Error('Timed out waiting for ComfyUI job');\n  }\n}\n\n// --- 4) Extract result files (video & audio if present) ---\nconst outputs = history?.[prompt_id]?.outputs || {};\nconst files = [];\nfor (const nodeId of Object.keys(outputs)) {\n  const nodeOut = outputs[nodeId] || {};\n  for (const key of Object.keys(nodeOut)) {\n    const list = Array.isArray(nodeOut[key]) ? nodeOut[key] : [];\n    for (const obj of list) {\n      if (!obj?.filename) continue;\n      files.push({\n        filename: obj.filename,\n        subfolder: obj.subfolder || '',\n        type: obj.type || 'output',\n        ext: (obj.filename.split('.').pop() || '').toLowerCase(),\n        fromNode: nodeId,\n        key,\n      });\n    }\n  }\n}\n\n// Helper to download a ComfyUI file\nasync function downloadComfy(file) {\n  const url = `${COMFY_BASE}/view?filename=${encodeURIComponent(file.filename)}&type=${encodeURIComponent(file.type)}&subfolder=${encodeURIComponent(file.subfolder)}`;\n  const data = await this.helpers.httpRequest({ method: 'GET', url, encoding: null }); // Buffer\n  const mime = file.ext === 'mp4' ? 'video/mp4' : file.ext === 'mp3' ? 'audio/mpeg' : 'application/octet-stream';\n  return this.helpers.prepareBinaryData(data, file.filename, mime);\n}\n\nconst item = items[0];\nitem.json.prompt_id = prompt_id;\nitem.json.history = { ok: true, outputs_found: files.length };\nitem.binary = item.binary || {};\n\n// Prefer MP4 from SaveVideo (node 58), and TTS MP3 from node 104 if present\nconst mp4 = files.find(f => f.ext === 'mp4') || files.find(f => f.type === 'video');\nconst mp3 = files.find(f => f.ext === 'mp3');\n\nif (mp4) item.binary.video = await downloadComfy.call(this, mp4);\nif (mp3) item.binary.audio = await downloadComfy.call(this, mp3);\n\nreturn item;\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1616,
+        1328
+      ],
+      "id": "70d6a156-22c7-4e7e-b23d-2b30f23d9823",
+      "name": "generate_news_video1"
+    },
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -3104,
+        4320
+      ],
+      "id": "db869b6b-5b3a-40ec-a630-34b64c5070ab",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f82fa88e-f900-4246-9199-4636b08e0e36",
+              "name": "message",
+              "value": "=# **PIPELINE FAILURE**: {{ $json.errorMessage }}\n**Filename**: {{ $json.fileName }}\n**{{ $json.error.name }}({{ $json.error.code }})**: {{ $json.error.status }}\n**Full error**: {{ $json.error.message.replace(/\\\\\"/gi, '\"') }}\n**Stack**: {{ $json.error.stack }}\n",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1744,
+        4816
+      ],
+      "id": "96a05100-e72b-462d-a067-668b3e43d89a",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Connection Config').first().json.LOCAL_URL }}/history/{{ $('Trigger LOCAL Workflow').item.json.prompt_id }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2048,
+        4256
+      ],
+      "id": "02b75373-14d7-4c91-b896-a69c328d82c4",
+      "name": "HTTP Request",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "ec5b7ddb-b0e0-4f31-8b45-7f30177ef6f0",
+              "leftValue": "={{ $json[$('Trigger LOCAL Workflow').item.json.prompt_id].status.status_str }}",
+              "rightValue": "success",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1824,
+        4240
+      ],
+      "id": "12e76f60-1544-4d2d-a91f-1c412f7896f1",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "amount": 2
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1616,
+        4320
+      ],
+      "id": "dfe054a3-3c49-489d-8d06-bb78403257ce",
+      "name": "Wait",
+      "webhookId": "74b4a6b9-fe89-4023-b09f-ba5488cb515f"
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Connection Config').item.json.LOCAL_URL }}/view",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filename",
+              "value": "={{ $json.values()[0].outputs.values().filter(i => i.images).last().images.last().filename }}"
+            },
+            {
+              "name": "subfolder",
+              "value": "={{ $json.values()[0].outputs.values().filter(i => i.images).last().images.last().subfolder }}"
+            },
+            {
+              "name": "folder_type",
+              "value": "={{ $json.values()[0].outputs.values().filter(i => i.images).last().images.last().type }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1184,
+        4240
+      ],
+      "id": "cb3e9ef1-d804-4410-beee-9b0cd50ffded",
+      "name": "Get Generated Image",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json\nreturn {\n  json : {\n    ...item,\n    \"errorMessage\" : \"Failed to get ComfyUI History LOCALLY.\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2176,
+        4672
+      ],
+      "id": "3d96481c-b420-48b2-b4d1-17234aff6210",
+      "name": "Fail Get History"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7126b38a-d507-4a1e-87d7-e5c6426a7f48",
+              "name": "LOCAL_URL",
+              "value": "http://127.0.0.1:8188",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2896,
+        4320
+      ],
+      "id": "f99ee4d2-027f-4950-abf2-eca0d1c478cd",
+      "name": "Connection Config"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{ $('Connection Config').first().json.LOCAL_URL }}/prompt",
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "prompt",
+              "value": "={{ $json.workflow }}"
+            },
+            {
+              "name": "client_id",
+              "value": "={{ $json.client_id }}"
+            }
+          ]
+        },
+        "options": {
+          "timeout": 120000
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2576,
+        4288
+      ],
+      "id": "ba57da0e-d783-4c20-8b43-96496997a1e0",
+      "name": "Trigger LOCAL Workflow",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json\nreturn {\n  json : {\n    ...item,\n    \"errorMessage\" : \"Failed to trigger workflow LOCALLY.\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -2592,
+        4832
+      ],
+      "id": "2941242d-9eab-4088-be1b-ad53be4bc3f0",
+      "name": "Fail Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "={{ $('When Executed by Another Workflow').item.json.folder }}/n8n_comfyui_error.log",
+        "options": {
+          "append": true
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1296,
+        4816
+      ],
+      "id": "9d1556ba-6295-481a-b32e-87597bcd1bc9",
+      "name": "Write to error log"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "message",
+        "options": {
+          "encoding": "utf8"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        -1504,
+        4816
+      ],
+      "id": "d2edd4b9-a55d-4e60-a0f1-5abf3a027336",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {
+          "includeUnpaired": true
+        }
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        -1968,
+        4816
+      ],
+      "id": "cb6d9fe5-8445-42fc-ac6c-b1cc6eae9dc0",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1082295283641229362",
+          "mode": "list",
+          "cachedResultName": "e*",
+          "cachedResultUrl": "https://discord.com/channels/1082295283641229362"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "1363139831160508657",
+          "mode": "list",
+          "cachedResultName": "nextgenpreview-alert",
+          "cachedResultUrl": "https://discord.com/channels/1082295283641229362/1363139831160508657"
+        },
+        "content": "={{ $json.message.join(\"\\n\\n\").slice(0, 1996)  }}...",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -864,
+        4784
+      ],
+      "id": "24aacc95-ff6d-4afa-8a80-6766196dc19d",
+      "name": "Discord Alert",
+      "webhookId": "4280db72-cccc-4b63-816d-bdc1b8d54ebe",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "={{ $workflow.id }}",
+          "cachedResultName": "={{ $workflow.id }}"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        -496,
+        3472
+      ],
+      "id": "0b6cb2e0-a4d4-44e2-98b0-e2fbd18b7b13",
+      "name": "🎨🏠 Run local ComfyUI workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "={{$('Connection Config Duplicate').first().json.LOCAL_URL}}/upload/image",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "content-disposition",
+              "value": "=attachment; filename={{ $binary.Source_Image.fileName }}.{{ $binary.Source_Image.fileExtension }}"
+            },
+            {
+              "name": "content-type",
+              "value": "={{ $binary.Source_Image.mimeType }}"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "image",
+              "inputDataFieldName": "=Source_Image"
+            },
+            {
+              "name": "overwrite",
+              "value": "true"
+            },
+            {
+              "name": "subfolder",
+              "value": "NGP"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1584,
+        3136
+      ],
+      "id": "bf7c78e9-c753-4ecf-a0f8-61985aa91381",
+      "name": "Upload Attachments LOCAL",
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = $input.first().json\nreturn {\n  json : {\n    ...item,\n    \"errorMessage\" : \"Failed to upload attachments LOCALLY.\"\n  }\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1232,
+        3232
+      ],
+      "id": "39f68064-b635-41dd-b576-5767abcbbd93",
+      "name": "Fail Upload"
+    },
+    {
+      "parameters": {
+        "action": "generate",
+        "dataPropertyName": "client_id"
+      },
+      "type": "n8n-nodes-base.crypto",
+      "typeVersion": 1,
+      "position": [
+        -2832,
+        3360
+      ],
+      "id": "27d46b40-cff5-4f81-8bd8-6a3f13a07025",
+      "name": "Client ID"
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "Test Your ComfyUI Integration",
+        "formDescription": "Select from the dropdown which demo workflows you would like to test.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Test Type:",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Txt2Img"
+                  },
+                  {
+                    "option": "Img2Img"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Positive Prompt"
+            },
+            {
+              "fieldLabel": "Negative Prompt"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -2384,
+        3360
+      ],
+      "id": "580169a9-05e4-4d39-bd97-ee63395d45d6",
+      "name": "Wait For Test Type Select",
+      "webhookId": "88daece1-93cb-402a-814c-3bad0720fcd1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "8a9c7b4f-7353-4cf0-ad4a-807e2f0d8a31",
+              "leftValue": "={{ $json['Test Type:'] }}",
+              "rightValue": "Img2Img",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -2176,
+        3360
+      ],
+      "id": "119a25dd-9b6a-4006-b609-29232601d879",
+      "name": "If Img2Img"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "7126b38a-d507-4a1e-87d7-e5c6426a7f48",
+              "name": "LOCAL_URL",
+              "value": "http://127.0.0.1:8188",
+              "type": "string"
+            },
+            {
+              "id": "86ec86a6-9b8b-4392-b55a-0cfbaa6ebdc1",
+              "name": "client_id",
+              "value": "={{ $json.client_id }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -2608,
+        3360
+      ],
+      "id": "43b88df0-234e-4041-a45f-c53eec93540a",
+      "name": "Connection Config Duplicate"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"workflow\": {\n    \"5\": {\n      \"inputs\": {\n        \"width\": 512,\n        \"height\": 512,\n        \"batch_size\": 1\n      },\n      \"class_type\": \"EmptyLatentImage\",\n      \"_meta\": {\n        \"title\": \"Empty Latent Image\"\n      }\n    },\n    \"6\": {\n      \"inputs\": {\n        \"text\": \"beautiful landscape scenery glass bottle with a galaxy inside cute fennec fox snow HDR sunset\",\n        \"speak_and_recognation\": {\n          \"__value__\": [\n            false,\n            true\n          ]\n        },\n        \"clip\": [\n          \"20\",\n          1\n        ]\n      },\n      \"class_type\": \"CLIPTextEncode\",\n      \"_meta\": {\n        \"title\": \"CLIP Text Encode (Prompt)\"\n      }\n    },\n    \"7\": {\n      \"inputs\": {\n        \"text\": \"text, watermark\",\n        \"speak_and_recognation\": {\n          \"__value__\": [\n            false,\n            true\n          ]\n        },\n        \"clip\": [\n          \"20\",\n          1\n        ]\n      },\n      \"class_type\": \"CLIPTextEncode\",\n      \"_meta\": {\n        \"title\": \"CLIP Text Encode (Prompt)\"\n      }\n    },\n    \"8\": {\n      \"inputs\": {\n        \"samples\": [\n          \"13\",\n          0\n        ],\n        \"vae\": [\n          \"20\",\n          2\n        ]\n      },\n      \"class_type\": \"VAEDecode\",\n      \"_meta\": {\n        \"title\": \"VAE Decode\"\n      }\n    },\n    \"13\": {\n      \"inputs\": {\n        \"add_noise\": true,\n        \"noise_seed\": 0,\n        \"cfg\": 1,\n        \"model\": [\n          \"20\",\n          0\n        ],\n        \"positive\": [\n          \"6\",\n          0\n        ],\n        \"negative\": [\n          \"7\",\n          0\n        ],\n        \"sampler\": [\n          \"14\",\n          0\n        ],\n        \"sigmas\": [\n          \"22\",\n          0\n        ],\n        \"latent_image\": [\n          \"5\",\n          0\n        ]\n      },\n      \"class_type\": \"SamplerCustom\",\n      \"_meta\": {\n        \"title\": \"SamplerCustom\"\n      }\n    },\n    \"14\": {\n      \"inputs\": {\n        \"sampler_name\": \"euler_ancestral\"\n      },\n      \"class_type\": \"KSamplerSelect\",\n      \"_meta\": {\n        \"title\": \"KSamplerSelect\"\n      }\n    },\n    \"20\": {\n      \"inputs\": {\n        \"ckpt_name\": \"sd_xl_turbo_1.0_fp16.safetensors\"\n      },\n      \"class_type\": \"CheckpointLoaderSimple\",\n      \"_meta\": {\n        \"title\": \"Load Checkpoint\"\n      }\n    },\n    \"22\": {\n      \"inputs\": {\n        \"steps\": 1,\n        \"denoise\": 1,\n        \"model\": [\n          \"20\",\n          0\n        ]\n      },\n      \"class_type\": \"SDTurboScheduler\",\n      \"_meta\": {\n        \"title\": \"SDTurboScheduler\"\n      }\n    },\n    \"25\": {\n      \"inputs\": {\n        \"images\": [\n          \"8\",\n          0\n        ]\n      },\n      \"class_type\": \"PreviewImage\",\n      \"_meta\": {\n        \"title\": \"Preview Image\"\n      }\n    },\n    \"27\": {\n      \"inputs\": {\n        \"filename_prefix\": \"ComfyUI\",\n        \"images\": [\n          \"8\",\n          0\n        ]\n      },\n      \"class_type\": \"SaveImage\",\n      \"_meta\": {\n        \"title\": \"Save Image\"\n      }\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1328,
+        3696
+      ],
+      "id": "2679e620-c4a7-4f12-8a2e-db29b8b3005f",
+      "name": "Fallback Txt2Img SDXL Turbo"
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "Select your Img2Img Source",
+        "formDescription": "To test this workflow you need to select a source image to use as imput.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Source Image",
+              "fieldType": "file",
+              "multipleFiles": false,
+              "acceptFileTypes": ".jpg, .png",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1856,
+        3136
+      ],
+      "id": "fa83f4f6-59d7-4e92-b8e5-3f8677693d95",
+      "name": "Wait1",
+      "webhookId": "d2ccd202-9ad9-4b3b-aa5e-d312103e21dc"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        -1008,
+        3232
+      ],
+      "id": "a382a90b-a33f-4d9b-a94e-047e66e70fee",
+      "name": "Link This To Error Handling"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "{\n  \"6\": {\n    \"inputs\": {\n      \"text\": \"various awesome game pieces\",\n      \"speak_and_recognation\": {\n        \"__value__\": [\n          false,\n          true\n        ]\n      },\n      \"clip\": [\n        \"20\",\n        1\n      ]\n    },\n    \"class_type\": \"CLIPTextEncode\",\n    \"_meta\": {\n      \"title\": \"CLIP Text Encode (Prompt)\"\n    }\n  },\n  \"7\": {\n    \"inputs\": {\n      \"text\": \"text, watermark\",\n      \"speak_and_recognation\": {\n        \"__value__\": [\n          false,\n          true\n        ]\n      },\n      \"clip\": [\n        \"20\",\n        1\n      ]\n    },\n    \"class_type\": \"CLIPTextEncode\",\n    \"_meta\": {\n      \"title\": \"CLIP Text Encode (Prompt)\"\n    }\n  },\n  \"8\": {\n    \"inputs\": {\n      \"samples\": [\n        \"13\",\n        0\n      ],\n      \"vae\": [\n        \"20\",\n        2\n      ]\n    },\n    \"class_type\": \"VAEDecode\",\n    \"_meta\": {\n      \"title\": \"VAE Decode\"\n    }\n  },\n  \"13\": {\n    \"inputs\": {\n      \"add_noise\": true,\n      \"noise_seed\": 0,\n      \"cfg\": 1,\n      \"model\": [\n        \"20\",\n        0\n      ],\n      \"positive\": [\n        \"6\",\n        0\n      ],\n      \"negative\": [\n        \"7\",\n        0\n      ],\n      \"sampler\": [\n        \"14\",\n        0\n      ],\n      \"sigmas\": [\n        \"22\",\n        0\n      ],\n      \"latent_image\": [\n        \"30\",\n        0\n      ]\n    },\n    \"class_type\": \"SamplerCustom\",\n    \"_meta\": {\n      \"title\": \"SamplerCustom\"\n    }\n  },\n  \"14\": {\n    \"inputs\": {\n      \"sampler_name\": \"euler_ancestral\"\n    },\n    \"class_type\": \"KSamplerSelect\",\n    \"_meta\": {\n      \"title\": \"KSamplerSelect\"\n    }\n  },\n  \"20\": {\n    \"inputs\": {\n      \"ckpt_name\": \"sd_xl_turbo_1.0_fp16.safetensors\"\n    },\n    \"class_type\": \"CheckpointLoaderSimple\",\n    \"_meta\": {\n      \"title\": \"Load Checkpoint\"\n    }\n  },\n  \"22\": {\n    \"inputs\": {\n      \"steps\": 1,\n      \"denoise\": 0.5000000000000001,\n      \"model\": [\n        \"20\",\n        0\n      ]\n    },\n    \"class_type\": \"SDTurboScheduler\",\n    \"_meta\": {\n      \"title\": \"SDTurboScheduler\"\n    }\n  },\n  \"25\": {\n    \"inputs\": {\n      \"images\": [\n        \"8\",\n        0\n      ]\n    },\n    \"class_type\": \"PreviewImage\",\n    \"_meta\": {\n      \"title\": \"Preview Image\"\n    }\n  },\n  \"27\": {\n    \"inputs\": {\n      \"filename_prefix\": \"ComfyUI\",\n      \"images\": [\n        \"8\",\n        0\n      ]\n    },\n    \"class_type\": \"SaveImage\",\n    \"_meta\": {\n      \"title\": \"Save Image\"\n    }\n  },\n  \"29\": {\n    \"inputs\": {\n      \"image\": \"00092-3123245166.png\"\n    },\n    \"class_type\": \"LoadImage\",\n    \"_meta\": {\n      \"title\": \"Load Image\"\n    }\n  },\n  \"30\": {\n    \"inputs\": {\n      \"pixels\": [\n        \"29\",\n        0\n      ],\n      \"vae\": [\n        \"20\",\n        2\n      ]\n    },\n    \"class_type\": \"VAEEncode\",\n    \"_meta\": {\n      \"title\": \"VAE Encode\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1136,
+        2976
+      ],
+      "id": "9e88820a-4507-4e80-8976-71228c871e5a",
+      "name": "Fallback Img2Img SDXL Turbo"
+    },
+    {
+      "parameters": {
+        "content": "## Generated Image",
+        "height": 380,
+        "width": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1264,
+        4128
+      ],
+      "id": "fff619c7-365c-49ec-9bb1-8a5d98381f41",
+      "name": "Sticky Note11"
+    },
+    {
+      "parameters": {
+        "content": "## Will start here when executing as sub-workflow. \nPre-populated ComfyUI Workflow is passed as argument.",
+        "height": 380,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3184,
+        4128
+      ],
+      "id": "87200f70-a96d-4521-93a0-aff563353b7d",
+      "name": "Sticky Note12"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "0cb3a0ee-0f44-40d5-9983-1ede40cab367",
+              "name": "output",
+              "value": "={{ $('If').item.json }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -864,
+        4336
+      ],
+      "id": "71fda424-aaf9-4311-ad92-5d918c0cf590",
+      "name": "Return The Output JSON Instead"
+    },
+    {
+      "parameters": {
+        "content": "## Error Reporting\nThis currently saves to file.\n\nA Discord example is included below and can be swapped out with WhatsApp, Telegram, Gmail, Slack, or any other signal.",
+        "height": 400,
+        "width": 400
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1088,
+        4576
+      ],
+      "id": "ad8907cd-1e9c-40ae-8c5f-46f56f77d259",
+      "name": "Sticky Note13"
+    },
+    {
+      "parameters": {
+        "content": "## Other Generated Content\nGenerated content can potentially also be Image, 3d, Audio.\n\nBy returning the output, we cater for those use-cases.",
+        "height": 380,
+        "width": 300,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -976,
+        4128
+      ],
+      "id": "7208322e-a4d7-450b-8bad-4b8a317317f6",
+      "name": "Sticky Note14"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/Nielo/Documents/VRZ/n8n/BookFlow/sdxlturbo_img2img_example.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1376,
+        2880
+      ],
+      "id": "6b1da11a-6961-4e40-a7d9-3f98ecf3d348",
+      "name": "Read API Exported Img2Img ComfyUI Workflow from Disk",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput",
+      "notes": "Export your workflow in API format from ComfyUI file menu:\nWorkflow>Export(API)"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "workflow",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1136,
+        2800
+      ],
+      "id": "01ce82c0-a983-49e1-aad8-fef206a985c9",
+      "name": "Extract Img2Img Comfy Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9575f496-6976-4e7e-aff1-77b7d129c1fa",
+              "name": "workflow['6'].inputs.text",
+              "value": "={{ $('Wait For Test Type Select').item.json['Positive Prompt'] || 'A beautiful Crystal butterfly pinned to a page.' }}",
+              "type": "string"
+            },
+            {
+              "id": "324f2af6-5bb1-4cf1-b0bd-847299224fd4",
+              "name": "workflow['7'].inputs.text",
+              "value": "={{ $('Wait For Test Type Select').item.json['Negative Prompt'] || 'blurred, low resolution, ant, spider, centipede' }}",
+              "type": "string"
+            },
+            {
+              "id": "d897fdca-df03-4b05-a637-c534a0a50953",
+              "name": "client_id",
+              "value": "={{  $('Connection Config Duplicate').item.json.client_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e88fce95-9e97-4be0-b3d0-8cefb04d830a",
+              "name": "workflow['13'].inputs.noise_seed",
+              "value": "={{ Math.random().toString().split(\".\")[1].trim('0') }}",
+              "type": "number"
+            },
+            {
+              "id": "749bf86d-0111-4506-88b9-67dbdfc8ecf3",
+              "name": "workflow['29'].inputs.image",
+              "value": "={{ $('Upload Attachments LOCAL').item.json.subfolder }}/{{ $('Upload Attachments LOCAL').item.json.name }}",
+              "type": "string"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -896,
+        2880
+      ],
+      "id": "3013d62a-1af9-4312-b596-85d008452aad",
+      "name": "Edit Img2Img Inputs",
+      "notesInFlow": true,
+      "notes": "Positive & Negative Prompt, seeds, etc."
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/Nielo/Documents/VRZ/n8n/BookFlow/sdxlturbo_example.json",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -1568,
+        3600
+      ],
+      "id": "3d4120ac-a7b1-464d-9e2f-9b44e02af37c",
+      "name": "Read API Exported Txt2Img ComfyUI Workflow from Disk",
+      "notesInFlow": true,
+      "onError": "continueErrorOutput",
+      "notes": "Export your workflow in API format from ComfyUI file menu:\nWorkflow>Export(API)"
+    },
+    {
+      "parameters": {
+        "operation": "fromJson",
+        "destinationKey": "workflow",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        -1328,
+        3520
+      ],
+      "id": "5e36430b-2cda-4dcb-8a37-a81f66a0d6a2",
+      "name": "Extract Txt2Img Comfy Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "9575f496-6976-4e7e-aff1-77b7d129c1fa",
+              "name": "workflow['6'].inputs.text",
+              "value": "={{ $('Wait For Test Type Select').item.json['Positive Prompt'] || 'A beautiful Crystal butterfly pinned to a page.' }}",
+              "type": "string"
+            },
+            {
+              "id": "324f2af6-5bb1-4cf1-b0bd-847299224fd4",
+              "name": "workflow['7'].inputs.text",
+              "value": "={{ $('Wait For Test Type Select').item.json['Negative Prompt'] || 'blurred, low resolution, ant, spider, centipede' }}",
+              "type": "string"
+            },
+            {
+              "id": "d897fdca-df03-4b05-a637-c534a0a50953",
+              "name": "client_id",
+              "value": "={{  $('Connection Config Duplicate').item.json.client_id }}",
+              "type": "string"
+            },
+            {
+              "id": "e88fce95-9e97-4be0-b3d0-8cefb04d830a",
+              "name": "workflow['13'].inputs.noise_seed",
+              "value": "={{ Math.random().toString().split(\".\")[1].trim('0') }}",
+              "type": "number"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -1088,
+        3600
+      ],
+      "id": "4e6e4554-96f4-410d-afff-a2c96a66132a",
+      "name": "Edit Txt2Img Inputs",
+      "notesInFlow": true,
+      "notes": "Positive & Negative Prompt, seeds, etc."
+    },
+    {
+      "parameters": {
+        "content": "## Queue Prompt",
+        "height": 380,
+        "width": 400,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2704,
+        4128
+      ],
+      "id": "a7cd5789-ec0a-401b-9b5b-be8e5f7a73fc",
+      "name": "Sticky Note15"
+    },
+    {
+      "parameters": {
+        "content": "## Wait For Prompt To Complete",
+        "height": 380,
+        "width": 1000,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2288,
+        4128
+      ],
+      "id": "47f00fa1-c05b-4965-b60e-c54b1f2cd560",
+      "name": "Sticky Note16"
+    },
+    {
+      "parameters": {
+        "content": "# When executed as sub-workflow\nThis is the expected usage pattern, allowing the core ComfyUI call to remain as generalized as possible.",
+        "height": 960,
+        "width": 2560,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3216,
+        4032
+      ],
+      "id": "74077850-12b9-4317-905d-53e66d02a8b6",
+      "name": "Sticky Note17"
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "message"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        -1024,
+        4784
+      ],
+      "id": "f82196df-0f58-42cf-9fa3-6f197a10c312",
+      "name": "Aggregate1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "## Error Handling\nSet up Discord Bot Credentials, or replace with WhatsApp, Telegram, Gmail, etc.",
+        "height": 440,
+        "width": 2520,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3184,
+        4528
+      ],
+      "id": "c2e9e895-b79d-4e0c-b3bd-c8b6fc41a7ed",
+      "name": "Sticky Note18"
+    },
+    {
+      "parameters": {
+        "content": "# Examples\n## For Testing and Reference",
+        "height": 1200,
+        "width": 2980,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3216,
+        2736
+      ],
+      "id": "45771a12-2e1d-41c7-8cec-25768dfba66a",
+      "name": "Sticky Note19"
+    },
+    {
+      "parameters": {
+        "content": "## Img2Img",
+        "height": 640,
+        "width": 1300,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        2752
+      ],
+      "id": "e1b34253-43ca-4033-8645-d9f0d50a9687",
+      "name": "Sticky Note20"
+    },
+    {
+      "parameters": {
+        "content": "## Txt2Img",
+        "height": 500,
+        "width": 1300,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -1952,
+        3408
+      ],
+      "id": "02f598eb-d2d0-4806-a9c6-149b2ccf171d",
+      "name": "Sticky Note21"
+    },
+    {
+      "parameters": {
+        "content": "# Runs THIS workflow\nRunning this workflow as a sub-workflow will be the normal pattern.\n\n**When Executed by Another Workflow** will be triggered with the **ComfyUI Workflow** prepopulated with relevant values.\n\n ",
+        "height": 1160,
+        "width": 380,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -624,
+        2752
+      ],
+      "id": "c3480b1d-1254-421c-ba75-be86a838ea8e",
+      "name": "Sticky Note22"
+    },
+    {
+      "parameters": {
+        "content": "## Start Here\nTo test this workflow, start here.",
+        "height": 280,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -3152,
+        3232
+      ],
+      "id": "610eb19b-a349-4bb3-bc85-5d51eb941bd4",
+      "name": "Sticky Note23"
+    },
+    {
+      "parameters": {
+        "content": "## Client ID\nAny Unique UUID string will do. Just reuse this in your workflow.",
+        "height": 280,
+        "width": 220
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2896,
+        3232
+      ],
+      "id": "cf5db18b-d8db-42c6-a96d-cb80b9cfe5f8",
+      "name": "Sticky Note24"
+    },
+    {
+      "parameters": {
+        "content": "## Connection\nURL of your local ComfyUI instance.",
+        "height": 280,
+        "width": 200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2656,
+        3232
+      ],
+      "id": "2a0e2c48-2df4-4a50-9ce7-7727b5c6e27a",
+      "name": "Sticky Note25"
+    },
+    {
+      "parameters": {
+        "content": "## Connection\nURL of your local ComfyUI instance.",
+        "height": 380,
+        "width": 200
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2928,
+        4128
+      ],
+      "id": "dcdaa585-af3d-4804-b749-22522d55749c",
+      "name": "Sticky Note26"
+    },
+    {
+      "parameters": {
+        "content": "## Test Options:\n* Txt2Img\n* Img2Img",
+        "height": 280,
+        "width": 440,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -2432,
+        3232
+      ],
+      "id": "b978a4ae-d743-4db7-ac9e-c3a72e46e67f",
+      "name": "Sticky Note27"
+    },
+    {
+      "parameters": {
+        "jsCode": "// n8n Code node: guard for Discord upload\nconst item = items[0];\nitem.json = item.json || {};\nitem.binary = item.binary || {};\n\nif (!item.binary.video) {\n  throw new Error(\"Discord upload blocked: binary.video is missing. Did Comfy finish and produce an MP4?\");\n}\n\n// Always give Discord a non-empty message\nif (!item.json.discordMessage || !String(item.json.discordMessage).trim()) {\n  item.json.discordMessage = `Newscast 🎥 — ${item.json.output ?? ''}`.trim();\n}\n\nreturn items;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        3648
+      ],
+      "id": "aeead748-03ce-4c8d-a377-a17c6c590154",
+      "name": "Quick Guard",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "output",
+              "value": "Good evening. Here’s your latest crypto trading analysis. Bitcoin steady; QUBIC volatile; stay nimble."
+            },
+            {
+              "name": "imageUri",
+              "value": "DuckBotNewsAnchor7.png"
+            },
+            {
+              "name": "comfyBase",
+              "value": "http://127.0.0.1:8188"
+            }
+          ],
+          "number": [
+            {
+              "name": "fps",
+              "value": 16
+            },
+            {
+              "name": "width",
+              "value": 736
+            },
+            {
+              "name": "height",
+              "value": 736
+            }
+          ],
+          "boolean": [
+            {
+              "name": "waitForever",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "a02e4ec1-e0a8-47f2-90c7-b8dcaf98b275",
+      "name": "Set Narration & Config",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        3648
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.comfyBase }}/view",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "filename",
+              "value": "={{ $json.video_meta.filename }}"
+            },
+            {
+              "name": "subfolder",
+              "value": "={{ $json.video_meta.subfolder }}"
+            },
+            {
+              "name": "type",
+              "value": "={{ $json.video_meta.type }}"
+            }
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "video"
+            }
+          }
+        }
+      },
+      "id": "5216d9f7-6629-4b5d-95c4-85cf2e478a82",
+      "name": "IMPORT VIDEO (HTTP /view)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        320,
+        3648
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "move",
+        "options": {}
+      },
+      "id": "12ad9463-4b00-47eb-93a1-138b4e560d21",
+      "name": "Move → binary.video",
+      "type": "n8n-nodes-base.moveBinaryData",
+      "typeVersion": 1,
+      "position": [
+        496,
+        3648
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * generate_news_video_improved — uses your single-GPU optimized ComfyUI graph\n * - Auto-length from narration\n * - Injects narration into TTS (171) and positive prompt (105)\n * - SaveVideo MP4 with proper download\n * - Waits until job completes, then fetches MP4 into binary.video\n *\n * Expected item.json fields:\n *   $json.output       -> narration text (used by TTS + stuffed into prompt context)\n *   $json.imageUri     -> e.g. \"DuckBotNewsAnchor7.png\" (must be in ComfyUI/input)\n *   $json.comfyBase    -> e.g. \"http://127.0.0.1:8188\"\n *\n * Produces:\n *   $json.video_meta { filename, subfolder, type }  (for /view import)\n *   $json.comfyBase  (echo for downstream HTTP node)\n */\nconst wait = (ms)=>new Promise(r=>setTimeout(r,ms));\nconst randTag = () => `${Date.now()}_${Math.floor(Math.random()*1e6)}`;\n\nconst item = items[0] || { json:{}, binary:{} };\nitem.json ||= {};\nitem.binary ||= {};\n\nconst CFG = {\n  base: (item.json.comfyBase || 'http://127.0.0.1:8188').replace(/\\/$/,''),\n  imageUri: item.json.imageUri || 'DuckBotNewsAnchor7.png',\n  voice: item.json.voice || '[English] en-US Andrew',\n  voiceSpeed: Number(item.json.voiceSpeed ?? 1),\n  pitch: Number(item.json.pitch ?? 6),\n  fps: Number(item.json.fps || 16),\n  minSeconds: Number(item.json.minSeconds || 5),\n  maxSeconds: Number(item.json.maxSeconds || 60),\n  width: Number(item.json.width || 736),\n  height: Number(item.json.height || 736),\n  saveCodec: String(item.json.saveCodec || 'libx264'),\n  pollMs: Number(item.json.pollMs || 2000),\n  maxSleepMs: Number(item.json.maxSleepMs || 15000),\n  waitForever: item.json.waitForever !== false, // default true (good for 10–15m renders)\n  maxPolls: Number(item.json.maxPolls || 0),\n  maxWaitMs: Number(item.json.maxWaitMs || 0),\n};\n\nfunction toInputFilename(v){\n  if (!v || typeof v!=='string') return 'DuckBotNewsAnchor7.png';\n  let s = v;\n  if (s.toLowerCase().startsWith('file://')) s = s.slice(7);\n  while (s.includes('\\\\')) s = s.replace('\\\\','/');\n  const parts = s.split('/');\n  return parts.pop() || 'DuckBotNewsAnchor7.png';\n}\nconst imageInputName = toInputFilename(CFG.imageUri);\n\nconst narration = (typeof item.json.output==='string' && item.json.output.trim())\n  ? item.json.output.trim()\n  : \"Good evening. Here's your latest crypto trading analysis.\";\n\n// auto size by narration length\nfunction estimateSeconds(text, minS, maxS, speed){\n  const words = text.trim().split(/\\s+/).filter(Boolean).length||1;\n  const WPS = 2.6 * (speed>0?speed:1);\n  const est = words / WPS;\n  return Math.max(minS, Math.min(maxS, est));\n}\nconst seconds = Number.isFinite(Number(item.json.targetSeconds))\n  ? Number(item.json.targetSeconds)\n  : estimateSeconds(narration, CFG.minSeconds, CFG.maxSeconds, CFG.voiceSpeed);\nconst frames = Math.max(24, Math.ceil(seconds * CFG.fps));\n\nconst jobTag = `news_${randTag()}`;\n\n// -------- Comfy graph (image ➜ video + TTS + mux) --------\nconst graph = {\n  113: { inputs:{ unet_name:'wan2.1_vace_14B_fp16.safetensors', weight_dtype:'default' }, class_type:'UNETLoader', _meta:{ title:'Load Diffusion Model' } },\n  127: { inputs:{ clip_name:'umt5_xxl_fp16.safetensors', type:'wan', device:'default' }, class_type:'CLIPLoader', _meta:{ title:'Load CLIP' } },\n  115: { inputs:{ lora_name:'Wan21_CausVid_14B_T2V_lora_rank32.safetensors', strength_model:0.3, strength_clip:1, model:[113,0], clip:[127,0] }, class_type:'LoraLoader', _meta:{ title:'Load LoRA' } },\n  110: { inputs:{ shift:8, model:[115,0] }, class_type:'ModelSamplingSD3', _meta:{ title:'ModelSamplingSD3' } },\n  114: { inputs:{ vae_name:'wan_2.1_vae.safetensors' }, class_type:'VAELoader', _meta:{ title:'Load VAE' } },\n\n  73:  { inputs:{ image: imageInputName }, class_type:'LoadImage', _meta:{ title:'Load Image' } },\n\n  105: { inputs:{ \n      text: 'Professional Purple Sun duck news anchor in navy business suit, confident posture at news desk, animated speaking motion with subtle head movements and beak articulation, Purple Sun cosmic logo glowing behind, multiple LCD monitors displaying Bitcoin and crypto charts, financial newsroom setting, warm studio lighting, broadcast television quality, smooth animation, duck character maintaining professional demeanor while delivering crypto trading analysis.\\n\\nScript (context only, do NOT render text): {{ $json.output }}\\nNarration (verbatim, do not draw): ' + narration,\n      clip: [115,1]\n    }, class_type:'CLIPTextEncode', _meta:{ title:'Video Positive Prompt' } },\n\n  107: { inputs:{ \n      text: 'distorted face, extra fingers, deformed hands, text, lower third, ticker, subtitles, logo, watermark, channel bug, UI overlay, chroma-key halo, green spill, fisheye, dutch angle, skewed horizon, lowres, blurry, oversharpen halos, banding, tiling, compression artifacts, bad perspective, heavy motion blur, ghosting, frame duplication',\n      clip: [115,1]\n    }, class_type:'CLIPTextEncode', _meta:{ title:'Video Negative Prompt' } },\n\n  109: { inputs:{ width: CFG.width, height: CFG.height, length: frames, batch_size:1, strength:1.0, positive:[105,0], negative:[107,0], vae:[114,0], reference_image:[73,0] }, class_type:'WanVaceToVideo', _meta:{ title:'WanVaceToVideo' } },\n\n  108: { inputs:{ seed: 720080944430405, steps:4, cfg:1, sampler_name:'uni_pc', scheduler:'simple', denoise:1, model:[110,0], positive:[109,0], negative:[109,1], latent_image:[109,2] }, class_type:'KSampler', _meta:{ title:'KSampler' } },\n  118: { inputs:{ trim_amount:[109,3], samples:[108,0] }, class_type:'TrimVideoLatent', _meta:{ title:'TrimVideoLatent' } },\n  119: { inputs:{ samples:[118,0], vae:[114,0] }, class_type:'VAEDecode', _meta:{ title:'VAE Decode' } },\n\n  171: { inputs:{ value: narration }, class_type:'String', _meta:{ title:'📝 TTS Script Input' } },\n  170: { inputs:{ text:[171,0], voice: CFG.voice, speed: CFG.voiceSpeed, pitch: CFG.pitch }, class_type:'EdgeTTS', _meta:{ title:'🎤 Generate TTS Audio' } },\n  169: { inputs:{ filepath:'tts_narration', format:'mp3', quality:'high', overwrite:false, audio:[170,0] }, class_type:'Save_Audio', _meta:{ title:'💾 Save TTS Audio' } },\n\n  68:  { inputs:{ fps: CFG.fps, images:[119,0], audio:[170,0] }, class_type:'CreateVideo', _meta:{ title:'Create Video' } },\n  69:  { inputs:{ filename_prefix:'video/' + jobTag, format:'mp4', codec: CFG.saveCodec, 'video-preview':'', video:[68,0] }, class_type:'SaveVideo', _meta:{ title:'Save Video' } }\n};\n\n// tiny HTTP helper\nasync function httpJson(opts){\n  return this.helpers.httpRequest({\n    method: opts.method || 'GET',\n    url: CFG.base + opts.path,\n    qs: opts.qs,\n    body: opts.body,\n    json: true,\n  });\n}\n\n// submit\nconst client_id = (globalThis.crypto?.randomUUID && crypto.randomUUID()) || (Date.now() + '_' + Math.floor(Math.random()*1e6));\nconst post = await httpJson.call(this, { method:'POST', path:'/prompt', body:{ prompt: graph, client_id } });\nconst prompt_id = post?.prompt_id; if (!prompt_id) throw new Error('ComfyUI: missing prompt_id');\n\n// poll with dynamic backoff\nlet slept = CFG.pollMs, polls = 0, t0 = Date.now();\nwhile (true) {\n  await wait(slept);\n  const hist = await httpJson.call(this, { method:'GET', path:'/history/' + prompt_id });\n  const status = hist?.[prompt_id]?.status || {};\n  if (status.completed) break;\n  if (String(status.status_str||'').toLowerCase()==='error') throw new Error('ComfyUI job error: ' + status.status_str);\n  slept = Math.min(CFG.maxSleepMs, Math.ceil(slept*1.3));\n  polls++;\n  if (!CFG.waitForever) {\n    if (CFG.maxPolls>0 && polls>CFG.maxPolls) throw new Error('Timed out (poll limit)');\n    if (CFG.maxWaitMs>0 && Date.now()-t0>CFG.maxWaitMs) throw new Error('Timed out (time cap)');\n  }\n}\n\n// gather outputs (metadata only)\nconst history2 = await httpJson.call(this, { method:'GET', path:'/history/' + prompt_id });\nconst outputs = history2?.[prompt_id]?.outputs || {};\nconst files = [];\nfor (const nodeId of Object.keys(outputs)) {\n  const nodeOut = outputs[nodeId] || {};\n  for (const key of Object.keys(nodeOut)) {\n    const arr = Array.isArray(nodeOut[key]) ? nodeOut[key] : [];\n    for (const f of arr) if (f?.filename) files.push({\n      fromNode: nodeId, key, filename: f.filename, subfolder: f.subfolder || '', type: f.type || 'output',\n      ext: (f.filename.split('.').pop()||'').toLowerCase()\n    });\n  }\n}\nconst mp4 = files.find(f => f.fromNode==='69' && f.ext==='mp4') || files.find(f => f.ext==='mp4');\nif (mp4) item.json.video_meta = mp4;\nitem.json.files = files;\nitem.json.prompt_id = prompt_id;\nitem.json.comfyBase = CFG.base;\nitem.json.autoSizing = { seconds: Number((frames/CFG.fps).toFixed(2)), fps: CFG.fps, frames, width: CFG.width, height: CFG.height };\n\nreturn [item];\n"
+      },
+      "id": "b828c538-cd5f-4973-8811-bdac874a2685",
+      "name": "generate_news_video2",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        128,
+        3648
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Ensure we actually have the MP4 imported before posting to Discord\nconst meta = items[0]?.json?.video_meta;\nif (!meta?.filename) {\n  throw new Error(\"binary.video missing — run the IMPORT step or wait for SaveVideo to finish.\");\n}\nreturn items;\n"
+      },
+      "id": "9c70c6c6-6f83-471c-b569-270c96037279",
+      "name": "Quick Guard1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        656,
+        3648
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        784,
+        3472
+      ],
+      "id": "90534e71-4edc-4171-a191-c49e91c9efcf",
+      "name": "Mini",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        592,
+        3472
+      ],
+      "id": "64b68b62-c5e8-4366-9295-f1ad590de66f",
+      "name": "Mini1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "output",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "imageUri",
+              "value": "DuckBotNewsAnchor7.png"
+            },
+            {
+              "name": "comfyBase",
+              "value": "http://127.0.0.1:8188"
+            },
+            {
+              "name": "voice",
+              "value": "[English] en-US Andrew"
+            }
+          ],
+          "number": [
+            {
+              "name": "fps",
+              "value": 16
+            },
+            {
+              "name": "width",
+              "value": 736
+            },
+            {
+              "name": "height",
+              "value": 736
+            },
+            {
+              "name": "voiceSpeed",
+              "value": 1
+            },
+            {
+              "name": "pitch",
+              "value": 6
+            }
+          ],
+          "boolean": [
+            {
+              "name": "waitForever",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b469ab08-d42e-4887-83f6-d42c0a887396",
+      "name": "Set Inputs (you can delete)2",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        2208,
+        1056
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "http://100.113.28.30:8188/view?filename=news_audio.mp3&type=output",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "audio"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2576,
+        1056
+      ],
+      "id": "d0ac56a3-a4e1-4e70-b36f-7f505b8809bc",
+      "name": "Download Audio File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "const item = items[0];\nconst comfyBase = item.json.comfyui_url || 'http://100.113.28.30:8188';\nconst narration = item.json.output || item.json.narration || 'Default narration';\n\nconst audioGeneratorWorkflow = {\n    \"171\": {\n        \"inputs\": { \"value\": narration },\n        \"class_type\": \"String\"\n    },\n    \"170\": {\n        \"inputs\": { \"text\": narration, \"voice\": \"[English] en-US Andrew\", \"speed\": 1, \"pitch\": 6 },\n        \"class_type\": \"EdgeTTS\"\n    },\n    \"169\": {\n        \"inputs\": { \"filepath\": \"news_audio\", \"format\": \"mp3\", \"quality\": \"high\", \"overwrite\": true, \"audio\": [\"170\", 0] },\n        \"class_type\": \"Save_Audio\"\n    }\n};\n\nconst runComfyWorkflow = async function(workflowJson, comfyBase) {\n  const client_id = (globalThis.crypto?.randomUUID && crypto.randomUUID()) || `${Date.now()}_${Math.floor(Math.random()*1e6)}`;\n  const post_data = { prompt: workflowJson, client_id: client_id };\n  const response = await this.helpers.httpRequest({\n    method: 'POST',\n    url: `${comfyBase}/prompt`,\n    body: post_data,\n    json: true,\n  });\n  const prompt_id = response?.prompt_id;\n  if (!prompt_id) {\n    throw new Error('ComfyUI: missing prompt_id');\n  }\n  while (true) {\n    await new Promise(resolve => setTimeout(resolve, 2000));\n    const history = await this.helpers.httpRequest({\n      method: 'GET',\n      url: `${comfyBase}/history/${prompt_id}`,\n      json: true,\n    });\n    const status = history?.[prompt_id]?.status;\n    if (status?.completed) return history[prompt_id].outputs;\n    if (status?.status_str?.toLowerCase?.() === 'error') {\n      throw new Error(`ComfyUI job error: ${status.status_str || 'unknown'}`);\n    }\n  }\n}\n\nconst outputs = await runComfyWorkflow.call(this, audioGeneratorWorkflow, comfyBase);\n\n// Extract audio file from ComfyUI outputs\nconst files = [];\nfor (const nodeId of Object.keys(outputs)) {\n  const nodeOut = outputs[nodeId] || {};\n  for (const key of Object.keys(nodeOut)) {\n    const list = Array.isArray(nodeOut[key]) ? nodeOut[key] : [];\n    for (const obj of list) {\n      if (!obj?.filename) continue;\n      files.push({\n        filename: obj.filename,\n        subfolder: obj.subfolder || '',\n        type: obj.type || 'output',\n        ext: (obj.filename.split('.').pop() || '').toLowerCase(),\n        fromNode: nodeId,\n        key,\n      });\n    }\n  }\n}\n\n// Find the MP3 audio file and download it directly\nconst mp3File = files.find(f => f.ext === 'mp3');\nif (mp3File) {\n  // Download the audio file from ComfyUI and prepare binary data\n  const url = `${comfyBase}/view?filename=${encodeURIComponent(mp3File.filename)}&type=${encodeURIComponent(mp3File.type)}&subfolder=${encodeURIComponent(mp3File.subfolder)}`;\n  const audioData = await this.helpers.httpRequest({ method: 'GET', url, encoding: null });\n  const audioBinary = this.helpers.prepareBinaryData(audioData, mp3File.filename, 'audio/mpeg');\n  \n  item.binary = item.binary || {};\n  item.binary.data = audioBinary;\n  item.json.audioReady = true;\n  item.json.audioFilename = mp3File.filename;\n  console.log(`Audio generation completed. File: ${mp3File.filename}`);\n} else {\n  console.log('No MP3 file found in ComfyUI outputs');\n  item.json.audioReady = false;\n}\n\nreturn item;"
+      },
+      "id": "2b2f8390-223e-4217-ad2b-69d4ef3c8d5e",
+      "name": "generate_news_audio",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2384,
+        1056
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are DuckBot, a professional news caster.  \nYour job is to prepare text for natural Text-to-Speech (TTS) delivery in a podcast/news style.  \n\nInstructions:  \n- Remove ALL emojis and special characters such as #, *, or $.  \n- DO NOT remove or alter any actual information.  \n- Reformat the text so it flows naturally when spoken aloud, like a news broadcast.  \n- For major or breaking news, begin the report with: \"Breaking News! From DuckBot!\"  \n- Keep the language professional, clear, and natural for human listening.  \n- Do NOT include explanations, thoughts, or notes—ONLY the final spoken script.\n- IMPORTANT: DO NOT add HASHTAGS OR ASTERISK IGNORE THEM! THESE CANNOT BE IN WHAT IS PASSED FORWARD!\n- Style CNBC Style\nBefore producing final output:\n- Strip ALL Markdown, hashtags (#), and asterisks (*).\n- Flatten tables/lists into plain sentences.\n- Only pass plain sentences with no symbols that TTS would read literally.\n- If the input had \"#### Bitcoin\" → output as \"Bitcoin\".\n- If the input had \"**Recommendation** – Buy Qubic\" → output as \"Recommendation – Buy Qubic\".\n\nOutput ONLY the clean spoken script.\n\nFinal Output:  \n{{ $json.output }}\n",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1888,
+        1056
+      ],
+      "id": "47df4f69-1ed5-49ca-9333-26eb3d6f6681",
+      "name": "TTS Formatter",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1664,
+        1056
+      ],
+      "id": "2bcfa162-ee77-4b56-a400-3ea0af278a34",
+      "name": "Merge1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "output",
+              "value": "={{ $json.output }}"
+            },
+            {
+              "name": "imageUri",
+              "value": "DuckBotNewsAnchor7.png"
+            },
+            {
+              "name": "comfyBase",
+              "value": "http://127.0.0.1:8188"
+            },
+            {
+              "name": "voice",
+              "value": "[English] en-US Andrew"
+            }
+          ],
+          "number": [
+            {
+              "name": "fps",
+              "value": 16
+            },
+            {
+              "name": "width",
+              "value": 736
+            },
+            {
+              "name": "height",
+              "value": 736
+            },
+            {
+              "name": "voiceSpeed",
+              "value": 1
+            },
+            {
+              "name": "pitch",
+              "value": 6
+            }
+          ],
+          "boolean": [
+            {
+              "name": "waitForever",
+              "value": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "6e0f8045-2bb5-4d73-b2a1-eabd11f767ed",
+      "name": "Set Inputs (you can delete)",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        4016
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "jsCode": "/**\n * dual_gpu_chunker_v2 — TWO-GPU chunk render w/ robust TTS + concurrent polling\n * - Worker A (baseA) runs EdgeTTS once → news_audio.mp3\n * - Video is split into 121-frame chunks and alternated across A/B\n * - SaveVideo names: video/<jobTag>_chunk_000.mp4, ... (stable + ordered)\n * - Concurrent polling of chunk jobs for faster wall time\n * - Voice resolver queries /object_info to pick a valid EdgeTTS voice (no silent mp3s)\n *\n * Inputs expected on $json:\n *   comfyBaseA, comfyBaseB (e.g., http://<ip>:8188 and http://<ip>:8288)\n *   output (narration text), imageUri (filename in ComfyUI/input or file:///path)\n *   fps, width, height, chunkFrames (default 121), saveCodec ('auto'|'h264')\n *   voice, voiceSpeed, pitch\n */\n\nconst pause = (ms) => new Promise(r => setTimeout(r, ms));\nconst randTag = () => `${Date.now()}_${Math.floor(Math.random()*1e6)}`;\n\nconst item = items[0] || { json:{}, binary:{} };\nitem.json ||= {};\nitem.binary ||= {};\n\nconst CFG = {\n  // two workers (B optional; if missing we fall back to A)\n  baseA: (item.json.comfyBaseA || item.json.comfyBase || 'http://127.0.0.1:8188').replace(/\\/$/,''),\n  baseB: (item.json.comfyBaseB || '').replace(/\\/$/,''),\n  // visuals\n  imageUri: item.json.imageUri || 'DuckBotNewsAnchor7.png',\n  fps: Number(item.json.fps || 12),\n  width: Number(item.json.width || 736),\n  height: Number(item.json.height || 736),\n  // chunking\n  chunkFrames: Number(item.json.chunkFrames || 121),\n  // narration\n  voice: item.json.voice || '[English] en-US Andrew',\n  voiceSpeed: Number(item.json.voiceSpeed ?? 1),\n  pitch: Number(item.json.pitch ?? 6),\n  minSeconds: Number(item.json.minSeconds || 5),\n  maxSeconds: Number(item.json.maxSeconds || 240),\n  // polling/backoff\n  pollMs: Number(item.json.pollMs || 2000),\n  maxSleepMs: Number(item.json.maxSleepMs || 15000),\n  waitForever: item.json.waitForever !== false,\n  maxPolls: Number(item.json.maxPolls || 0),\n  maxWaitMs: Number(item.json.maxWaitMs || 0),\n  // encoding for SaveVideo\n  codec: String(item.json.saveCodec || 'h264'), // use 'auto' if libx264 missing\n  // concurrency (how many chunk polls to do at once — 4 is safe)\n  pollConcurrency: Number(item.json.pollConcurrency || 4),\n};\n\nfunction toInputFilename(v){\n  if (!v || typeof v!=='string') return 'DuckBotNewsAnchor7.png';\n  let s = v;\n  if (s.toLowerCase().startsWith('file://')) s = s.slice(7);\n  s = s.replace(/\\\\/g,'/');\n  const parts = s.split('/');\n  return parts.pop() || 'DuckBotNewsAnchor7.png';\n}\nconst imageInputName = toInputFilename(CFG.imageUri);\n\nconst narration = (typeof item.json.output === 'string' && item.json.output.trim())\n  ? item.json.output.trim()\n  : \"Good evening. Here's your latest crypto trading analysis.\";\n\n// auto length from narration\nfunction estimateSeconds(text, minS, maxS, speed){\n  const words = text.trim().split(/\\s+/).filter(Boolean).length || 1;\n  const WPS = 2.6 * (speed>0?speed:1);\n  return Math.max(minS, Math.min(maxS, words / WPS));\n}\nconst seconds = Number.isFinite(Number(item.json.targetSeconds))\n  ? Number(item.json.targetSeconds)\n  : estimateSeconds(narration, CFG.minSeconds, CFG.maxSeconds, CFG.voiceSpeed);\n\nconst totalFrames = Math.max(24, Math.ceil(seconds * CFG.fps));\nconst chunkFrames = Math.max(1, CFG.chunkFrames);\nconst numChunks = Math.ceil(totalFrames / chunkFrames);\nconst jobTag = `news_${randTag()}`;\nfunction framesFor(i){ const start=i*chunkFrames, remain=totalFrames-start; return Math.max(1, Math.min(chunkFrames, remain)); }\n\n// ---------- HTTP helpers ----------\nasync function httpJson(base, opts){\n  return this.helpers.httpRequest({\n    method: opts.method || 'GET',\n    url: base + opts.path,\n    qs: opts.qs,\n    body: opts.body,\n    json: true,\n    timeout: 0,\n  });\n}\n\n// ---------- EdgeTTS voice resolver ----------\nasync function resolveVoice(base, desired){\n  try {\n    const info = await httpJson.call(this, base, { method:'GET', path:'/object_info' });\n    const edge = info?.EdgeTTS || info?.nodes?.EdgeTTS;\n    const opt = edge?.input?.optional || {};\n    const def = opt.voice;\n    const choices = Array.isArray(def) && def[1] && Array.isArray(def[1].choices) ? def[1].choices : [];\n    const fallback = Array.isArray(def) && def[1] && typeof def[1].default === 'string' ? def[1].default : '';\n    if (!choices.length) return desired || fallback || '[English] en-US Andrew';\n    // exact\n    if (choices.includes(desired)) return desired;\n    const dl = String(desired||'').toLowerCase();\n    const ci = choices.find(c => c.toLowerCase() === dl);\n    if (ci) return ci;\n    const tokens = dl.split(/[^a-z0-9]+/i).filter(Boolean);\n    if (tokens.length){\n      const scored = choices.map(c=>{\n        const cl=c.toLowerCase(); let hits=0; for (const t of tokens) if (cl.includes(t)) hits++;\n        return {c,hits};\n      }).filter(x=>x.hits>0).sort((a,b)=>b.hits-a.hits);\n      if (scored[0]) return scored[0].c;\n    }\n    return fallback || choices[0];\n  } catch { return desired || '[English] en-US Andrew'; }\n}\n\n// ---------- submit & poll ----------\nasync function submitGraph(base, graph){\n  const client_id = (globalThis.crypto?.randomUUID && crypto.randomUUID())\n    || (Date.now() + '_' + Math.floor(Math.random()*1e6));\n  const post = await httpJson.call(this, base, { method:'POST', path:'/prompt', body:{ prompt: graph, client_id } });\n  const prompt_id = post?.prompt_id;\n  if (!prompt_id) throw new Error(`ComfyUI (${base}): missing prompt_id`);\n  return { client_id, prompt_id };\n}\n\nasync function pollDone(base, prompt_id){\n  let slept = CFG.pollMs, polls=0, t0=Date.now();\n  while (true){\n    await pause(slept);\n    const hist = await httpJson.call(this, base, { method:'GET', path:'/history/'+prompt_id });\n    const status = hist?.[prompt_id]?.status || {};\n    if (status.completed) return hist?.[prompt_id]?.outputs || {};\n    if (String(status.status_str||'').toLowerCase()==='error'){\n      const msg = status?.error || status?.status_str || 'unknown';\n      throw new Error(`ComfyUI (${base}) job error: ${msg}`);\n    }\n    slept = Math.min(CFG.maxSleepMs, Math.ceil(slept*1.3));\n    polls++;\n    if (!CFG.waitForever){\n      if (CFG.maxPolls>0 && polls>CFG.maxPolls) throw new Error('Timed out (poll limit)');\n      if (CFG.maxWaitMs>0 && Date.now()-t0>CFG.maxWaitMs) throw new Error('Timed out (time cap)');\n    }\n  }\n}\n\nfunction filesFromOutputs(outputs){\n  const files = [];\n  for (const nodeId of Object.keys(outputs||{})){\n    const nodeOut = outputs[nodeId] || {};\n    for (const key of Object.keys(nodeOut)){\n      const arr = Array.isArray(nodeOut[key]) ? nodeOut[key] : [];\n      for (const f of arr){\n        if (!f?.filename) continue;\n        files.push({\n          fromNode: nodeId, key,\n          filename: f.filename,\n          subfolder: f.subfolder || '',\n          type: f.type || 'output',\n          ext: (f.filename.split('.').pop()||'').toLowerCase(),\n        });\n      }\n    }\n  }\n  return files;\n}\n\nfunction viewUrl(base, f){\n  const q = new URLSearchParams({ filename:f.filename, type:(f.type||'output') });\n  if (f.subfolder) q.set('subfolder', f.subfolder);\n  // include folder_type for some builds that require it:\n  q.set('folder_type', f.type || 'output');\n  return `${base}/view?${q.toString()}`;\n}\n\n// ---------- graphs ----------\nfunction ttsGraph(chosenVoice){\n  return {\n    171: { inputs:{ value: narration }, class_type:'String', _meta:{ title:'📝 TTS Script Input' } },\n    170: { inputs:{ text:[171,0] }, class_type:'EdgeTTS', _meta:{ title:'🎤 Generate TTS Audio' }, widgets_values:['', chosenVoice, CFG.voiceSpeed, CFG.pitch] },\n    169: { inputs:{ audio:[170,0] }, class_type:'Save_Audio', _meta:{ title:'💾 Save TTS Audio' }, widgets_values:['news_audio','mp3','high',true] }\n  };\n}\n\nfunction chunkGraph(framesThis, chunkIndex){\n  const pad = String(chunkIndex).padStart(3,'0');\n  return {\n    113: { inputs:{ unet_name:'wan2.1_vace_14B_fp16.safetensors', weight_dtype:'fp8_e4m3fn_fast' }, class_type:'UNETLoader' },\n    127: { inputs:{ clip_name:'umt5_xxl_fp16.safetensors', type:'wan', device:'cpu' }, class_type:'CLIPLoader' },\n    115: { inputs:{ lora_name:'Wan21_CausVid_14B_T2V_lora_rank32.safetensors', strength_model:0.3, strength_clip:1, model:[113,0], clip:[127,0] }, class_type:'LoraLoader' },\n    110: { inputs:{ shift:8, model:[115,0] }, class_type:'ModelSamplingSD3' },\n    114: { inputs:{ vae_name:'wan_2.1_vae.safetensors' }, class_type:'VAELoader' },\n    73:  { inputs:{ image: imageInputName }, class_type:'LoadImage' },\n    105: { inputs:{ text:\n      'Professional Purple Sun duck news anchor in navy business suit, confident posture at news desk, animated speaking motion with subtle head movements and beak articulation, Purple Sun cosmic logo glowing behind, multiple LCD monitors displaying Bitcoin and crypto charts, financial newsroom setting, warm studio lighting, broadcast television quality, smooth animation, duck character maintaining professional demeanor while delivering crypto trading analysis.\\n\\nScript (context only, do NOT render text): ' + narration,\n      clip:[115,1] }, class_type:'CLIPTextEncode' },\n    107: { inputs:{ text:\n      'distorted face, extra fingers, deformed hands, text, lower third, ticker, subtitles, logo, watermark, channel bug, UI overlay, chroma-key halo, green spill, fisheye, dutch angle, skewed horizon, lowres, blurry, oversharpen halos, banding, tiling, compression artifacts, bad perspective, heavy motion blur, ghosting, frame duplication',\n      clip:[115,1] }, class_type:'CLIPTextEncode' },\n    109: { inputs:{ width: CFG.width, height: CFG.height, length: framesThis, batch_size:1, strength:1.0, positive:[105,0], negative:[107,0], vae:[114,0], reference_image:[73,0] }, class_type:'WanVaceToVideo' },\n    108: { inputs:{ seed: 760284719239605, steps:4, cfg:1, sampler_name:'uni_pc', scheduler:'simple', denoise:1, model:[110,0], positive:[109,0], negative:[109,1], latent_image:[109,2] }, class_type:'KSampler' },\n    118: { inputs:{ trim_amount:[109,3], samples:[108,0] }, class_type:'TrimVideoLatent' },\n    119: { inputs:{ samples:[118,0], vae:[114,0] }, class_type:'VAEDecode' },\n    68:  { inputs:{ images:[119,0] }, class_type:'CreateVideo', widgets_values:[CFG.fps] },\n    69:  { inputs:{ video:[68,0] }, class_type:'SaveVideo', widgets_values:[`video/${jobTag}_chunk_${pad}`,'mp4',CFG.codec] }\n  };\n}\n\n// ---------- run ----------\nconst bases = [CFG.baseA, CFG.baseB || CFG.baseA].filter(Boolean); // fall back to single worker if B empty\n\n// 1) Resolve a valid EdgeTTS voice on Worker A, then synthesize audio once\nconst chosenVoice = await resolveVoice.call(this, CFG.baseA, CFG.voice);\nitem.json.tts_voice = { requested: CFG.voice, chosen: chosenVoice };\n\nconst ttsSubmit = await submitGraph.call(this, CFG.baseA, ttsGraph(chosenVoice));\nconst ttsOutputs = await pollDone.call(this, CFG.baseA, ttsSubmit.prompt_id);\nconst ttsFiles = filesFromOutputs(ttsOutputs);\nconst mp3 = ttsFiles.find(f => f.ext==='mp3');\nif (!mp3) throw new Error('TTS produced no MP3. Check EdgeTTS voice / internet on Worker A.');\nconst tts_url = viewUrl(CFG.baseA, mp3);\n\n// 2) Submit all chunks alternating bases\nconst chunkJobs = [];\nfor (let i=0;i<numChunks;i++){\n  const base = bases[i % bases.length];\n  const framesThis = framesFor(i);\n  const g = chunkGraph(framesThis, i);\n  const { prompt_id } = await submitGraph.call(this, base, g);\n  chunkJobs.push({ index:i, base, prompt_id, frames:framesThis });\n}\n\n// 3) Concurrently poll jobs to completion (bounded concurrency)\nasync function collectOne(job){\n  const out = await pollDone.call(this, job.base, job.prompt_id);\n  const files = filesFromOutputs(out);\n  const mp4 = files.find(f => f.fromNode==='69' && f.ext==='mp4') || files.find(f => f.ext==='mp4');\n  if (!mp4) throw new Error(`Chunk ${job.index}: no MP4 from ${job.base}`);\n  return {\n    index: job.index, frames: job.frames, base: job.base,\n    filename: mp4.filename, subfolder: mp4.subfolder || '',\n    type: mp4.type || 'output', ext: mp4.ext,\n    view_url: viewUrl(job.base, mp4),\n  };\n}\n\nasync function pMap(list, limit, fn){\n  const out = new Array(list.length);\n  let i=0, active=0, rej=null;\n  return await new Promise((resolve, reject)=>{\n    const kick = () => {\n      if (rej) return;\n      while (active<limit && i<list.length){\n        const idx=i++, v=list[idx]; active++;\n        Promise.resolve(fn(v)).then(\n          (res)=>{ out[idx]=res; active--; (i>=list.length && active===0)?resolve(out):kick(); },\n          (err)=>{ rej=err; reject(err); }\n        );\n      }\n    };\n    kick();\n  });\n}\n\nconst segments = (await pMap(chunkJobs, Math.max(1, CFG.pollConcurrency), (j)=>collectOne.call(this, j)))\n  .sort((a,b)=>a.index-b.index);\n\n// 4) Output for your HTTP importers / concat steps\nitem.json.dual_gpu = {\n  totalFrames, fps: CFG.fps,\n  seconds: Number((totalFrames/CFG.fps).toFixed(2)),\n  chunkFrames, numChunks, jobTag, bases\n};\nitem.json.tts = { url: tts_url, filename: mp3.filename, base: CFG.baseA, type: mp3.type, subfolder: mp3.subfolder || '' };\nitem.json.segments = segments;\n\n// convenience plan (your flow can use it or ignore)\nitem.json.final_plan = {\n  expected_final_video_name: 'news_video_full.mp4',\n  tts_url,\n  segment_urls: segments.map(s=>s.view_url),\n};\n\nreturn [item];\n"
+      },
+      "id": "5b1f4b26-d7c6-4b14-a3e9-8d2cada91051",
+      "name": "generate_news_video",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        4016
+      ],
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "url": "http://100.113.28.30:8188/view?filename=news_video.mp4&type=output&subfolder=video",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "audio"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        272,
+        4016
+      ],
+      "id": "b4865eab-0e26-4b1e-9dda-3c9f6b174bab",
+      "name": "Download Video File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "options": {
+          "tts": true
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "Daily News Report 🎤 - Audio file attached",
+              "url": "http://100.113.28.30:8188/view?filename=news_audio.mp3"
+            }
+          ]
+        },
+        "files": {
+          "values": [
+            {
+              "inputFieldName": "audio"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2944,
+        1088
+      ],
+      "id": "517f5573-a785-4b9a-98aa-c5bad0dc00e5",
+      "name": "Discord Send Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "options": {
+          "tts": false
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "Daily News Report 🎤 - Audio file attached",
+              "url": "http://100.113.28.30:8188/view?filename=news_audio.mp3"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2944,
+        752
+      ],
+      "id": "ec32c1f7-060b-464a-8f7f-aaa331cfa90b",
+      "name": "Discord Send Audio Me",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "options": {
+          "tts": true
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "Daily News Report 🎤 - Video file attached",
+              "url": "http://100.113.28.30:8188/view?filename=news_video.mp4&type=output&subfolder=video",
+              "video": "http://100.113.28.30:8188/view?filename=news_video.mp4&type=output&subfolder=video"
+            }
+          ]
+        },
+        "files": {
+          "values": [
+            {
+              "inputFieldName": "video"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        464,
+        4016
+      ],
+      "id": "47f151a5-1e5b-47d4-838f-7e2374c8a29a",
+      "name": "Discord Send Video",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        3824
+      ],
+      "id": "fc37d0f3-435b-46de-b28f-acea55bdb4fe",
+      "name": "Mini2",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "options": {
+          "tts": true
+        },
+        "embeds": {
+          "values": [
+            {
+              "description": "Daily News Report 🎤 - Audio file attached",
+              "url": "http://100.113.28.30:8188/view?filename=news_audio.mp3"
+            }
+          ]
+        },
+        "files": {
+          "values": [
+            {
+              "inputFieldName": "audio"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2944,
+        1280
+      ],
+      "id": "a19b6ba9-a43d-4ea3-9db9-18119ba859c6",
+      "name": "Discord Send Audio Mini",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1520,
+        2016
+      ],
+      "id": "7ce59652-c191-4be4-a8f5-08c18d42b344",
+      "name": "DeepSeekV3:Free2",
+      "credentials": {
+        "openRouterApi": {
+          "id": "e5vdWTZPX4cpQqf8",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        400,
+        3488
+      ],
+      "id": "f607700b-2734-474a-819f-2f3bb3348e31",
+      "name": "Steven2",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "disabled": true,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "609599891160825909",
+          "mode": "list",
+          "cachedResultName": "cryptocurrency",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341/609599891160825909"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        544,
+        3808
+      ],
+      "id": "b70b4d8d-4854-49e4-b5f9-764cb5c6aafd",
+      "name": "DuckTown",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "609599891160825909",
+          "mode": "list",
+          "cachedResultName": "cryptocurrency",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341/609599891160825909"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        368,
+        336
+      ],
+      "id": "2d9cabc4-bb1d-4671-8b92-0922b5fb0d56",
+      "name": "DuckTown2",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "maxTries": 5,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Users\n",
+        "height": 912,
+        "width": 672,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        304,
+        -176
+      ],
+      "typeVersion": 1,
+      "id": "deb024d6-2c72-4e0e-a353-3e442868fb7d",
+      "name": "Sticky Note28"
+    },
+    {
+      "parameters": {
+        "content": "Audio Users\n",
+        "height": 800,
+        "width": 624,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2864,
+        672
+      ],
+      "typeVersion": 1,
+      "id": "0ee065e2-dab6-4c34-9637-e14a92e28947",
+      "name": "Sticky Note29"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "609599891160825909",
+          "mode": "list",
+          "cachedResultName": "cryptocurrency",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341/609599891160825909"
+        },
+        "options": {
+          "tts": false
+        },
+        "files": {
+          "values": [
+            {
+              "inputFieldName": "audio"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2944,
+        912
+      ],
+      "id": "0e84341e-ed90-426c-8c6a-50ef6b15a3b4",
+      "name": "Discord Send Audio DuckTown",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1456,
+        48
+      ],
+      "id": "8060be31-e9d9-4a86-be52-b1e6c802a4ff",
+      "name": "Trading Analysis Me",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "609599891160825909",
+          "mode": "list",
+          "cachedResultName": "cryptocurrency",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341/609599891160825909"
+        },
+        "content": "Crypto Trading Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1616,
+        176
+      ],
+      "id": "92aa0b7d-8a93-494a-834c-e51031eb85f3",
+      "name": "Trading Analysis DuckTown",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        368,
+        128
+      ],
+      "id": "d3aa303a-b2a4-4790-8e8c-1df2feed0768",
+      "name": "Send News Vibe Duckets1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto Trading Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1888,
+        160
+      ],
+      "id": "a4049cc0-590d-4e4c-a089-7ed1a89ea0bf",
+      "name": "Trading Analysis Mini",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "retryOnFail": true,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        768,
+        352
+      ],
+      "id": "f7dd0e85-c494-446b-8219-aaf420fb360d",
+      "name": "Trading Recommendation Me",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "channelId": {
+          "__rl": true,
+          "value": "609599891160825909",
+          "mode": "list",
+          "cachedResultName": "cryptocurrency",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341/609599891160825909"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        768,
+        112
+      ],
+      "id": "c5cbd529-423c-4c7b-8702-d554c9f8e01d",
+      "name": "Trading Recommendation DuckTown",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "213211018896080899",
+          "mode": "list",
+          "cachedResultName": "minininjacat"
+        },
+        "content": "Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "color": "#9500FF",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        768,
+        -80
+      ],
+      "id": "89793222-0eaa-4d27-84f6-a602af0b0880",
+      "name": "Trading Recommendation Mini",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Analysis Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge All Feeds": {
+      "main": [
+        [
+          {
+            "node": "Filter Last 12 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Cointelegraph Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "BTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Yahoo! Finance Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "LTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Filter Last 12 Hours": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Symbols",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "Trading Sentiment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "News Analyst",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Symbols": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "News Analyst",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Trading Sentiment",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave Search Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "Trading Sentiment",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "News Analyst",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetLiveCryptoPrices": {
+      "ai_tool": [
+        [
+          {
+            "node": "News Analyst",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DuckBot": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "News Analyst",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "Trading Sentiment",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "Summarizer Tool",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "Summarizer Tool1",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "TTS Formatter",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Trading Sentiment",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "News Analyst",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeekV3:Free": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarizer Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarizer Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "News Analyst",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarizer Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "Trading Sentiment",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeekV3:Free1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarizer Tool1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "News Analyst": {
+      "main": [
+        [
+          {
+            "node": "Send News Vibe Duckets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "DuckTown2",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send News Vibe Duckets1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send News Vibe Steven",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trading Sentiment": {
+      "main": [
+        [
+          {
+            "node": "Merge1",
+            "type": "main",
+            "index": 1
+          },
+          {
+            "node": "Trading Recommendation Steven1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trading Recommendation Me",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trading Recommendation DuckTown",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trading Recommendation Mini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Connection Config",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Get History",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Get Generated Image",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Generated Image": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Return The Output JSON Instead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fail Get History": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connection Config": {
+      "main": [
+        [
+          {
+            "node": "Trigger LOCAL Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trigger LOCAL Workflow": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Trigger",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fail Trigger": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Write to error log",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload Attachments LOCAL": {
+      "main": [
+        [
+          {
+            "node": "Read API Exported Img2Img ComfyUI Workflow from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fail Upload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fail Upload": {
+      "main": [
+        [
+          {
+            "node": "Link This To Error Handling",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Client ID": {
+      "main": [
+        [
+          {
+            "node": "Connection Config Duplicate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait For Test Type Select": {
+      "main": [
+        [
+          {
+            "node": "If Img2Img",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If Img2Img": {
+      "main": [
+        [
+          {
+            "node": "Wait1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Read API Exported Txt2Img ComfyUI Workflow from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Connection Config Duplicate": {
+      "main": [
+        [
+          {
+            "node": "Wait For Test Type Select",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fallback Txt2Img SDXL Turbo": {
+      "main": [
+        [
+          {
+            "node": "Edit Txt2Img Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait1": {
+      "main": [
+        [
+          {
+            "node": "Upload Attachments LOCAL",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fallback Img2Img SDXL Turbo": {
+      "main": [
+        [
+          {
+            "node": "Edit Img2Img Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read API Exported Img2Img ComfyUI Workflow from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract Img2Img Comfy Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback Img2Img SDXL Turbo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Img2Img Comfy Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Img2Img Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Img2Img Inputs": {
+      "main": [
+        [
+          {
+            "node": "🎨🏠 Run local ComfyUI workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read API Exported Txt2Img ComfyUI Workflow from Disk": {
+      "main": [
+        [
+          {
+            "node": "Extract Txt2Img Comfy Workflow",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Fallback Txt2Img SDXL Turbo",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Txt2Img Comfy Workflow": {
+      "main": [
+        [
+          {
+            "node": "Edit Txt2Img Inputs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Txt2Img Inputs": {
+      "main": [
+        [
+          {
+            "node": "🎨🏠 Run local ComfyUI workflow",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate1": {
+      "main": [
+        [
+          {
+            "node": "Discord Alert",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Narration & Config": {
+      "main": [
+        [
+          {
+            "node": "generate_news_video2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "IMPORT VIDEO (HTTP /view)": {
+      "main": [
+        [
+          {
+            "node": "Move → binary.video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Move → binary.video": {
+      "main": [
+        [
+          {
+            "node": "Quick Guard1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate_news_video2": {
+      "main": [
+        [
+          {
+            "node": "IMPORT VIDEO (HTTP /view)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Quick Guard1": {
+      "main": [
+        [
+          {
+            "node": "Quick Guard",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Inputs (you can delete)2": {
+      "main": [
+        [
+          {
+            "node": "generate_news_audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "TTS Formatter": {
+      "main": [
+        [
+          {
+            "node": "Set Inputs (you can delete)2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge1": {
+      "main": [
+        [
+          {
+            "node": "TTS Formatter",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate_news_audio": {
+      "main": [
+        [
+          {
+            "node": "Download Audio File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Audio File": {
+      "main": [
+        []
+      ]
+    },
+    "Set Inputs (you can delete)": {
+      "main": [
+        [
+          {
+            "node": "generate_news_video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "generate_news_video": {
+      "main": [
+        [
+          {
+            "node": "Download Video File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video File": {
+      "main": [
+        [
+          {
+            "node": "Discord Send Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeekV3:Free2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "TTS Formatter",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "10cf1f0d-97ac-42bf-8e88-9c4460cc5346",
+  "meta": {
+    "instanceId": "55ef366b5fba75bfed9b5e28c8ee676ef0a8f8d75a2d9db4e59b3c103d5b922f"
+  },
+  "id": "p4vkw1f8nRiK8GHT",
+  "tags": [
+    {
+      "createdAt": "2025-09-01T07:24:59.337Z",
+      "updatedAt": "2025-09-01T07:24:59.337Z",
+      "id": "1xES5uZart43Yuw3",
+      "name": "ComfyUI"
+    },
+    {
+      "createdAt": "2025-09-01T07:24:59.318Z",
+      "updatedAt": "2025-09-01T07:24:59.318Z",
+      "id": "ApJNTfXSjEcSNuq4",
+      "name": "PodCast"
+    },
+    {
+      "createdAt": "2025-09-01T07:24:59.330Z",
+      "updatedAt": "2025-09-01T07:24:59.330Z",
+      "id": "aRR6d2vFkpcp2kux",
+      "name": "DuckBot News"
+    },
+    {
+      "createdAt": "2025-08-08T11:58:01.183Z",
+      "updatedAt": "2025-08-08T11:58:01.183Z",
+      "id": "rpGUIHwbqQI6HAUq",
+      "name": "News/Trading"
+    }
+  ]
+}

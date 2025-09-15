@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+# Configure and test audio for DuckBot-DE in WSL
+# Usage: duckbot-audio setup|test
+
+set -euo pipefail
+
+cmd=${1:-}
+
+detect_windows_host() {
+  awk '/nameserver/{print $2; exit}' /etc/resolv.conf
+}
+
+write_env() {
+  local key=$1 val=$2
+  if grep -q "^export $key=" ~/.duckbot_env 2>/dev/null; then
+    sed -i "s|^export $key=.*$|export $key=\"$val\"|" ~/.duckbot_env
+  else
+    echo "export $key=\"$val\"" >> ~/.duckbot_env
+  fi
+}
+
+case "$cmd" in
+  setup)
+    mkdir -p ~/.local/bin
+    touch ~/.duckbot_env
+    # Prefer WSLg audio socket if present
+    if [ -e /mnt/wslg/PulseServer ]; then
+      echo "[AUDIO] Detected WSLg PulseAudio server"
+      write_env PULSE_SERVER "unix:/mnt/wslg/PulseServer"
+    else
+      echo "[AUDIO] WSLg PulseAudio not found. Falling back to TCP to Windows host (requires a PulseAudio server on Windows)."
+      WIN_HOST=$(detect_windows_host)
+      write_env PULSE_SERVER "tcp:${WIN_HOST}:4713"
+    fi
+    echo "[AUDIO] Wrote audio config to ~/.duckbot_env"
+    ;;
+  test)
+    # Try common sound files
+    if command -v paplay >/dev/null 2>&1; then
+      if [ -f /usr/share/sounds/freedesktop/stereo/complete.oga ]; then
+        echo "[AUDIO] Playing test (paplay complete.oga) ..."
+        paplay /usr/share/sounds/freedesktop/stereo/complete.oga || true
+      elif [ -f /usr/share/sounds/freedesktop/stereo/message.oga ]; then
+        echo "[AUDIO] Playing test (paplay message.oga) ..."
+        paplay /usr/share/sounds/freedesktop/stereo/message.oga || true
+      else
+        echo "[AUDIO] No freedesktop sounds found"
+      fi
+    elif command -v aplay >/dev/null 2>&1; then
+      if [ -f /usr/share/sounds/alsa/Front_Center.wav ]; then
+        echo "[AUDIO] Playing test (aplay Front_Center.wav) ..."
+        aplay /usr/share/sounds/alsa/Front_Center.wav || true
+      else
+        echo "[AUDIO] No ALSA test wav found"
+      fi
+    else
+      echo "[AUDIO] Neither paplay nor aplay installed. Installing pulseaudio-utils ..."
+      sudo apt update && sudo apt install -y pulseaudio-utils >/dev/null 2>&1 || true
+      echo "[AUDIO] Re-run: duckbot-audio test"
+    fi
+    ;;
+  *)
+    echo "Usage: duckbot-audio setup|test" >&2
+    exit 1
+    ;;
+esac
+

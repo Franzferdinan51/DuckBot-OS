@@ -1,0 +1,210 @@
+2025-09-15 00:35:13,256 - __main__ - INFO - Starting Practical DuckBot Test Suite
+2025-09-15 00:35:13,256 - __main__ - INFO - Testing Available Modules...
+2025-09-15 00:35:13,364 - __main__ - INFO - [PASS] available_modules.module_ai_cache_manager (0.11s)
+2025-09-15 00:35:13,364 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:35:13,867 - __main__ - INFO - [PASS] available_modules.module_start_ai_ecosystem (0.50s)
+2025-09-15 00:35:13,868 - __main__ - INFO -   Details: Start AI Ecosystem available
+2025-09-15 00:35:14,016 - __main__ - INFO - [PASS] available_modules.module_start_ecosystem (0.15s)
+2025-09-15 00:35:14,017 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:35:14,158 - __main__ - INFO - [PASS] available_modules.module_ai_ecosystem_manager (0.14s)
+2025-09-15 00:35:14,158 - __main__ - INFO -   Details: AI Ecosystem Manager available
+2025-09-15 00:35:14,238 - __main__ - INFO - [PASS] available_modules.module_doctor_check_imports (0.08s)
+2025-09-15 00:35:14,238 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:35:14,678 - __main__ - INFO - [PASS] available_modules.module_doctor_check_services (0.44s)
+2025-09-15 00:35:14,679 - __main__ - INFO -   Details: Doctor Check Services available
+2025-09-15 00:35:15,138 - __main__ - INFO - [PASS] available_modules.module_ai_router_gpt (0.46s)
+2025-09-15 00:35:15,138 - __main__ - INFO -   Details: AI Router GPT available
+2025-09-15 00:35:15,299 - __main__ - INFO - [PASS] available_modules.module_charm_terminal_ui (0.16s)
+2025-09-15 00:35:15,299 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:35:19,250 - __main__ - INFO - [PASS] available_modules.module_enhanced_webui (3.95s)
+2025-09-15 00:35:19,250 - __main__ - INFO -   Details: Enhanced WebUI available
+2025-09-15 00:35:34,355 - __main__ - INFO - [FAIL] available_modules.module_webui_enhanced (15.10s)
+2025-09-15 00:35:34,355 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:35:49,465 - __main__ - INFO - [FAIL] available_modules.module_webui_modern (15.11s)
+2025-09-15 00:35:49,465 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:35:49,465 - __main__ - INFO - Testing AI Router System...
+2025-09-15 00:35:49,939 - __main__ - INFO - [PASS] ai_routing.ai_routing_ai_router_import (0.47s)
+2025-09-15 00:35:49,939 - __main__ - INFO -   Details: AI Router initialized with 0 models
+2025-09-15 00:35:50,399 - __main__ - INFO - [PASS] ai_routing.ai_routing_model_config (0.46s)
+2025-09-15 00:35:50,400 - __main__ - INFO -   Details: Model config created: openai - gpt-3.5-turbo
+2025-09-15 00:35:50,864 - __main__ - INFO - [PASS] ai_routing.ai_routing_basic_routing (0.46s)
+2025-09-15 00:35:50,864 - __main__ - INFO -   Details: Router usage stats: {}
+Router cost tracker: {}
+2025-09-15 00:35:50,864 - __main__ - INFO - Testing WebUI Implementations...
+2025-09-15 00:35:54,788 - __main__ - INFO - [PASS] webui.webui_enhanced_webui_import (3.92s)
+2025-09-15 00:35:54,788 - __main__ - INFO -   Details: Enhanced WebUI loaded with 11 routes
+2025-09-15 00:36:09,666 - __main__ - INFO - [PASS] webui.webui_webui_enhanced_import (14.88s)
+2025-09-15 00:36:09,666 - __main__ - INFO -   Details: MCP not available - installing fallback implementation
+DuckBot integrations not fully available: No module named 'duckbot.integrations.wsl_integration'
+WebUI Enhanced loaded successfully
+2025-09-15 00:36:24,652 - __main__ - INFO - [PASS] webui.webui_webui_modern_import (14.99s)
+2025-09-15 00:36:24,652 - __main__ - INFO -   Details: MCP not available - installing fallback implementation
+DuckBot integrations not fully available: No module named 'duckbot.integrations.wsl_integration'
+WebUI Modern loaded successfully
+2025-09-15 00:36:37,409 - __main__ - INFO - [PASS] webui.webui_charm_terminal_ui (12.76s)
+2025-09-15 00:36:37,409 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:36:37,409 - __main__ - INFO - Testing System Integration...
+2025-09-15 00:36:37,564 - __main__ - INFO - [PASS] system_integration.system_ai_ecosystem_manager (0.16s)
+2025-09-15 00:36:37,580 - __main__ - INFO -   Details: AI Ecosystem Manager error: cannot import name 'get_ecosystem_status' from 'ai_ecosystem_manager' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\ai_ecosystem_manager.py)
+2025-09-15 00:36:37,730 - __main__ - INFO - [PASS] system_integration.system_start_ecosystem (0.15s)
+2025-09-15 00:36:37,730 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:36:37,842 - __main__ - INFO - [PASS] system_integration.system_ai_cache_manager (0.11s)
+2025-09-15 00:36:37,842 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:36:37,917 - __main__ - INFO - [PASS] system_integration.system_doctor_check_imports (0.07s)
+2025-09-15 00:36:37,917 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:36:37,917 - __main__ - INFO - Testing External Dependencies...
+2025-09-15 00:36:37,962 - __main__ - INFO - [PASS] external_deps.dep_node.js (0.00s)
+2025-09-15 00:36:37,962 - __main__ - INFO -   Details: Node.js: v22.17.0
+2025-09-15 00:36:38,207 - __main__ - INFO - [PASS] external_deps.dep_npm (0.00s)
+2025-09-15 00:36:38,207 - __main__ - INFO -   Details: npm: 11.5.2
+2025-09-15 00:36:38,268 - __main__ - INFO - [PASS] external_deps.dep_python (0.00s)
+2025-09-15 00:36:38,268 - __main__ - INFO -   Details: Python: Python 3.11.9
+2025-09-15 00:36:38,268 - __main__ - INFO - Testing Configuration Files...
+2025-09-15 00:36:38,268 - __main__ - INFO - [PASS] configuration.config_ai_config_json (0.00s)
+2025-09-15 00:36:38,268 - __main__ - INFO -   Details: ai_config.json: 568 bytes
+2025-09-15 00:36:38,269 - __main__ - INFO - [PASS] configuration.config_ecosystem_config_yaml (0.00s)
+2025-09-15 00:36:38,269 - __main__ - INFO -   Details: ecosystem_config.yaml: 211 bytes
+2025-09-15 00:36:38,269 - __main__ - INFO - [PASS] configuration.config_requirements_txt (0.00s)
+2025-09-15 00:36:38,269 - __main__ - INFO -   Details: requirements.txt: 1653 bytes
+2025-09-15 00:36:38,269 - __main__ - INFO - [PASS] configuration.config__env (0.00s)
+2025-09-15 00:36:38,269 - __main__ - INFO -   Details: .env: 1408 bytes
+2025-09-15 00:36:38,269 - __main__ - INFO - Generating test report...
+2025-09-15 00:36:38,270 - __main__ - INFO - Practical test report saved to: practical_test_report.json
+2025-09-15 00:38:26,392 - __main__ - INFO - Starting Practical DuckBot Test Suite
+2025-09-15 00:38:26,393 - __main__ - INFO - Testing Available Modules...
+2025-09-15 00:38:26,502 - __main__ - INFO - [PASS] available_modules.module_ai_cache_manager (0.11s)
+2025-09-15 00:38:26,502 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:38:27,009 - __main__ - INFO - [PASS] available_modules.module_start_ai_ecosystem (0.51s)
+2025-09-15 00:38:27,009 - __main__ - INFO -   Details: Start AI Ecosystem available
+2025-09-15 00:38:27,152 - __main__ - INFO - [PASS] available_modules.module_start_ecosystem (0.14s)
+2025-09-15 00:38:27,152 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:38:27,294 - __main__ - INFO - [PASS] available_modules.module_ai_ecosystem_manager (0.14s)
+2025-09-15 00:38:27,295 - __main__ - INFO -   Details: AI Ecosystem Manager available
+2025-09-15 00:38:27,369 - __main__ - INFO - [PASS] available_modules.module_doctor_check_imports (0.07s)
+2025-09-15 00:38:27,369 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:38:27,804 - __main__ - INFO - [PASS] available_modules.module_doctor_check_services (0.43s)
+2025-09-15 00:38:27,804 - __main__ - INFO -   Details: Doctor Check Services available
+2025-09-15 00:38:28,266 - __main__ - INFO - [PASS] available_modules.module_ai_router_gpt (0.46s)
+2025-09-15 00:38:28,266 - __main__ - INFO -   Details: AI Router GPT available
+2025-09-15 00:38:28,419 - __main__ - INFO - [PASS] available_modules.module_charm_terminal_ui (0.15s)
+2025-09-15 00:38:28,419 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:38:32,490 - __main__ - INFO - [PASS] available_modules.module_enhanced_webui (4.07s)
+2025-09-15 00:38:32,491 - __main__ - INFO -   Details: Enhanced WebUI available
+2025-09-15 00:38:47,576 - __main__ - INFO - [FAIL] available_modules.module_webui_enhanced (15.08s)
+2025-09-15 00:38:47,576 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:39:02,670 - __main__ - INFO - [FAIL] available_modules.module_webui_modern (15.09s)
+2025-09-15 00:39:02,670 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:39:02,670 - __main__ - INFO - Testing AI Router System...
+2025-09-15 00:39:03,139 - __main__ - INFO - [PASS] ai_routing.ai_routing_ai_router_import (0.47s)
+2025-09-15 00:39:03,140 - __main__ - INFO -   Details: AI Router initialized with 0 models
+2025-09-15 00:39:03,611 - __main__ - INFO - [PASS] ai_routing.ai_routing_model_config (0.47s)
+2025-09-15 00:39:03,611 - __main__ - INFO -   Details: Model config created: openai - gpt-3.5-turbo
+2025-09-15 00:39:04,074 - __main__ - INFO - [PASS] ai_routing.ai_routing_basic_routing (0.46s)
+2025-09-15 00:39:04,074 - __main__ - INFO -   Details: Router usage stats: {}
+Router cost tracker: {}
+2025-09-15 00:39:04,074 - __main__ - INFO - Testing WebUI Implementations...
+2025-09-15 00:39:07,929 - __main__ - INFO - [PASS] webui.webui_enhanced_webui_import (3.85s)
+2025-09-15 00:39:07,929 - __main__ - INFO -   Details: Enhanced WebUI loaded with 11 routes
+2025-09-15 00:39:22,467 - __main__ - INFO - [PASS] webui.webui_webui_enhanced_import (14.54s)
+2025-09-15 00:39:22,467 - __main__ - INFO -   Details: MCP not available - installing fallback implementation
+DuckBot integrations not fully available: No module named 'duckbot.integrations.wsl_integration'
+WebUI Enhanced loaded successfully
+2025-09-15 00:39:37,575 - __main__ - INFO - [FAIL] webui.webui_webui_modern_import (15.11s)
+2025-09-15 00:39:37,575 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:39:40,620 - __main__ - INFO - [PASS] webui.webui_charm_terminal_ui (3.05s)
+2025-09-15 00:39:40,620 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:39:40,620 - __main__ - INFO - Testing System Integration...
+2025-09-15 00:39:40,773 - __main__ - INFO - [PASS] system_integration.system_ai_ecosystem_manager (0.15s)
+2025-09-15 00:39:40,773 - __main__ - INFO -   Details: AI Ecosystem Manager error: cannot import name 'get_ecosystem_status' from 'ai_ecosystem_manager' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\ai_ecosystem_manager.py)
+2025-09-15 00:39:40,925 - __main__ - INFO - [PASS] system_integration.system_start_ecosystem (0.15s)
+2025-09-15 00:39:40,926 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:39:41,040 - __main__ - INFO - [PASS] system_integration.system_ai_cache_manager (0.11s)
+2025-09-15 00:39:41,040 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:39:41,120 - __main__ - INFO - [PASS] system_integration.system_doctor_check_imports (0.08s)
+2025-09-15 00:39:41,120 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:39:41,120 - __main__ - INFO - Testing External Dependencies...
+2025-09-15 00:39:41,166 - __main__ - INFO - [PASS] external_deps.dep_node.js (0.00s)
+2025-09-15 00:39:41,166 - __main__ - INFO -   Details: Node.js: v22.17.0
+2025-09-15 00:39:41,427 - __main__ - INFO - [PASS] external_deps.dep_npm (0.00s)
+2025-09-15 00:39:41,427 - __main__ - INFO -   Details: npm: 11.5.2
+2025-09-15 00:39:41,497 - __main__ - INFO - [PASS] external_deps.dep_python (0.00s)
+2025-09-15 00:39:41,497 - __main__ - INFO -   Details: Python: Python 3.11.9
+2025-09-15 00:39:41,497 - __main__ - INFO - Testing Configuration Files...
+2025-09-15 00:39:41,497 - __main__ - INFO - [PASS] configuration.config_ai_config_json (0.00s)
+2025-09-15 00:39:41,497 - __main__ - INFO -   Details: ai_config.json: 568 bytes
+2025-09-15 00:39:41,497 - __main__ - INFO - [PASS] configuration.config_ecosystem_config_yaml (0.00s)
+2025-09-15 00:39:41,497 - __main__ - INFO -   Details: ecosystem_config.yaml: 211 bytes
+2025-09-15 00:39:41,497 - __main__ - INFO - [PASS] configuration.config_requirements_txt (0.00s)
+2025-09-15 00:39:41,497 - __main__ - INFO -   Details: requirements.txt: 1653 bytes
+2025-09-15 00:39:41,497 - __main__ - INFO - [PASS] configuration.config__env (0.00s)
+2025-09-15 00:39:41,497 - __main__ - INFO -   Details: .env: 1408 bytes
+2025-09-15 00:39:41,499 - __main__ - INFO - Generating test report...
+2025-09-15 00:39:41,499 - __main__ - INFO - Practical test report saved to: practical_test_report.json
+2025-09-15 00:41:03,847 - __main__ - INFO - Starting Practical DuckBot Test Suite
+2025-09-15 00:41:03,847 - __main__ - INFO - Testing Available Modules...
+2025-09-15 00:41:03,955 - __main__ - INFO - [PASS] available_modules.module_ai_cache_manager (0.11s)
+2025-09-15 00:41:03,955 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:41:04,460 - __main__ - INFO - [PASS] available_modules.module_start_ai_ecosystem (0.51s)
+2025-09-15 00:41:04,460 - __main__ - INFO -   Details: Start AI Ecosystem available
+2025-09-15 00:41:04,615 - __main__ - INFO - [PASS] available_modules.module_start_ecosystem (0.16s)
+2025-09-15 00:41:04,615 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:41:04,765 - __main__ - INFO - [PASS] available_modules.module_ai_ecosystem_manager (0.15s)
+2025-09-15 00:41:04,765 - __main__ - INFO -   Details: AI Ecosystem Manager available
+2025-09-15 00:41:04,842 - __main__ - INFO - [PASS] available_modules.module_doctor_check_imports (0.08s)
+2025-09-15 00:41:04,842 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:41:05,293 - __main__ - INFO - [PASS] available_modules.module_doctor_check_services (0.45s)
+2025-09-15 00:41:05,294 - __main__ - INFO -   Details: Doctor Check Services available
+2025-09-15 00:41:05,769 - __main__ - INFO - [PASS] available_modules.module_ai_router_gpt (0.48s)
+2025-09-15 00:41:05,769 - __main__ - INFO -   Details: AI Router GPT available
+2025-09-15 00:41:05,930 - __main__ - INFO - [PASS] available_modules.module_charm_terminal_ui (0.16s)
+2025-09-15 00:41:05,930 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:41:09,939 - __main__ - INFO - [PASS] available_modules.module_enhanced_webui (4.01s)
+2025-09-15 00:41:09,939 - __main__ - INFO -   Details: Enhanced WebUI available
+2025-09-15 00:41:25,047 - __main__ - INFO - [FAIL] available_modules.module_webui_enhanced (15.11s)
+2025-09-15 00:41:25,047 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:41:40,153 - __main__ - INFO - [FAIL] available_modules.module_webui_modern (15.11s)
+2025-09-15 00:41:40,153 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:41:40,153 - __main__ - INFO - Testing AI Router System...
+2025-09-15 00:41:40,659 - __main__ - INFO - [PASS] ai_routing.ai_routing_ai_router_import (0.51s)
+2025-09-15 00:41:40,659 - __main__ - INFO -   Details: AI Router initialized with 0 models
+2025-09-15 00:41:41,133 - __main__ - INFO - [PASS] ai_routing.ai_routing_model_config (0.47s)
+2025-09-15 00:41:41,133 - __main__ - INFO -   Details: Model config created: openai - gpt-3.5-turbo
+2025-09-15 00:41:41,600 - __main__ - INFO - [PASS] ai_routing.ai_routing_basic_routing (0.47s)
+2025-09-15 00:41:41,600 - __main__ - INFO -   Details: Router usage stats: {}
+Router cost tracker: {}
+2025-09-15 00:41:41,600 - __main__ - INFO - Testing WebUI Implementations...
+2025-09-15 00:41:45,513 - __main__ - INFO - [PASS] webui.webui_enhanced_webui_import (3.91s)
+2025-09-15 00:41:45,513 - __main__ - INFO -   Details: Enhanced WebUI loaded with 11 routes
+2025-09-15 00:42:00,600 - __main__ - INFO - [FAIL] webui.webui_webui_enhanced_import (15.09s)
+2025-09-15 00:42:00,600 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:42:15,680 - __main__ - INFO - [FAIL] webui.webui_webui_modern_import (15.08s)
+2025-09-15 00:42:15,680 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:42:17,609 - __main__ - INFO - [PASS] webui.webui_charm_terminal_ui (1.93s)
+2025-09-15 00:42:17,609 - __main__ - INFO -   Details: Charm Terminal UI available
+2025-09-15 00:42:17,609 - __main__ - INFO - Testing System Integration...
+2025-09-15 00:42:17,753 - __main__ - INFO - [PASS] system_integration.system_ai_ecosystem_manager (0.14s)
+2025-09-15 00:42:17,753 - __main__ - INFO -   Details: AI Ecosystem Manager error: cannot import name 'get_ecosystem_status' from 'ai_ecosystem_manager' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\ai_ecosystem_manager.py)
+2025-09-15 00:42:17,898 - __main__ - INFO - [PASS] system_integration.system_start_ecosystem (0.14s)
+2025-09-15 00:42:17,898 - __main__ - INFO -   Details: Start Ecosystem available
+2025-09-15 00:42:18,005 - __main__ - INFO - [PASS] system_integration.system_ai_cache_manager (0.11s)
+2025-09-15 00:42:18,005 - __main__ - INFO -   Details: AI Cache Manager available
+2025-09-15 00:42:18,080 - __main__ - INFO - [PASS] system_integration.system_doctor_check_imports (0.07s)
+2025-09-15 00:42:18,080 - __main__ - INFO -   Details: Doctor Check Imports available
+2025-09-15 00:42:18,080 - __main__ - INFO - Testing External Dependencies...
+2025-09-15 00:42:18,125 - __main__ - INFO - [PASS] external_deps.dep_node.js (0.00s)
+2025-09-15 00:42:18,125 - __main__ - INFO -   Details: Node.js: v22.17.0
+2025-09-15 00:42:18,361 - __main__ - INFO - [PASS] external_deps.dep_npm (0.00s)
+2025-09-15 00:42:18,361 - __main__ - INFO -   Details: npm: 11.5.2
+2025-09-15 00:42:18,420 - __main__ - INFO - [PASS] external_deps.dep_python (0.00s)
+2025-09-15 00:42:18,420 - __main__ - INFO -   Details: Python: Python 3.11.9
+2025-09-15 00:42:18,420 - __main__ - INFO - Testing Configuration Files...
+2025-09-15 00:42:18,420 - __main__ - INFO - [PASS] configuration.config_ai_config_json (0.00s)
+2025-09-15 00:42:18,420 - __main__ - INFO -   Details: ai_config.json: 568 bytes
+2025-09-15 00:42:18,421 - __main__ - INFO - [PASS] configuration.config_ecosystem_config_yaml (0.00s)
+2025-09-15 00:42:18,421 - __main__ - INFO -   Details: ecosystem_config.yaml: 211 bytes
+2025-09-15 00:42:18,421 - __main__ - INFO - [PASS] configuration.config_requirements_txt (0.00s)
+2025-09-15 00:42:18,421 - __main__ - INFO -   Details: requirements.txt: 1653 bytes
+2025-09-15 00:42:18,421 - __main__ - INFO - [PASS] configuration.config__env (0.00s)
+2025-09-15 00:42:18,421 - __main__ - INFO -   Details: .env: 1408 bytes
+2025-09-15 00:42:18,421 - __main__ - INFO - Generating test report...
+2025-09-15 00:42:18,422 - __main__ - INFO - Practical test report saved to: practical_test_report.json

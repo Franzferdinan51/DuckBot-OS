@@ -1,0 +1,28 @@
+{
+  "functions": [
+    {
+      "name": "duckbot_ai_chat",
+      "description": "Chat with DuckBot AI system with full task routing capabilities",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Your message or question for DuckBot AI"
+          },
+          "task_type": {
+            "type": "string",
+            "enum": ["auto", "code", "reasoning", "summary", "long_form", "json_format"],
+            "default": "auto",
+            "description": "Type of AI task to perform"
+          }
+        },
+        "required": ["message"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(message: str, task_type: str = 'auto'):\n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available at http://localhost:8787'\n        \n        token = token_response.json().get('token')\n        if not token:\n            return '❌ Could not get DuckBot authentication token'\n        \n        headers = {'Authorization': f'Bearer {token}'}\n        data = {'message': message, 'kind': task_type, 'risk': 'medium'}\n        \n        response = requests.post('http://localhost:8787/chat', headers=headers, data=data, timeout=30)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                ai_response = result.get('response', 'No response')\n                model = result.get('model', 'unknown')\n                confidence = result.get('confidence', 0)\n                \n                return f'🤖 **DuckBot AI:**\n\n{ai_response}\n\n📊 Model: {model} | Confidence: {confidence:.2f}'\n            else:\n                return f'❌ AI Error: {result.get(\"response\", \"Unknown error\")}'\n        else:\n            return f'❌ HTTP Error: {response.status_code}'\n            \n    except requests.exceptions.ConnectionError:\n        return '❌ Cannot connect to DuckBot server. Is it running at localhost:8787?'\n    except requests.exceptions.Timeout:\n        return '❌ Request timed out. DuckBot may be busy.'\n    except Exception as e:\n        return f'❌ Error: {str(e)}'"
+      }
+    }
+  ]
+}

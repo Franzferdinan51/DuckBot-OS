@@ -1,0 +1,40 @@
+# DuckBot v3.0.4 - Core Dependencies
+# Minimal runtime requirements for basic functionality
+
+# Web framework
+fastapi>=0.104.0
+uvicorn>=0.24.0
+
+# HTTP client
+requests>=2.31.0
+
+# Data validation
+pydantic>=2.5.0
+
+# Template engine
+jinja2>=3.1.0
+
+# Static files
+aiofiles>=23.2.0
+
+# System utilities
+psutil>=5.9.0
+
+# Date/time utilities
+python-dateutil>=2.8.0
+
+# JSON handling (built into Python, but explicit for clarity)
+# json - built-in
+
+# Path handling (built into Python 3.4+)
+# pathlib - built-in
+
+# Async support (built into Python 3.7+)
+# asyncio - built-in
+
+# Threading (built into Python)
+# threading - built-in
+
+# File operations
+# tempfile - built-in
+# secrets - built-in

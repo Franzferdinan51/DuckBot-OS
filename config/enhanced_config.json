@@ -1,0 +1,192 @@
+{
+  "enhanced_duckbot_config": {
+    "version": "4.0.0-enhanced",
+    "description": "Enhanced DuckBot with SIM.ai and SmythOS-inspired features",
+    "features": {
+      "provider_abstraction": true,
+      "intelligent_agents": true,
+      "context_management": true,
+      "visual_workflow_designer": true,
+      "learning_system": true,
+      "zero_code_switching": true
+    }
+  },
+  "provider_connectors": {
+    "active_provider": "openrouter",
+    "auto_fallback": true,
+    "switch_on_failure": true,
+    "providers": {
+      "openrouter": {
+        "name": "openrouter",
+        "api_key_env": "OPENROUTER_API_KEY",
+        "base_url": "https://openrouter.ai/api/v1",
+        "model": "microsoft/phi-3-mini-128k-instruct:free",
+        "free_models_only": true,
+        "extra_headers": {
+          "HTTP-Referer": "https://duckbot-ai.local/",
+          "X-Title": "DuckBot AI Enhanced"
+        },
+        "priority": 1
+      },
+      "lm_studio": {
+        "name": "lm_studio",
+        "base_url": "http://localhost:1234/v1",
+        "model": "local-model",
+        "cost": 0.0,
+        "privacy": "complete",
+        "priority": 2
+      },
+      "anthropic": {
+        "name": "anthropic",
+        "api_key_env": "ANTHROPIC_API_KEY",
+        "model": "claude-3-haiku-20240307",
+        "enabled": false,
+        "priority": 3
+      },
+      "claude_code_router": {
+        "name": "claude_code_router",
+        "base_url": "http://localhost:8765",
+        "enabled": true,
+        "priority": 4
+      }
+    }
+  },
+  "intelligent_agents": {
+    "enabled": true,
+    "confidence_threshold": 0.7,
+    "learning_enabled": true,
+    "agents": {
+      "market_analyzer": {
+        "enabled": true,
+        "capabilities": ["analysis", "prediction", "learning"],
+        "confidence_threshold": 0.8,
+        "decision_threshold": 0.75
+      },
+      "discord_moderator": {
+        "enabled": true,
+        "capabilities": ["analysis", "decision_making", "context_awareness"],
+        "confidence_threshold": 0.7,
+        "auto_moderation": true
+      },
+      "workflow_optimizer": {
+        "enabled": true,
+        "capabilities": ["optimization", "analysis", "learning"],
+        "confidence_threshold": 0.6,
+        "auto_optimization": false
+      }
+    }
+  },
+  "context_management": {
+    "enabled": true,
+    "database_path": "duckbot_context.db",
+    "max_age_days": 30,
+    "pattern_confidence_threshold": 0.5,
+    "learning_enabled": true,
+    "memory_cache_size": 1000
+  },
+  "visual_workflow": {
+    "enabled": true,
+    "canvas_config": {
+      "grid_size": 20,
+      "snap_to_grid": true,
+      "zoom_level": 1.0,
+      "canvas_size": {
+        "width": 2000,
+        "height": 1500
+      },
+      "theme": "light"
+    },
+    "auto_export_to_n8n": true,
+    "web_ui_enabled": true
+  },
+  "enhanced_features": {
+    "zero_code_provider_switching": {
+      "enabled": true,
+      "switch_commands": {
+        "/switch openrouter": "openrouter",
+        "/switch local": "lm_studio", 
+        "/switch claude": "anthropic",
+        "/switch code": "claude_code_router"
+      },
+      "auto_switch_on_failure": true,
+      "switch_back_delay": 300
+    },
+    "intelligent_routing": {
+      "enabled": true,
+      "route_by_task_type": true,
+      "route_by_user_preference": true,
+      "route_by_cost": true,
+      "route_by_privacy": true
+    },
+    "learning_system": {
+      "enabled": true,
+      "learning_rate": 0.05,
+      "pattern_detection": true,
+      "user_behavior_learning": true,
+      "model_performance_learning": true,
+      "feedback_integration": true
+    },
+    "hybrid_workflows": {
+      "enabled": true,
+      "n8n_integration": true,
+      "agent_enhanced_nodes": true,
+      "visual_to_n8n_export": true,
+      "intelligent_optimization": true
+    }
+  },
+  "api_endpoints": {
+    "enhanced_chat": "/api/v4/chat/enhanced",
+    "switch_provider": "/api/v4/provider/switch",
+    "agent_analyze": "/api/v4/agent/analyze",
+    "workflow_design": "/api/v4/workflow/design",
+    "context_insights": "/api/v4/context/insights",
+    "provider_status": "/api/v4/provider/status"
+  },
+  "dashboard": {
+    "enabled": true,
+    "url": "http://localhost:8787/enhanced",
+    "features": {
+      "provider_switching": true,
+      "agent_performance": true,
+      "context_insights": true,
+      "workflow_designer": true,
+      "learning_analytics": true,
+      "cost_optimization": true
+    }
+  },
+  "integrations": {
+    "openwebui": {
+      "enabled": true,
+      "plugin_path": "./openrouter_openwebui_plugin.py",
+      "free_models_only": true
+    },
+    "n8n": {
+      "enabled": true,
+      "enhanced_nodes": true,
+      "ai_agent_nodes": true,
+      "auto_optimization": true
+    },
+    "claude_code_router": {
+      "enabled": true,
+      "code_analysis": true,
+      "development_tools": true
+    }
+  },
+  "security": {
+    "api_key_protection": true,
+    "local_data_encryption": false,
+    "audit_logging": true,
+    "rate_limiting": true,
+    "provider_isolation": true
+  },
+  "performance": {
+    "caching": {
+      "enabled": true,
+      "ttl": 3600,
+      "max_size": 1000
+    },
+    "connection_pooling": true,
+    "async_processing": true,
+    "background_learning": true
+  }
+}

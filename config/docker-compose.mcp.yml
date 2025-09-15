@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  duckbot-mcp:
+    build:
+      context: .
+      dockerfile: Dockerfile.mcp
+    container_name: duckbot-mcp
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONPATH=/app
+      - DUCKBOT_MCP_SERVER=1
+      - DUCKBOT_CONTAINERIZED=1
+      - DUCKBOT_LOG_LEVEL=INFO
+    volumes:
+      - ./logs:/app/logs
+      - ./duckbot/config:/app/duckbot/config:ro
+      - ./config/mining:/app/config/mining:rw
+    restart: unless-stopped
+    networks:
+      - duckbot-network
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8000/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  duckbot-network:
+    driver: bridge
+
+volumes:
+  logs:
+    driver: local

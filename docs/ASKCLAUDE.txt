@@ -1,0 +1,613 @@
+so i was wondering when it comes to this  **AI Provider Configuration**:
+   - **LM Studio** (Primary): Local AI with openai/gpt-oss-20b model
+   - **OpenRouter** (Fallback): Cloud AI with qwen/qwen3-coder:free model
+   - Automatic provider switching based on availability
+   - Environment variable overrides for easy configuration is gpt-oss-20b even smart enought for this?
+ChatGPT said:
+Thought for 8s
+
+Short answer: “gpt-oss-20b” is OK for light ops + summaries, but it’s not the brain you want making higher-risk decisions. Use it as a local, cheap first pass, then fail over (or “escalate”) to a stronger cloud model for anything tricky.
+
+Here’s how I’d think about it for DuckBot:
+
+Is a 20B local model “smart enough”?
+
+Good at (✅):
+
+Log scraping → short summaries
+
+Classifying service health states (UP/DEGRADED/DOWN)
+
+Generating human-readable status reports
+
+Low-risk suggestions (“restart ComfyUI”, “clear cache”, “retry with backoff”)
+
+Risky / weak at (⚠️):
+
+Multi-step reasoning with multiple tools and long context windows
+
+Writing robust code patches or complex shell sequences
+
+Subtle trade-offs (e.g., rate-limit policy tuning across providers, safety edge cases)
+
+Long conversations with lots of context (context length + factual drift)
+
+Conclusion: 20B-class local models (including “gpt-oss-20b”) are roughly “old-GPT-3.5-ish” in feel. Great for first-pass classification + templated reporting, but for non-obvious decisions or anything that can break prod, escalate to a stronger model.
+
+Recommended routing policy (how to make this solid)
+
+Tiered brain plan:
+
+Tier 0 (rules, not AI): Deterministic guards (confidence threshold, allowlist of actions, cooldowns, retries).
+
+Tier 1 (Local 20B): Summaries, classifications, safe suggestions.
+
+Tier 2 (Cloud S-tier): Qwen2.5/3 strong instruct, Claude-class, or GPT-class only when:
+
+context > local limit
+
+confidence < 0.75
+
+action risk ≥ “medium”
+
+prior local attempts failed
+
+Practical config
+Env suggestion
+AI_PROVIDER=lm_studio
+LM_STUDIO_URL=http://localhost:1234/v1
+LM_STUDIO_MODEL=openai/gpt-oss-20b
+OPENROUTER_API_KEY=...
+OPENROUTER_MODEL=qwen/qwen2.5-32b-instruct   # stronger cloud brain
+AI_DECISION_CONFIDENCE=0.75
+AI_MAX_RISK=low                               # medium/high requires human OK or cloud escalate
+
+Python router (drop-in)
+import os
+
+TIER1 = dict(url=os.getenv("LM_STUDIO_URL"), model=os.getenv("LM_STUDIO_MODEL"))
+TIER2 = dict(url="https://openrouter.ai/api/v1", model=os.getenv("OPENROUTER_MODEL"),
+             headers={"Authorization": f"Bearer {os.getenv('OPENROUTER_API_KEY')}"})
+
+def should_escalate(task):
+    # Simple heuristics you can expand
+    long_ctx      = task.get("tokens_estimate", 0) > 6_000
+    risky_action  = task.get("risk", "low") in ("medium", "high")
+    tricky_kind   = task.get("kind") in ("multi_tool", "code_patch", "rate_policy")
+    low_conf      = task.get("predicted_confidence", 1.0) < float(os.getenv("AI_DECISION_CONFIDENCE","0.75"))
+    prior_fail    = task.get("retries", 0) >= 1
+    return long_ctx or risky_action or tricky_kind or low_conf or prior_fail
+
+def pick_model(task):
+    return TIER2 if should_escalate(task) else TIER1
+
+Model menu I recommend (keep your local 20B, add a better cloud fallback)
+
+Local (fast, private):
+
+Keep gpt-oss-20b (or swap to a recent Qwen-Coder-7B/14B or Llama-3-8B/11B fine-tuned for instruct).
+
+Pro: fast, private, cheap
+
+Con: mid reasoning, shorter context
+
+Cloud fallback (muscle):
+
+Qwen2.5/3 32B/72B Instruct (great reasoning, tool use, long context)
+
+Claude-class (excellent cautious reasoning + long context)
+
+GPT-class (robust tool use + code)
+
+Concrete routing examples
+
+“ComfyUI timed out 3x; GPU mem 87%; what now?” → local 20B suggests restart + VRAM relief. ✅
+
+“Rewrite the rate-limit policy across providers using backoff and jitter, show code.” → escalate to cloud. ⚠️
+
+“Summarize last hour of logs + generate operator note.” → local 20B. ✅
+
+“Draft a migration plan to move cache to Redis with schema + metrics.” → escalate. ⚠️
+
+Bottom line
+
+Use gpt-oss-20b as the local triage nurse — quick, private, good enough for status + safe suggestions.
+For surgery (complex reasoning or impactful changes), escalate to a stronger cloud model automatically. That hybrid gives DuckBot the speed and privacy of local with the brains of top models when it actually matters.
+
+
+
+
+
+
+
+
+
+what do you think about this escilation      no AI -> gpt-oss-20b -> Qwen3 Coder:Free (openrouter) -> DeepSeek R1:Free (OpenRouter) -> Kimi K2:Free (OpenRouter) -> GLM4.5 Air:Free (OpenRouter)
+ChatGPT said:
+Thought for 5s
+
+Short vibe-check: your chain works, but it’ll feel like a slow, jittery conveyor belt on bad days. “Free” tiers on OpenRouter are clutch for prototyping, but they’re rate-limited, can be throttled, and quality varies. If you’re cool with that, here’s how I’d tune it so DuckBot stays snappy and sane.
+
+TL;DR
+
+Keep gpt-oss-20b local as Tier-1 triage (fast, private).
+
+Split by task type, not just a single linear ladder.
+
+If you want one simple ladder, reorder to favor speed & stability:
+
+Local → Qwen3 Coder:Free (code/JSON/prompt formatting) → GLM-4.5 Air:Free (balanced general) → Kimi K2:Free (long-form, Chinese-leaning but solid) → DeepSeek R1:Free (heavy reasoning, slow; put last).
+
+Add timeouts, circuit breakers, and per-task budgets so you don’t crawl through all rungs.
+
+Why this ordering?
+
+Qwen3 Coder:Free → strong at structure, code, JSON, formatting, short reasoning. Good second hop.
+
+GLM-4.5 Air:Free → balanced generalist; often faster than R1/Kimi for summaries & decisions.
+
+Kimi K2:Free → long-context & fluent writing; decent fallback for longer briefs.
+
+DeepSeek R1:Free → best at chain-of-thought style reasoning, but slow and sometimes verbose; use only when others fail or when task demands deep reasoning.
+
+When to escalate (rules of thumb)
+
+Stay local for: status summaries, health classification, short advisories, basic table/BOT outputs.
+
+Escalate to Qwen3 Coder for: JSON shaping, code patches, prompt/template fixes, regex, parsing.
+
+Escalate to GLM-4.5 Air for: market briefs, mixed tasks, moderate context.
+
+Escalate to Kimi K2 for: long narrative briefs/podcasts when others time out or context is huge.
+
+Escalate to R1 (last resort) for: gnarly multi-step reasoning where the above models disagree or confidence < threshold.
+
+Guardrails you really want
+
+Per-tier timeout (e.g., 3–6s local, 8–12s cloud free models).
+
+Circuit breaker (trip a model for 5–10 min if it times out 3× in 5 min).
+
+Confidence threshold (if model <0.75 confidence, hop).
+
+Task budget (e.g., max 2 hops for “routine” tasks; allow full ladder only for “critical” tasks).
+
+Caching of prompts→responses for 30–60s on live feeds to dodge rate limits.
+
+Minimal Python router (drop-in)
+import os, time
+
+TIERS = [
+  {"name":"local",   "url":os.getenv("LM_STUDIO_URL"), "model":"openai/gpt-oss-20b", "timeout":6},
+  {"name":"qwen3",   "url":"https://openrouter.ai/api/v1", "model":"qwen/qwen3-coder:free", "timeout":10},
+  {"name":"glm45",   "url":"https://openrouter.ai/api/v1", "model":"glm/glm-4.5-air:free",  "timeout":12},
+  {"name":"kimiK2",  "url":"https://openrouter.ai/api/v1", "model":"moonshot/kimi-k2:free", "timeout":14},
+  {"name":"r1",      "url":"https://openrouter.ai/api/v1", "model":"deepseek/deepseek-r1:free", "timeout":18},
+]
+
+CONF_MIN = 0.75
+CIRCUIT = {}  # model_name -> reopen_ts
+
+def blocked(tier): 
+    return CIRCUIT.get(tier["name"], 0) > time.time()
+
+def trip(tier, cool=600):
+    CIRCUIT[tier["name"]] = time.time() + cool
+
+def score(task):
+    # crude confidence proxy: short prompt + simple kind = higher score
+    tok = task.get("tokens_est", 0)
+    kind = task.get("kind","general")
+    base = 0.9 if kind in ("status","summary","format","json") else 0.7
+    if tok > 6000: base -= 0.15
+    return max(0.0, min(1.0, base))
+
+def should_escalate(task, conf, attempt):
+    risk = task.get("risk","low")
+    if conf < CONF_MIN: return True
+    if risk in ("medium","high") and attempt == 0: return True
+    return False
+
+def call_model(tier, prompt, timeout):
+    # stub; implement your http call here with per-tier headers and timeout
+    # return {"text": "...", "confidence": 0.8}
+    raise NotImplementedError
+
+def route(task, prompt, max_hops=3):
+    attempts = 0
+    conf_guess = score(task)
+    out = None
+    for tier in TIERS:
+        if attempts >= max_hops and task.get("risk","low") == "low": break
+        if blocked(tier): continue
+        try:
+            out = call_model(tier, prompt, tier["timeout"])
+            conf = out.get("confidence", conf_guess)
+            if not should_escalate(task, conf, attempts):
+                out["model_used"] = tier["name"]
+                return out
+        except TimeoutError:
+            trip(tier)
+        attempts += 1
+    # last attempt: use strongest remaining tier if not tried yet
+    for tier in reversed(TIERS):
+        if not blocked(tier):
+            try:
+                out = call_model(tier, prompt, tier["timeout"])
+                out["model_used"] = tier["name"]
+                return out
+            except TimeoutError:
+                trip(tier)
+    return {"text":"(fallback) unable to complete within budgets","confidence":0.0,"model_used":None}
+
+JS/Node pseudo (for n8n Code node)
+function pickTier(task){
+  const chain = [
+    {name:"local", model:"openai/gpt-oss-20b"},
+    {name:"qwen3", model:"qwen/qwen3-coder:free"},
+    {name:"glm45", model:"glm/glm-4.5-air:free"},
+    {name:"kimiK2",model:"moonshot/kimi-k2:free"},
+    {name:"r1",    model:"deepseek/deepseek-r1:free"}
+  ];
+  const simple = ["status","summary","json","format"];
+  const maxHops = simple.includes(task.kind) ? 2 : 4;
+  return {chain, maxHops};
+}
+
+If you can afford one paid safety net
+
+Swap one rung to a paid, stable model (kept dormant unless needed):
+
+Replace GLM-4.5 Air:Free with Qwen2.5-32B-Instruct or a budget GPT/Claude tier.
+
+Keep everything else free.
+This one change dramatically improves worst-case reliability without blowing cost.
+
+Reality check on “free” rungs
+
+Latency: spiky; expect timeouts. Use short timeouts + quick hop forward.
+
+Quality variance: some days 🔥, some days meh. Cache aggressively.
+
+Rate limits: build a tiny token bucket per model so one noisy hour doesn’t nuke the day.
+
+Bottom line
+
+Your ladder is fine if you wrap it with timeouts, budgets, and task-type routing.
+Reorder so R1 is last, let Qwen3 Coder handle structure, and use GLM-4.5 Air/Kimi K2 as balanced narrators before you pay the R1 reasoning tax.
+
+
+
+
+
+
+
+How to place it in your ladder
+
+Current idea you had:
+Local 20B → Qwen3 Coder:Free → DeepSeek R1:Free → Kimi K2:Free → GLM4.5 Air:Free
+
+My revised ladder with Nemotron (as “expert/arbiter”):
+Local 20B → Qwen3 Coder:Free → GLM-4.5 Air:Free → Nemotron-Ultra-253B:Free → Kimi K2:Free → DeepSeek R1:Free
+
+Why this order:
+
+Qwen3 Coder: best at code/JSON shaping early.
+
+GLM-4.5 Air: fast, balanced generalist for most summaries.
+
+Nemotron Ultra: expert check before you pay the R1 “deep think” tax.
+
+Kimi K2: long-form writing fallback.
+
+DeepSeek R1: last-resort heavy reasoning.
+
+If you love R1 for deep chains, you can swap the last two: Nemotron → R1 → Kimi.
+
+Routing rule of thumb
+
+Stay local for: health/status summaries, basic advice, short content.
+
+Go Qwen3 for: structured outputs, code, JSON, prompt templates.
+
+Go GLM Air for: general market briefs & moderate context.
+
+Go Nemotron Ultra when:
+
+models disagree (need an arbiter),
+
+risk ≥ medium, or
+
+you need policy/compliance language done right.
+
+Use Kimi for very long narrative.
+
+Use R1 only for gnarly multi-step reasoning that others failed.
+
+Guardrails (super important on free tiers)
+
+Per-tier timeout (e.g., Nemotron 14–18s max)
+
+Circuit breaker (trip a model for 10 min after 3 timeouts)
+
+Max hops per task (routine: 2; critical: up to 4)
+
+Confidence threshold (escalate if <0.75)
+
+Cache results for 30–60s to dodge throttling
+
+Drop-in config snippet
+
+ENV
+
+OPENROUTER_MODEL_NEMO=nvidia/llama-3.1-nemotron-ultra-253b-v1:free
+NEMO_TIMEOUT_SEC=16
+
+
+Python router (add a tier)
+
+TIERS = [
+  {"name":"local",   "model":"openai/gpt-oss-20b",                         "timeout":6},
+  {"name":"qwen3",   "model":"qwen/qwen3-coder:free",                       "timeout":10},
+  {"name":"glm45",   "model":"glm/glm-4.5-air:free",                        "timeout":12},
+  {"name":"nemotron","model":os.getenv("OPENROUTER_MODEL_NEMO"),            "timeout":int(os.getenv("NEMO_TIMEOUT_SEC","16"))},
+  {"name":"kimiK2",  "model":"moonshot/kimi-k2:free",                       "timeout":14},
+  {"name":"r1",      "model":"deepseek/deepseek-r1:free",                   "timeout":18},
+]
+
+
+When to invoke Nemotron (example):
+
+def should_try_nemotron(task, prev_results):
+    disagreement = len({r["text_hash"] for r in prev_results}) > 1
+    medium_risk  = task.get("risk","low") in ("medium","high")
+    policyish    = task.get("kind") in ("policy","procedure","compliance","arbiter")
+    return disagreement or medium_risk or policyish
+
+Bottom line
+
+Yes, add Nemotron Ultra — but don’t lead with it.
+
+Treat it like an expensive specialist you page in when accuracy, compliance wording, or tie-breaking matters.
+
+Wrap it with timeouts, circuit breakers, and caching so your bot stays crisp even when free tiers wobble.
+
+If you want, I can spit out a ready-to-paste router module for DuckBot that includes Nemotron + your whole ladder, with budgets, timeouts, confidence gating, and per-task policies baked in.
+
+
+
+
+gotchu, Ryan. if the only thing you’re locked to is the local gpt-oss-20b (LM Studio) and everything else must be FREE on OpenRouter, we can still make this sing by routing by task type + using a tight fallback ladder per task. you’ll get the best quality each time without wasting hops.
+
+below is a battle-tested plan + drop-in code.
+
+🔧 Free-only model strategy (by job)
+
+note: exact free model names can fluctuate on OpenRouter. i’m giving you commonly available free options that have been decent lately. if one disappears, just swap to the next in the same row.
+
+Job type (what DuckBot asks)	First cloud pick (free)	Why	Backups (free)
+Code / JSON shaping / Regex / Prompt templating	qwen3-coder:free	very strong formatter; low hallucinations on schemas	glm-4.5-air:free → deepseek-v3:free (or qwen2.5-coder:free if available)
+General summaries / market briefs / “what happened?”	glm-4.5-air:free	balanced & fast enough	qwen3-coder:free → kimi-k2:free
+Long narrative (podcast script, executive brief)	kimi-k2:free	long-form writing, pleasant prose	glm-4.5-air:free → nemotron-ultra-253b:free
+Deep reasoning / tie-breaker / arbiter	nemotron-ultra-253b:free	strong judge & policy language	deepseek-r1:free
+Math/logic chain problems (rare for you)	deepseek-r1:free	deep chain-of-thought	nemotron-ultra-253b:free
+Safety/compliance phrasing / disclaimers	nemotron-ultra-253b:free	cautious, policy-friendly text	glm-4.5-air:free
+
+Local stays king for triage:
+
+Local (LM Studio) gpt-oss-20b: status summaries, health classifications, short “what’s wrong?” answers, simple action suggestions.
+
+escalate only when: context too long, result needs perfect structure, risk ≥ medium, or local confidence < 0.75.
+
+🧠 Escalation policy (free-tier reality)
+
+per-tier timeout (short and sweet): local=6s, coder=10s, glm=12s, nemotron=16s, kimi=14s, r1=18s
+
+circuit breaker: any model that times out 3× in 5 min → cool it for 10 min
+
+max hops: routine tasks ≤2 hops; critical tasks ≤4 hops
+
+confidence threshold: <0.75 → escalate
+
+cache: 30–60s TTL for identical prompts (protects you from free throttles)
+
+🌿 ENV you can paste
+# Local
+AI_PROVIDER=lm_studio
+LM_STUDIO_URL=http://localhost:1234/v1
+LM_STUDIO_MODEL=openai/gpt-oss-20b
+
+# OpenRouter
+OPENROUTER_API_KEY=sk-or-...
+OR_QWEN_CODER=qwen/qwen3-coder:free
+OR_GLM_AIR=glm/glm-4.5-air:free
+OR_KIMI=moonshot/kimi-k2:free
+OR_R1=deepseek/deepseek-r1:free
+OR_NEMO=nvidia/llama-3.1-nemotron-ultra-253b-v1:free
+
+# Routing knobs
+AI_CONFIDENCE_MIN=0.75
+AI_MAX_HOPS_ROUTINE=2
+AI_MAX_HOPS_CRITICAL=4
+AI_TTL_CACHE_SEC=45
+
+🐍 Python: drop-in router module
+
+put this in duckbot/ai_router.py and import route_task() from your orchestrator.
+
+import os, time, hashlib
+from collections import deque
+
+# ---------- Config ----------
+CONF_MIN = float(os.getenv("AI_CONFIDENCE_MIN", "0.75"))
+TTL_CACHE = int(os.getenv("AI_TTL_CACHE_SEC", "45"))
+MAX_HOPS_ROUTINE = int(os.getenv("AI_MAX_HOPS_ROUTINE", "2"))
+MAX_HOPS_CRITICAL = int(os.getenv("AI_MAX_HOPS_CRITICAL", "4"))
+
+TIERS = {
+    "local":    {"name":"local",    "base":"lmstudio", "model":os.getenv("LM_STUDIO_MODEL","openai/gpt-oss-20b"), "timeout":6},
+    "qwen":     {"name":"qwen",     "base":"openrouter","model":os.getenv("OR_QWEN_CODER", "qwen/qwen3-coder:free"), "timeout":10},
+    "glm":      {"name":"glm",      "base":"openrouter","model":os.getenv("OR_GLM_AIR",    "glm/glm-4.5-air:free"), "timeout":12},
+    "nemo":     {"name":"nemo",     "base":"openrouter","model":os.getenv("OR_NEMO",       "nvidia/llama-3.1-nemotron-ultra-253b-v1:free"), "timeout":16},
+    "kimi":     {"name":"kimi",     "base":"openrouter","model":os.getenv("OR_KIMI",       "moonshot/kimi-k2:free"), "timeout":14},
+    "r1":       {"name":"r1",       "base":"openrouter","model":os.getenv("OR_R1",         "deepseek/deepseek-r1:free"), "timeout":18},
+}
+
+# task->ladder mapping (best-first)
+LADDERS = {
+    "status":        ["local", "glm"],
+    "summary":       ["local", "glm", "kimi"],
+    "json_format":   ["local", "qwen", "glm"],
+    "code":          ["local", "qwen", "glm"],
+    "policy":        ["local", "nemo", "glm"],
+    "long_form":     ["local", "kimi", "glm", "nemo"],
+    "arbiter":       ["local", "nemo", "r1"],
+    "reasoning":     ["local", "r1", "nemo"],
+    # default fallback
+    "*":             ["local", "glm", "qwen"]
+}
+
+# ---------- tiny in-memory cache & circuit breakers ----------
+_cache = {}  # key -> (expires_ts, result)
+_breaker = {}  # tier_name -> reopen_ts
+_recent_timeouts = deque(maxlen=50)  # [(tier, ts)]
+
+def _cache_key(task, prompt):
+    sig = hashlib.sha256((task.get("kind","*")+"|"+task.get("risk","low")+"|"+prompt).encode()).hexdigest()
+    return sig
+
+def _get_cache(key):
+    hit = _cache.get(key)
+    if not hit: return None
+    exp, val = hit
+    if exp > time.time(): return val
+    _cache.pop(key, None)
+    return None
+
+def _set_cache(key, val, ttl=TTL_CACHE):
+    _cache[key] = (time.time()+ttl, val)
+
+def _blocked(tier):
+    return _breaker.get(tier, 0) > time.time()
+
+def _trip(tier, cool=600):
+    _breaker[tier] = time.time() + cool
+
+def _tok_estimate(text):
+    # crude
+    return max(1, len(text)//3)
+
+# ---------- scoring / escalation ----------
+def _initial_confidence(task):
+    kind = task.get("kind","*")
+    base = 0.85 if kind in ("status","summary","json_format","code") else 0.7
+    if _tok_estimate(task.get("prompt","")) > 6000: base -= 0.15
+    return max(0.0, min(1.0, base))
+
+def _max_hops(task):
+    return MAX_HOPS_CRITICAL if task.get("risk","low") in ("medium","high") else MAX_HOPS_ROUTINE
+
+def _ladder(task):
+    return LADDERS.get(task.get("kind","*"), LADDERS["*"])
+
+# ---------- HTTP callers (stubs; fill with your existing callers) ----------
+def call_local(model, prompt, timeout):
+    # call LM Studio /v1/chat/completions style
+    # return {"text": "...", "confidence": 0.8}
+    raise NotImplementedError
+
+def call_openrouter(model, prompt, timeout):
+    # POST https://openrouter.ai/api/v1/chat/completions with your API key
+    # return {"text": "...", "confidence": 0.8}
+    raise NotImplementedError
+
+def _call_tier(tier_name, prompt):
+    tier = TIERS[tier_name]
+    if tier["base"] == "lmstudio":
+        return call_local(tier["model"], prompt, tier["timeout"])
+    else:
+        return call_openrouter(tier["model"], prompt, tier["timeout"])
+
+# ---------- main entry ----------
+def route_task(task):
+    """
+    task = {
+      "kind": "summary|status|json_format|code|policy|long_form|arbiter|reasoning|*",
+      "risk": "low|medium|high",
+      "prompt": "string...",
+    }
+    """
+    prompt = task.get("prompt","").strip()
+    key = _cache_key(task, prompt)
+    cached = _get_cache(key)
+    if cached: return {**cached, "cached": True}
+
+    hops = 0
+    conf_guess = _initial_confidence(task)
+    chosen = None
+    out = None
+
+    for tier_name in _ladder(task):
+        if hops >= _max_hops(task) and task.get("risk","low") == "low":
+            break
+        if _blocked(tier_name): 
+            continue
+        try:
+            out = _call_tier(tier_name, prompt)
+            conf = float(out.get("confidence", conf_guess))
+            out["model_used"] = tier_name
+            chosen = tier_name
+            # if confident enough, stop here
+            if conf >= CONF_MIN:
+                _set_cache(key, out)
+                return out
+            # otherwise, escalate
+        except TimeoutError:
+            _recent_timeouts.append((tier_name, time.time()))
+            # trip breaker if this tier flaps often
+            if sum(1 for t,ts in _recent_timeouts if t==tier_name and time.time()-ts<300) >= 3:
+                _trip(tier_name)
+        hops += 1
+
+    # last resort: try strongest remaining that’s not blocked
+    for tier_name in reversed(_ladder(task)):
+        if not _blocked(tier_name):
+            try:
+                out = _call_tier(tier_name, prompt)
+                out["model_used"] = tier_name
+                _set_cache(key, out)
+                return out
+            except TimeoutError:
+                _trip(tier_name)
+
+    return {"text": "(fallback) unable to complete within budgets", "confidence": 0.0, "model_used": chosen}
+
+🟦 n8n quick mapping (no code node? still fine)
+
+Set a field like kind on each branch:
+
+system status → status
+
+price/news summary → summary
+
+JSON/template shaping → json_format
+
+podcast script → long_form
+
+policy/compliance text → policy
+
+Pipe kind, risk, and prompt into your HTTP node that hits a tiny FastAPI proxy (or your Python script via “Execute Command”) which calls route_task() and returns the final text.
+
+🧪 sanity checks to keep it crisp
+
+Cache key includes kind+risk+prompt → prevents cross-task pollution.
+
+Short timeouts prevent the “free crawl of doom.”
+
+Circuit breaker keeps janky models from ruining an hour.
+
+Max hops keeps routine tasks snappy.
+
+Confidence gate makes local do the easy stuff, escalates only when needed.
+
+if you want, I can also sketch the two HTTP callers (call_local and call_openrouter) tailored to the exact payloads you’re using now, so you can literally paste and go.

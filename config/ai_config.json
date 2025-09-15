@@ -1,0 +1,19 @@
+{
+  "provider": "lm_studio",
+  "lm_studio_url": "http://localhost:1234/v1",
+  "lm_studio_model": "auto",
+  "ollama_url": "http://localhost:11434/v1",
+  "ollama_model": "llama3.2",
+  "openrouter_api_key": "",
+  "openrouter_url": "https://openrouter.ai/api/v1",
+  "openrouter_model": "qwen/qwen3-coder:free",
+  "max_tokens": 512,
+  "temperature": 0.2,
+  "conversation_history_limit": 50,
+  "decision_confidence_threshold": 0.7,
+  "auto_action_enabled": false,
+  "monitoring_interval": 30,
+  "report_interval": 300,
+  "enable_caching": true,
+  "cache_ttl_seconds": 300
+}

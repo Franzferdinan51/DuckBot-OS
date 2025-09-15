@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Bridge from WSL to Windows PowerShell
+# Usage:
+#   duckbot-windows "Get-Process | Select-Object -First 5"
+#   duckbot-windows "Start-Process notepad.exe"
+
+set -euo pipefail
+
+if command -v powershell.exe >/dev/null 2>&1; then
+  powershell.exe -NoProfile -ExecutionPolicy Bypass -Command "$*"
+elif command -v pwsh.exe >/dev/null 2>&1; then
+  pwsh.exe -NoProfile -Command "$*"
+else
+  echo "duckbot-windows: PowerShell not found on Windows host" >&2
+  exit 1
+fi
+

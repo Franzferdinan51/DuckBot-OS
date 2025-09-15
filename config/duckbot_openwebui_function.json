@@ -1,0 +1,193 @@
+{
+  "name": "DuckBot Control",
+  "description": "Complete DuckBot ecosystem control - AI chat, services, cost tracking, RAG search, VibeVoice TTS, Qwen analysis, and system management",
+  "version": "3.0.0",
+  "author": "DuckBot Team",
+  "license": "MIT",
+  "functions": [
+    {
+      "name": "duckbot_ai_chat",
+      "description": "Chat with DuckBot AI system with full task routing capabilities",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "description": "Your message or question for DuckBot AI"
+          },
+          "task_type": {
+            "type": "string",
+            "enum": ["auto", "code", "reasoning", "summary", "long_form", "json_format"],
+            "default": "auto",
+            "description": "Type of AI task to perform"
+          }
+        },
+        "required": ["message"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(message: str, task_type: str = 'auto'):\n    try:\n        # Get DuckBot token\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available at http://localhost:8787'\n        \n        token = token_response.json().get('token')\n        if not token:\n            return '❌ Could not get DuckBot authentication token'\n        \n        # Send chat request\n        headers = {'Authorization': f'Bearer {token}'}\n        data = {'message': message, 'kind': task_type, 'risk': 'medium'}\n        \n        response = requests.post('http://localhost:8787/chat', headers=headers, data=data, timeout=30)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                ai_response = result.get('response', 'No response')\n                model = result.get('model', 'unknown')\n                confidence = result.get('confidence', 0)\n                \n                return f'🤖 **DuckBot AI:**\\n\\n{ai_response}\\n\\n📊 Model: {model} | Confidence: {confidence:.2f}'\n            else:\n                return f'❌ AI Error: {result.get(\"response\", \"Unknown error\")}'\n        else:\n            return f'❌ HTTP Error: {response.status_code}'\n            \n    except requests.exceptions.ConnectionError:\n        return '❌ Cannot connect to DuckBot server. Is it running at localhost:8787?'\n    except requests.exceptions.Timeout:\n        return '❌ Request timed out. DuckBot may be busy.'\n    except Exception as e:\n        return f'❌ Error: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_system_status",
+      "description": "Get comprehensive DuckBot system status including AI system and all services",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute():\n    try:\n        # Get token\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        \n        # Get system status\n        ai_response = requests.get('http://localhost:8787/api/system-status', headers=headers, timeout=10)\n        services_response = requests.get('http://localhost:8787/api/services', headers=headers, timeout=10)\n        \n        report = '🚀 **DuckBot System Status**\\n\\n'\n        \n        # AI Status\n        if ai_response.status_code == 200:\n            ai_data = ai_response.json()\n            if ai_data.get('ok'):\n                status = ai_data.get('status', {})\n                report += '🧠 **AI System:**\\n'\n                report += f'• Model: {status.get(\"current_lm_model\", \"Unknown\")}\\n'\n                report += f'• Cache: {status.get(\"cache_size\", 0)} items\\n'\n                report += f'• Chat Tokens: {status.get(\"chat_bucket_tokens\", 0)}/{status.get(\"chat_bucket_limit\", 30)}\\n\\n'\n        \n        # Services Status\n        if services_response.status_code == 200:\n            services_data = services_response.json()\n            if services_data.get('ok'):\n                services = services_data.get('services', [])\n                report += '⚙️ **Services:**\\n'\n                for svc in services:\n                    name = svc.get('name', 'Unknown')\n                    status = svc.get('status', 'unknown')\n                    port = svc.get('port', 'N/A')\n                    emoji = '✅' if status == 'running' else '❌'\n                    report += f'{emoji} {name} (:{port}) - {status.title()}\\n'\n        \n        return report\n        \n    except Exception as e:\n        return f'❌ Error getting status: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_start_service",
+      "description": "Start a specific DuckBot service (comfyui, n8n, jupyter, lm_studio, webui, open_notebook)",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "enum": ["comfyui", "n8n", "jupyter", "lm_studio", "webui", "open_notebook"],
+            "description": "Service to start"
+          }
+        },
+        "required": ["service_name"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(service_name: str):\n    if not service_name:\n        return '❌ Please specify a service name (comfyui, n8n, jupyter, lm_studio, webui)'\n    \n    try:\n        # Get token\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        \n        # Start service\n        response = requests.post(f'http://localhost:8787/api/services/{service_name}/start', headers=headers, timeout=45)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                return f'✅ Started {service_name}: {result.get(\"result\", \"Success\")}'\n            else:\n                return f'❌ Failed to start {service_name}: {result.get(\"error\", \"Unknown error\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error starting {service_name}: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_stop_service",
+      "description": "Stop a specific DuckBot service",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "service_name": {
+            "type": "string",
+            "enum": ["comfyui", "n8n", "jupyter", "lm_studio", "webui", "open_notebook"],
+            "description": "Service to stop"
+          }
+        },
+        "required": ["service_name"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(service_name: str):\n    if not service_name:\n        return '❌ Please specify a service name'\n    \n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        \n        response = requests.post(f'http://localhost:8787/api/services/{service_name}/stop', headers=headers, timeout=30)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                return f'✅ Stopped {service_name}: {result.get(\"result\", \"Success\")}'\n            else:\n                return f'❌ Failed to stop {service_name}: {result.get(\"error\", \"Unknown error\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error stopping {service_name}: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_cost_summary",
+      "description": "Get detailed DuckBot usage and cost analytics with projections",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365,
+            "default": 7,
+            "description": "Number of days to analyze"
+          }
+        }
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(days: int = 7):\n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        \n        response = requests.get(f'http://localhost:8787/api/cost_summary?days={days}', headers=headers, timeout=15)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                data = result.get('data', {})\n                \n                summary = f'💰 **Cost Summary ({days} days)**\\n\\n'\n                summary += f'💵 Total Cost: ${data.get(\"total_cost\", 0):.4f}\\n'\n                summary += f'🔢 Total Tokens: {data.get(\"total_tokens\", 0):,}\\n'\n                summary += f'📊 Total Requests: {data.get(\"total_requests\", 0):,}\\n\\n'\n                \n                by_model = data.get('by_model', {})\n                if by_model:\n                    summary += '🤖 **By Model:**\\n'\n                    for model, cost in sorted(by_model.items(), key=lambda x: x[1], reverse=True)[:5]:\n                        summary += f'• {model}: ${cost:.4f}\\n'\n                    summary += '\\n'\n                \n                predictions = data.get('predictions', {})\n                if predictions:\n                    summary += '📈 **Projections:**\\n'\n                    summary += f'• Daily Avg: ${predictions.get(\"daily_average\", 0):.4f}\\n'\n                    summary += f'• Monthly: ${predictions.get(\"monthly_cost\", 0):.2f}\\n'\n                \n                return summary\n            else:\n                return f'❌ Cost data error: {result.get(\"error\", \"Unknown error\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error getting cost summary: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_rag_search",
+      "description": "Search DuckBot's RAG knowledge base for relevant information",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "query": {
+            "type": "string",
+            "description": "Search query for the knowledge base"
+          },
+          "top_k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 5,
+            "description": "Number of results to return"
+          }
+        },
+        "required": ["query"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(query: str, top_k: int = 5):\n    if not query.strip():\n        return '❌ Please provide a search query'\n    \n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        data = {'q': query, 'top_k': min(top_k, 20)}\n        \n        response = requests.post('http://localhost:8787/rag/search', headers=headers, data=data, timeout=15)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('ok'):\n                context = result.get('context', '')\n                chunks = result.get('chunks', [])\n                \n                if not context:\n                    return f'🔍 No results found for: \\'{query}\\''\n                \n                search_result = f'🔍 **Search Results:** \\'{query}\\'\\n\\n'\n                search_result += f'**Context:**\\n{context[:600]}{\\'...\\' if len(context) > 600 else \\'\\'}\\n\\n'\n                \n                if chunks:\n                    search_result += f'**Sources ({len(chunks)} found):**\\n'\n                    for i, chunk in enumerate(chunks[:3], 1):\n                        source = chunk.get('metadata', {}).get('source', 'Unknown')\n                        search_result += f'{i}. {source}\\n'\n                \n                return search_result\n            else:\n                return f'❌ RAG search failed: {result.get(\"error\", \"Knowledge base unavailable\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error searching RAG: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_list_models",
+      "description": "Get available AI models from LM Studio with details",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute():\n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        \n        response = requests.get('http://localhost:8787/models/available', headers=headers, timeout=10)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('ok'):\n                models = result.get('models', [])\n                \n                if not models:\n                    return '📭 No models loaded in LM Studio\\n\\nStart LM Studio and load a model first.'\n                \n                model_list = f'🤖 **Available Models ({len(models)})**\\n\\n'\n                \n                for i, model in enumerate(models[:10], 1):\n                    model_id = model.get('id', 'Unknown')\n                    size = model.get('size', 'Unknown')\n                    model_list += f'{i}. {model_id} ({size})\\n'\n                \n                if len(models) > 10:\n                    model_list += f'\\n... and {len(models) - 10} more models'\n                \n                return model_list\n            else:\n                return f'❌ Models unavailable: {result.get(\"error\", \"LM Studio offline\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error getting models: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_qwen_analyze",
+      "description": "Analyze code using DuckBot's Qwen enhanced system",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string",
+            "description": "Code to analyze"
+          }
+        },
+        "required": ["code"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(code: str):\n    if not code.strip():\n        return '❌ Please provide code to analyze'\n    \n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        data = {'code_prompt': code}\n        \n        response = requests.post('http://localhost:8787/qwen/analyze', headers=headers, data=data, timeout=30)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('ok'):\n                analysis = result.get('analysis', 'No analysis available')\n                enhanced = ' (Qwen Enhanced)' if result.get('qwen_enhanced') else ''\n                return f'🧠 **Code Analysis{enhanced}:**\\n\\n{analysis}'\n            else:\n                return f'❌ Analysis failed: {result.get(\"error\", \"Qwen unavailable\")}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error analyzing code: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_vibevoice_tts",
+      "description": "Generate speech using VibeVoice TTS system",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text to convert to speech"
+          },
+          "voice": {
+            "type": "string",
+            "default": "default",
+            "description": "Voice to use for TTS generation"
+          }
+        },
+        "required": ["text"]
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\n\ndef execute(text: str, voice: str = 'default'):\n    if not text.strip():\n        return '❌ Please provide text to convert to speech'\n    \n    try:\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code != 200:\n            return '❌ DuckBot server not available'\n        \n        token = token_response.json().get('token')\n        headers = {'Authorization': f'Bearer {token}'}\n        data = {'text': text, 'voice': voice}\n        \n        response = requests.post('http://localhost:8787/vibevoice/tts', headers=headers, data=data, timeout=30)\n        \n        if response.status_code == 200:\n            result = response.json()\n            if result.get('success'):\n                audio_url = result.get('audio_url', '')\n                voice_used = result.get('voice', voice)\n                duration = result.get('duration', 0)\n                \n                return f'🎤 **VibeVoice TTS Generated**\\n\\n**Voice:** {voice_used}\\n**Duration:** {duration}s\\n**Audio URL:** {audio_url}'\n            else:\n                error = result.get('error', 'TTS generation failed')\n                return f'❌ TTS Error: {error}'\n        else:\n            return f'❌ HTTP Error {response.status_code}'\n            \n    except Exception as e:\n        return f'❌ Error with VibeVoice TTS: {str(e)}'"
+      }
+    },
+    {
+      "name": "duckbot_emergency_stop",
+      "description": "Emergency stop all DuckBot services and processes",
+      "parameters": {
+        "type": "object",
+        "properties": {}
+      },
+      "implementation": {
+        "type": "python",
+        "code": "import requests\nimport subprocess\nimport os\n\ndef execute():\n    try:\n        # Try API endpoint first\n        token_response = requests.get('http://localhost:8787/token', timeout=5)\n        if token_response.status_code == 200:\n            token = token_response.json().get('token')\n            headers = {'Authorization': f'Bearer {token}'}\n            \n            response = requests.post('http://localhost:8787/api/emergency-stop', headers=headers, timeout=60)\n            \n            if response.status_code == 200:\n                result = response.json()\n                if result.get('success'):\n                    message = result.get('result', 'Emergency stop executed')\n                    return f'🛑 **Emergency Stop Executed**\\n\\n{message}\\n\\n⚠️ All DuckBot services have been stopped. Use startup commands to restart.'\n        \n        # Fallback - kill python processes manually\n        result = subprocess.run(['taskkill', '/F', '/IM', 'python.exe'], capture_output=True, text=True)\n        return f'⚡ **Manual Process Kill:**\\n\\n{result.stdout if result.returncode == 0 else result.stderr}'\n        \n    except Exception as e:\n        return f'❌ Error during emergency stop: {str(e)}'"
+      }
+    }
+  ]
+}

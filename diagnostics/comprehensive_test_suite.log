@@ -1,0 +1,74 @@
+2025-09-15 00:32:28,459 - __main__ - INFO - Running tests for category: core_system
+2025-09-15 00:32:28,459 - __main__ - INFO - Testing Core System Imports...
+2025-09-15 00:32:28,536 - __main__ - INFO - [FAIL] core_system.import_webui_app (0.08s)
+2025-09-15 00:32:28,536 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.webui'
+2025-09-15 00:32:29,005 - __main__ - INFO - [FAIL] core_system.import_ai_router (0.47s)
+2025-09-15 00:32:29,005 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'get_lm_studio_model' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:29,079 - __main__ - INFO - [FAIL] core_system.import_server_manager (0.07s)
+2025-09-15 00:32:29,079 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.server_manager'
+2025-09-15 00:32:29,152 - __main__ - INFO - [FAIL] core_system.import_service_detector (0.07s)
+2025-09-15 00:32:29,153 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.service_detector'
+2025-09-15 00:32:29,225 - __main__ - INFO - [FAIL] core_system.import_cost_tracker (0.07s)
+2025-09-15 00:32:29,225 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.cost_tracker'
+2025-09-15 00:32:29,298 - __main__ - INFO - [FAIL] core_system.import_settings_manager (0.07s)
+2025-09-15 00:32:29,298 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.settings_gpt'
+2025-09-15 00:32:29,371 - __main__ - INFO - [FAIL] core_system.import_rate_limiter (0.07s)
+2025-09-15 00:32:29,371 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.rate_limit'
+2025-09-15 00:32:29,444 - __main__ - INFO - [FAIL] core_system.import_action_logger (0.07s)
+2025-09-15 00:32:29,444 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.action_reasoning_logger'
+2025-09-15 00:32:29,519 - __main__ - INFO - [FAIL] core_system.import_qwen_integration (0.07s)
+2025-09-15 00:32:29,519 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.qwen_agent_integration'
+2025-09-15 00:32:44,614 - __main__ - INFO - [FAIL] core_system.import_enhanced_webui (15.10s)
+2025-09-15 00:32:44,614 - __main__ - ERROR -   Error: Timeout after 15 seconds
+2025-09-15 00:32:44,614 - __main__ - INFO - Testing AI Routing Features...
+2025-09-15 00:32:45,074 - __main__ - INFO - [FAIL] core_system.ai_routing_lm_studio_detection (0.46s)
+2025-09-15 00:32:45,074 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'get_lm_studio_model' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:45,539 - __main__ - INFO - [FAIL] core_system.ai_routing_model_tiers (0.47s)
+2025-09-15 00:32:45,539 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'TIERS' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:46,007 - __main__ - INFO - [FAIL] core_system.ai_routing_dynamic_model_selection (0.47s)
+2025-09-15 00:32:46,007 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name '_select_best_available_model' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:46,465 - __main__ - INFO - [FAIL] core_system.ai_routing_task_routing (0.46s)
+2025-09-15 00:32:46,465 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'get_optimal_model_for_task' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:46,919 - __main__ - INFO - [FAIL] core_system.ai_routing_rate_limiting (0.45s)
+2025-09-15 00:32:46,920 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name '_bucket_allow' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)
+2025-09-15 00:32:46,920 - __main__ - INFO - Testing Server Management...
+2025-09-15 00:32:46,993 - __main__ - INFO - [FAIL] core_system.server_service_status (0.07s)
+2025-09-15 00:32:46,993 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.server_manager'
+2025-09-15 00:32:47,065 - __main__ - INFO - [FAIL] core_system.server_service_info (0.07s)
+2025-09-15 00:32:47,065 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ModuleNotFoundError: No module named 'duckbot.server_manager'
+2025-09-15 00:32:47,521 - __main__ - INFO - [FAIL] core_system.server_server_management_task (0.46s)
+2025-09-15 00:32:47,521 - __main__ - ERROR -   Error: Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+ImportError: cannot import name 'handle_server_management_task' from 'duckbot.ai_router_gpt' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ai_router_gpt.py)

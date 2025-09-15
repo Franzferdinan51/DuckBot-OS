@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# Simple CLI to interact with DuckBot Enhanced WebUI from WSL/DE
+# Requires: curl; optionally jq for pretty output
+
+set -euo pipefail
+
+WEBUI_URL="${DUCKBOT_WEBUI_URL:-http://localhost:8787}"
+
+die() { echo "duckbot-cli: $*" >&2; exit 1; }
+
+cmd=${1:-}
+shift || true
+
+case "$cmd" in
+  status)
+    curl -sf "$WEBUI_URL/api/status" | (command -v jq >/dev/null 2>&1 && jq . || cat)
+    ;;
+  agents)
+    curl -sf "$WEBUI_URL/api/agents" | (command -v jq >/dev/null 2>&1 && jq . || cat)
+    ;;
+  tasks)
+    curl -sf "$WEBUI_URL/api/tasks" | (command -v jq >/dev/null 2>&1 && jq . || cat)
+    ;;
+  task-create)
+    DESC=${1:-}
+    [ -n "$DESC" ] || die "usage: duckbot-cli task-create \"description\""
+    curl -sf -H 'Content-Type: application/json' \
+      -d "{\"description\": \"$DESC\"}" "$WEBUI_URL/api/tasks/create" | (jq . 2>/dev/null || cat)
+    ;;
+  send)
+    ACTION=${1:-}
+    PAYLOAD=${2:-"{}"}
+    [ -n "$ACTION" ] || die "usage: duckbot-cli send <action> '<json>'"
+    # Use chat endpoint as a placeholder for generic messages if no dedicated endpoint
+    curl -sf -H 'Content-Type: application/json' \
+      -d "{\"message\": \"$ACTION: $PAYLOAD\"}" "$WEBUI_URL/api/chat" | (jq . 2>/dev/null || cat)
+    ;;
+  codebuff-run)
+    TARGET=${1:-}
+    PROMPT=${2:-}
+    MODE=${3:-fix}
+    [ -n "$TARGET" ] || die "usage: duckbot-cli codebuff-run <path> '<prompt>' [mode]"
+    curl -sf -H 'Content-Type: application/json' \
+      -d "{\"path\": \"$TARGET\", \"prompt\": \"$PROMPT\", \"mode\": \"$MODE\"}" "$WEBUI_URL/api/agents/codebuff/run" | (jq . 2>/dev/null || cat)
+    ;;
+  codebuff-last)
+    curl -sf "$WEBUI_URL/api/agents/codebuff/last" | (jq . 2>/dev/null || cat)
+    ;;
+  ping|help|--help|-h)
+    echo "duckbot-cli status|agents|tasks|task-create <desc>|send <action> '<json>'"
+    ;;
+  *)
+    die "unknown command. Try: duckbot-cli help"
+    ;;
+esac

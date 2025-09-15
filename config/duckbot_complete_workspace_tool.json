@@ -1,0 +1,219 @@
+{
+  "id": "duckbot_complete_tool",
+  "name": "DuckBot Complete Control",
+  "description": "Complete DuckBot ecosystem control - AI, services, cost tracking, RAG, VibeVoice TTS, Qwen analysis, and system management",
+  "type": "function",
+  "spec": {
+    "type": "function", 
+    "function": {
+      "name": "duckbot_execute_command",
+      "description": "Universal DuckBot command interface - execute ANY DuckBot operation including ecosystem control, AI chat, service management, cost tracking, RAG knowledge base, VibeVoice TTS, Qwen code analysis, and system diagnostics",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "command": {
+            "type": "string",
+            "enum": [
+              "start_ecosystem", "emergency_kill", "quick_kill",
+              "ai_chat", "task_runner", "queue_task", 
+              "system_status", "quick_check", "comprehensive_test", "test_enhanced",
+              "manage_service", "detect_services", "install_services",
+              "list_models", "set_model", "refresh_models", "check_model_status",
+              "cost_summary", "start_cost_dashboard", "action_logs", "action_summary",
+              "rag_search", "rag_status", "rag_ingest", "rag_clear",
+              "vibevoice_setup", "vibevoice_start", "vibevoice_test", "vibevoice_status",
+              "qwen_status", "qwen_analyze", "qwen_setup",
+              "cache_clear", "reset_breakers", "fix_dependencies", "doctor_mode", "test_local_parity",
+              "start_openwebui", "start_claude_router", "start_openrouter_free", "start_discord_bot"
+            ],
+            "description": "DuckBot command to execute"
+          },
+          "message": {
+            "type": "string",
+            "description": "Message for AI chat, task prompts, or code analysis"
+          },
+          "service_name": {
+            "type": "string",
+            "enum": ["comfyui", "n8n", "jupyter", "lm_studio", "webui", "open_notebook", "discord_bot"],
+            "description": "Service name for management operations"
+          },
+          "action": {
+            "type": "string",
+            "enum": ["start", "stop", "restart"],
+            "description": "Action to perform on services"
+          },
+          "task_type": {
+            "type": "string",
+            "enum": ["auto", "code", "reasoning", "summary", "long_form", "json_format", "policy", "arbiter"],
+            "default": "auto",
+            "description": "Type of AI task to execute"
+          },
+          "priority": {
+            "type": "string",
+            "enum": ["low", "medium", "high"],
+            "default": "medium",
+            "description": "Task priority level"
+          },
+          "days": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 365,
+            "default": 7,
+            "description": "Number of days for cost summary and analytics"
+          },
+          "query": {
+            "type": "string", 
+            "description": "Search query for RAG knowledge base"
+          },
+          "top_k": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20,
+            "default": 5,
+            "description": "Number of search results to return"
+          },
+          "model_id": {
+            "type": "string",
+            "description": "AI model identifier for model management"
+          },
+          "hours": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 168,
+            "default": 24,
+            "description": "Hours of logs to retrieve"
+          },
+          "paths": {
+            "type": "string",
+            "description": "Semicolon-separated paths for RAG document ingestion"
+          },
+          "code": {
+            "type": "string",
+            "description": "Code to analyze with Qwen system"
+          },
+          "mode": {
+            "type": "string",
+            "enum": ["unified", "webui_only", "ai_headless", "local_only", "headless_local", "vibevoice", "openwebui", "quick", "enhanced", "code_focused", "basic"],
+            "default": "unified",
+            "description": "Ecosystem startup mode or bot operation mode"
+          },
+          "diagnostic_type": {
+            "type": "string",
+            "enum": ["quick", "full", "deps", "repair", "report"],
+            "default": "quick",
+            "description": "Type of system diagnostic to run"
+          }
+        },
+        "required": ["command"]
+      }
+    }
+  },
+  "version": "3.0.0",
+  "author": "DuckBot Integration Team",
+  "tags": ["duckbot", "ai", "ecosystem", "tts", "rag", "analytics", "services"],
+  "requirements": {
+    "system_requirements": ["DuckBot server running on localhost:8787", "Windows environment for batch commands"],
+    "python_packages": ["requests"]
+  },
+  "examples": [
+    {
+      "description": "Start DuckBot unified ecosystem",
+      "parameters": {
+        "command": "start_ecosystem",
+        "mode": "unified"
+      }
+    },
+    {
+      "description": "Chat with DuckBot AI",
+      "parameters": {
+        "command": "ai_chat",
+        "message": "Explain quantum computing in simple terms",
+        "task_type": "long_form",
+        "priority": "high"
+      }
+    },
+    {
+      "description": "Start ComfyUI for image generation",
+      "parameters": {
+        "command": "manage_service",
+        "service_name": "comfyui",
+        "action": "start"
+      }
+    },
+    {
+      "description": "Get system status",
+      "parameters": {
+        "command": "system_status"
+      }
+    },
+    {
+      "description": "Search RAG knowledge base",
+      "parameters": {
+        "command": "rag_search",
+        "query": "machine learning best practices",
+        "top_k": 5
+      }
+    },
+    {
+      "description": "Analyze code with Qwen",
+      "parameters": {
+        "command": "qwen_analyze",
+        "code": "def fibonacci(n): return n if n <= 1 else fibonacci(n-1) + fibonacci(n-2)"
+      }
+    },
+    {
+      "description": "Get 30-day cost summary",
+      "parameters": {
+        "command": "cost_summary",
+        "days": 30
+      }
+    },
+    {
+      "description": "Setup VibeVoice TTS",
+      "parameters": {
+        "command": "vibevoice_setup"
+      }
+    },
+    {
+      "description": "Run system diagnostics",
+      "parameters": {
+        "command": "doctor_mode",
+        "diagnostic_type": "full"
+      }
+    },
+    {
+      "description": "Emergency kill all processes",
+      "parameters": {
+        "command": "emergency_kill"
+      }
+    }
+  ],
+  "implementation": {
+    "language": "python",
+    "code": "import requests\nimport json\nimport subprocess\nimport os\nfrom typing import Optional, Dict, Any\n\nclass Tools:\n    def __init__(self):\n        self.duckbot_url = \"http://localhost:8787\"\n        self.token = None\n        self.timeout = 60\n\n    def get_duckbot_token(self) -> Optional[str]:\n        \"\"\"Auto-detect DuckBot WebUI token\"\"\"\n        if self.token:\n            return self.token\n            \n        try:\n            response = requests.get(f\"{self.duckbot_url}/token\", timeout=5)\n            if response.status_code == 200:\n                self.token = response.json().get(\"token\")\n                return self.token\n        except:\n            return None\n\n    def make_request(self, method: str, endpoint: str, data=None, params=None, files=None):\n        \"\"\"Make authenticated request to DuckBot\"\"\"\n        token = self.get_duckbot_token()\n        if not token:\n            return {\"error\": \"DuckBot server not available at http://localhost:8787\"}\n        \n        url = f\"{self.duckbot_url}{endpoint}\"\n        headers = {\"Authorization\": f\"Bearer {token}\"}\n        \n        try:\n            if method == \"GET\":\n                response = requests.get(url, headers=headers, params=params, timeout=self.timeout)\n            else:\n                response = requests.post(url, headers=headers, data=data, files=files, timeout=self.timeout)\n            \n            if response.status_code == 200:\n                try:\n                    return response.json()\n                except:\n                    return {\"success\": True, \"response\": response.text}\n            else:\n                return {\"error\": f\"HTTP {response.status_code}: {response.text}\"}\n                \n        except Exception as e:\n            return {\"error\": str(e)}\n\n    def run_batch_command(self, command: str) -> str:\n        \"\"\"Execute Windows batch commands for DuckBot ecosystem control\"\"\"\n        try:\n            result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=120)\n            if result.returncode == 0:\n                return f\"✅ Command executed successfully:\\n{result.stdout}\"\n            else:\n                return f\"❌ Command failed (exit code {result.returncode}):\\n{result.stderr}\"\n        except subprocess.TimeoutExpired:\n            return \"❌ Command timed out after 2 minutes\"\n        except Exception as e:\n            return f\"❌ Error executing command: {str(e)}\"\n\n    def duckbot_execute_command(\n        self,\n        command: str,\n        message: str = \"\",\n        service_name: str = \"\", \n        action: str = \"\",\n        task_type: str = \"auto\",\n        priority: str = \"medium\",\n        days: int = 7,\n        query: str = \"\",\n        top_k: int = 5,\n        model_id: str = \"\",\n        hours: int = 24,\n        paths: str = \"\",\n        code: str = \"\",\n        mode: str = \"unified\",\n        diagnostic_type: str = \"quick\"\n    ) -> str:\n        \"\"\"Universal DuckBot command interface\"\"\"\n        \n        cmd = command.lower().strip()\n        \n        try:\n            # Ecosystem Control\n            if cmd == \"start_ecosystem\":\n                mode_commands = {\n                    \"unified\": \"START_ENHANCED_DUCKBOT.bat\",\n                    \"webui_only\": \"python -m duckbot.webui\",\n                    \"ai_headless\": \"python start_ai_ecosystem.py\",\n                    \"local_only\": \"START_LOCAL_ONLY.bat\",\n                    \"headless_local\": \"START_HEADLESS_LOCAL.bat\",\n                    \"vibevoice\": \"start /MIN python start_ai_ecosystem.py\",\n                    \"openwebui\": \"START_OPEN_WEBUI.bat\",\n                    \"quick\": \"python start_ai_ecosystem.py && python -m duckbot.webui\"\n                }\n                command_to_run = mode_commands.get(mode, mode_commands[\"unified\"])\n                return f\"🚀 Starting DuckBot {mode} mode...\\n\\n{self.run_batch_command(command_to_run)}\"\n            \n            elif cmd == \"emergency_kill\":\n                return \"🛑 Emergency killing all DuckBot processes...\\n\\n\" + self.run_batch_command(\"EMERGENCY_KILL.bat\")\n            \n            elif cmd == \"quick_kill\":\n                return \"⚡ Quick kill DuckBot processes...\\n\\n\" + self.run_batch_command(\"QUICK_KILL.bat\")\n            \n            # AI & Chat\n            elif cmd == \"ai_chat\":\n                if not message.strip():\n                    return \"❌ Please provide a message for DuckBot AI\"\n                \n                data = {\"message\": message, \"kind\": task_type, \"risk\": priority}\n                result = self.make_request(\"POST\", \"/chat\", data=data)\n                \n                if \"error\" in result:\n                    return f\"❌ Error: {result['error']}\"\n                \n                if result.get(\"success\"):\n                    response = result.get(\"response\", \"No response\")\n                    model = result.get(\"model\", \"unknown\")\n                    confidence = result.get(\"confidence\", 0)\n                    cached = \" (cached)\" if result.get(\"cached\") else \"\"\n                    \n                    return f\"🤖 **DuckBot AI Response:**\\n\\n{response}\\n\\n📊 Model: {model} | Confidence: {confidence:.2f}{cached}\"\n                \n                return f\"❌ Failed: {result}\"\n            \n            elif cmd == \"task_runner\":\n                data = {\"task_type\": task_type, \"prompt\": message or code, \"priority\": priority}\n                result = self.make_request(\"POST\", \"/api/task\", data=data)\n                \n                if result.get(\"success\"):\n                    return f\"⚡ **Task Runner Result:**\\n\\n{result.get('result', {}).get('text', 'No result')}\"\n                else:\n                    return f\"❌ Task failed: {result.get('error', 'Unknown error')}\"\n            \n            elif cmd == \"queue_task\":\n                data = {\"kind\": task_type, \"risk\": priority, \"prompt\": message or code}\n                result = self.make_request(\"POST\", \"/queue\", data=data)\n                \n                if \"queued\" in result:\n                    return f\"✅ Task queued successfully. Queue position: {result['queued']}\"\n                else:\n                    return f\"❌ Failed to queue: {result.get('error', 'Unknown error')}\"\n            \n            # System Status\n            elif cmd == \"system_status\":\n                ai_status = self.make_request(\"GET\", \"/api/system-status\")\n                services_status = self.make_request(\"GET\", \"/api/services\")\n                \n                report = \"🚀 **DuckBot System Status**\\n\\n\"\n                \n                if ai_status.get(\"ok\"):\n                    ai = ai_status.get(\"status\", {})\n                    report += \"🧠 **AI System:**\\n\"\n                    report += f\"• Model: {ai.get('current_lm_model', 'Unknown')}\\n\"\n                    report += f\"• Cache: {ai.get('cache_size', 0)} items\\n\"\n                    report += f\"• Chat Tokens: {ai.get('chat_bucket_tokens', 0)}/{ai.get('chat_bucket_limit', 30)}\\n\\n\"\n                \n                if services_status.get(\"ok\"):\n                    services = services_status.get(\"services\", [])\n                    report += \"⚙️ **Services:**\\n\"\n                    for svc in services:\n                        name = svc.get(\"name\", \"Unknown\")\n                        status = svc.get(\"status\", \"unknown\")\n                        port = svc.get(\"port\", \"N/A\")\n                        emoji = \"✅\" if status == \"running\" else \"❌\"\n                        report += f\"{emoji} {name} (:{port}) - {status.title()}\\n\"\n                \n                return report\n            \n            elif cmd == \"quick_check\":\n                return \"🔍 **Quick System Health Check:**\\n\\n\" + self.run_batch_command(\"python -c \\\"import psutil, requests; print(f'CPU: {psutil.cpu_percent()}%'); print(f'RAM: {psutil.virtual_memory().percent}%'); [print(f'{name}: OK') if requests.get(url, timeout=2).status_code == 200 else print(f'{name}: DOWN') for name, url in [('WebUI', 'http://localhost:8787'), ('LM Studio', 'http://localhost:1234/v1/models')] if True]\\\"\")\n            \n            elif cmd == \"comprehensive_test\":\n                return \"🧪 **Running comprehensive system tests:**\\n\\n\" + self.run_batch_command(\"python test_every_feature.py\")\n            \n            elif cmd == \"test_enhanced\":\n                return \"🧪 **Running enhanced system tests:**\\n\\n\" + self.run_batch_command(\"test_enhanced_system.bat\")\n            \n            # Service Management\n            elif cmd == \"manage_service\":\n                if action not in [\"start\", \"stop\", \"restart\"]:\n                    return \"❌ Invalid action. Use: start, stop, restart\"\n                \n                result = self.make_request(\"POST\", f\"/api/services/{service_name}/{action}\")\n                \n                if not result.get(\"success\"):\n                    data = {\"service_name\": service_name}\n                    result = self.make_request(\"POST\", f\"/servers/{action}\", data=data)\n                \n                if result.get(\"success\") or result.get(\"ok\"):\n                    message_text = result.get(\"result\", result.get(\"message\", f\"Service {action} completed\"))\n                    return f\"✅ {service_name}: {message_text}\"\n                else:\n                    error = result.get(\"error\", \"Unknown error\")\n                    return f\"❌ Failed to {action} {service_name}: {error}\"\n            \n            elif cmd == \"detect_services\":\n                result = self.make_request(\"GET\", \"/services/detect\")\n                \n                if result.get(\"ok\"):\n                    services = result.get(\"services\", {})\n                    recommendations = result.get(\"recommendations\", [])\n                    \n                    report = \"🔍 **Service Detection Results:**\\n\\n\"\n                    \n                    for service_name, service_info in services.items():\n                        status = service_info.get(\"status\", \"unknown\")\n                        port = service_info.get(\"port\", \"N/A\")\n                        emoji = \"✅\" if status in [\"running_healthy\", \"running_unhealthy\"] else \"❌\"\n                        report += f\"{emoji} {service_name} (:{port}) - {status.replace('_', ' ').title()}\\n\"\n                    \n                    if recommendations:\n                        report += \"\\n💡 **Recommendations:**\\n\"\n                        for rec in recommendations:\n                            report += f\"• {rec}\\n\"\n                    \n                    return report\n                else:\n                    return f\"❌ Service detection failed: {result.get('error', 'Unknown error')}\"\n            \n            elif cmd == \"install_services\":\n                return \"📦 **Installing missing services:**\\n\\n\" + self.run_batch_command(\"install_missing_services.bat\")\n            \n            # AI Models\n            elif cmd == \"list_models\":\n                result = self.make_request(\"GET\", \"/models/available\")\n                \n                if not result.get(\"ok\"):\n                    return f\"❌ Models unavailable: {result.get('error', 'LM Studio offline')}\"\n                \n                models = result.get(\"models\", [])\n                if not models:\n                    return \"📭 No models loaded in LM Studio\"\n                \n                response = f\"🤖 **Available Models ({len(models)})**\\n\\n\"\n                \n                for i, model in enumerate(models[:15], 1):\n                    model_id_str = model.get(\"id\", \"Unknown\")\n                    size = model.get(\"size\", \"Unknown\")\n                    response += f\"{i}. {model_id_str} ({size})\\n\"\n                \n                if len(models) > 15:\n                    response += f\"\\n... and {len(models) - 15} more\"\n                \n                return response\n            \n            elif cmd == \"set_model\":\n                data = {\"model_id\": model_id}\n                result = self.make_request(\"POST\", \"/models/set\", data=data)\n                \n                if result.get(\"ok\"):\n                    return f\"✅ Model set to: {result.get('model_set', model_id)}\"\n                else:\n                    return f\"❌ Failed to set model: {result.get('error', 'Unknown error')}\"\n            \n            elif cmd == \"refresh_models\":\n                result = self.make_request(\"POST\", \"/models/refresh\")\n                \n                if result.get(\"ok\") or result.get(\"success\"):\n                    return f\"🔄 Model cache refreshed: {result.get('message', 'Complete')}\"\n                else:\n                    return f\"❌ Failed to refresh: {result.get('error', 'Unknown error')}\"\n            \n            elif cmd == \"check_model_status\":\n                return \"📊 **Checking model status:**\\n\\n\" + self.run_batch_command(\"CHECK_MODEL_STATUS.bat\")\n            \n            # Cost & Analytics\n            elif cmd == \"cost_summary\":\n                result = self.make_request(\"GET\", \"/api/cost_summary\", params={\"days\": days})\n                \n                if not result.get(\"success\"):\n                    return f\"❌ Cost data unavailable: {result.get('error', 'Analytics offline')}\"\n                \n                data = result.get(\"data\", {})\n                \n                summary = f\"💰 **Cost Summary ({days} days)**\\n\\n\"\n                summary += f\"💵 Total Cost: ${data.get('total_cost', 0):.4f}\\n\"\n                summary += f\"🔢 Total Tokens: {data.get('total_tokens', 0):,}\\n\"\n                summary += f\"📊 Total Requests: {data.get('total_requests', 0):,}\\n\\n\"\n                \n                by_model = data.get(\"by_model\", {})\n                if by_model:\n                    summary += \"🤖 **By Model:**\\n\"\n                    for model, cost in sorted(by_model.items(), key=lambda x: x[1], reverse=True)[:5]:\n                        summary += f\"• {model}: ${cost:.4f}\\n\"\n                    summary += \"\\n\"\n                \n                predictions = data.get(\"predictions\", {})\n                if predictions:\n                    summary += \"📈 **Projections:**\\n\"\n                    summary += f\"• Daily Avg: ${predictions.get('daily_average', 0):.4f}\\n\"\n                    summary += f\"• Monthly: ${predictions.get('monthly_cost', 0):.2f}\\n\"\n                \n                return summary\n            \n            elif cmd == \"start_cost_dashboard\":\n                return \"📊 **Starting cost dashboard:**\\n\\n\" + self.run_batch_command(\"python start_cost_dashboard.py\")\n            \n            elif cmd == \"action_logs\":\n                params = {\"hours\": min(hours, 168), \"limit\": 20}\n                result = self.make_request(\"GET\", \"/api/action-logs\", params=params)\n                \n                if not result.get(\"ok\"):\n                    return f\"❌ Logs unavailable: {result.get('error', 'Logging offline')}\"\n                \n                logs = result.get(\"logs\", [])\n                if not logs:\n                    return f\"📋 No logs found (last {hours} hours)\"\n                \n                report = f\"📋 **Action Logs** (last {hours} hours, {len(logs)} entries):\\n\\n\"\n                \n                for i, log in enumerate(logs[:10], 1):\n                    timestamp = log.get(\"timestamp\", \"Unknown\")\n                    action = log.get(\"action_type\", \"Unknown\")\n                    component = log.get(\"component\", \"Unknown\")\n                    \n                    report += f\"{i}. **{timestamp}** - {action} ({component})\\n\"\n                \n                if len(logs) > 10:\n                    report += f\"\\n... and {len(logs) - 10} more entries\"\n                \n                return report\n            \n            elif cmd == \"action_summary\":\n                params = {\"hours\": min(hours, 168)}\n                result = self.make_request(\"GET\", \"/api/action-logs/summary\", params=params)\n                \n                if not result.get(\"ok\"):\n                    return f\"❌ Summary unavailable: {result.get('error', 'Logging offline')}\"\n                \n                summary_data = result.get(\"summary\", {})\n                if not summary_data:\n                    return f\"📊 No summary data (last {hours} hours)\"\n                \n                report = f\"📊 **Action Summary** (last {hours} hours):\\n\\n\"\n                \n                for category, value in summary_data.items():\n                    if isinstance(value, dict):\n                        report += f\"**{category.replace('_', ' ').title()}:**\\n\"\n                        for sub_key, sub_value in value.items():\n                            report += f\"  • {sub_key}: {sub_value}\\n\"\n                        report += \"\\n\"\n                    else:\n                        report += f\"• {category.replace('_', ' ').title()}: {value}\\n\"\n                \n                return report\n            \n            # RAG Knowledge Base\n            elif cmd == \"rag_search\":\n                if not (query or message).strip():\n                    return \"❌ Please provide a search query\"\n                \n                data = {\"q\": query or message, \"top_k\": min(top_k, 20)}\n                result = self.make_request(\"POST\", \"/rag/search\", data=data)\n                \n                if not result.get(\"ok\"):\n                    return f\"❌ RAG search failed: {result.get('error', 'Knowledge base unavailable')}\"\n                \n                context = result.get(\"context\", \"\")\n                chunks = result.get(\"chunks\", [])\n                \n                if not context:\n                    return f\"🔍 No results found for: '{query or message}'\"\n                \n                response = f\"🔍 **Search Results:** '{query or message}'\\n\\n\"\n                response += f\"**Context:**\\n{context[:600]}{'...' if len(context) > 600 else ''}\\n\\n\"\n                \n                if chunks:\n                    response += f\"**Sources ({len(chunks)} found):**\\n\"\n                    for i, chunk in enumerate(chunks[:3], 1):\n                        source = chunk.get(\"metadata\", {}).get(\"source\", \"Unknown\")\n                        response += f\"{i}. {source}\\n\"\n                \n                return response\n            \n            elif cmd == \"rag_status\":\n                result = self.make_request(\"GET\", \"/rag/status\")\n                \n                if result.get(\"ok\"):\n                    stats = result.get(\"stats\", {})\n                    report = \"📚 **RAG Knowledge Base Status:**\\n\\n\"\n                    \n                    if isinstance(stats, dict):\n                        for key, value in stats.items():\n                            report += f\"• {key.replace('_', ' ').title()}: {value}\\n\"\n                    else:\n                        report += f\"• Status: {stats}\\n\"\n                    \n                    return report\n                else:\n                    return f\"❌ RAG status error: {result.get('error', 'RAG unavailable')}\"\n            \n            elif cmd == \"rag_ingest\":\n                data = {\"path\": paths} if paths.strip() else {}\n                result = self.make_request(\"POST\", \"/rag/ingest\", data=data)\n                \n                if result.get(\"ok\"):\n                    return f\"📚 **RAG Ingestion:**\\n\\n{result.get('result', 'Completed')}\"\n                else:\n                    return f\"❌ RAG ingestion failed: {result.get('error', 'Unknown error')}\"\n            \n            elif cmd == \"rag_clear\":\n                result = self.make_request(\"POST\", \"/rag/clear\")\n                \n                if result.get(\"ok\"):\n                    return \"✅ RAG knowledge base cleared\"\n                else:\n                    return f\"❌ Failed to clear RAG: {result.get('error', 'Unknown error')}\"\n            \n            # VibeVoice TTS\n            elif cmd == \"vibevoice_setup\":\n                return \"🎤 **Setting up VibeVoice TTS:**\\n\\n\" + self.run_batch_command(\"python setup_vibevoice.py\")\n            \n            elif cmd == \"vibevoice_start\":\n                return \"🎤 **Starting VibeVoice server:**\\n\\n\" + self.run_batch_command(\"cd VibeVoice-FastAPI && python main.py --host 0.0.0.0 --port 8000\")\n            \n            elif cmd == \"vibevoice_test\":\n                return \"🧪 **Testing VibeVoice:**\\n\\n\" + self.run_batch_command(\"python test_vibevoice.py\")\n            \n            elif cmd == \"vibevoice_status\":\n                try:\n                    response = requests.get(\"http://localhost:8000/voices\", timeout=5)\n                    if response.status_code == 200:\n                        data = response.json()\n                        return f\"✅ **VibeVoice Server Status:**\\n\\n• Server: Running\\n• Available Voices: {len(data.get('voices', []))}\\n• URL: http://localhost:8000\"\n                    else:\n                        return f\"⚠️ VibeVoice server responded with status {response.status_code}\"\n                except Exception as e:\n                    return f\"❌ **VibeVoice Server:** Not accessible\\n• Error: {str(e)}\\n• Solution: Start server with vibevoice_start command\"\n            \n            # Qwen Code Analysis\n            elif cmd == \"qwen_status\":\n                result = self.make_request(\"GET\", \"/qwen/status\")\n                \n                if result.get(\"ok\"):\n                    available = result.get(\"qwen_available\", False)\n                    enabled = result.get(\"integration_enabled\", False)\n                    \n                    return f\"🧠 **Qwen Code Analysis:**\\n\\n• Available: {'✅' if available else '❌'}\\n• Integration: {'✅' if enabled else '❌'}\\n• Temp Dir: {result.get('temp_dir', 'Unknown')}\"\n                else:\n                    return f\"❌ Qwen status error: {result.get('error', 'Qwen unavailable')}\"\n            \n            elif cmd == \"qwen_analyze\":\n                if not (code or message).strip():\n                    return \"❌ Please provide code to analyze\"\n                \n                data = {\"code_prompt\": code or message}\n                result = self.make_request(\"POST\", \"/qwen/analyze\", data=data)\n                \n                if result.get(\"ok\"):\n                    analysis = result.get(\"analysis\", \"No analysis available\")\n                    enhanced = \" (Qwen Enhanced)\" if result.get(\"qwen_enhanced\") else \"\"\n                    return f\"🧠 **Code Analysis{enhanced}:**\\n\\n{analysis}\"\n                else:\n                    return f\"❌ Analysis failed: {result.get('error', 'Qwen unavailable')}\"\n            \n            elif cmd == \"qwen_setup\":\n                return \"🧠 **Setting up Qwen code analysis:**\\n\\n\" + self.run_batch_command(\"QWEN_SETUP_AND_START.bat\")\n            \n            # System Operations\n            elif cmd == \"cache_clear\":\n                result = self.make_request(\"POST\", \"/cache/clear\")\n                \n                if result.get(\"ok\"):\n                    return \"✅ AI cache cleared successfully\"\n                else:\n                    return \"❌ Failed to clear cache\"\n            \n            elif cmd == \"reset_breakers\":\n                result = self.make_request(\"POST\", \"/breakers/reset\")\n                \n                if result.get(\"ok\"):\n                    return \"✅ Circuit breakers reset successfully\"\n                else:\n                    return \"❌ Failed to reset breakers\"\n            \n            elif cmd == \"fix_dependencies\":\n                return \"🔧 **Fixing dependencies:**\\n\\n\" + self.run_batch_command(\"QUICK_FIX_DEPENDENCIES.bat\")\n            \n            elif cmd == \"doctor_mode\":\n                diagnostic_commands = {\n                    \"quick\": \"python -c \\\"import psutil; print('System OK' if psutil.cpu_percent() < 90 else 'High CPU')\\\"\",\n                    \"full\": \"python test_every_feature.py\",\n                    \"deps\": \"pip install fastapi uvicorn aiohttp requests discord.py torch\",\n                    \"repair\": \"python repair_system.py\",\n                    \"report\": \"python generate_health_report.py\"\n                }\n                \n                command_to_run = diagnostic_commands.get(diagnostic_type, diagnostic_commands[\"quick\"])\n                return f\"🩺 **System Doctor ({diagnostic_type}):**\\n\\n{self.run_batch_command(command_to_run)}\"\n            \n            elif cmd == \"test_local_parity\":\n                return \"🧪 **Testing local-cloud parity:**\\n\\n\" + self.run_batch_command(\"TEST_LOCAL_PARITY.bat\")\n            \n            # Integrations\n            elif cmd == \"start_openwebui\":\n                return \"🌐 **Starting Open-WebUI:**\\n\\n\" + self.run_batch_command(\"START_OPEN_WEBUI.bat\")\n            \n            elif cmd == \"start_claude_router\":\n                return \"🤖 **Starting Claude router:**\\n\\n\" + self.run_batch_command(\"START_OPENWEBUI_CLAUDE_ROUTER.bat\")\n            \n            elif cmd == \"start_openrouter_free\":\n                return \"💸 **Starting free OpenRouter:**\\n\\n\" + self.run_batch_command(\"START_OPENWEBUI_OPENROUTER_FREE.bat\")\n            \n            elif cmd == \"start_discord_bot\":\n                mode_commands = {\n                    \"enhanced\": \"START_ENHANCED_DUCKBOT.bat\",\n                    \"code_focused\": \"START_CODE_FOCUSED_BOT.bat\",\n                    \"basic\": \"python DuckBot-v2.3.0-Trading-Video-Enhanced.py\"\n                }\n                \n                command_to_run = mode_commands.get(mode, mode_commands[\"enhanced\"])\n                return f\"🤖 **Starting Discord bot ({mode}):**\\n\\n{self.run_batch_command(command_to_run)}\"\n            \n            else:\n                available_commands = [\n                    \"start_ecosystem\", \"emergency_kill\", \"quick_kill\", \"ai_chat\", \"task_runner\", \n                    \"queue_task\", \"system_status\", \"quick_check\", \"comprehensive_test\", \"test_enhanced\",\n                    \"manage_service\", \"detect_services\", \"install_services\", \"list_models\", \"set_model\",\n                    \"refresh_models\", \"check_model_status\", \"cost_summary\", \"start_cost_dashboard\",\n                    \"action_logs\", \"action_summary\", \"rag_search\", \"rag_status\", \"rag_ingest\", \n                    \"rag_clear\", \"vibevoice_setup\", \"vibevoice_start\", \"vibevoice_test\", \"vibevoice_status\",\n                    \"qwen_status\", \"qwen_analyze\", \"qwen_setup\", \"cache_clear\", \"reset_breakers\",\n                    \"fix_dependencies\", \"doctor_mode\", \"test_local_parity\", \"start_openwebui\",\n                    \"start_claude_router\", \"start_openrouter_free\", \"start_discord_bot\"\n                ]\n                \n                return f\"❌ **Unknown command:** '{command}'\\n\\n🔧 **Available commands:**\\n\" + \"\\n\".join([f\"• {cmd}\" for cmd in available_commands[:20]]) + f\"\\n\\n... and {len(available_commands) - 20} more commands\"\n        \n        except Exception as e:\n            return f\"❌ **Command execution error:** {str(e)}\\n\\nEnsure DuckBot server is running at http://localhost:8787\""
+  },
+  "documentation": {
+    "installation": [
+      "1. Ensure DuckBot ecosystem is running (START_ECOSYSTEM.bat or python start_ecosystem.py)",
+      "2. Import this JSON file into OpenWebUI Functions/Tools section", 
+      "3. The tool will auto-detect DuckBot server and authenticate automatically",
+      "4. Use @duckbot_execute_command() in your OpenWebUI chats"
+    ],
+    "usage_examples": [
+      "@duckbot_execute_command('start_ecosystem') - Start DuckBot unified mode",
+      "@duckbot_execute_command('ai_chat', 'Explain machine learning') - Chat with AI",
+      "@duckbot_execute_command('manage_service', '', 'comfyui', 'start') - Start ComfyUI",
+      "@duckbot_execute_command('system_status') - Get complete system status",
+      "@duckbot_execute_command('cost_summary', '', '', '', '', '', 30) - Get 30-day costs",
+      "@duckbot_execute_command('rag_search', 'machine learning best practices') - Search knowledge base",
+      "@duckbot_execute_command('qwen_analyze', 'def fibonacci(n): return n if n <= 1 else fibonacci(n-1) + fibonacci(n-2)') - Analyze code",
+      "@duckbot_execute_command('vibevoice_setup') - Setup TTS system"
+    ],
+    "troubleshooting": [
+      "If authentication fails: Ensure DuckBot WebUI is running at localhost:8787",
+      "If commands timeout: Check DuckBot system resources and logs",
+      "If services fail to start: Use emergency_kill command first, then restart",
+      "If batch commands fail: Ensure you're running on Windows with proper permissions"
+    ]
+  }
+}

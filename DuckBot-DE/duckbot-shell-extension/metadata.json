@@ -1,0 +1,15 @@
+{
+    "name": "DuckBot AI Desktop Extension",
+    "description": "Revolutionary AI-native desktop environment built on GNOME Shell",
+    "uuid": "duckbot-ai@duckbot-de",
+    "shell-version": [
+        "42",
+        "43",
+        "44",
+        "45"
+    ],
+    "version": 1,
+    "url": "https://github.com/Franzferdinan51/DuckBot-OS",
+    "settings-schema": "org.gnome.shell.extensions.duckbot-ai",
+    "gettext-domain": "duckbot-ai-extension"
+}

@@ -1,0 +1,64 @@
+{
+  "summary": {
+    "total_tests": 8,
+    "passed": 7,
+    "failed": 1,
+    "success_rate": 87.5,
+    "status": "READY"
+  },
+  "test_results": {
+    "provider_connectors": {
+      "passed": true,
+      "message": "All provider connector tests passed",
+      "timestamp": 1757211407.3677998
+    },
+    "intelligent_agents": {
+      "passed": false,
+      "message": "object of type 'int' has no len()",
+      "timestamp": 1757211407.3727994
+    },
+    "context_management": {
+      "passed": true,
+      "message": "All context management tests passed",
+      "timestamp": 1757211407.4089844
+    },
+    "visual_workflow_designer": {
+      "passed": true,
+      "message": "All visual workflow designer tests passed",
+      "timestamp": 1757211407.4268954
+    },
+    "learning_system": {
+      "passed": true,
+      "message": "All learning system tests passed",
+      "timestamp": 1757211407.5198674
+    },
+    "n8n_integration": {
+      "passed": true,
+      "message": "All N8N integration tests passed",
+      "timestamp": 1757211407.5238683
+    },
+    "enhanced_ai_router": {
+      "passed": true,
+      "message": "Enhanced AI router test completed",
+      "timestamp": 1757211420.5747294
+    },
+    "openwebui_plugin": {
+      "passed": true,
+      "message": "OpenWebUI plugin tests passed",
+      "timestamp": 1757211420.8326566
+    }
+  },
+  "feature_status": {
+    "Provider Abstraction": true,
+    "Intelligent Agents": false,
+    "Context Management": true,
+    "Visual Workflow Designer": true,
+    "Learning System": true,
+    "N8N Integration": true,
+    "Enhanced AI Router": true,
+    "OpenWebUI Plugin": true
+  },
+  "recommendations": [
+    "Check intelligent agents module dependencies"
+  ]
+}

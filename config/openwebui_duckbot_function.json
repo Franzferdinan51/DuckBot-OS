@@ -1,0 +1,135 @@
+{
+  "name": "duckbot_integration",
+  "description": "DuckBot AI Assistant - Complete AI Ecosystem Integration",
+  "parameters": {
+    "type": "object",
+    "properties": {
+      "action": {
+        "type": "string",
+        "description": "The action to perform with DuckBot",
+        "enum": [
+          "chat",
+          "execute_task",
+          "system_status",
+          "list_tools",
+          "ui_automation",
+          "memory_query",
+          "multi_agent",
+          "wsl_command",
+          "file_operation",
+          "web_search",
+          "system_info"
+        ]
+      },
+      "message": {
+        "type": "string",
+        "description": "The message or command to send to DuckBot"
+      },
+      "task_type": {
+        "type": "string",
+        "description": "Type of task for routing",
+        "enum": [
+          "general",
+          "reasoning",
+          "coding",
+          "analysis",
+          "automation",
+          "creative",
+          "technical",
+          "research"
+        ],
+        "default": "general"
+      },
+      "complexity": {
+        "type": "string",
+        "description": "Complexity level for task routing",
+        "enum": [
+          "low",
+          "medium",
+          "high"
+        ],
+        "default": "medium"
+      },
+      "context": {
+        "type": "object",
+        "description": "Additional context for the task",
+        "properties": {
+          "user_id": {
+            "type": "string",
+            "description": "User identifier"
+          },
+          "session_id": {
+            "type": "string",
+            "description": "Session identifier"
+          },
+          "preferences": {
+            "type": "object",
+            "description": "User preferences"
+          },
+          "environment": {
+            "type": "string",
+            "description": "Execution environment"
+          }
+        }
+      },
+      "tools": {
+        "type": "array",
+        "description": "Specific tools to use for the task",
+        "items": {
+          "type": "string",
+          "enum": [
+            "ui_tars",
+            "bytebot",
+            "memento",
+            "archon",
+            "wsl",
+            "chromium",
+            "file_ops",
+            "system_info",
+            "web_search",
+            "memory_ops",
+            "ai_router"
+          ]
+        }
+      },
+      "parameters": {
+        "type": "object",
+        "description": "Tool-specific parameters"
+      }
+    },
+    "required": [
+      "action",
+      "message"
+    ]
+  },
+  "returns": {
+    "type": "object",
+    "description": "Response from DuckBot integration",
+    "properties": {
+      "success": {
+        "type": "boolean",
+        "description": "Whether the operation was successful"
+      },
+      "response": {
+        "type": "string",
+        "description": "The response or result from DuckBot"
+      },
+      "data": {
+        "type": "object",
+        "description": "Additional data related to the response"
+      },
+      "tools_used": {
+        "type": "array",
+        "description": "List of tools used in the operation"
+      },
+      "execution_time": {
+        "type": "number",
+        "description": "Time taken to execute the operation in seconds"
+      },
+      "error": {
+        "type": "string",
+        "description": "Error message if operation failed"
+      }
+    }
+  }
+}

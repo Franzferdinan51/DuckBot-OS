@@ -1,0 +1,89 @@
+# VibeVoice TTS Configuration for DuckBot
+# Microsoft's open-source multi-speaker text-to-speech integration
+
+vibevoice:
+  # Service configuration
+  enabled: true
+  api_url: "http://localhost:8000"  # VibeVoice FastAPI server
+  
+  # Generation settings
+  default_model: "microsoft/VibeVoice-1.5B"
+  max_text_length: 2000
+  generation_timeout: 300  # seconds
+  
+  # Voice presets
+  presets:
+    alice:
+      speakers: ["en-alice"]
+      description: "Single female voice, clear and professional"
+    
+    carter:
+      speakers: ["en-carter"]
+      description: "Single male voice, warm and engaging"
+    
+    conversation:
+      speakers: ["en-alice", "en-carter"]
+      description: "Balanced dialogue between female and male voices"
+    
+    debate:
+      speakers: ["en-david", "en-emily"]
+      description: "Formal discussion with authoritative voices"
+    
+    podcast:
+      speakers: ["en-alice", "en-carter", "en-david"]
+      description: "Multi-voice podcast format"
+    
+    news:
+      speakers: ["en-emily", "en-carter"]
+      description: "Professional news broadcast style"
+  
+  # Available individual voices
+  voices:
+    en-alice:
+      name: "Alice"
+      gender: "female"
+      language: "English"
+      description: "Clear, professional female voice"
+    
+    en-carter:
+      name: "Carter"
+      gender: "male"
+      language: "English"
+      description: "Warm, engaging male voice"
+    
+    en-david:
+      name: "David"
+      gender: "male"
+      language: "English"
+      description: "Authoritative male voice"
+    
+    en-emily:
+      name: "Emily"
+      gender: "female"
+      language: "English"
+      description: "Professional female broadcaster voice"
+  
+  # Discord integration
+  discord:
+    auto_upload: true
+    max_file_size_mb: 8  # Discord limit
+    cleanup_delay: 300   # Delete files after 5 minutes
+    
+  # File management
+  output:
+    directory: "output/vibevoice"
+    temp_directory: "temp/vibevoice"
+    audio_format: "wav"
+    
+  # Performance settings
+  generation:
+    cfg_scale: 1.3
+    temperature: 0.7
+    max_length: 2048
+    concurrent_limit: 3  # Max concurrent generations
+    
+  # Logging and monitoring
+  logging:
+    level: "INFO"
+    track_usage: true
+    cost_tracking: true  # Track usage for analytics (free service)

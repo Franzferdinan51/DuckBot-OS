@@ -1,0 +1,94 @@
+# DuckBot v3.1.0+ Enhanced Requirements
+# Core Dependencies
+fastapi>=0.104.0
+uvicorn[standard]>=0.24.0
+discord.py>=2.3.0
+asyncio-mqtt>=0.13.0
+psutil>=5.9.0
+httpx>=0.25.0
+aiohttp>=3.8.0
+
+# AI and ML
+openai>=1.3.0
+anthropic>=0.5.0
+transformers>=4.35.0
+torch>=2.0.0
+numpy>=1.24.0
+
+# Web and UI
+jinja2>=3.1.0
+websockets>=11.0.0
+rich>=13.5.0
+typer>=0.9.0
+
+# Database and Storage
+sqlalchemy>=2.0.0
+aiosqlite>=0.19.0
+
+# Image and Video Processing
+Pillow>=10.0.0
+opencv-python>=4.8.0
+imageio>=2.31.0
+
+# System Integration
+pywin32>=306; platform_system=='Windows'
+python-dotenv>=1.0.0
+pyyaml>=6.0.0
+toml>=0.10.0
+
+# LiveKit WebRTC Integration
+livekit>=1.0.0
+livekit-api>=1.0.0
+livekit-protocol>=1.0.0
+
+# Browser-Use Integration
+browser-use>=0.7.7
+aiofiles>=24.1.0
+anyio>=4.9.0
+bubus>=1.5.6
+google-api-core>=2.25.0
+portalocker>=2.7.0,<3.0.0
+posthog>=3.7.0
+screeninfo>=0.8.1; platform_system != 'darwin'
+typing-extensions>=4.12.2
+uuid7>=0.1.0
+authlib>=1.6.0
+google-genai>=1.29.0,<2.0.0
+groq>=0.30.0
+ollama>=0.5.1
+google-api-python-client>=2.174.0
+google-auth>=2.40.3
+google-auth-oauthlib>=1.2.2
+mcp>=1.10.1
+pypdf>=5.7.0
+reportlab>=4.0.0
+cdp-use>=1.4.0
+pyotp>=2.9.0
+html2text>=2025.4.15
+
+# Web-UI Integration
+gradio>=5.27.0
+json-repair
+langchain-mistralai>=0.2.4
+MainContentExtractor>=0.0.4
+langchain-ibm>=0.3.10
+langchain_mcp_adapters>=0.0.9
+langgraph>=0.3.34
+langchain-community
+
+# Optional: Enhanced Features
+# jupyter>=1.0.0
+# notebook>=7.0.0
+# streamlit>=1.28.0
+
+# MCP (Model Context Protocol) Integration
+mcp>=1.0.0
+mcp-server>=1.0.0
+mcp-client>=1.0.0
+mcp-tools>=1.0.0
+
+# Development and Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+black>=23.0.0
+flake8>=6.0.0
