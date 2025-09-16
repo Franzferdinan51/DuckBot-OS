@@ -1,0 +1,1165 @@
+{
+  "name": "DuckBot3.0",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1600,
+        720
+      ],
+      "id": "3ae3f1e6-d7b7-4766-9b42-3c8413052261",
+      "name": "Manual Chat Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/category/market-analysis",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        288
+      ],
+      "id": "099a410b-62d0-4f35-9681-1fcdf139d102",
+      "name": "Market Analysis Feed"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        -736,
+        496
+      ],
+      "id": "9814b090-56a6-4506-a584-530289e6911e",
+      "name": "Merge All Feeds"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        416
+      ],
+      "id": "33740839-7595-4c2d-9d06-a843bb8a94ff",
+      "name": "All Cointelegraph Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/bitcoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        560
+      ],
+      "id": "363e0e3d-16a7-4b40-afc8-eaf64d594cf4",
+      "name": "BTC Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://www.yahoo.com/news/rss/finance",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        688
+      ],
+      "id": "2453675e-a382-4346-9c08-489784eafeca",
+      "name": "Yahoo! Finance Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/litecoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        -992,
+        832
+      ],
+      "id": "008120b0-a532-43da-8285-47e59a0f79ff",
+      "name": "LTC Feed"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97b60332-0c60-4b4e-8db8-f1d4220d419b",
+              "leftValue": "={{ $json.pubDate }}",
+              "rightValue": "={{ $now.minus({ \"hours\": 12 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        -496,
+        544
+      ],
+      "id": "f03ee0a5-5429-47c3-b30a-d66a0618ebb2",
+      "name": "Filter Last 12 Hours"
+    },
+    {
+      "parameters": {
+        "maxItems": 15
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        -304,
+        544
+      ],
+      "id": "9d59d97c-24da-4a2b-8d2d-c1bdc1671b7e",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a master crypto market strategist. Your function is to receive a batch of pre-fetched news articles and market data, synthesize it all into a single, unified view, and present your analysis as a clear, confident, and easy-to-read market briefing for a human.\nWhile you have access to tools like Brave Search, Calculator, and a CoinPaprika tool for supplementary real-time data verification, for this mission, the initial data has already been harvested for you to ensure a smooth and fast analysis.\nAVAILABLE TOOLS (for supplementary use if needed):\n\nCoinPaprika Tool - Can fetch real-time crypto data if you need to verify or update any prices\nBrave Search Tool - Can search for additional context if a news item needs clarification\nCalculator Tool - For any calculations needed in your analysis\n\nHere is the data I have gathered for you:\nMarket Data (from CoinPaprika):\n{{ JSON.stringify($json.coin_data) }}\nNews Articles:\n{{ $json.content }}\n\nYour Mission:\n\nSynthesize the Big Picture: Based primarily on the data provided above, read the entire collection of news articles and identify the most important themes. What is the overarching story the news and market data are telling? If you need to verify any critical price movements or get updated data for accuracy, you may use the CoinPaprika tool. ENHANCED: Apply the \"Three Pillars Analysis\":\n\nMomentum Pillar: Are prices accelerating or decelerating?\nVolume Pillar: Is money flowing in or out? Check volume_24h_change metrics\nSentiment Pillar: What's the emotional temperature of the news?\n\n\nDeliver the Verdict: Based on your synthesis, declare the definitive market sentiment with unwavering confidence. Is the market bullish, bearish, or in a phase of cautious accumulation? Use the provided market data, and supplement with tool queries only if essential for accuracy. ENHANCED: Assign a Market Strength Score:\n\n🔥 EUPHORIC (90-100): Extreme greed, potential top\n🚀 STRONGLY BULLISH (70-89): Clear uptrend, momentum building\n📈 BULLISH (55-69): Positive bias, steady gains\n➡️ NEUTRAL (45-54): Consolidation, direction unclear\n📉 BEARISH (31-44): Negative bias, selling pressure\n💀 STRONGLY BEARISH (11-30): Clear downtrend, fear dominant\n☠️ CAPITULATION (0-10): Maximum fear, potential bottom\n\n\nMake the Call: Tell your reader what to do. Is this a time for strategic buying, holding existing positions, or reducing exposure to risk? Base this on the comprehensive data provided, using tools only to confirm critical thresholds. ENHANCED: Provide specific allocation guidance:\n\nRisk Level: Conservative / Moderate / Aggressive\nPosition Sizing: What % of portfolio to allocate\nEntry Strategy: Lump sum / DCA / Wait for dip\nStop Loss Levels: Where to cut losses if wrong\n\n\nSpotlight Key Opportunities: From the data provided, give a specific, high-impact analysis for Qubic and Bitcoin. Use their price data (like the percent_change_24h) and the news sentiment to explain why they are worth watching right now. ENHANCED: Include \"Smart Money Signals\":\n\nLiquidity Score: volume_to_mcap ratio (>10% = High, 5-10% = Medium, <5% = Low)\nMomentum Grade: Based on 24h, 7d, 30d changes (A+ to F)\nRisk/Reward Rating: Potential upside vs downside (1-5 stars)\nWhale Activity: Unusual volume spikes that suggest big player movements\n\n\nExplain Your Reasoning: Highlight the 1-2 most influential news articles that shaped your analysis. Briefly explain what each article was about and how it directly impacted your conclusions. ENHANCED: Rate each news catalyst:\n\nImpact Level: 🔴 Critical / 🟡 Significant / 🟢 Minor\nDuration: Short-term (hours-days) / Medium (weeks) / Long-term (months)\nReliability: Confirmed / Rumor / Speculation\n\n\n\nADDITIONAL ANALYSIS (if data supports it):\n\nWorthy Contenders: If the provided data includes other promising cryptocurrencies showing exceptional momentum, spotlight 2-3 of them. ENHANCED: Categorize opportunities:\n\n🎯 Quick Gains (1-7 days): High volatility plays\n📊 Swing Trades (1-4 weeks): Medium-term momentum\n🏆 Position Builds (1-3 months): Long-term accumulation\n\n\nEmergency Protocol Check: If the market data shows a decline of 15% or more:\n\nYELLOW ALERT (15-20% decline): \"Healthy Correction Zone\" - Strategic buying for brave souls\nORANGE ALERT (20-30% decline): \"Fear Zone\" - DCA entry points, but keep powder dry\nRED ALERT (30-40% decline): \"Extreme Fear\" - Caution! Watch for dead cat bounces\nBLACK ALERT (40%+ decline): \"Capitulation\" - System risk, potential black swan, consider hedging\n\n\n\nENHANCED SECTIONS:\n\nCorrelation Analysis:\n\nIs Bitcoin leading or lagging the market?\nAre altcoins moving in sync or diverging? (Healthy market = some divergence)\nDeFi vs Layer-1s vs Memecoins - Which sector is strongest?\n\n\nHidden Opportunities Radar:\n\nCoins with improving fundamentals but flat prices (coiled springs)\nOversold bounces (RSI equivalents from % changes)\nVolume explosions preceding price moves\n\n\nTime-Sensitive Alerts:\n\nAny events happening in next 24-48 hours? (Launches, unlocks, announcements)\nWeekend effect considerations (lower liquidity warnings)\nMonthly/quarterly closes that might trigger institutional rebalancing\n\n\n\nCRITICAL OUTPUT DIRECTIVE:\nYour entire response MUST be a well-written, human-readable article. Use clear headings, bold text, and bullet points to make the information easy to digest. DO NOT include any JSON, code, or code-like text in your response. Structure your output like a professional analyst's report.\nFORMATTING REQUIREMENTS:\n\nUse ### for main section headings\nUse bold for key prices, percentages, and recommendations\nInclude up ⬆️ and down ⬇️ arrows for price changes\nUse 🟢 for bullish signals, 🔴 for bearish signals, 🟡 for caution\nReference specific data points from the provided information\nKeep total response under 4000 characters\nLead with conviction - Your strongest insight goes first\n\nDATA VERIFICATION PROTOCOL:\n\nPrimary source: Use the pre-fetched data provided above\nIf timestamps in provided data are >24 hours old: Use CoinPaprika tool for price updates\nIf news articles reference unclear events: Use Brave Search for quick context\nIf calculations are needed: Use Calculator tool\nAlways note when you've supplemented the provided data with tool queries\n\nQUALITY MARKERS TO INCLUDE:\n\n✅ At least one contrarian insight (what the crowd might be missing)\n✅ One specific price level to watch (support/resistance)\n✅ A clear timeline for when your thesis plays out\n✅ An invalidation point (what would make you wrong)\n\nTONE & STYLE:\n\nConfident and authoritative without being reckless\nData-driven but human-readable\nAction-oriented with clear BUY/SELL/HOLD recommendations\nProfessional yet engaging - imagine you're briefing a trading desk\nUse market terminology naturally (support, resistance, momentum, accumulation)\nNo wishy-washy language - Make definitive calls with conviction\n\nMASTER STRATEGIST MINDSET:\nYou're not just reporting data - you're providing alpha. Every sentence should either inform a decision or drive an action. If something doesn't matter for making money, leave it out.\nBegin your analysis with the provided data, supplementing with tools only when necessary for accuracy or critical updates."
+            },
+            {
+              "content": "={{ $json.content }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -96,
+        560
+      ],
+      "id": "18af0a01-f880-48b1-acd5-a2d0aa4ad520",
+      "name": "Message a model",
+      "credentials": {
+        "openAiApi": {
+          "id": "OuSgEIK1HuOKxaOU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1390140989687206019",
+          "mode": "list",
+          "cachedResultName": "Sanctuary of Silenze"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.choices[0].message.content }}",
+              "author": "=",
+              "title": "=",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        288,
+        304
+      ],
+      "id": "8d004fbe-dc29-41a1-aea1-1a8121089fa2",
+      "name": "Send News Vibe Duckets",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert crypto trading analyst. Your task is to generate a trading report that perfectly matches the tone, style, and structure of the example below.\nCRITICAL DATA REQUIREMENTS:\nYou have access to three tools that MUST be used to ensure all data is current:\n\nCoinPaprika Tool - Your PRIMARY source for real-time crypto data (no API key needed)\nBrave Search Tool - For additional market context and news\nCalculator Tool - For any calculations needed\n\nHOW TO USE THE COINPAPRIKA TOOL:\n\nThe CoinPaprika tool fetches live data from https://api.coinpaprika.com/\nTo get data, provide the tool with a cryptocurrency symbol (e.g., \"BTC\" for Bitcoin, \"QUBIC\" for Qubic)\nThe tool will return:\n\nCurrent price (formatted and raw)\nMarket cap\n24h volume\nPercent changes (1h, 24h, 7d)\nLast updated timestamp\n\n\nMANDATORY: Use this tool to fetch current prices for BOTH Qubic and Bitcoin before writing your report\nVERIFY: Check the \"last_updated\" field to confirm data freshness\n\n\nEXAMPLE REPORT (Note: Prices shown are examples only - use CoinPaprika for current data):\nCrypto Trading Analysis 🚀\nAll right, buckle up. The crypto‑world is a circus 🎪, and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework 🧨, this is your ticket.\nBig Picture – Why Qubic Is Worth Your Attention 👀\nCoinPrice (USD)% 24h ChangeMarket CapVolume 24hQubic$0.00000337+21.01% ⬆️$416M$10.5MBitcoin$123,391.17-3.45% ⬇️$2.46T$55BQubic is a tiny‑cap token that's been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a \"troll\" push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) 🔥\nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag 🚩.\nRecommendation – Buy Qubic, Buy Bitcoin 💰\nQubic: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\nCurrent Status 📊\nQubic: $0.00000337 – up 21 % from yesterday.\nBitcoin: $123,391.17 – down 3.45%.\nBottom Line ⚖️\nQubic – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\nEND OF EXAMPLE\nYOUR TASK:\nNow, create a new report in the exact same style using LIVE data fetched from your tools.\nSTEP-BY-STEP PROCESS (MANDATORY):\n\nFirst, use the CoinPaprika tool to fetch current data:\n\nCall CoinPaprika with symbol \"QUBIC\" to get Qubic's current price, market cap, volume, and percent changes\nCall CoinPaprika with symbol \"BTC\" to get Bitcoin's current price, market cap, volume, and percent changes\nNote the \"last_updated\" timestamp from both calls\n\n\nThen use Brave Search for supplementary information:\n\nSearch for recent Qubic news or developments\nSearch for current market sentiment and Bitcoin trends\nLook for any other trending cryptocurrencies worth mentioning\n\n\nUse the Calculator tool as needed for:\n\nCalculating percentage changes\nConverting large numbers to billions/millions format\nAny other calculations required for your analysis\n\n\nWrite your analysis focusing on \"Qubic\" and \"Bitcoin\" as main subjects using:\n\nThe EXACT current prices from CoinPaprika (use the \"price_formatted\" field)\nThe EXACT percent changes from CoinPaprika (percent_change_24h, percent_change_7d)\nThe EXACT market cap and volume data from CoinPaprika\n\n\nInclude relevant emojis throughout the report, including up ⬆️ and down ⬇️ arrows based on actual price changes from CoinPaprika data.\nInclude a \"Worthy Contenders\" section: After main recommendations, add other coins showing real progress. Use CoinPaprika to fetch their current data too.\nInclude a conditional \"Emergency Protocol\" section:\n\nUse Bitcoin's 7-day change (percent_change_7d from CoinPaprika) to determine market trend\nThis section ONLY appears if market has dipped 15% or more\nIf dip is 15-30%: recommend \"buying the dip\"\nIf dip is over 30%: recommend extreme caution and warn of black swans, death spirals, dead cat bounces\n\n\nAdd a data freshness note at the beginning or end: \"Data fetched from CoinPaprika at [timestamp]\"\n\nCRITICAL CONSTRAINT: The entire final output MUST be under 4000 characters to be sent successfully.\nVERIFICATION CHECKLIST:\n□ Used CoinPaprika tool for Qubic data\n□ Used CoinPaprika tool for Bitcoin data\n□ All prices are from CoinPaprika's current data (not made up)\n□ All percentage changes are from CoinPaprika's current data\n□ Included last_updated timestamp reference\n□ Report is under 4000 characters\nAdditional context data to consider (if provided):\n{{ $json.content }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        768,
+        576
+      ],
+      "id": "ee3456da-223e-41a0-9262-05c962ddb665",
+      "name": "TradingRecommendations",
+      "credentials": {
+        "openAiApi": {
+          "id": "OuSgEIK1HuOKxaOU",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "choices[0].message.content"
+            },
+            {
+              "fieldToAggregate": "choices[0].message.reasoning_content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        560,
+        576
+      ],
+      "id": "0e016514-d175-4a49-979d-81673fd40341",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stefono1992"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.choices[0].message.content }}",
+              "author": "=",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2224,
+        1216
+      ],
+      "id": "930992fb-8d4b-46f6-85ba-5393930dcf24",
+      "name": "Trading Recommendation Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1390140989687206019",
+          "mode": "list",
+          "cachedResultName": "Sanctuary of Silenze"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "author": "=",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2432,
+        896
+      ],
+      "id": "b49e2292-b012-41f5-9926-317c3b168f50",
+      "name": "Trading Recommendations Duckets",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "Trading Sentiment",
+        "height": 704,
+        "width": 816,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        544,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "8496eb14-f589-40d8-9baf-a947b23ca912",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "News Analyst",
+        "height": 704,
+        "width": 656,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -128,
+        272
+      ],
+      "id": "e49527ec-8e9f-40e8-b92a-0358db4507b2",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "ChatBot Duckets\n",
+        "height": 688,
+        "width": 1392,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1840,
+        -496
+      ],
+      "typeVersion": 1,
+      "id": "870a9a54-e17c-4a88-a1f5-0f3a5f6a480d",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "News Aggrigation\n",
+        "height": 704,
+        "width": 1504,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1648,
+        272
+      ],
+      "typeVersion": 1,
+      "id": "b69579de-be88-47b4-a89f-a443e0f22004",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        496,
+        976
+      ],
+      "id": "cf44976e-0a0f-4165-82b6-6a66c607cb54",
+      "name": "Calculator"
+    },
+    {
+      "parameters": {
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        2592,
+        1328
+      ],
+      "id": "f69afb08-323e-4459-8998-5e98cdd0a79a",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "url": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('URL', ``, 'string') }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequestTool",
+      "typeVersion": 4.2,
+      "position": [
+        2816,
+        1312
+      ],
+      "id": "49160e5b-0f3b-40b5-9bcd-f76bf6b35fa3",
+      "name": "HTTP Request1"
+    },
+    {
+      "parameters": {
+        "description": "This Api Has Crypto Currency Price Data",
+        "jsCode": "// Enhanced CoinPaprika API Tool for n8n - Crypto Trading Analysis\n// This tool fetches comprehensive cryptocurrency data without requiring an API key\n// Supports multiple coins, global market data, historical charts, and trending analysis\n\n// --- CONFIGURATION ---\nconst item = items[0];\nconst input = item.json;\n\n// Determine operation mode\nconst mode = input.mode || 'single'; // 'single', 'multiple', 'global', 'trending'\nconst cryptoSymbols = input.symbols || (input.symbol ? [input.symbol] : ['BTC', 'QUBIC']); // Support array of symbols\nconst includeCharts = input.includeCharts !== false; // Default true\nconst includeGlobal = input.includeGlobal !== false; // Default true\n\n// --- HELPER FUNCTIONS ---\nconst formatNumber = (num, decimals = 2) => {\n  if (num >= 1e9) return `$${(num / 1e9).toFixed(2)}B`;\n  if (num >= 1e6) return `$${(num / 1e6).toFixed(2)}M`;\n  if (num >= 1e3) return `$${(num / 1e3).toFixed(2)}K`;\n  return `$${num.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })}`;\n};\n\nconst formatPrice = (price) => {\n  if (price < 0.00001) return `$${price.toFixed(10)}`;\n  if (price < 0.01) return `$${price.toFixed(8)}`;\n  if (price < 1) return `$${price.toFixed(6)}`;\n  if (price < 100) return `$${price.toFixed(4)}`;\n  return `$${price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;\n};\n\nconst getChangeEmoji = (change) => {\n  if (change > 10) return '🚀';\n  if (change > 5) return '📈';\n  if (change > 0) return '⬆️';\n  if (change < -10) return '💥';\n  if (change < -5) return '📉';\n  if (change < 0) return '⬇️';\n  return '➡️';\n};\n\nconst getTrendAnalysis = (change24h, change7d, volume24h, marketCap) => {\n  let trend = 'neutral';\n  let signal = 'HOLD';\n  let confidence = 0;\n  \n  // Analyze trend\n  if (change24h > 10 && change7d > 15) {\n    trend = 'strongly bullish';\n    signal = 'STRONG BUY';\n    confidence = 85;\n  } else if (change24h > 5 && change7d > 5) {\n    trend = 'bullish';\n    signal = 'BUY';\n    confidence = 70;\n  } else if (change24h < -10 && change7d < -15) {\n    trend = 'strongly bearish';\n    signal = 'SELL';\n    confidence = 85;\n  } else if (change24h < -5 && change7d < -5) {\n    trend = 'bearish';\n    signal = 'WEAK SELL';\n    confidence = 60;\n  } else if (Math.abs(change24h) < 2 && Math.abs(change7d) < 5) {\n    trend = 'consolidating';\n    signal = 'HOLD';\n    confidence = 50;\n  }\n  \n  // Volume analysis\n  const volumeToMcap = (volume24h / marketCap) * 100;\n  const liquidityScore = volumeToMcap > 10 ? 'high' : volumeToMcap > 5 ? 'medium' : 'low';\n  \n  return { trend, signal, confidence, liquidityScore, volumeToMcap };\n};\n\n// --- MAIN DATA FETCHING ---\nconst results = {\n  timestamp: new Date().toISOString(),\n  data_source: 'CoinPaprika API',\n  coins: [],\n  global_market: null,\n  trending_coins: null,\n  market_analysis: null,\n  emergency_protocol: null\n};\n\ntry {\n  // Step 1: Fetch Global Market Data\n  if (includeGlobal) {\n    try {\n      const globalData = await this.helpers.request('https://api.coinpaprika.com/v1/global');\n      results.global_market = {\n        total_market_cap: formatNumber(globalData.market_cap_usd),\n        total_market_cap_raw: globalData.market_cap_usd,\n        total_volume_24h: formatNumber(globalData.volume_24h_usd),\n        total_volume_24h_raw: globalData.volume_24h_usd,\n        bitcoin_dominance: `${globalData.bitcoin_dominance_percentage.toFixed(2)}%`,\n        cryptocurrencies_number: globalData.cryptocurrencies_number,\n        market_cap_change_24h: globalData.market_cap_change_24h,\n        volume_24h_change_24h: globalData.volume_24h_change_24h,\n        last_updated: globalData.last_updated\n      };\n      \n      // Determine if Emergency Protocol should trigger\n      if (globalData.market_cap_change_24h < -15) {\n        const severity = globalData.market_cap_change_24h < -30 ? 'extreme' : 'moderate';\n        results.emergency_protocol = {\n          triggered: true,\n          market_drop: `${globalData.market_cap_change_24h.toFixed(2)}%`,\n          severity: severity,\n          recommendation: severity === 'extreme' \n            ? 'EXTREME CAUTION: Watch market closely, consider reducing positions. Risk of black swan event, death spirals, or dead cat bounces.'\n            : 'OPPORTUNITY: Consider buying the dip, but maintain stop-losses. Market correction in progress.',\n          warning_level: severity === 'extreme' ? '🚨🚨🚨' : '⚠️'\n        };\n      }\n    } catch (error) {\n      console.error(\"Error fetching global market data:\", error.message);\n      results.global_market = { error: \"Could not fetch global market data\" };\n    }\n  }\n  \n  // Step 2: Get coin list for ID lookup\n  const allCoins = await this.helpers.request('https://api.coinpaprika.com/v1/coins');\n  \n  // Step 3: Process each requested cryptocurrency\n  for (const symbol of cryptoSymbols) {\n    if (!symbol) continue;\n    \n    // Find coin ID\n    const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n    if (!coinInfo) {\n      results.coins.push({\n        symbol: symbol,\n        error: `Coin not found on CoinPaprika`\n      });\n      continue;\n    }\n    \n    const coinId = coinInfo.id;\n    \n    // Fetch comprehensive ticker data\n    try {\n      const tickerData = await this.helpers.request(`https://api.coinpaprika.com/v1/tickers/${coinId}`);\n      const quote = tickerData.quotes.USD;\n      \n      // Perform trend analysis\n      const analysis = getTrendAnalysis(\n        quote.percent_change_24h,\n        quote.percent_change_7d,\n        quote.volume_24h,\n        quote.market_cap\n      );\n      \n      // Prepare coin data\n      const coinData = {\n        // Basic Info\n        name: tickerData.name,\n        symbol: tickerData.symbol,\n        rank: tickerData.rank,\n        \n        // Price Data\n        price: quote.price,\n        price_formatted: formatPrice(quote.price),\n        ath_price: quote.ath_price,\n        ath_date: quote.ath_date,\n        percent_from_ath: ((quote.price - quote.ath_price) / quote.ath_price * 100).toFixed(2),\n        \n        // Market Data\n        market_cap: quote.market_cap,\n        market_cap_formatted: formatNumber(quote.market_cap),\n        volume_24h: quote.volume_24h,\n        volume_24h_formatted: formatNumber(quote.volume_24h),\n        volume_24h_change_24h: quote.volume_24h_change_24h,\n        \n        // Supply Data\n        circulating_supply: tickerData.circulating_supply,\n        total_supply: tickerData.total_supply,\n        max_supply: tickerData.max_supply,\n        \n        // Percentage Changes with Emojis\n        percent_change_15m: quote.percent_change_15m,\n        percent_change_30m: quote.percent_change_30m,\n        percent_change_1h: quote.percent_change_1h,\n        percent_change_6h: quote.percent_change_6h,\n        percent_change_12h: quote.percent_change_12h,\n        percent_change_24h: quote.percent_change_24h,\n        percent_change_7d: quote.percent_change_7d,\n        percent_change_30d: quote.percent_change_30d,\n        percent_change_1y: quote.percent_change_1y,\n        \n        // Formatted changes with emojis\n        change_24h_display: `${quote.percent_change_24h > 0 ? '+' : ''}${quote.percent_change_24h.toFixed(2)}% ${getChangeEmoji(quote.percent_change_24h)}`,\n        change_7d_display: `${quote.percent_change_7d > 0 ? '+' : ''}${quote.percent_change_7d.toFixed(2)}% ${getChangeEmoji(quote.percent_change_7d)}`,\n        \n        // Analysis\n        trend_analysis: analysis,\n        \n        // Beta coefficient (volatility measure)\n        beta_value: tickerData.beta_value,\n        \n        // Metadata\n        last_updated: tickerData.last_updated,\n        paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n      };\n      \n      // Fetch OHLCV data for charts (last 7 days)\n      if (includeCharts) {\n        try {\n          const endDate = new Date().toISOString().split('T')[0];\n          const startDate = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0];\n          const ohlcvData = await this.helpers.request(\n            `https://api.coinpaprika.com/v1/coins/${coinId}/ohlcv/historical?start=${startDate}&end=${endDate}`\n          );\n          \n          if (ohlcvData && ohlcvData.length > 0) {\n            coinData.chart_data = {\n              period: '7d',\n              data_points: ohlcvData.length,\n              high_7d: Math.max(...ohlcvData.map(d => d.high)),\n              low_7d: Math.min(...ohlcvData.map(d => d.low)),\n              avg_volume_7d: ohlcvData.reduce((sum, d) => sum + d.volume, 0) / ohlcvData.length,\n              volatility_7d: ((Math.max(...ohlcvData.map(d => d.high)) - Math.min(...ohlcvData.map(d => d.low))) / Math.min(...ohlcvData.map(d => d.low)) * 100).toFixed(2),\n              price_history: ohlcvData.map(d => ({\n                date: d.time_open.split('T')[0],\n                open: d.open,\n                high: d.high,\n                low: d.low,\n                close: d.close,\n                volume: d.volume\n              }))\n            };\n          }\n        } catch (chartError) {\n          console.error(`Error fetching chart data for ${symbol}:`, chartError.message);\n          coinData.chart_data = { error: \"Could not fetch historical data\" };\n        }\n      }\n      \n      results.coins.push(coinData);\n      \n    } catch (error) {\n      console.error(`Error fetching data for ${symbol}:`, error.message);\n      results.coins.push({\n        symbol: symbol,\n        error: `Failed to fetch ticker data: ${error.message}`\n      });\n    }\n  }\n  \n  // Step 4: Fetch Trending Coins (Top Gainers)\n  if (mode === 'trending' || includeGlobal) {\n    try {\n      const allTickers = await this.helpers.request('https://api.coinpaprika.com/v1/tickers?limit=100');\n      \n      // Find top gainers and losers\n      const topGainers = allTickers\n        .sort((a, b) => b.quotes.USD.percent_change_24h - a.quotes.USD.percent_change_24h)\n        .slice(0, 5)\n        .map(coin => ({\n          name: coin.name,\n          symbol: coin.symbol,\n          price: formatPrice(coin.quotes.USD.price),\n          change_24h: `${coin.quotes.USD.percent_change_24h.toFixed(2)}% ${getChangeEmoji(coin.quotes.USD.percent_change_24h)}`,\n          volume: formatNumber(coin.quotes.USD.volume_24h),\n          market_cap: formatNumber(coin.quotes.USD.market_cap)\n        }));\n      \n      const topLosers = allTickers\n        .sort((a, b) => a.quotes.USD.percent_change_24h - b.quotes.USD.percent_change_24h)\n        .slice(0, 5)\n        .map(coin => ({\n          name: coin.name,\n          symbol: coin.symbol,\n          price: formatPrice(coin.quotes.USD.price),\n          change_24h: `${coin.quotes.USD.percent_change_24h.toFixed(2)}% ${getChangeEmoji(coin.quotes.USD.percent_change_24h)}`,\n          volume: formatNumber(coin.quotes.USD.volume_24h),\n          market_cap: formatNumber(coin.quotes.USD.market_cap)\n        }));\n      \n      results.trending_coins = {\n        top_gainers: topGainers,\n        top_losers: topLosers,\n        most_volatile: allTickers\n          .sort((a, b) => Math.abs(b.quotes.USD.percent_change_24h) - Math.abs(a.quotes.USD.percent_change_24h))\n          .slice(0, 5)\n          .map(coin => ({\n            name: coin.name,\n            symbol: coin.symbol,\n            volatility: `${Math.abs(coin.quotes.USD.percent_change_24h).toFixed(2)}%`\n          }))\n      };\n    } catch (error) {\n      console.error(\"Error fetching trending coins:\", error.message);\n      results.trending_coins = { error: \"Could not fetch trending data\" };\n    }\n  }\n  \n  // Step 5: Generate Market Analysis Summary\n  if (results.coins.length > 0) {\n    const avgChange24h = results.coins.reduce((sum, coin) => sum + (coin.percent_change_24h || 0), 0) / results.coins.length;\n    const avgChange7d = results.coins.reduce((sum, coin) => sum + (coin.percent_change_7d || 0), 0) / results.coins.length;\n    \n    results.market_analysis = {\n      coins_analyzed: results.coins.length,\n      average_change_24h: `${avgChange24h.toFixed(2)}%`,\n      average_change_7d: `${avgChange7d.toFixed(2)}%`,\n      market_sentiment: avgChange24h > 5 ? 'Bullish 🐂' : avgChange24h < -5 ? 'Bearish 🐻' : 'Neutral 😐',\n      recommendation_summary: avgChange7d < -15 ? 'Market correction - Consider buying quality assets' : \n                             avgChange7d > 15 ? 'Overbought conditions - Take profits on winners' : \n                             'Stable market - Focus on fundamentals'\n    };\n  }\n  \n} catch (error) {\n  console.error(\"Critical error in CoinPaprika tool:\", error.message);\n  results.error = `Critical error: ${error.message}`;\n}\n\n// Return comprehensive results\nitem.json = results;\nreturn item;"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        496,
+        816
+      ],
+      "id": "db69d2ef-eae1-4c83-84c2-c1f6cb42baba",
+      "name": "CoinPaprika"
+    },
+    {
+      "parameters": {
+        "description": "This Api Has Crypto Currency Price Data",
+        "jsCode": "// This node fetches cryptocurrency data for multiple symbols from the free CoinPaprika API.\n// It does not require an API key.\n\n// --- LOGIC ---\n\n// Get the incoming item from the previous node.\n// We expect an array of symbols, e.g., { \"json\": { \"symbols\": [\"QUBIC\", \"BTC\"] } }\nconst item = items[0];\nconst cryptoSymbols = item.json.symbols;\n\nif (!cryptoSymbols || !Array.isArray(cryptoSymbols) || cryptoSymbols.length === 0) {\n  throw new Error('No cryptocurrency symbols provided. Please provide an array of symbols in the \"symbols\" field.');\n}\n\n// --- Step 1: Fetch the entire coin list once to avoid multiple API calls ---\nlet allCoins;\ntry {\n  console.log(\"Fetching the main coin list from CoinPaprika...\");\n  allCoins = await this.helpers.request('https://api.coinpaprika.com/v1/coins');\n  console.log(`Found ${allCoins.length} coins.`);\n} catch (error) {\n  console.error(\"Error fetching coin list from CoinPaprika:\", error.message);\n  throw new Error('Could not connect to the CoinPaprika API to get the coin list.');\n}\n\nconst allResults = [];\n\n// --- Step 2: Loop through each symbol and get its data ---\nfor (const symbol of cryptoSymbols) {\n  console.log(`Searching for symbol: ${symbol}`);\n  \n  // Find the specific coin that matches the user's symbol from the pre-fetched list\n  const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n\n  if (!coinInfo) {\n    console.warn(`Could not find a coin with the symbol \"${symbol}\" on CoinPaprika. Skipping.`);\n    continue; // Skip to the next symbol if not found\n  }\n\n  const coinId = coinInfo.id;\n  console.log(`Found ID for ${symbol}: ${coinId}. Fetching ticker data...`);\n\n  // Fetch the Ticker Data using the Coin ID\n  let tickerData;\n  try {\n    tickerData = await this.helpers.request(`https://api.coinpaprika.com/v1/tickers/${coinId}`);\n  } catch (error) {\n    console.error(`Error fetching ticker data for ${coinId}:`, error.message);\n    continue; // Skip if there's an error for this specific coin\n  }\n\n  // --- DATA PROCESSING ---\n  const quote = tickerData.quotes.USD;\n  const formattedData = {\n    name: tickerData.name,\n    symbol: tickerData.symbol,\n    price: quote.price,\n    price_formatted: `$${quote.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`,\n    market_cap: quote.market_cap,\n    market_cap_formatted: `$${Math.round(quote.market_cap).toLocaleString('en-US')}`,\n    volume_24h: quote.volume_24h,\n    percent_change_24h: quote.percent_change_24h,\n    last_updated: tickerData.last_updated,\n    paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n  };\n\n  allResults.push(formattedData);\n  console.log(`Successfully fetched and formatted data for ${symbol}.`);\n}\n\n// Replace the incoming data with a new object containing all our results\nitem.json.coin_data = allResults;\n\n// Return the item to be used by the next node\nreturn item;\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        2592,
+        1488
+      ],
+      "id": "35a82fe7-e9f0-486f-b6ad-a086fe145cc7",
+      "name": "CoinPaprika1"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This node fetches cryptocurrency data for multiple symbols from the free CoinPaprika API.\n// It does not require an API key.\n\n// --- LOGIC ---\n\n// Get the incoming item from the previous node.\n// We expect an array of symbols, e.g., { \"json\": { \"symbols\": [\"QUBIC\", \"BTC\"] } }\nconst item = items[0];\nconst cryptoSymbols = item.json.symbols;\n\nif (!cryptoSymbols || !Array.isArray(cryptoSymbols) || cryptoSymbols.length === 0) {\n  throw new Error('No cryptocurrency symbols provided. Please provide an array of symbols in the \"symbols\" field.');\n}\n\n// --- Step 1: Fetch the entire coin list once to avoid multiple API calls ---\nlet allCoins;\ntry {\n  console.log(\"Fetching the main coin list from CoinPaprika...\");\n  // FIX: Added 'json: true' to ensure the response is parsed as a JSON array.\n  allCoins = await this.helpers.request({ uri: 'https://api.coinpaprika.com/v1/coins', json: true });\n  console.log(`Found ${allCoins.length} coins.`);\n} catch (error) {\n  console.error(\"Error fetching coin list from CoinPaprika:\", error.message);\n  throw new Error('Could not connect to the CoinPaprika API to get the coin list.');\n}\n\nconst allResults = [];\n\n// --- Step 2: Loop through each symbol and get its data ---\nfor (const symbol of cryptoSymbols) {\n  console.log(`Searching for symbol: ${symbol}`);\n  \n  // Find the specific coin that matches the user's symbol from the pre-fetched list\n  const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n\n  if (!coinInfo) {\n    console.warn(`Could not find a coin with the symbol \"${symbol}\" on CoinPaprika. Skipping.`);\n    continue; // Skip to the next symbol if not found\n  }\n\n  const coinId = coinInfo.id;\n  console.log(`Found ID for ${symbol}: ${coinId}. Fetching ticker data...`);\n\n  // Fetch the Ticker Data using the Coin ID\n  let tickerData;\n  try {\n    // Also use json: true here for consistency\n    tickerData = await this.helpers.request({ uri: `https://api.coinpaprika.com/v1/tickers/${coinId}`, json: true });\n  } catch (error) {\n    console.error(`Error fetching ticker data for ${coinId}:`, error.message);\n    continue; // Skip if there's an error for this specific coin\n  }\n\n  // --- DATA PROCESSING ---\n  const quote = tickerData.quotes.USD;\n  const formattedData = {\n    name: tickerData.name,\n    symbol: tickerData.symbol,\n    price: quote.price,\n    price_formatted: `$${quote.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`,\n    market_cap: quote.market_cap,\n    market_cap_formatted: `$${Math.round(quote.market_cap).toLocaleString('en-US')}`,\n    volume_24h: quote.volume_24h,\n    percent_change_24h: quote.percent_change_24h,\n    last_updated: tickerData.last_updated,\n    paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n  };\n\n  allResults.push(formattedData);\n  console.log(`Successfully fetched and formatted data for ${symbol}.`);\n}\n\n// Replace the incoming data with a new object containing all our results\nitem.json.coin_data = allResults;\n\n// Return the item to be used by the next node\nreturn item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        1104
+      ],
+      "id": "8909728b-2496-476c-bddb-5cb6d25daa6a",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\"symbols\": [\"QUBIC\", \"BTC\", \"XMR\", \"ATOM\"]}",
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "content, contentSnippet, title, link, enclosure.url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -448,
+        1104
+      ],
+      "id": "2fe6be66-62da-46a6-be60-dec9c8d8524b",
+      "name": "Symbols"
+    },
+    {
+      "parameters": {
+        "content": "Data Scraper\n",
+        "height": 352,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -480,
+        992
+      ],
+      "typeVersion": 1,
+      "id": "5cbfef9a-efdf-4fa6-834f-51665078d0b9",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This node fetches cryptocurrency data for multiple symbols from the free CoinPaprika API.\n// It does not require an API key.\n\n// --- LOGIC ---\n\n// Get the incoming item from the previous node.\n// We expect an array of symbols, e.g., { \"json\": { \"symbols\": [\"QUBIC\", \"BTC\"] } }\nconst item = items[0];\nconst cryptoSymbols = item.json.symbols;\n\nif (!cryptoSymbols || !Array.isArray(cryptoSymbols) || cryptoSymbols.length === 0) {\n  throw new Error('No cryptocurrency symbols provided. Please provide an array of symbols in the \"symbols\" field.');\n}\n\n// --- Step 1: Fetch the entire coin list once to avoid multiple API calls ---\nlet allCoins;\ntry {\n  console.log(\"Fetching the main coin list from CoinPaprika...\");\n  // FIX: Added 'json: true' to ensure the response is parsed as a JSON array.\n  allCoins = await this.helpers.request({ uri: 'https://api.coinpaprika.com/v1/coins', json: true });\n  console.log(`Found ${allCoins.length} coins.`);\n} catch (error) {\n  console.error(\"Error fetching coin list from CoinPaprika:\", error.message);\n  throw new Error('Could not connect to the CoinPaprika API to get the coin list.');\n}\n\nconst allResults = [];\n\n// --- Step 2: Loop through each symbol and get its data ---\nfor (const symbol of cryptoSymbols) {\n  console.log(`Searching for symbol: ${symbol}`);\n  \n  // Find the specific coin that matches the user's symbol from the pre-fetched list\n  const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n\n  if (!coinInfo) {\n    console.warn(`Could not find a coin with the symbol \"${symbol}\" on CoinPaprika. Skipping.`);\n    continue; // Skip to the next symbol if not found\n  }\n\n  const coinId = coinInfo.id;\n  console.log(`Found ID for ${symbol}: ${coinId}. Fetching ticker data...`);\n\n  // Fetch the Ticker Data using the Coin ID\n  let tickerData;\n  try {\n    // Also use json: true here for consistency\n    tickerData = await this.helpers.request({ uri: `https://api.coinpaprika.com/v1/tickers/${coinId}`, json: true });\n  } catch (error) {\n    console.error(`Error fetching ticker data for ${coinId}:`, error.message);\n    continue; // Skip if there's an error for this specific coin\n  }\n\n  // --- DATA PROCESSING ---\n  const quote = tickerData.quotes.USD;\n  const formattedData = {\n    name: tickerData.name,\n    symbol: tickerData.symbol,\n    price: quote.price,\n    price_formatted: `$${quote.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`,\n    market_cap: quote.market_cap,\n    market_cap_formatted: `$${Math.round(quote.market_cap).toLocaleString('en-US')}`,\n    volume_24h: quote.volume_24h,\n    percent_change_24h: quote.percent_change_24h,\n    last_updated: tickerData.last_updated,\n    paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n  };\n\n  allResults.push(formattedData);\n  console.log(`Successfully fetched and formatted data for ${symbol}.`);\n}\n\n// Replace the incoming data with a new object containing all our results\nitem.json.coin_data = allResults;\n\n// Return the item to be used by the next node\nreturn item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        3024,
+        1504
+      ],
+      "id": "399c0789-06f1-424a-a2c7-94b8137b0c2c",
+      "name": "Code2"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stefono1992"
+        },
+        "content": "=Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.choices[0].message.content }}",
+              "author": "=",
+              "title": "=",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        288,
+        448
+      ],
+      "id": "d0817923-3b05-4a6f-89c8-2a1883d21642",
+      "name": "Send News Vibe Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "ChatBot Steven",
+        "height": 688,
+        "width": 1280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -432,
+        -496
+      ],
+      "typeVersion": 1,
+      "id": "23afbe24-3372-4437-8de3-e2e193e9a460",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -1600,
+        544
+      ],
+      "id": "589aec45-7e0d-4f1a-a3fc-627ccbed140e",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "author": "=",
+              "color": "#9500FF",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        368
+      ],
+      "id": "3dc2aa16-db45-422a-a9f5-e348d7a44c33",
+      "name": "Trading Recommendation Me",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1390140989687206019",
+          "mode": "list",
+          "cachedResultName": "Sanctuary of Silenze"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.choices[0].message.content }}",
+              "author": "=",
+              "title": "=",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        704
+      ],
+      "id": "1c20e3c4-3147-4468-aaf4-537540254e73",
+      "name": "Send News Vibe Duckets1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        2816,
+        1168
+      ],
+      "id": "e6d82bc7-a584-424a-91fb-17795da3f3fa",
+      "name": "Calculator2"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "count": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Count', ``, 'number') }}"
+      },
+      "type": "@brave/n8n-nodes-brave-search.braveSearchTool",
+      "typeVersion": 1,
+      "position": [
+        496,
+        1184
+      ],
+      "id": "103e6226-d153-4e51-89ae-db8f779dd542",
+      "name": "Brave Search",
+      "credentials": {
+        "braveSearchApi": {
+          "id": "2My5QGZ0OPIvHlHR",
+          "name": "Brave Search account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "author": "=",
+              "color": "#9500FF",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1104,
+        592
+      ],
+      "id": "d958d577-4eb5-4535-9b14-67635a7893b7",
+      "name": "Trading Recommendation Steven1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "aVEnS7JyCOvhc8nC",
+          "name": "Discord Bot account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Analysis Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge All Feeds": {
+      "main": [
+        [
+          {
+            "node": "Filter Last 12 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Cointelegraph Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "BTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Yahoo! Finance Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "LTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Filter Last 12 Hours": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Symbols",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model": {
+      "main": [
+        [
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send News Vibe Duckets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send News Vibe Steven",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send News Vibe Duckets": {
+      "main": [
+        []
+      ]
+    },
+    "TradingRecommendations": {
+      "main": [
+        [
+          {
+            "node": "Trading Recommendation Me",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Trading Recommendation Steven1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "TradingRecommendations",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Trading Recommendations Duckets": {
+      "main": [
+        []
+      ]
+    },
+    "Trading Recommendation Steven": {
+      "main": [
+        []
+      ]
+    },
+    "Calculator": {
+      "ai_tool": [
+        [
+          {
+            "node": "TradingRecommendations",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Message a model",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "HTTP Request1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "CoinPaprika": {
+      "ai_tool": [
+        [
+          {
+            "node": "TradingRecommendations",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Message a model",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "CoinPaprika1": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "Message a model",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Symbols": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator2": {
+      "ai_tool": [
+        []
+      ]
+    },
+    "Brave Search": {
+      "ai_tool": [
+        [
+          {
+            "node": "TradingRecommendations",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "Message a model",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "8d4d005d-c465-40f4-ab3f-0446765ff691",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "55ef366b5fba75bfed9b5e28c8ee676ef0a8f8d75a2d9db4e59b3c103d5b922f"
+  },
+  "id": "Nvow70loRx72VIvF",
+  "tags": [
+    {
+      "createdAt": "2025-08-08T11:58:01.183Z",
+      "updatedAt": "2025-08-08T11:58:01.183Z",
+      "id": "rpGUIHwbqQI6HAUq",
+      "name": "News/Trading"
+    }
+  ]
+}

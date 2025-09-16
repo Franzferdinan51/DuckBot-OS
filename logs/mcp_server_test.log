@@ -1,0 +1,4 @@
+  File "<string>", line 1
+    from duckbot.integrations.mcp_server import DuckBotMCPServer; import asyncio; async def main(): server = DuckBotMCPServer(); await server.start(); print('MCP server started'); return server; asyncio.run(main())
+                                                                                  ^^^^^
+SyntaxError: invalid syntax

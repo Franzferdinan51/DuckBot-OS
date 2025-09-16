@@ -1,0 +1,26 @@
+WARNING:duckbot.services.webui_manager:AI Router not available
+WARNING:duckbot.services.webui_manager:Cost management not available
+INFO:browser_use.telemetry.service:Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use not available - install with: pip install browser-use
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use integration not available
+INFO:duckbot.integrations.web_ui_integration:Web-UI integration session initialized
+INFO:duckbot.integrations.persona_engine_integration:Persona Engine integration session initialized
+WARNING:duckbot.services.webui_manager:Observability not available
+WARNING:duckbot.services.webui_manager:RAG not available
+INFO:duckbot.services.webui_manager:[OK] Server manager initialized
+INFO:duckbot.services.webui_manager:[OK] Mining manager initialized
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use not installed - install with: pip install browser-use
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use integration not available
+INFO:duckbot.services.webui_manager:[OK] Browser-Use integration initialized
+INFO:duckbot.integrations.web_ui_integration:Web-UI integration session initialized
+INFO:duckbot.integrations.web_ui_integration:Web-UI integration session initialized
+INFO:duckbot.services.webui_manager:[OK] Web-UI integration initialized
+INFO:duckbot.integrations.persona_engine_integration:Persona Engine integration session initialized
+INFO:duckbot.integrations.persona_engine_integration:Persona Engine integration session initialized
+INFO:duckbot.services.webui_manager:[OK] Persona Engine integration initialized
+INFO:duckbot.services.webui_manager:Starting DuckBot WebUI on 127.0.0.1:8787
+INFO:     Started server process [3692]
+INFO:     Waiting for application startup.
+INFO:duckbot.services.webui_manager:Starting DuckBot Unified WebUI Manager v4.2
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8787 (Press CTRL+C to quit)

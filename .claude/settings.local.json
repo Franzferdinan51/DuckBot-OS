@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/Ryan/Desktop/DuckBot-v3.1.0-VibeVoice-Ready-20250829_191017 (1)/**)",
+      "Bash(cat:*)",
+      "Read(//c/Users/Ryan/.config/**)",
+      "Read(//c/Users/Ryan/**)",
+      "Bash(find:*)",
+      "Bash(python:*)",
+      "Bash(dir:*)",
+      "Bash(timeout:*)",
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "WebSearch",
+      "Bash(copy:*)",
+      "Bash(xcopy:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

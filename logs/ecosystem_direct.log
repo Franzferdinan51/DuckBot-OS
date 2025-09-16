@@ -1,0 +1,22 @@
+19:15:06 - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-14 19:15:06,264 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+19:15:06 - INFO - Starting core DuckBot services...
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting core DuckBot services...
+19:15:06 - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+2025-09-14 19:15:06,265 - __main__ - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+19:15:06 - INFO - Starting integration services...
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting integration services...
+19:15:06 - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+19:15:06 - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+19:15:06 - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+19:15:06 - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+19:15:06 - INFO - DuckBot Ecosystem fully initialized!
+2025-09-14 19:15:06,267 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+19:15:06 - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-14 19:15:06,268 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+19:15:06 - INFO - All integrations active and monitoring
+2025-09-14 19:15:06,268 - __main__ - INFO - All integrations active and monitoring

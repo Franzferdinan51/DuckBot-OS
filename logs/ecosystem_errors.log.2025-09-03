@@ -1,0 +1,11 @@
+2025-09-03 11:53:00,717 - DuckBot.Ecosystem - ERROR - [PID:35232] - ❌ Failed to start local ComfyUI: Local ComfyUI installation not found
+2025-09-03 11:53:18,308 - DuckBot.Ecosystem - ERROR - [PID:35232] - ❌ Health check error for open_notebook: 'open_notebook'
+2025-09-03 11:53:18,309 - DuckBot.Ecosystem - ERROR - [PID:35232] - ❌ Health check error for comfyui: 'comfyui'
+2025-09-03 11:59:50,706 - DuckBot.Ecosystem - ERROR - [PID:35232] - ❌ jupyter health check failed after 15 attempts
+2025-09-03 11:59:50,720 - DuckBot.Ecosystem - ERROR - [PID:35232] - 💀 jupyter process died (exit code: 1)
+2025-09-03 12:00:02,043 - DuckBot.Ecosystem - ERROR - [PID:35232] - 💀 n8n process died (exit code: 0)
+2025-09-03 12:00:07,072 - DuckBot.Ecosystem - ERROR - [PID:35232] - ❌ Failed to restart n8n
+2025-09-03 12:00:07,072 - DuckBot.Ecosystem - ERROR - [PID:35232] - 💀 open_notebook process died (exit code: 1)
+2025-09-03 12:00:07,090 - DuckBot.Ecosystem - ERROR - [PID:35232] - 💀 duckbot process died (exit code: 1)
+2025-09-03 20:23:41,299 - DuckBot.Ecosystem - ERROR - [PID:39948] - ❌ Failed to load configuration: ServiceConfig.__init__() got an unexpected keyword argument 'command'
+2025-09-03 20:23:48,845 - DuckBot.Ecosystem - ERROR - [PID:39948] - ❌ Failed to start local ComfyUI: Local ComfyUI installation not found

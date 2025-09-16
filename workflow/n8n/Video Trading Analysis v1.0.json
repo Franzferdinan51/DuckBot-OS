@@ -1,0 +1,1437 @@
+{
+  "name": "Video Trading Analysis v1.0",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -512,
+        1040
+      ],
+      "id": "54bd055d-2102-40b0-8cc2-3194ad1edf1c",
+      "name": "Manual Chat Trigger"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/category/market-analysis",
+        "options": {
+          "ignoreSSL": false
+        }
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        608
+      ],
+      "id": "fcdd1429-d094-46fb-a15b-39e12a8d6de1",
+      "name": "Market Analysis Feed"
+    },
+    {
+      "parameters": {
+        "numberInputs": 5
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        352,
+        816
+      ],
+      "id": "9fcce806-0f63-478b-bebd-00925ee9f31e",
+      "name": "Merge All Feeds"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        736
+      ],
+      "id": "30f476be-2926-4546-ad75-cc7817bfe1c5",
+      "name": "All Cointelegraph Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/bitcoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        880
+      ],
+      "id": "87959dc6-fd48-4ba5-a008-8debfd102730",
+      "name": "BTC Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://www.yahoo.com/news/rss/finance",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        1008
+      ],
+      "id": "c3cecbb0-3d16-4ce2-94d2-9c07c24b61b2",
+      "name": "Yahoo! Finance Feed"
+    },
+    {
+      "parameters": {
+        "url": "https://cointelegraph.com/rss/tag/litecoin",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 1.2,
+      "position": [
+        96,
+        1152
+      ],
+      "id": "8185ef60-00e7-418a-bdb8-05273383621f",
+      "name": "LTC Feed"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "97b60332-0c60-4b4e-8db8-f1d4220d419b",
+              "leftValue": "={{ $json.pubDate }}",
+              "rightValue": "={{ $now.minus({ \"hours\": 12 }) }}",
+              "operator": {
+                "type": "dateTime",
+                "operation": "after"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.filter",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        864
+      ],
+      "id": "b25114a6-667f-4091-9ce7-b9d261b97abd",
+      "name": "Filter Last 12 Hours"
+    },
+    {
+      "parameters": {
+        "maxItems": 15
+      },
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        784,
+        864
+      ],
+      "id": "58a4727f-58f5-4391-a0ca-c3fe5f7dbd3a",
+      "name": "Limit"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "1390140989687206019",
+          "mode": "list",
+          "cachedResultName": "Sanctuary of Silenze"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "author": "=",
+              "title": "=",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        624
+      ],
+      "id": "f04eef79-9ab7-4653-bdb4-962db6cbace3",
+      "name": "Send News Vibe Duckets",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "fieldsToAggregate": {
+          "fieldToAggregate": [
+            {
+              "fieldToAggregate": "choices[0].message.content"
+            },
+            {
+              "fieldToAggregate": "choices[0].message.reasoning_content"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.aggregate",
+      "typeVersion": 1,
+      "position": [
+        1648,
+        896
+      ],
+      "id": "9889661c-223b-4d3d-b992-eb6cec52e6d3",
+      "name": "Aggregate"
+    },
+    {
+      "parameters": {
+        "content": "Trading Sentiment",
+        "height": 704,
+        "width": 816,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1632,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "03ed8a6c-f677-4981-88cb-9947f49503ee",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "News Analyst",
+        "height": 704,
+        "width": 656,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        960,
+        592
+      ],
+      "id": "4c1b3c50-6ff9-44e3-a1e7-72095ef728c4",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "ChatBot Duckets\n",
+        "height": 688,
+        "width": 1392,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -752,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "ace1a62c-9919-46f7-b909-b28bf1982068",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "News Aggrigation\n",
+        "height": 704,
+        "width": 1504,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -560,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "eaefc927-435e-4313-a7ef-1d475bf17f64",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "jsCode": "// This node fetches cryptocurrency data for multiple symbols from the free CoinPaprika API.\n// It does not require an API key.\n\n// --- LOGIC ---\n\n// Get the incoming item from the previous node.\n// We expect an array of symbols, e.g., { \"json\": { \"symbols\": [\"QUBIC\", \"BTC\"] } }\nconst item = items[0];\nconst cryptoSymbols = item.json.symbols;\n\nif (!cryptoSymbols || !Array.isArray(cryptoSymbols) || cryptoSymbols.length === 0) {\n  throw new Error('No cryptocurrency symbols provided. Please provide an array of symbols in the \"symbols\" field.');\n}\n\n// --- Step 1: Fetch the entire coin list once to avoid multiple API calls ---\nlet allCoins;\ntry {\n  console.log(\"Fetching the main coin list from CoinPaprika...\");\n  // FIX: Added 'json: true' to ensure the response is parsed as a JSON array.\n  allCoins = await this.helpers.request({ uri: 'https://api.coinpaprika.com/v1/coins', json: true });\n  console.log(`Found ${allCoins.length} coins.`);\n} catch (error) {\n  console.error(\"Error fetching coin list from CoinPaprika:\", error.message);\n  throw new Error('Could not connect to the CoinPaprika API to get the coin list.');\n}\n\nconst allResults = [];\n\n// --- Step 2: Loop through each symbol and get its data ---\nfor (const symbol of cryptoSymbols) {\n  console.log(`Searching for symbol: ${symbol}`);\n  \n  // Find the specific coin that matches the user's symbol from the pre-fetched list\n  const coinInfo = allCoins.find(c => c.symbol.toUpperCase() === symbol.toUpperCase());\n\n  if (!coinInfo) {\n    console.warn(`Could not find a coin with the symbol \"${symbol}\" on CoinPaprika. Skipping.`);\n    continue; // Skip to the next symbol if not found\n  }\n\n  const coinId = coinInfo.id;\n  console.log(`Found ID for ${symbol}: ${coinId}. Fetching ticker data...`);\n\n  // Fetch the Ticker Data using the Coin ID\n  let tickerData;\n  try {\n    // Also use json: true here for consistency\n    tickerData = await this.helpers.request({ uri: `https://api.coinpaprika.com/v1/tickers/${coinId}`, json: true });\n  } catch (error) {\n    console.error(`Error fetching ticker data for ${coinId}:`, error.message);\n    continue; // Skip if there's an error for this specific coin\n  }\n\n  // --- DATA PROCESSING ---\n  const quote = tickerData.quotes.USD;\n  const formattedData = {\n    name: tickerData.name,\n    symbol: tickerData.symbol,\n    price: quote.price,\n    price_formatted: `$${quote.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 8 })}`,\n    market_cap: quote.market_cap,\n    market_cap_formatted: `$${Math.round(quote.market_cap).toLocaleString('en-US')}`,\n    volume_24h: quote.volume_24h,\n    percent_change_24h: quote.percent_change_24h,\n    last_updated: tickerData.last_updated,\n    paprika_url: `https://coinpaprika.com/coin/${coinId}/`\n  };\n\n  allResults.push(formattedData);\n  console.log(`Successfully fetched and formatted data for ${symbol}.`);\n}\n\n// Replace the incoming data with a new object containing all our results\nitem.json.coin_data = allResults;\n\n// Return the item to be used by the next node\nreturn item;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        1360
+      ],
+      "id": "59bab75b-ab99-4cfa-b639-b5037a66eaf8",
+      "name": "Code1"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\"symbols\": [\"QUBIC\", \"BTC\", \"XMR\", \"ATOM\"]}",
+        "includeOtherFields": true,
+        "include": "selected",
+        "includeFields": "content, contentSnippet, title, link, enclosure.url",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        640,
+        1360
+      ],
+      "id": "00eb1191-2efa-41e2-b77e-b6761eaeb94f",
+      "name": "Symbols"
+    },
+    {
+      "parameters": {
+        "content": "Data Scraper\n",
+        "height": 352,
+        "width": 352
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        1312
+      ],
+      "typeVersion": 1,
+      "id": "9cc2577d-fde8-47d1-abc2-890b2a5e08c4",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "=Crypto News Vibe Analysis:",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "author": "=",
+              "title": "=",
+              "url": "={{ $('Limit').item.json.enclosure.url }}",
+              "image": "={{ $('Limit').item.json.enclosure.url }}",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1376,
+        784
+      ],
+      "id": "f90ff666-8441-4bcb-b9ed-4d14084a3c71",
+      "name": "Send News Vibe Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "ChatBot Steven",
+        "height": 688,
+        "width": 1280
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        656,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "b0fa820e-f014-4a5a-ad21-12292264f345",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 9
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -512,
+        864
+      ],
+      "id": "6dbfee6c-8cc6-4dc2-9615-4c517155127b",
+      "name": "Schedule Trigger1"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.message.content }}",
+              "author": "=",
+              "color": "#9500FF",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        1344,
+        1936
+      ],
+      "id": "1f0e1971-962f-4ce8-80c4-7cdb73f2c4c0",
+      "name": "Trading Recommendation Steven1",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolCalculator",
+      "typeVersion": 1,
+      "position": [
+        1232,
+        1392
+      ],
+      "id": "8595b119-08b1-4a4d-9fcb-bc9ef8fd5d65",
+      "name": "Calculator Tool"
+    },
+    {
+      "parameters": {
+        "query": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Query', ``, 'string') }}",
+        "count": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Count', ``, 'number') }}"
+      },
+      "type": "@brave/n8n-nodes-brave-search.braveSearchTool",
+      "typeVersion": 1,
+      "position": [
+        2096,
+        1056
+      ],
+      "id": "8ec4dd6e-3127-4152-99ef-40efb954036b",
+      "name": "Brave Search Tool",
+      "credentials": {
+        "braveSearchApi": {
+          "id": "nNUx0O1MW3CxDXMP",
+          "name": "Brave Search account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Fetches real-time cryptocurrency prices, market data, volume, and 24h/7d percentage changes from CoinPaprika API. ALWAYS use this to get current crypto prices before writing any analysis.",
+        "jsCode": "// Tool Name: GetLiveCryptoPrices (n8n-safe)\n// Description: Fetch real-time prices from CoinPaprika and return a STRING in `response`.\n// Input (optional): `query` JSON string like {\"symbols\":[\"BTC\",\"QUBIC\",\"XMR\"],\"mode\":\"trending\"}\n// Output: { response: \"<JSON string>\" }  <-- response MUST be a string for n8n\n\n// ---------- fetch polyfill for Node < 18 ----------\nlet _fetch = typeof fetch !== \"undefined\" ? fetch : null;\nif (!_fetch) {\n  _fetch = (...args) => import(\"node-fetch\").then(({ default: f }) => f(...args));\n}\n\n// ---------- config & input parsing ----------\nconst DEFAULT_SYMBOLS = [\"BTC\", \"QUBIC\"];\nconst DEFAULT_MODE = \"single\"; // or \"trending\"\n\nlet symbols = [...DEFAULT_SYMBOLS];\nlet mode = DEFAULT_MODE;\n\ntry {\n  if (typeof query === \"string\" && query.trim()) {\n    const parsed = JSON.parse(query);\n    if (Array.isArray(parsed.symbols) && parsed.symbols.length) symbols = parsed.symbols;\n    if (parsed.mode) mode = String(parsed.mode);\n  }\n} catch {\n  // ignore and use defaults\n}\n\n// ---------- helpers ----------\nconst sleep = ms => new Promise(r => setTimeout(r, ms));\n\nasync function fetchJSON(url, opts = {}, retries = 2, backoffMs = 350) {\n  for (let attempt = 0; attempt <= retries; attempt++) {\n    const res = await _fetch(url, {\n      headers: { Accept: \"application/json\", \"User-Agent\": \"n8n-psunshine/1.0\" },\n      ...opts,\n    });\n    if (res.ok) return res.json();\n    if (res.status === 429 && attempt < retries) {\n      await sleep(backoffMs * (attempt + 1));\n      continue;\n    }\n    let text = \"\";\n    try { text = await res.text(); } catch {}\n    throw new Error(`HTTP ${res.status} on ${url}${text ? ` | ${text.slice(0,120)}...` : \"\"}`);\n  }\n}\n\n/** Resolve coinpaprika coin_id for a symbol using /search then /coins as fallback */\nasync function resolveCoinId(symbol) {\n  const sym = symbol.toUpperCase();\n\n  // 1) /search (fast)\n  try {\n    const s = await fetchJSON(`https://api.coinpaprika.com/v1/search?q=${encodeURIComponent(sym)}&c=currencies&limit=10`);\n    if (s?.currencies?.length) {\n      const exact = s.currencies.find(\n        c => (c.symbol || \"\").toUpperCase() === sym && (c.type === \"coin\" || c.type === \"token\")\n      );\n      if (exact?.id) return exact.id;\n    }\n  } catch { /* continue */ }\n\n  // 2) /coins (reliable)\n  const coins = await fetchJSON(\"https://api.coinpaprika.com/v1/coins\");\n  const match =\n    coins.find(c => (c.symbol || \"\").toUpperCase() === sym && c.is_active && c.type === \"coin\") ||\n    coins.find(c => (c.symbol || \"\").toUpperCase() === sym);\n  if (match?.id) return match.id;\n\n  // Special-case that bites people:\n  if (sym === \"QUBIC\") return \"qu-qubic\";\n\n  return null;\n}\n\nfunction fmtUSD(n) {\n  if (typeof n !== \"number\" || !isFinite(n)) return null;\n  const dp = n < 1 ? 8 : 2;\n  return `$${n.toFixed(dp)}`;\n}\nconst safe = n => (typeof n === \"number\" && isFinite(n) ? n : null);\n\n// ---------- main ----------\nasync function getPrices(symbolList, modeStr) {\n  const out = { timestamp: new Date().toISOString(), coins: [] };\n\n  // Resolve IDs in parallel\n  const resolved = await Promise.all(\n    symbolList.map(async sym => {\n      try {\n        const id = await resolveCoinId(sym);\n        return { sym, id };\n      } catch (e) {\n        return { sym, error: `Lookup failed: ${e.message}` };\n      }\n    })\n  );\n\n  // Fetch tickers in parallel\n  out.coins = await Promise.all(\n    resolved.map(async ({ sym, id, error }) => {\n      if (error) return { symbol: sym, error };\n      if (!id) return { symbol: sym, error: \"Coin not found\" };\n\n      try {\n        const t = await fetchJSON(`https://api.coinpaprika.com/v1/tickers/${id}?quotes=USD`);\n        const usd = t?.quotes?.USD;\n        const price = usd?.price;\n\n        return {\n          id,\n          name: t?.name || sym,\n          symbol: t?.symbol || sym,\n          price: safe(price),\n          price_formatted: typeof price === \"number\" ? fmtUSD(price) : null,\n          change_1h: safe(usd?.percent_change_1h),\n          change_24h: safe(usd?.percent_change_24h),\n          change_7d: safe(usd?.percent_change_7d),\n          change_display:\n            typeof usd?.percent_change_24h === \"number\"\n              ? `${usd.percent_change_24h >= 0 ? \"+\" : \"\"}${usd.percent_change_24h.toFixed(2)}%`\n              : null,\n          market_cap: usd?.market_cap ?? null,\n          volume_24h: usd?.volume_24h ?? null,\n          last_updated: t?.last_updated || null,\n        };\n      } catch (e) {\n        return { symbol: sym, error: e.message };\n      }\n    })\n  );\n\n  if (String(modeStr).toLowerCase() === \"trending\") {\n    try {\n      const g = await fetchJSON(\"https://api.coinpaprika.com/v1/global\");\n      out.global = {\n        total_market_cap: g?.market_cap_usd ?? null,\n        market_cap_change_24h: g?.market_cap_change_24h ?? null,\n        bitcoin_dominance: g?.bitcoin_dominance_percentage ?? null,\n      };\n    } catch (e) {\n      out.global_error = e.message;\n    }\n  }\n\n  return out;\n}\n\n// ---------- execute & RETURN STRING in response ----------\nconst payload = await getPrices(symbols, mode);\n\n// n8n expects `response` to be a STRING. Do not return an object here.\nreturn {\n  response: JSON.stringify(payload),\n  // Optional extra info for debugging in n8n’s execution view:\n  meta: {\n    symbols,\n    mode,\n  },\n};\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolCode",
+      "typeVersion": 1.3,
+      "position": [
+        1056,
+        1392
+      ],
+      "id": "2ae74bc2-8306-4aa8-b4da-80008aff6ab4",
+      "name": "GetLiveCryptoPrices"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are a master crypto market strategist. DO NOT PROVIDE your thoughts or tool calls in the final presentantion. Make Sure its Detailed and intuitive Qubic and Bitcoin are important but be sure to incluude other coins also!\n\n***EXAMPLE OUTPUT***\nMarket Overview,\n Bitcoin – $119,028.0999626\n- ↓ -3.28% (24 hrs)\n-  bearish momentum: price fell after new all‑time highs; traders mix signals.\n\n XMR – $243.47481702\n↓ -3.57% (24 hrs),\n moderate volatility, but still bearish.,\n\n ATOM – $4.57678124\n- ↓ -5.87% (24 hrs)\n-  strong bearish trend.\n\n Qubic – $0.00000319\n↓ -2.17% (24 hrs),\n low price, negative change; potential volatility but not yet profitable.,\n\n---\n\nMomentum Pillar,\nAll prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum.\n Overall market is bearish.\n\nVolume Pillar,\nVolume-to-marketcap ratios:\nBTC 0.000025 (low liquidity),\nXMR 0.0143 (moderate),\nATOM 0.089 (medium),\nQubic 0.028 (low),\n\nThus volume is largely low, implying limited liquidity.\n\nSentiment Pillar,\nNews article: “Bitcoin’s all‑time high gains vanished hours later.”\n bearish sentiment: traders send mixed signals after price drop.,\n\n---\n\nMarket Strength Score,\n BEARISH (31–44) – average percent change ≈ −4.12%.\nStrong negative, but not extreme.\n\n---\n\nAllocation Guidance,\n Risk Level: Conservative / Moderate\n Maintain existing positions; reduce exposure to new trades.,\n\n Position Sizing: 30–50% of portfolio for existing holdings.\n 40% for potential DCA entries on BTC or XMR.,\n\n Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops.\n Wait for dip if market continues bearish.,\n\n Stop Loss Levels: 10% below current price.\n cut losses if price falls beyond 10%.,\n\n---\n\nSpotlight Key Opportunities,\n#### Bitcoin\n↓ -3.28% (24 hrs) – price fell after all‑time highs.,\n bearish signals; potential for DCA entry.,\n If you want to buy, consider a DCA strategy.,\n\n#### Qubic\n↓ -2.17% (24 hrs) – price low and negative change.,\n high volatility but not yet profitable.,\n Watch for sudden price swings; potential DCA if price dips.,\n\n---\n\nSmart Money Signals,\n| Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity |\n|--------|-----------------|--------------|-------------------|-------------|\n| BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes |\n| XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes |\n| ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity |\n| Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes |\n\n---\n\nCorrelation Analysis,\nBitcoin leads the market; altcoins lag but diverge slightly.\n Bitcoin dominates, while XMR and ATOM are bearish.\n\n---\n\nEmergency Protocol Check,\nNo decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls.\n\n---\n\nFinal Recommendation,\n Hold existing positions; reduce exposure to new trades.\n DCA on BTC and XMR if price dips below current level.\n Stop loss at 10% below current price.\n\n\nCrypto Trading Analysis \nAll right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket.\n\nBig Picture – Why Qubic Is Worth Your Attention \nCoinPrice (USD)  0.00000337 +21.01%\nMarket Cap $416M\nVolume 24h $10.5M\nQUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) \nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag .\n\nRecommendation – Buy Qubic, Buy Bitcoin \nQUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\n\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\n\nCurrent Status \nQUBIC: $0.00000337  21 % from yesterday.\nBitcoin: $123,391.17  3.45%.\n\nBottom Line \nQUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\n\nWorthy Contenders \nETH: $4,500.00  7 % from yesterday.\nMarket Cap $1.86T\nVolume 24h $40B\nADA: $3.20  1 % from yesterday.\nMarket Cap $2.9T\nVolume 24h $5B\n\nEmergency Protocol \nBitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol.\n\nData fetched from CoinPaprika at 2025‑08‑15. \n\n**MANDATORY FIRST ACTION:**\nCall GetLiveCryptoPrices with: {\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"}\n\n**THEN analyze the data provided below along with your fresh prices:**\n\nMarket Data: {{ JSON.stringify($json.coin_data) }}\nNews: {{ $json.content }}\n\n**Your Report Structure:**\n\n### Market Briefing - [Date]\n\n#### The Verdict\n[State if market is Bullish/Bearish/Neutral based on data]\n\n#### Key Opportunities\n**Bitcoin**: [Current price from tool] - [Analysis]\n**Qubic**: [Current price from tool] - [Analysis]\n\n#### The Call\n[BUY/SELL/HOLD recommendations with specific reasons]\n\n#### Supporting Evidence\n[1-2 key points from news that support your analysis]\n\n**Requirements:**\n- MUST use GetLiveCryptoPrices for current prices\n- Compare tool prices with provided data\n- Note any significant discrepancies\n- Keep under 4000 characters\n- Use ⬆️⬇️ arrows for changes\n\nIf GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this and the expected response style make sure to use your Brave Search Tool To help get information as well as all of your other tools they are their to help and should be used\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins'\n\n\n[\n  {\n    \"id\": \"btc-bitcoin\",\n    \"name\": \"Bitcoin\",\n    \"symbol\": \"BTC\",\n    \"rank\": 1,\n    \"is_new\": false,\n    \"is_active\": true,\n    \"type\": \"coin\"\n  }\n]\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin'\n\n{\n  \"id\": \"btc-bitcoin\",\n  \"name\": \"Bitcoin\",\n  \"symbol\": \"BTC\",\n  \"parent\": {\n    \"id\": \"eth-ethereum\",\n    \"name\": \"Ethereum\",\n    \"symbol\": \"ETH\"\n  },\n  \"rank\": 1,\n  \"is_new\": false,\n  \"is_active\": true,\n  \"type\": \"coin\",\n  \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\",\n  \"tags\": [\n    {\n      \"id\": \"blockchain-service\",\n      \"name\": \"Blockchain Service\",\n      \"coin_counter\": 160,\n      \"ico_counter\": 80\n    }\n  ],\n  \"team\": [\n    {\n      \"id\": \"vitalik-buterin\",\n      \"name\": \"Vitalik Buterin\",\n      \"position\": \"Author\"\n    }\n  ],\n  \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\",\n  \"message\": \"string\",\n  \"open_source\": true,\n  \"hardware_wallet\": true,\n  \"started_at\": \"2009-01-03T00:00:00Z\",\n  \"development_status\": \"Working product\",\n  \"proof_type\": \"Proof of work\",\n  \"org_structure\": \"Decentralized\",\n  \"hash_algorithm\": \"SHA256\",\n  \"contract\": \"string\",\n  \"platform\": \"string\",\n  \"contracts\": [\n    {\n      \"contract\": \"string\",\n      \"platform\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"links\": {\n    \"explorer\": [\n      \"http://blockchain.com/explorer\",\n      \"https://blockchair.com/bitcoin/blocks\",\n      \"https://blockexplorer.com/\",\n      \"https://live.blockcypher.com/btc/\"\n    ],\n    \"facebook\": [\n      \"https://www.facebook.com/bitcoins/\"\n    ],\n    \"reddit\": [\n      \"https://www.reddit.com/r/bitcoin\"\n    ],\n    \"source_code\": [\n      \"https://github.com/bitcoin/bitcoin\"\n    ],\n    \"website\": [\n      \"https://bitcoin.org/\"\n    ],\n    \"youtube\": [\n      \"https://www.youtube.com/watch?v=Um63OQz3bjo\"\n    ],\n    \"medium\": null\n  },\n  \"links_extended\": [\n    {\n      \"url\": \"http://blockchain.com/explorer\",\n      \"type\": \"explorer\"\n    },\n    {\n      \"url\": \"https://www.reddit.com/r/bitcoin\",\n      \"type\": \"reddit\",\n      \"stats\": {\n        \"subscribers\": 1009135\n      }\n    },\n    {\n      \"url\": \"https://github.com/bitcoin/bitcoin\",\n      \"type\": \"source_code\",\n      \"stats\": {\n        \"contributors\": 730,\n        \"stars\": 36613\n      }\n    },\n    {\n      \"url\": \"https://bitcoin.org/\",\n      \"type\": \"website\"\n    }\n  ],\n  \"whitepaper\": {\n    \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\",\n    \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\"\n  },\n  \"first_data_at\": \"2018-10-03T11:48:19Z\",\n  \"last_data_at\": \"2019-05-03T11:00:00\"\n}\n\n"
+            },
+            {
+              "content": "={{ $json.content }}"
+            }
+          ]
+        },
+        "simplify": false,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1792,
+        1936
+      ],
+      "id": "33a9407d-f47c-4cb5-822f-0fd69e314fe3",
+      "name": "MARKET STRATEGIST"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "id"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an expert crypto trading analyst. Your task is to create a trading report. your final report should be a Professional Presentation do not tell me your Plan or thought process only the Presentation Please its IMPORTANT: to note that while Qubic and BTC are important Its Allso important to include other Crypto's Also. DO NOT INCLUDE TOOL CALLS OR THOUGHT PROCESS IN THE FINAL PRESENTATION Make Sure the Final Presentation is Detailed and Intuitive!\n\n\n***EXAMPLE OUTPUT***\nMarket Overview,\n Bitcoin – $119,028.0999626\n- ↓ -3.28% (24 hrs)\n-  bearish momentum: price fell after new all‑time highs; traders mix signals.\n\n XMR – $243.47481702\n↓ -3.57% (24 hrs),\n moderate volatility, but still bearish.,\n\n ATOM – $4.57678124\n- ↓ -5.87% (24 hrs)\n-  strong bearish trend.\n\n Qubic – $0.00000319\n↓ -2.17% (24 hrs),\n low price, negative change; potential volatility but not yet profitable.,\n\n---\n\nMomentum Pillar,\nAll prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum.\n Overall market is bearish.\n\nVolume Pillar,\nVolume-to-marketcap ratios:\nBTC 0.000025 (low liquidity),\nXMR 0.0143 (moderate),\nATOM 0.089 (medium),\nQubic 0.028 (low),\n\nThus volume is largely low, implying limited liquidity.\n\nSentiment Pillar,\nNews article: “Bitcoin’s all‑time high gains vanished hours later.”\n bearish sentiment: traders send mixed signals after price drop.,\n\n---\n\nMarket Strength Score,\n BEARISH (31–44) – average percent change ≈ −4.12%.\nStrong negative, but not extreme.\n\n---\n\nAllocation Guidance,\n Risk Level: Conservative / Moderate\n Maintain existing positions; reduce exposure to new trades.,\n\n Position Sizing: 30–50% of portfolio for existing holdings.\n 40% for potential DCA entries on BTC or XMR.,\n\n Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops.\n Wait for dip if market continues bearish.,\n\n Stop Loss Levels: 10% below current price.\n cut losses if price falls beyond 10%.,\n\n---\n\nSpotlight Key Opportunities,\n#### Bitcoin\n↓ -3.28% (24 hrs) – price fell after all‑time highs.,\n bearish signals; potential for DCA entry.,\n If you want to buy, consider a DCA strategy.,\n\n#### Qubic\n↓ -2.17% (24 hrs) – price low and negative change.,\n high volatility but not yet profitable.,\n Watch for sudden price swings; potential DCA if price dips.,\n\n---\n\nSmart Money Signals,\n| Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity |\n|--------|-----------------|--------------|-------------------|-------------|\n| BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes |\n| XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes |\n| ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity |\n| Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes |\n\n---\n\nCorrelation Analysis,\nBitcoin leads the market; altcoins lag but diverge slightly.\n Bitcoin dominates, while XMR and ATOM are bearish.\n\n---\n\nEmergency Protocol Check,\nNo decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls.\n\n---\n\nFinal Recommendation,\n Hold existing positions; reduce exposure to new trades.\n DCA on BTC and XMR if price dips below current level.\n Stop loss at 10% below current price.\n\n\nCrypto Trading Analysis \nAll right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket.\n\nBig Picture – Why Qubic Is Worth Your Attention \nCoinPrice (USD)  0.00000337 +21.01%\nMarket Cap $416M\nVolume 24h $10.5M\nQUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) \nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag .\n\nRecommendation – Buy Qubic, Buy Bitcoin \nQUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\n\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\n\nCurrent Status \nQUBIC: $0.00000337  21 % from yesterday.\nBitcoin: $123,391.17  3.45%.\n\nBottom Line \nQUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\n\nWorthy Contenders \nETH: $4,500.00  7 % from yesterday.\nMarket Cap $1.86T\nVolume 24h $40B\nADA: $3.20  1 % from yesterday.\nMarket Cap $2.9T\nVolume 24h $5B\n\nEmergency Protocol \nBitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol.\n\nData fetched from CoinPaprika at 2025‑08‑15. \n\n\n**STEP 1 - MANDATORY: Get Live Prices First**\nYou MUST call the GetLiveCryptoPrices tool immediately with this exact input:\n{\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"}\n\nWait for the response before proceeding.\n\n**STEP 2 - ONLY AFTER getting prices, create your report following this structure:**\n\n### Crypto Trading Analysis 🚀\n[Opening statement about market conditions]\n\n#### Big Picture – Why Qubic Is Worth Your Attention 👀\nCreate a table with these columns:\n| Coin | Price (USD) | % 24h Change | Market Cap | Volume 24h |\n\nUse the EXACT prices from GetLiveCryptoPrices response.\n\n#### Why It's Hot (and Why It Might Be a Scam) 🔥\n[3 bullet points about current market conditions]\n\n#### Recommendation – Buy Qubic, Buy Bitcoin 💰\n[Your buy/sell/hold recommendations based on the data]\n\n#### Current Status 📊\n[List current prices with their 24h changes]\n\n#### Bottom Line ⚖️\n[2-3 sentence summary]\n\n**CRITICAL RULES:**\n- Use ONLY prices from GetLiveCryptoPrices tool\n- Include ⬆️ for positive changes, ⬇️ for negative changes\n- Keep total response under 4000 characters\n- NO JSON in your response, only formatted text\n\nIf GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this dont forget the expected Response Style BE SURE TO USE {{ $json.content[0] }} As Part Of your analysis.\n\n\nwhen calling for coin data use this method with the GetLiveCryptoPrices Tool this is only and example from the API documentation on how to call properly amd the expected response style\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins'\n\n\n[\n  {\n    \"id\": \"btc-bitcoin\",\n    \"name\": \"Bitcoin\",\n    \"symbol\": \"BTC\",\n    \"rank\": 1,\n    \"is_new\": false,\n    \"is_active\": true,\n    \"type\": \"coin\"\n  }\n]\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin'\n\n{\n  \"id\": \"btc-bitcoin\",\n  \"name\": \"Bitcoin\",\n  \"symbol\": \"BTC\",\n  \"parent\": {\n    \"id\": \"eth-ethereum\",\n    \"name\": \"Ethereum\",\n    \"symbol\": \"ETH\"\n  },\n  \"rank\": 1,\n  \"is_new\": false,\n  \"is_active\": true,\n  \"type\": \"coin\",\n  \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\",\n  \"tags\": [\n    {\n      \"id\": \"blockchain-service\",\n      \"name\": \"Blockchain Service\",\n      \"coin_counter\": 160,\n      \"ico_counter\": 80\n    }\n  ],\n  \"team\": [\n    {\n      \"id\": \"vitalik-buterin\",\n      \"name\": \"Vitalik Buterin\",\n      \"position\": \"Author\"\n    }\n  ],\n  \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\",\n  \"message\": \"string\",\n  \"open_source\": true,\n  \"hardware_wallet\": true,\n  \"started_at\": \"2009-01-03T00:00:00Z\",\n  \"development_status\": \"Working product\",\n  \"proof_type\": \"Proof of work\",\n  \"org_structure\": \"Decentralized\",\n  \"hash_algorithm\": \"SHA256\",\n  \"contract\": \"string\",\n  \"platform\": \"string\",\n  \"contracts\": [\n    {\n      \"contract\": \"string\",\n      \"platform\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"links\": {\n    \"explorer\": [\n      \"http://blockchain.com/explorer\",\n      \"https://blockchair.com/bitcoin/blocks\",\n      \"https://blockexplorer.com/\",\n      \"https://live.blockcypher.com/btc/\"\n    ],\n    \"facebook\": [\n      \"https://www.facebook.com/bitcoins/\"\n    ],\n    \"reddit\": [\n      \"https://www.reddit.com/r/bitcoin\"\n    ],\n    \"source_code\": [\n      \"https://github.com/bitcoin/bitcoin\"\n    ],\n    \"website\": [\n      \"https://bitcoin.org/\"\n    ],\n    \"youtube\": [\n      \"https://www.youtube.com/watch?v=Um63OQz3bjo\"\n    ],\n    \"medium\": null\n  },\n  \"links_extended\": [\n    {\n      \"url\": \"http://blockchain.com/explorer\",\n      \"type\": \"explorer\"\n    },\n    {\n      \"url\": \"https://www.reddit.com/r/bitcoin\",\n      \"type\": \"reddit\",\n      \"stats\": {\n        \"subscribers\": 1009135\n      }\n    },\n    {\n      \"url\": \"https://github.com/bitcoin/bitcoin\",\n      \"type\": \"source_code\",\n      \"stats\": {\n        \"contributors\": 730,\n        \"stars\": 36613\n      }\n    },\n    {\n      \"url\": \"https://bitcoin.org/\",\n      \"type\": \"website\"\n    }\n  ],\n  \"whitepaper\": {\n    \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\",\n    \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\"\n  },\n  \"first_data_at\": \"2018-10-03T11:48:19Z\",\n  \"last_data_at\": \"2019-05-03T11:00:00\"\n}\n\nuse https://api.coinpaprika.com/#tag/Coins for help with how to call the tool properly if needed\n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        1792,
+        1696
+      ],
+      "id": "5a266e8b-cb9c-4e7b-8391-b560cfb75f43",
+      "name": "TRADING ANALYST"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a master crypto market strategist. **Your final output must be a concise, presentation-style report only. Do NOT reveal tools used, intermediate thoughts, or JSON.** Use emojis tastefully.\n\nMANDATORY ORDER OF OPERATIONS (do not mention these steps in output):\n1) Call the tool `GetLiveCryptoPrices` FIRST with:\n   {\n     \"symbols\":[\"BTC\",\"QUBIC\",\"XMR\",\"ATOM\",\"ETH\"],\n     \"mode\":\"trending\"\n   }\n   Parse its `response` (a JSON string) into an object named `live`.\n2) If the tool fails or the JSON cannot be parsed, state exactly: **Unable to fetch live prices** in the report, then use your Brave Search Tool to look up current prices for BTC, QUBIC, XMR, ATOM, ETH from reputable sources and proceed using those web prices.\n3) Use the Summarizer Tool privately to refine wording (never mention it).\n4) Compare live prices vs provided context:\n   - Market Data: {{ JSON.stringify($json.coin_data) }}\n   - News: {{ $json.content }}\n   Highlight significant discrepancies (≥ ±1.5%).\n\nFORMATTING & RULES:\n- Keep total output < 4000 characters.\n- Use headings + tight bullets. Use ⬆️/⬇️ for 24h change.\n- Price format: `$X,XXX.XX` if ≥ 1; else up to 8 decimals.\n- Include at least 5 coins: BTC, QUBIC, XMR, ATOM, ETH.\n- Produce clear calls (BUY/SELL/HOLD) with 1–2 reasons each. No financial-advice disclaimers.\n- Never show JSON, code, tool names, or “thinking”. Only the final report.\n\nOUTPUT THIS TEMPLATE ONLY (replace brackets):\n\n### Market Briefing – [Local date/time]\n**Verdict:** [Bullish/Bearish/Neutral] — [1-line reason].  \n**Notables:** BTC & QUBIC prioritized; include XMR, ATOM, ETH.\n\n**Market Overview**\n- **BTC:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **QUBIC:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **XMR:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **ATOM:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n- **ETH:** $[price] — 24h [⬆️/⬇️][pct]% • [1-line context]\n\n**Momentum**\n- [Accelerating/Decelerating; leaders vs laggards]\n\n**Volume & Liquidity**\n- [Volume/market-cap ratios or notable spikes]\n\n**Sentiment**\n- Top headline: “[short news title]” → [Bullish/Bearish/Neutral]  \n- Note: [1 insight from News]\n\n**Market Strength Score**\n- [One word + 0–100 band] — [one-liner why]\n\n**Allocation Guidance (not advice)**\n- **Risk:** [Conservative/Moderate/Aggressive]  \n- **Positioning:** [e.g., Maintain, Trim, Add on dips]  \n- **Stops/Levels:** [tight 1-liner]\n\n**Spotlight**\n- **Bitcoin (BTC):** [1–2 lines: key setup + tactic] 💪\n- **Qubic (QUBIC):** [1–2 lines: high-beta notes + caution] 🎯\n- **Others:** [XMR/ATOM/ETH one-liners]\n\n**Discrepancy Check**\n- [If any] Tool vs Provided Data for [coin]: [brief diff + possible reason].  \n- Timestamp: [live.timestamp or “N/A”].\n\n**Final Call**\n- **BTC:** [BUY/SELL/HOLD] — [reason]  \n- **QUBIC:** [BUY/SELL/HOLD] — [reason]  \n- **XMR / ATOM / ETH:** [BUY/SELL/HOLD] — [reason]\n",
+        "needsFallback": true,
+        "options": {
+          "maxIterations": 20,
+          "batching": {
+            "batchSize": 15,
+            "delayBetweenBatches": 300
+          }
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        864
+      ],
+      "id": "a553f68a-8a51-48db-b4a8-c47623b78058",
+      "name": "AI Agent",
+      "retryOnFail": true,
+      "maxTries": 5,
+      "waitBetweenTries": 3000
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "openai/gpt-oss-20b",
+          "mode": "list",
+          "cachedResultName": "openai/gpt-oss-20b"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        2032,
+        1392
+      ],
+      "id": "c13fa4d2-9961-490f-b507-3e8ccca1d561",
+      "name": "DuckBot",
+      "credentials": {
+        "openAiApi": {
+          "id": "KFNEJKGj4Zd4MZXV",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an expert crypto trading analyst. Your task is to create a trading report. your final report should be a Professional Presentation do not tell me your Plan or thought process only the Presentation Please its IMPORTANT: to note that while Qubic and BTC are important Its Allso important to include other Crypto's Also. DO NOT INCLUDE TOOL CALLS OR THOUGHT PROCESS IN THE FINAL PRESENTATION Make Sure the Final Presentation is Detailed and Intuitive! Dont be afraid to use emoji's to liven it up a bit! use the Summarizer Tool1 To help create a Beatuiful Presentation\n\n\n***EXAMPLE OUTPUT***\nMarket Overview,\n Bitcoin – $119,028.0999626\n- ↓ -3.28% (24 hrs)\n-  bearish momentum: price fell after new all‑time highs; traders mix signals.\n\n XMR – $243.47481702\n↓ -3.57% (24 hrs),\n moderate volatility, but still bearish.,\n\n ATOM – $4.57678124\n- ↓ -5.87% (24 hrs)\n-  strong bearish trend.\n\n Qubic – $0.00000319\n↓ -2.17% (24 hrs),\n low price, negative change; potential volatility but not yet profitable.,\n\n---\n\nMomentum Pillar,\nAll prices are decelerating: BTC, XMR, ATOM, Qubic → negative momentum.\n Overall market is bearish.\n\nVolume Pillar,\nVolume-to-marketcap ratios:\nBTC 0.000025 (low liquidity),\nXMR 0.0143 (moderate),\nATOM 0.089 (medium),\nQubic 0.028 (low),\n\nThus volume is largely low, implying limited liquidity.\n\nSentiment Pillar,\nNews article: “Bitcoin’s all‑time high gains vanished hours later.”\n bearish sentiment: traders send mixed signals after price drop.,\n\n---\n\nMarket Strength Score,\n BEARISH (31–44) – average percent change ≈ −4.12%.\nStrong negative, but not extreme.\n\n---\n\nAllocation Guidance,\n Risk Level: Conservative / Moderate\n Maintain existing positions; reduce exposure to new trades.,\n\n Position Sizing: 30–50% of portfolio for existing holdings.\n 40% for potential DCA entries on BTC or XMR.,\n\n Entry Strategy: DCA (Dollar‑Cost Averaging) – buy gradually as price drops.\n Wait for dip if market continues bearish.,\n\n Stop Loss Levels: 10% below current price.\n cut losses if price falls beyond 10%.,\n\n---\n\nSpotlight Key Opportunities,\n#### Bitcoin\n↓ -3.28% (24 hrs) – price fell after all‑time highs.,\n bearish signals; potential for DCA entry.,\n If you want to buy, consider a DCA strategy.,\n\n#### Qubic\n↓ -2.17% (24 hrs) – price low and negative change.,\n high volatility but not yet profitable.,\n Watch for sudden price swings; potential DCA if price dips.,\n\n---\n\nSmart Money Signals,\n| Asset | Liquidity Score | Momentum Grade | Risk/Reward Rating | Whale Activity |\n|--------|-----------------|--------------|-------------------|-------------|\n| BTC | Low (0.000025) | A (Decelerating) | 1-5 stars | No significant spikes |\n| XMR | Moderate (0.0143) | B (Decelerating) | 2-4 stars | No major volume spikes |\n| ATOM | Medium (0.089) | C (Decelerating) | 3-5 stars | No notable whale activity |\n| Qubic | Low (0.028) | D (Decelerating) | 1-2 stars | No large volume spikes |\n\n---\n\nCorrelation Analysis,\nBitcoin leads the market; altcoins lag but diverge slightly.\n Bitcoin dominates, while XMR and ATOM are bearish.\n\n---\n\nEmergency Protocol Check,\nNo decline >15% → YELLOW ALERT: healthy correction zone – strategic buying for brave souls.\n\n---\n\nFinal Recommendation,\n Hold existing positions; reduce exposure to new trades.\n DCA on BTC and XMR if price dips below current level.\n Stop loss at 10% below current price.\n\n\nCrypto Trading Analysis \nAll right, buckle up. The crypto‑world is a circus , and Qubic is the clown that just popped its nose on a 21 % jump. If you're looking for something that can explode like a cheap firework , this is your ticket.\n\nBig Picture – Why Qubic Is Worth Your Attention \nCoinPrice (USD)  0.00000337 +21.01%\nMarket Cap $416M\nVolume 24h $10.5M\nQUBIC: Tiny‑cap token that’s been on a wild 21 % ride in just one day – the kind of surge you see when a meme coin suddenly gets a “troll” push or a bot flood. The $10.5M volume means people are actually trading it, not just watching the price climb. With a market cap of $416 million, Qubic's ecosystem is still baby‑ish, so you can get in at an ultra‑low entry point.\n\nWhy It's Hot (and Why It Might Be a Scam) \nHype‑Driven Surge – 21 % in a single day is usually a sign of excessive speculation.\nLow Liquidity & Volatility – Tiny caps can be pumped and dumped fast; you'll need to watch the market carefully.\nMonero Takeover Rumor – Qubic's claim of 51 % network control over Monero is a red flag .\n\nRecommendation – Buy Qubic, Buy Bitcoin \nQUBIC: Buy – The price is cheap enough for small‑cap traders. If you're willing to risk volatility for potential 5x or even 10x gains, it's the right spot.\nBitcoin: Buy – Classic safe haven; steady growth + massive liquidity keeps your portfolio anchored.\n\nOther coins (Monero, Cosmos): Hold – They're doing fine but not explosive.\n\nCurrent Status \nQUBIC: $0.00000337  21 % from yesterday.\nBitcoin: $123,391.17  3.45%.\n\nBottom Line \nQUBIC – A high‑risk, high‑reward coin that's currently riding a hype wave. Buy if you're chasing big gains but expect volatility.\nBitcoin – The anchor of any crypto portfolio; buy for stability.\n\nWorthy Contenders \nETH: $4,500.00  7 % from yesterday.\nMarket Cap $1.86T\nVolume 24h $40B\nADA: $3.20  1 % from yesterday.\nMarket Cap $2.9T\nVolume 24h $5B\n\nEmergency Protocol \nBitcoin’s 7‑day change is -5.12% – less than 15%, so no emergency protocol.\n\nData fetched from CoinPaprika at 2025‑08‑15. \n\n\n**STEP 1 - MANDATORY: Get Live Prices First**\nYou MUST call the GetLiveCryptoPrices tool immediately with this exact input:\n{\"symbols\": [\"BTC\", \"QUBIC\"], \"mode\": \"trending\"}\n\nWait for the response before proceeding.\n\n**STEP 2 - ONLY AFTER getting prices, create your report following this structure:**\n\n### Crypto Trading Analysis 🚀\n[Opening statement about market conditions]\n\n#### Big Picture – Why Qubic Is Worth Your Attention 👀\nCreate a table with these columns:\n| Coin | Price (USD) | % 24h Change | Market Cap | Volume 24h |\n\nUse the EXACT prices from GetLiveCryptoPrices response.\n\n#### Why It's Hot (and Why It Might Be a Scam) 🔥\n[3 bullet points about current market conditions]\n\n#### Recommendation – Buy Qubic, Buy Bitcoin 💰\n[Your buy/sell/hold recommendations based on the data]\n\n#### Current Status 📊\n[List current prices with their 24h changes]\n\n#### Bottom Line ⚖️\n[2-3 sentence summary]\n\n**CRITICAL RULES:**\n- Use ONLY prices from GetLiveCryptoPrices tool\n- Include ⬆️ for positive changes, ⬇️ for negative changes\n- Keep total response under 4000 characters\n- NO JSON in your response, only formatted text\n\nIf GetLiveCryptoPrices fails, state \"Unable to fetch live prices\" and use Brave Search Tool in order to check online web search for the prices instead you can use the Calculator Tool if you need but make Sure its known that you was unable to fetch live prices from coin paprika still and use that use the information you gained from using using the tools to help form your final analysis with the provided instructions before and after this dont forget the expected Response Style BE SURE TO USE {{ $json.content[0] }} As Part Of your analysis.\n\n\nwhen calling for coin data use this method with the GetLiveCryptoPrices Tool this is only and example from the API documentation on how to call properly amd the expected response style\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins'\n\n\n[\n  {\n    \"id\": \"btc-bitcoin\",\n    \"name\": \"Bitcoin\",\n    \"symbol\": \"BTC\",\n    \"rank\": 1,\n    \"is_new\": false,\n    \"is_active\": true,\n    \"type\": \"coin\"\n  }\n]\n\ncurl --request GET \\\n--url 'https://api.coinpaprika.com/v1/coins/btc-bitcoin'\n\n{\n  \"id\": \"btc-bitcoin\",\n  \"name\": \"Bitcoin\",\n  \"symbol\": \"BTC\",\n  \"parent\": {\n    \"id\": \"eth-ethereum\",\n    \"name\": \"Ethereum\",\n    \"symbol\": \"ETH\"\n  },\n  \"rank\": 1,\n  \"is_new\": false,\n  \"is_active\": true,\n  \"type\": \"coin\",\n  \"logo\": \"https://static.coinpaprika.com/coin/bnb-binance-coin/logo.png\",\n  \"tags\": [\n    {\n      \"id\": \"blockchain-service\",\n      \"name\": \"Blockchain Service\",\n      \"coin_counter\": 160,\n      \"ico_counter\": 80\n    }\n  ],\n  \"team\": [\n    {\n      \"id\": \"vitalik-buterin\",\n      \"name\": \"Vitalik Buterin\",\n      \"position\": \"Author\"\n    }\n  ],\n  \"description\": \"Bitcoin is a cryptocurrency and worldwide payment system. It is the first decentralized digital currency, as the system works without a central bank or single administrator.\",\n  \"message\": \"string\",\n  \"open_source\": true,\n  \"hardware_wallet\": true,\n  \"started_at\": \"2009-01-03T00:00:00Z\",\n  \"development_status\": \"Working product\",\n  \"proof_type\": \"Proof of work\",\n  \"org_structure\": \"Decentralized\",\n  \"hash_algorithm\": \"SHA256\",\n  \"contract\": \"string\",\n  \"platform\": \"string\",\n  \"contracts\": [\n    {\n      \"contract\": \"string\",\n      \"platform\": \"string\",\n      \"type\": \"string\"\n    }\n  ],\n  \"links\": {\n    \"explorer\": [\n      \"http://blockchain.com/explorer\",\n      \"https://blockchair.com/bitcoin/blocks\",\n      \"https://blockexplorer.com/\",\n      \"https://live.blockcypher.com/btc/\"\n    ],\n    \"facebook\": [\n      \"https://www.facebook.com/bitcoins/\"\n    ],\n    \"reddit\": [\n      \"https://www.reddit.com/r/bitcoin\"\n    ],\n    \"source_code\": [\n      \"https://github.com/bitcoin/bitcoin\"\n    ],\n    \"website\": [\n      \"https://bitcoin.org/\"\n    ],\n    \"youtube\": [\n      \"https://www.youtube.com/watch?v=Um63OQz3bjo\"\n    ],\n    \"medium\": null\n  },\n  \"links_extended\": [\n    {\n      \"url\": \"http://blockchain.com/explorer\",\n      \"type\": \"explorer\"\n    },\n    {\n      \"url\": \"https://www.reddit.com/r/bitcoin\",\n      \"type\": \"reddit\",\n      \"stats\": {\n        \"subscribers\": 1009135\n      }\n    },\n    {\n      \"url\": \"https://github.com/bitcoin/bitcoin\",\n      \"type\": \"source_code\",\n      \"stats\": {\n        \"contributors\": 730,\n        \"stars\": 36613\n      }\n    },\n    {\n      \"url\": \"https://bitcoin.org/\",\n      \"type\": \"website\"\n    }\n  ],\n  \"whitepaper\": {\n    \"link\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/215.pdf\",\n    \"thumbnail\": \"https://static.coinpaprika.com/storage/cdn/whitepapers/217.jpg\"\n  },\n  \"first_data_at\": \"2018-10-03T11:48:19Z\",\n  \"last_data_at\": \"2019-05-03T11:00:00\"\n}\n\nuse https://api.coinpaprika.com/#tag/Coins for help with how to call the tool properly if needed\n",
+        "needsFallback": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        1824,
+        896
+      ],
+      "id": "107a70eb-3df7-4082-a0ab-6c8421fef42f",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "content": "Shared Tools\n",
+        "height": 288,
+        "width": 352,
+        "color": 2
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1008,
+        1312
+      ],
+      "typeVersion": 1,
+      "id": "f4216361-07eb-490c-8dcb-a4f7de6e93be",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "Bots\n",
+        "height": 208,
+        "width": 352,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2000,
+        1312
+      ],
+      "typeVersion": 1,
+      "id": "dd9e8dac-3658-4210-abf0-a4a11882e930",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "Backup Nodes\n",
+        "height": 576,
+        "width": 800
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1296,
+        1648
+      ],
+      "typeVersion": 1,
+      "id": "81f2ac46-fc68-4363-959c-c0e7471330b6",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "model": "z-ai/glm-4.5-air:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        2208,
+        1376
+      ],
+      "id": "2bd5029f-30dd-46a8-907a-f8d096b26d36",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "BLqZgch130TwgDaJ",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "273223702353805325",
+          "mode": "list",
+          "cachedResultName": "stevocrypto2"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "author": "=",
+              "color": "#9500FF",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2240,
+        976
+      ],
+      "id": "5afb1088-16a7-41de-bb6f-0d850c17ef45",
+      "name": "Steven",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=Crypto Trading Analysis",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "={{ $json.output }}",
+              "author": "=",
+              "color": "#9500FF",
+              "title": "=",
+              "url": "=",
+              "image": "=",
+              "thumbnail": "=",
+              "video": "="
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2192,
+        688
+      ],
+      "id": "a606e1d7-a363-4bb0-8834-5c04680ee8a9",
+      "name": "Me",
+      "webhookId": "0b3a10ce-fdb5-4c6c-822b-89f167d06126",
+      "alwaysOutputData": false,
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1440,
+        1472
+      ],
+      "id": "921d0380-b494-4946-92f2-f6188fcca7f2",
+      "name": "DeepSeekV3:Free",
+      "credentials": {
+        "openRouterApi": {
+          "id": "BLqZgch130TwgDaJ",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent that can call other tools provide assistance to other models",
+        "text": "summarizer layer → take the raw analysis and rephrase it into smooth “analyst reports” or “daily crypto updates.”",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1440,
+        1344
+      ],
+      "id": "883a9538-c665-4ba7-a256-a439c140d959",
+      "name": "Summarizer Tool"
+    },
+    {
+      "parameters": {
+        "toolDescription": "AI Agent that can call other tools provide assistance to other models",
+        "text": "summarizer layer → take the raw analysis and rephrase it into smooth “analyst reports” or “daily crypto updates.”",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agentTool",
+      "typeVersion": 2.2,
+      "position": [
+        1712,
+        1344
+      ],
+      "id": "a444facc-e90e-4771-9bb2-4034e0e0e802",
+      "name": "Summarizer Tool1"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3-0324:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        1712,
+        1472
+      ],
+      "id": "847e5246-cbb1-4ede-8e13-ef46367c8bb0",
+      "name": "DeepSeekV3:Free1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "BLqZgch130TwgDaJ",
+          "name": "OpenRouter account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "content": "=🎬 **Trading Analysis - Auto Video Generation**\n\n{{ $('AI Agent1').first().json.output }} {{ $json.output }}",
+        "options": {},
+        "embeds": {
+          "values": [
+            {
+              "description": "This trading analysis will be automatically converted to a professional news video with TTS narration.",
+              "color": "#FF9500",
+              "title": "📊 Trading Analysis → Video Generation"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        752
+      ],
+      "id": "c1e5315f-1647-4562-8b75-603f5894e35f",
+      "name": "Send Analysis to Discord for Video",
+      "webhookId": "d9489756-9429-4dbe-afde-445c4e5555d2",
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "amount": 15
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        2752,
+        1008
+      ],
+      "id": "9e06913b-c6c7-4148-ab55-2ff49afc8f36",
+      "name": "Wait for Video Generation",
+      "webhookId": "5a3f160b-f129-46f7-89e0-85d5e84179e5"
+    },
+    {
+      "parameters": {
+        "url": "http://127.0.0.1:8188/api/history",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2656,
+        1216
+      ],
+      "id": "36628f91-ca82-42f8-9892-faf49501afde",
+      "name": "Check Video Status"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract the latest video file path from ComfyUI history\nconst history = items[0].json;\nconst latestEntry = Object.values(history)[0];\n\nif (latestEntry && latestEntry.outputs) {\n  // Look for video output\n  for (const nodeId in latestEntry.outputs) {\n    const output = latestEntry.outputs[nodeId];\n    if (output.videos && output.videos.length > 0) {\n      const videoFile = output.videos[0].filename;\n      const videoPath = `C:\\\\Users\\\\Duck1\\\\Desktop\\\\DiscordBotAI\\\\DiscordBot\\\\DiscordBot\\\\ComfyUI_windows_portable_nvidia\\\\ComfyUI_windows_portable\\\\ComfyUI\\\\output\\\\${videoFile}`;\n      \n      return {\n        video_path: videoPath,\n        video_filename: videoFile\n      };\n    }\n  }\n}\n\nreturn {\n  error: \"No video found in ComfyUI output\"\n};"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2960,
+        1216
+      ],
+      "id": "7cb808ac-ac63-43e2-8c43-0c8397edc9ff",
+      "name": "Extract Video Path"
+    },
+    {
+      "parameters": {
+        "resource": "message",
+        "guildId": {
+          "__rl": true,
+          "value": "408474223271608341",
+          "mode": "list",
+          "cachedResultName": "Duck Town",
+          "cachedResultUrl": "https://discord.com/channels/408474223271608341"
+        },
+        "sendTo": "user",
+        "userId": {
+          "__rl": true,
+          "value": "269659272768520195",
+          "mode": "list",
+          "cachedResultName": "duckets"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.discord",
+      "typeVersion": 2,
+      "position": [
+        3248,
+        1216
+      ],
+      "id": "5417ad96-6196-4635-9b53-e25634a2cf93",
+      "name": "Send Video to Discord",
+      "webhookId": "fd372178-df6b-45da-b3e9-20951aceb654",
+      "credentials": {
+        "discordBotApi": {
+          "id": "Je3r65OG9IPValRB",
+          "name": "Discord Bot account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $('Extract Video Path').item.json.video_path }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        3104,
+        1024
+      ],
+      "id": "b2ea8db0-41ca-4209-9fb8-f2d4aacae640",
+      "name": "Download Video File"
+    },
+    {
+      "parameters": {
+        "content": "Video geneeration\n",
+        "height": 832,
+        "width": 960
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2512,
+        640
+      ],
+      "typeVersion": 1,
+      "id": "a8e991ca-4a03-45a0-b07b-7e2e7af42285",
+      "name": "Sticky Note9"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Chat Trigger": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Market Analysis Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge All Feeds": {
+      "main": [
+        [
+          {
+            "node": "Filter Last 12 Hours",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "All Cointelegraph Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "BTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Yahoo! Finance Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "LTC Feed": {
+      "main": [
+        [
+          {
+            "node": "Merge All Feeds",
+            "type": "main",
+            "index": 4
+          }
+        ]
+      ]
+    },
+    "Filter Last 12 Hours": {
+      "main": [
+        [
+          {
+            "node": "Limit",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Limit": {
+      "main": [
+        [
+          {
+            "node": "Symbols",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Aggregate",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Symbols": {
+      "main": [
+        [
+          {
+            "node": "Code1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Schedule Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Market Analysis Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "All Cointelegraph Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "BTC Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Yahoo! Finance Feed",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "LTC Feed",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculator Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Brave Search Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GetLiveCryptoPrices": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send News Vibe Duckets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send News Vibe Steven",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Analysis to Discord for Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DuckBot": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 1
+          },
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Me",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Steven",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Send Analysis to Discord for Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeekV3:Free": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarizer Tool",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarizer Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Summarizer Tool1": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "DeepSeekV3:Free1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Summarizer Tool1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Analysis to Discord for Video": {
+      "main": [
+        [
+          {
+            "node": "Wait for Video Generation",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait for Video Generation": {
+      "main": [
+        [
+          {
+            "node": "Check Video Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Video Status": {
+      "main": [
+        [
+          {
+            "node": "Extract Video Path",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract Video Path": {
+      "main": [
+        [
+          {
+            "node": "Download Video File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download Video File": {
+      "main": [
+        [
+          {
+            "node": "Send Video to Discord",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "4368e990-2c30-465f-aa8b-9aa7a134515f",
+  "meta": {
+    "instanceId": "12516636cc318c21b006937214b5ac5e9ec47176d1d22c1e2043cfdf9f73b74d"
+  },
+  "id": "k0NQ22zxHoFOad99",
+  "tags": [
+    {
+      "createdAt": "2025-08-15T03:45:21.975Z",
+      "updatedAt": "2025-08-15T03:45:21.975Z",
+      "id": "xjzBGyRFZgwSoNgQ",
+      "name": "News/Trading"
+    }
+  ]
+}

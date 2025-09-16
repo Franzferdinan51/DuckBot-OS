@@ -1,0 +1,6 @@
+WARNING:__main__:MCP not available, using fallback implementation
+INFO:__main__:Initializing fallback MCP server
+INFO:__main__:Starting DuckBot MCP server on 127.0.0.1:8790
+INFO:__main__:Fallback MCP server starting on 127.0.0.1:8790
+MCP not available - installing fallback implementation
+DuckBot integrations not fully available: No module named 'duckbot.integrations.ai_router_gpt'

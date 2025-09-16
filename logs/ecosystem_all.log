@@ -1,0 +1,140 @@
+2025-09-09 02:45:55,742 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 02:45:55,742 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 02:45:56,061 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 02:45:56,061 - __main__ - INFO - Starting integration services...
+2025-09-09 02:45:56,158 - __main__ - INFO - ByteBot integration service started
+2025-09-09 02:45:56,161 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 02:45:56,162 - __main__ - INFO - WSL integration service started
+2025-09-09 02:45:56,183 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 02:45:56,192 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 02:45:56,192 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 02:45:56,193 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 02:45:56,193 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 02:45:56,194 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 02:45:56,194 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 02:45:56,194 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-09 02:48:59,433 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 02:48:59,433 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 02:48:59,743 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 02:48:59,743 - __main__ - INFO - Starting integration services...
+2025-09-09 02:48:59,844 - __main__ - INFO - ByteBot integration service started
+2025-09-09 02:48:59,846 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 02:48:59,848 - __main__ - INFO - WSL integration service started
+2025-09-09 02:48:59,867 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 02:48:59,868 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 02:48:59,868 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 02:48:59,868 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 02:48:59,869 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 02:48:59,869 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 02:48:59,869 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 02:48:59,869 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-09 10:18:54,827 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 10:18:54,828 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 10:18:55,145 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 10:18:55,145 - __main__ - INFO - Starting integration services...
+2025-09-09 10:18:55,243 - __main__ - INFO - ByteBot integration service started
+2025-09-09 10:18:55,246 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 10:18:55,247 - __main__ - INFO - WSL integration service started
+2025-09-09 10:18:55,268 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 10:18:55,269 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 10:18:55,269 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 10:18:55,269 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 10:18:55,274 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 10:18:55,274 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 10:18:55,274 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 10:18:55,274 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-09 10:20:14,014 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 10:20:14,014 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 10:20:14,327 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 10:20:14,327 - __main__ - INFO - Starting integration services...
+2025-09-09 10:20:14,426 - __main__ - INFO - ByteBot integration service started
+2025-09-09 10:20:14,429 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 10:20:14,431 - __main__ - INFO - WSL integration service started
+2025-09-09 10:20:14,452 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 10:20:14,452 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 10:20:14,452 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 10:20:14,452 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 10:20:14,454 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 10:20:14,454 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 10:20:14,454 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 10:20:14,454 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-09 10:33:18,168 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 10:33:18,168 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 10:33:18,480 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 10:33:18,480 - __main__ - INFO - Starting integration services...
+2025-09-09 10:33:18,580 - __main__ - INFO - ByteBot integration service started
+2025-09-09 10:33:18,583 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 10:33:18,584 - __main__ - INFO - WSL integration service started
+2025-09-09 10:33:18,603 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 10:33:18,604 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 10:33:18,604 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 10:33:18,604 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 10:33:18,605 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 10:33:18,605 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 10:33:18,605 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 10:33:18,605 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-09 10:36:20,698 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-09 10:36:20,698 - __main__ - INFO - Starting core DuckBot services...
+2025-09-09 10:36:21,009 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-09 10:36:21,010 - __main__ - INFO - Starting integration services...
+2025-09-09 10:36:21,108 - __main__ - INFO - ByteBot integration service started
+2025-09-09 10:36:21,111 - __main__ - INFO - Archon multi-agent service started
+2025-09-09 10:36:21,113 - __main__ - INFO - WSL integration service started
+2025-09-09 10:36:21,134 - __main__ - INFO - ChromiumOS integration service started
+2025-09-09 10:36:21,135 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-09 10:36:21,135 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-09 10:36:21,135 - __main__ - INFO - All integrations active and monitoring
+2025-09-09 10:36:21,136 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-09 10:36:21,136 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-09 10:36:21,136 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-09 10:36:21,136 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-12 14:39:45,454 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-12 14:39:45,456 - __main__ - INFO - Starting core DuckBot services...
+2025-09-12 14:39:45,764 - __main__ - INFO - Enhanced WebUI started on port 8787
+2025-09-12 14:39:45,764 - __main__ - INFO - Starting integration services...
+2025-09-12 14:39:46,518 - __main__ - INFO - ByteBot integration service started
+2025-09-12 14:39:46,525 - __main__ - INFO - Archon multi-agent service started
+2025-09-12 14:39:46,528 - __main__ - INFO - WSL integration service started
+2025-09-12 14:39:46,552 - __main__ - INFO - ChromiumOS integration service started
+2025-09-12 14:39:46,552 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-12 14:39:46,553 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-12 14:39:46,554 - __main__ - INFO - All integrations active and monitoring
+2025-09-12 14:39:46,554 - duckbot.enhanced_webui - INFO - Background tasks started successfully
+2025-09-12 14:39:46,575 - duckbot.bytebot_integration - INFO - Starting ByteBot integration service...
+2025-09-12 14:39:46,576 - duckbot.bytebot_integration - INFO - ByteBot integration initialized - Session: bytebot_1757702386
+2025-09-12 14:39:46,576 - duckbot.archon_integration - INFO - Starting Archon Multi-Agent service...
+2025-09-12 14:39:46,578 - duckbot.archon_integration - INFO - Archon integration initialized successfully
+2025-09-12 14:39:46,578 - duckbot.wsl_integration - INFO - Starting WSL integration service...
+2025-09-12 14:39:46,586 - duckbot.chromium_integration - INFO - Starting ChromiumOS integration service...
+2025-09-12 14:39:46,586 - duckbot.chromium_integration - INFO - Initializing ChromiumOS integration...
+2025-09-12 14:39:46,586 - duckbot.chromium_integration - INFO - ChromiumOS integration initialized on Windows
+2025-09-13 16:46:14,548 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-13 16:46:14,548 - __main__ - INFO - Starting core DuckBot services...
+2025-09-13 16:46:17,935 - duckbot.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-v3.1.0-VibeVoice-Ready-20250829_191017 (1)\hardware_config.json
+2025-09-13 16:46:21,194 - duckbot.qwen_agent_integration - WARNING - Qwen-Agent not available - install with: pip install qwen-agent
+2025-09-13 16:46:21,328 - duckbot.integration_manager - INFO - Loaded integration: bytebot
+2025-09-13 16:46:21,331 - duckbot.integration_manager - INFO - Loaded integration: archon
+2025-09-13 16:46:21,332 - duckbot.integration_manager - INFO - Loaded integration: wsl
+2025-09-13 16:46:21,333 - duckbot.integration_manager - INFO - Loaded integration: chromium
+2025-09-14 16:41:00,673 - start_ecosystem - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-14 16:41:00,674 - start_ecosystem - INFO - Starting core DuckBot services...
+2025-09-14 16:41:00,674 - start_ecosystem - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+2025-09-14 16:41:00,675 - start_ecosystem - INFO - Starting integration services...
+2025-09-14 16:41:00,675 - start_ecosystem - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+2025-09-14 16:41:00,675 - start_ecosystem - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - INFO - DuckBot Ecosystem fully initialized!
+2025-09-14 16:41:00,677 - start_ecosystem - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-14 16:41:00,677 - start_ecosystem - INFO - All integrations active and monitoring
+2025-09-14 19:15:06,264 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting core DuckBot services...
+2025-09-14 19:15:06,265 - __main__ - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting integration services...
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+2025-09-14 19:15:06,267 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-14 19:15:06,268 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-14 19:15:06,268 - __main__ - INFO - All integrations active and monitoring

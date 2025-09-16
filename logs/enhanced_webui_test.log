@@ -1,0 +1,24 @@
+2025-09-13 21:25:01.254703: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2025-09-13 21:25:02.069883: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+ERROR:__main__:Failed to initialize MCP integration: name 'get_ollama_model' is not defined
+INFO:     Started server process [49828]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+ERROR:    [Errno 10048] error while attempting to bind on address ('127.0.0.1', 8787): only one usage of each socket address (protocol/network address/port) is normally permitted
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+MCP not available - installing fallback implementation
+[HARDWARE] Detecting system hardware...
+[HARDWARE] Detected: NVIDIA GeForce RTX 3080
+[HARDWARE] VRAM: 10.0GB, RAM: 127.6GB
+[HARDWARE] Performance tier: high_end
+[HARDWARE] Max models: 3, VRAM buffer: 2.0GB
+[BRAIN] Initializing main brain model for system orchestration...
+[OK] Loaded model: qwen/qwen3-coder:free
+[OK] Main brain established: qwen/qwen3-coder:free
+[PROTECTED]  Main brain will remain loaded for system management
+Starting DuckBot Enhanced WebUI v3.1.0+
+Server: http://127.0.0.1:8787
+Features: Multi-agent, WSL integration, Desktop control, Real-time updates
+Security Token: W5rXnjdOjHNsJe0cC7m8jvNBh5v-dHuvcek4lX0IzbY
+------------------------------------------------------------

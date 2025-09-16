@@ -1,0 +1,12 @@
+2025-08-25 22:17:43,755 - DuckBot.Security - WARNING - [PID:25464] - Shutdown signal received: SIGINT
+2025-08-26 01:22:02,995 - DuckBot.Security - WARNING - [PID:33840] - Shutdown signal received: SIGINT
+2025-08-26 02:00:10,731 - DuckBot.Security - CRITICAL - [PID:22648] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-26 02:11:05,075 - DuckBot.Security - CRITICAL - [PID:28164] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-26 02:11:05,079 - DuckBot.Security - CRITICAL - [PID:20992] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-26 02:11:07,357 - DuckBot.Security - CRITICAL - [PID:3740] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-26 15:26:40,720 - DuckBot.Security - CRITICAL - [PID:34204] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-26 15:36:19,952 - DuckBot.Security - CRITICAL - [PID:31216] - Critical system failure: 'charmap' codec can't encode character '\U0001f986' in position 0: character maps to <undefined>
+2025-08-27 21:49:10,917 - DuckBot.Security - WARNING - [PID:23028] - Shutdown signal received: SIGINT
+2025-08-28 00:06:06,565 - DuckBot.Security - WARNING - [PID:31992] - Shutdown signal received: SIGINT
+2025-09-07 14:02:48,525 - DuckBot.Security - WARNING - [PID:31192] - Open WebUI configured to listen on all interfaces - network accessible
+2025-09-07 14:37:14,492 - DuckBot.Security - WARNING - [PID:31192] - Open WebUI configured to listen on all interfaces - network accessible

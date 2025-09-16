@@ -1,0 +1,37 @@
+Traceback (most recent call last):
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\start_ecosystem.py", line 45, in <module>
+    file_handler = logging.handlers.RotatingFileHandler(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\handlers.py", line 155, in __init__
+    BaseRotatingHandler.__init__(self, filename, mode, encoding=encoding,
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\handlers.py", line 58, in __init__
+    logging.FileHandler.__init__(self, filename, mode=mode,
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1181, in __init__
+    StreamHandler.__init__(self, self._open())
+                                 ^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\logging\__init__.py", line 1213, in _open
+    return open_func(self.baseFilename, self.mode,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\logs\\ecosystem_startup.log'
+2025-09-14 16:41:00,673 - start_ecosystem - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-14 16:41:00,674 - start_ecosystem - INFO - Starting core DuckBot services...
+2025-09-14 16:41:00,674 - start_ecosystem - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+2025-09-14 16:41:00,675 - start_ecosystem - INFO - Starting integration services...
+2025-09-14 16:41:00,675 - start_ecosystem - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+2025-09-14 16:41:00,675 - start_ecosystem - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+2025-09-14 16:41:00,676 - start_ecosystem - INFO - DuckBot Ecosystem fully initialized!
+2025-09-14 16:41:00,677 - start_ecosystem - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-14 16:41:00,677 - start_ecosystem - INFO - All integrations active and monitoring
+2025-09-14 19:15:06,264 - __main__ - INFO - Starting DuckBot Complete Ecosystem...
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting core DuckBot services...
+2025-09-14 19:15:06,265 - __main__ - ERROR - Failed to start Enhanced WebUI: No module named 'duckbot.enhanced_webui'
+2025-09-14 19:15:06,265 - __main__ - INFO - Starting integration services...
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start ByteBot: No module named 'duckbot.bytebot_integration'
+2025-09-14 19:15:06,266 - __main__ - ERROR - Failed to start Archon: No module named 'duckbot.archon_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start WSL: No module named 'duckbot.wsl_integration'
+2025-09-14 19:15:06,267 - __main__ - ERROR - Failed to start ChromiumOS: No module named 'duckbot.chromium_integration'
+2025-09-14 19:15:06,267 - __main__ - INFO - DuckBot Ecosystem fully initialized!
+2025-09-14 19:15:06,268 - __main__ - INFO - Enhanced WebUI: http://127.0.0.1:8787
+2025-09-14 19:15:06,268 - __main__ - INFO - All integrations active and monitoring

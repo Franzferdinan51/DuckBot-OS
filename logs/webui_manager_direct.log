@@ -1,0 +1,9 @@
+WARNING:__main__:AI Router not available
+WARNING:__main__:Cost management not available
+INFO:browser_use.telemetry.service:Anonymized telemetry enabled. See https://docs.browser-use.com/development/telemetry for more information.
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use not available - install with: pip install browser-use
+WARNING:duckbot.integrations.browser_use_integration:Browser-Use integration not available
+INFO:duckbot.integrations.web_ui_integration:Web-UI integration session initialized
+INFO:duckbot.integrations.persona_engine_integration:Persona Engine integration session initialized
+WARNING:__main__:Observability not available
+WARNING:__main__:RAG not available
