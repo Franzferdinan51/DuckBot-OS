@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-black/10 backdrop-blur-sm border border-white/10;
+  }
+
+  .service-card {
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm transition-all hover:shadow-md;
+  }
+
+  .metric-card {
+    @apply rounded-lg border bg-card p-4 shadow-sm;
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--muted-foreground)) hsl(var(--muted));
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: hsl(var(--muted));
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--muted-foreground));
+    border-radius: 3px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--foreground));
+  }
+}
+
+/* Custom animations */
+@keyframes pulse-soft {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Loading states */
+.loading-skeleton {
+  @apply animate-pulse bg-muted rounded;
+}
+
+/* Service status indicators */
+.status-running {
+  @apply bg-green-500 text-white;
+}
+
+.status-stopped {
+  @apply bg-gray-500 text-white;
+}
+
+.status-error {
+  @apply bg-red-500 text-white;
+}
+
+.status-starting {
+  @apply bg-yellow-500 text-white;
+}
+
+.status-stopping {
+  @apply bg-orange-500 text-white;
+}
+
+/* Chart container */
+.chart-container {
+  @apply relative h-64 w-full;
+}
+
+/* Code editor styles */
+.code-editor {
+  @apply rounded-lg border bg-muted/50 font-mono text-sm;
+}
+
+/* Agent card styles */
+.agent-card {
+  @apply rounded-lg border bg-card p-4 transition-all hover:shadow-md hover:border-primary/50;
+}
+
+.agent-card.active {
+  @apply border-primary/50 bg-primary/5;
+}
+
+/* Chat message styles */
+.chat-message {
+  @apply rounded-lg px-4 py-3 max-w-[80%];
+}
+
+.chat-message.user {
+  @apply bg-primary text-primary-foreground ml-auto;
+}
+
+.chat-message.assistant {
+  @apply bg-muted text-muted-foreground mr-auto;
+}
+
+.chat-message.system {
+  @apply bg-accent text-accent-foreground mx-auto text-center text-sm;
+}
+
+/* Log line styles */
+.log-line {
+  @apply font-mono text-xs leading-relaxed;
+}
+
+.log-line.stdout {
+  @apply text-foreground;
+}
+
+.log-line.stderr {
+  @apply text-red-400;
+}
+
+.log-line.info {
+  @apply text-blue-400;
+}
+
+.log-line.warning {
+  @apply text-yellow-400;
+}
+
+.log-line.error {
+  @apply text-red-400;
+}
+
+/* Responsive grid */
+.responsive-grid {
+  @apply grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4;
+}
+
+/* Dark mode transitions */
+* {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}

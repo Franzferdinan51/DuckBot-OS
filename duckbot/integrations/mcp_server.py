@@ -60,6 +60,26 @@ except ImportError:
     DOCKER_MCP_GATEWAY_AVAILABLE = False
     print("Docker MCP Gateway integration not available")
 
+# DeepCode integration
+try:
+    from launcher_modules.deepcode.deepcode_integration import DuckBotDeepCodeIntegration
+    from launcher_modules.deepcode.deepcode_mcp_servers import DeepCodeMCPServerManager
+    DEEPCODE_AVAILABLE = True
+except ImportError:
+    DEEPCODE_AVAILABLE = False
+    print("DeepCode integration not available")
+
+# Enhanced RAG integration
+try:
+    from duckbot.core.enhanced_rag import EnhancedRAGEngine
+    from duckbot.core.rag_ai_integration import RAGAIIntegration
+    from duckbot.core.rag_memory_integration import RAGMemoryIntegration
+    from duckbot.core.rag_agent_integration import RAGAgentIntegration
+    ENHANCED_RAG_AVAILABLE = True
+except ImportError:
+    ENHANCED_RAG_AVAILABLE = False
+    print("Enhanced RAG integration not available")
+
 # Memento integration check
 MEMENTO_INTEGRATION_AVAILABLE = DUCKBOT_INTEGRATIONS_AVAILABLE
 
@@ -208,6 +228,12 @@ class DuckBotMCPServer:
 
         # Docker MCP Gateway Tools
         await self._register_docker_gateway_tools()
+
+        # DeepCode Integration Tools
+        await self._register_deepcode_tools()
+
+        # Enhanced RAG Tools
+        await self._register_rag_tools()
 
         logger.info(f"Registered {len(self.tools)} MCP tools")
 
@@ -753,6 +779,518 @@ class DuckBotMCPServer:
 
         except Exception as e:
             logger.error(f"Failed to register UI-TARS tools: {e}")
+
+    async def _register_deepcode_tools(self):
+        """Register DeepCode integration tools"""
+        if not DEEPCODE_AVAILABLE:
+            logger.warning("DeepCode integration not available, skipping tool registration")
+            return
+
+        try:
+            # Initialize DeepCode integration if not already done
+            if 'deepcode' not in self.integration_instances:
+                try:
+                    self.integration_instances['deepcode'] = DuckBotDeepCodeIntegration()
+                except:
+                    logger.warning("Failed to initialize DeepCode integration")
+                    return
+
+            # Paper2Code Tool
+            self._register_tool(
+                name="deepcode_paper2code",
+                description="Convert research papers to executable code",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "paper_path": {"type": "string", "description": "Path to research paper (PDF)"},
+                        "output_dir": {"type": "string", "description": "Output directory for generated code"},
+                        "language": {"type": "string", "description": "Target programming language", "default": "python"},
+                        "framework": {"type": "string", "description": "Target framework (optional)"}
+                    },
+                    "required": ["paper_path", "output_dir"]
+                },
+                handler=self._handle_deepcode_paper2code
+            )
+
+            # Text2Web Tool
+            self._register_tool(
+                name="deepcode_text2web",
+                description="Convert text descriptions to web applications",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "description": {"type": "string", "description": "Text description of web application"},
+                        "output_dir": {"type": "string", "description": "Output directory"},
+                        "framework": {"type": "string", "enum": ["react", "vue", "angular", "html"], "default": "react"},
+                        "features": {"type": "array", "items": {"type": "string"}, "description": "Required features"}
+                    },
+                    "required": ["description", "output_dir"]
+                },
+                handler=self._handle_deepcode_text2web
+            )
+
+            # Text2Backend Tool
+            self._register_tool(
+                name="deepcode_text2backend",
+                description="Convert text descriptions to backend APIs",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "description": {"type": "string", "description": "Text description of backend API"},
+                        "output_dir": {"type": "string", "description": "Output directory"},
+                        "framework": {"type": "string", "enum": ["fastapi", "express", "django", "flask"], "default": "fastapi"},
+                        "database": {"type": "string", "description": "Database type (optional)"}
+                    },
+                    "required": ["description", "output_dir"]
+                },
+                handler=self._handle_deepcode_text2backend
+            )
+
+            # DeepCode Analysis Tool
+            self._register_tool(
+                name="deepcode_analyze",
+                description="Analyze code with DeepCode AI",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "code_path": {"type": "string", "description": "Path to code to analyze"},
+                        "analysis_type": {"type": "string", "enum": ["quality", "security", "performance", "maintainability"], "default": "quality"},
+                        "language": {"type": "string", "description": "Programming language"}
+                    },
+                    "required": ["code_path"]
+                },
+                handler=self._handle_deepcode_analyze
+            )
+
+            logger.info("DeepCode integration tools registered successfully")
+
+        except Exception as e:
+            logger.error(f"Failed to register DeepCode tools: {e}")
+
+    async def _register_rag_tools(self):
+        """Register Enhanced RAG tools"""
+        if not ENHANCED_RAG_AVAILABLE:
+            logger.warning("Enhanced RAG integration not available, skipping tool registration")
+            return
+
+        try:
+            # Initialize Enhanced RAG components
+            if 'rag_engine' not in self.integration_instances:
+                try:
+                    self.integration_instances['rag_engine'] = EnhancedRAGEngine()
+                except:
+                    logger.warning("Failed to initialize Enhanced RAG engine")
+                    return
+
+            if 'rag_ai' not in self.integration_instances:
+                try:
+                    self.integration_instances['rag_ai'] = RAGAIIntegration()
+                except:
+                    logger.warning("Failed to initialize RAG AI integration")
+                    return
+
+            if 'rag_memory' not in self.integration_instances:
+                try:
+                    self.integration_instances['rag_memory'] = RAGMemoryIntegration()
+                except:
+                    logger.warning("Failed to initialize RAG memory integration")
+                    return
+
+            if 'rag_agent' not in self.integration_instances:
+                try:
+                    self.integration_instances['rag_agent'] = RAGAgentIntegration()
+                except:
+                    logger.warning("Failed to initialize RAG agent integration")
+                    return
+
+            # RAG Document Processing
+            self._register_tool(
+                name="rag_process_document",
+                description="Process and index document for RAG",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "document_path": {"type": "string", "description": "Path to document to process"},
+                        "collection_name": {"type": "string", "description": "Collection name (optional)"},
+                        "metadata": {"type": "object", "description": "Document metadata"}
+                    },
+                    "required": ["document_path"]
+                },
+                handler=self._handle_rag_process_document
+            )
+
+            # RAG Query
+            self._register_tool(
+                name="rag_query",
+                description="Query RAG system for information",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Query text"},
+                        "collection_name": {"type": "string", "description": "Collection name (optional)"},
+                        "limit": {"type": "integer", "description": "Result limit", "default": 5},
+                        "threshold": {"type": "number", "description": "Similarity threshold", "default": 0.7}
+                    },
+                    "required": ["query"]
+                },
+                handler=self._handle_rag_query
+            )
+
+            # RAG Create Collection
+            self._register_tool(
+                name="rag_create_collection",
+                description="Create new RAG collection",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "name": {"type": "string", "description": "Collection name"},
+                        "description": {"type": "string", "description": "Collection description"},
+                        "embedding_model": {"type": "string", "description": "Embedding model (optional)"}
+                    },
+                    "required": ["name"]
+                },
+                handler=self._handle_rag_create_collection
+            )
+
+            # RAG List Collections
+            self._register_tool(
+                name="rag_list_collections",
+                description="List RAG collections",
+                input_schema={"type": "object", "properties": {}},
+                handler=self._handle_rag_list_collections
+            )
+
+            # RAG Delete Collection
+            self._register_tool(
+                name="rag_delete_collection",
+                description="Delete RAG collection",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "collection_name": {"type": "string", "description": "Collection name"}
+                    },
+                    "required": ["collection_name"]
+                },
+                handler=self._handle_rag_delete_collection
+            )
+
+            # RAG AI Integration
+            self._register_tool(
+                name="rag_ai_enhance",
+                description="Enhance AI responses with RAG context",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Original query"},
+                        "collection_name": {"type": "string", "description": "Collection name (optional)"},
+                        "provider": {"type": "string", "description": "AI provider (optional)"},
+                        "model": {"type": "string", "description": "AI model (optional)"}
+                    },
+                    "required": ["query"]
+                },
+                handler=self._handle_rag_ai_enhance
+            )
+
+            # RAG Memory Integration
+            self._register_tool(
+                name="rag_memory_store",
+                description="Store conversation in RAG memory",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "conversation": {"type": "string", "description": "Conversation content"},
+                        "metadata": {"type": "object", "description": "Conversation metadata"},
+                        "collection_name": {"type": "string", "description": "Collection name (optional)"}
+                    },
+                    "required": ["conversation"]
+                },
+                handler=self._handle_rag_memory_store
+            )
+
+            # RAG Agent Integration
+            self._register_tool(
+                name="rag_agent_query",
+                description="Query RAG system via agent",
+                input_schema={
+                    "type": "object",
+                    "properties": {
+                        "query": {"type": "string", "description": "Query for agent"},
+                        "agent_type": {"type": "string", "description": "Agent type (optional)"},
+                        "collection_name": {"type": "string", "description": "Collection name (optional)"}
+                    },
+                    "required": ["query"]
+                },
+                handler=self._handle_rag_agent_query
+            )
+
+            logger.info("Enhanced RAG tools registered successfully")
+
+        except Exception as e:
+            logger.error(f"Failed to register Enhanced RAG tools: {e}")
+
+    # DeepCode Tool Handlers
+    async def _handle_deepcode_paper2code(self, params: dict) -> dict:
+        """Handle DeepCode Paper2Code"""
+        try:
+            if 'deepcode' not in self.integration_instances:
+                return {"success": False, "error": "DeepCode integration not available"}
+
+            deepcode = self.integration_instances['deepcode']
+            result = await deepcode.paper2code(
+                paper_path=params['paper_path'],
+                output_dir=params['output_dir'],
+                language=params.get('language', 'python'),
+                framework=params.get('framework')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"DeepCode Paper2Code failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_deepcode_text2web(self, params: dict) -> dict:
+        """Handle DeepCode Text2Web"""
+        try:
+            if 'deepcode' not in self.integration_instances:
+                return {"success": False, "error": "DeepCode integration not available"}
+
+            deepcode = self.integration_instances['deepcode']
+            result = await deepcode.text2web(
+                description=params['description'],
+                output_dir=params['output_dir'],
+                framework=params.get('framework', 'react'),
+                features=params.get('features', [])
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"DeepCode Text2Web failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_deepcode_text2backend(self, params: dict) -> dict:
+        """Handle DeepCode Text2Backend"""
+        try:
+            if 'deepcode' not in self.integration_instances:
+                return {"success": False, "error": "DeepCode integration not available"}
+
+            deepcode = self.integration_instances['deepcode']
+            result = await deepcode.text2backend(
+                description=params['description'],
+                output_dir=params['output_dir'],
+                framework=params.get('framework', 'fastapi'),
+                database=params.get('database')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"DeepCode Text2Backend failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_deepcode_analyze(self, params: dict) -> dict:
+        """Handle DeepCode code analysis"""
+        try:
+            if 'deepcode' not in self.integration_instances:
+                return {"success": False, "error": "DeepCode integration not available"}
+
+            deepcode = self.integration_instances['deepcode']
+            result = await deepcode.analyze_code(
+                code_path=params['code_path'],
+                analysis_type=params.get('analysis_type', 'quality'),
+                language=params.get('language')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"DeepCode analysis failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    # Enhanced RAG Tool Handlers
+    async def _handle_rag_process_document(self, params: dict) -> dict:
+        """Handle RAG document processing"""
+        try:
+            if 'rag_engine' not in self.integration_instances:
+                return {"success": False, "error": "RAG engine not available"}
+
+            rag_engine = self.integration_instances['rag_engine']
+            result = await rag_engine.process_document(
+                document_path=params['document_path'],
+                collection_name=params.get('collection_name'),
+                metadata=params.get('metadata', {})
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG document processing failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_query(self, params: dict) -> dict:
+        """Handle RAG query"""
+        try:
+            if 'rag_engine' not in self.integration_instances:
+                return {"success": False, "error": "RAG engine not available"}
+
+            rag_engine = self.integration_instances['rag_engine']
+            result = await rag_engine.query(
+                query_text=params['query'],
+                collection_name=params.get('collection_name'),
+                limit=params.get('limit', 5),
+                threshold=params.get('threshold', 0.7)
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG query failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_create_collection(self, params: dict) -> dict:
+        """Handle RAG collection creation"""
+        try:
+            if 'rag_engine' not in self.integration_instances:
+                return {"success": False, "error": "RAG engine not available"}
+
+            rag_engine = self.integration_instances['rag_engine']
+            result = await rag_engine.create_collection(
+                name=params['name'],
+                description=params.get('description', ''),
+                embedding_model=params.get('embedding_model')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG collection creation failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_list_collections(self, params: dict) -> dict:
+        """Handle RAG collection listing"""
+        try:
+            if 'rag_engine' not in self.integration_instances:
+                return {"success": False, "error": "RAG engine not available"}
+
+            rag_engine = self.integration_instances['rag_engine']
+            collections = await rag_engine.list_collections()
+
+            return {
+                "success": True,
+                "collections": collections,
+                "count": len(collections),
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG collection listing failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_delete_collection(self, params: dict) -> dict:
+        """Handle RAG collection deletion"""
+        try:
+            if 'rag_engine' not in self.integration_instances:
+                return {"success": False, "error": "RAG engine not available"}
+
+            rag_engine = self.integration_instances['rag_engine']
+            result = await rag_engine.delete_collection(params['collection_name'])
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG collection deletion failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_ai_enhance(self, params: dict) -> dict:
+        """Handle RAG AI enhancement"""
+        try:
+            if 'rag_ai' not in self.integration_instances:
+                return {"success": False, "error": "RAG AI integration not available"}
+
+            rag_ai = self.integration_instances['rag_ai']
+            result = await rag_ai.enhance_response(
+                query=params['query'],
+                collection_name=params.get('collection_name'),
+                provider=params.get('provider'),
+                model=params.get('model')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG AI enhancement failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_memory_store(self, params: dict) -> dict:
+        """Handle RAG memory storage"""
+        try:
+            if 'rag_memory' not in self.integration_instances:
+                return {"success": False, "error": "RAG memory integration not available"}
+
+            rag_memory = self.integration_instances['rag_memory']
+            result = await rag_memory.store_conversation(
+                conversation=params['conversation'],
+                metadata=params.get('metadata', {}),
+                collection_name=params.get('collection_name')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG memory storage failed: {e}")
+            return {"success": False, "error": str(e)}
+
+    async def _handle_rag_agent_query(self, params: dict) -> dict:
+        """Handle RAG agent query"""
+        try:
+            if 'rag_agent' not in self.integration_instances:
+                return {"success": False, "error": "RAG agent integration not available"}
+
+            rag_agent = self.integration_instances['rag_agent']
+            result = await rag_agent.agent_query(
+                query=params['query'],
+                agent_type=params.get('agent_type'),
+                collection_name=params.get('collection_name')
+            )
+
+            return {
+                "success": True,
+                "result": result,
+                "timestamp": datetime.now().isoformat()
+            }
+        except Exception as e:
+            logger.error(f"RAG agent query failed: {e}")
+            return {"success": False, "error": str(e)}
 
     # UI-TARS Tool Handlers
     async def _handle_ui_tars_start_session(self, params: dict) -> dict:
