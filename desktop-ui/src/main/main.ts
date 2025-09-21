@@ -42,9 +42,10 @@ function createWindow(): BrowserWindow {
       preload: path.join(__dirname, 'preload.js'),
       webSecurity: true,
       allowRunningInsecureContent: false,
-      experimentalFeatures: false
+      experimentalFeatures: false,
+      sandbox: false
     },
-    icon: path.join(__dirname, '../../assets/icon.png'),
+    // icon: path.join(__dirname, '../../assets/icon.png'),
     titleBarStyle: 'default',
     backgroundColor: '#0f172a'
   })
@@ -54,7 +55,7 @@ function createWindow(): BrowserWindow {
     window.loadURL('http://localhost:3000')
     window.webContents.openDevTools()
   } else {
-    window.loadFile(path.join(__dirname, '../renderer/index.html'))
+    window.loadFile(path.join(__dirname, 'renderer/index.html'))
   }
 
   // Window state management
@@ -211,7 +212,7 @@ ipcMain.handle('show-notification', (event, options: any) => {
     new Notification({
       title: options.title,
       body: options.body,
-      icon: path.join(__dirname, '../../assets/icon.png'),
+      // icon: path.join(__dirname, '../../assets/icon.png'),
       silent: options.silent || false
     }).show()
   }

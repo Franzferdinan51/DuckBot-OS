@@ -19,17 +19,27 @@ export default defineConfig({
           },
         },
       },
+      {
+        entry: 'src/main/preload.ts',
+        onstart(options) {
+          options.startup()
+        },
+        vite: {
+          build: {
+            outDir: 'dist',
+          },
+        },
+      },
     ]),
-    renderer(),
   ],
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, 'src'),
-      '@components': path.resolve(__dirname, 'src/components'),
-      '@lib': path.resolve(__dirname, 'src/lib'),
-      '@types': path.resolve(__dirname, 'src/types'),
-      '@hooks': path.resolve(__dirname, 'src/hooks'),
-      '@stores': path.resolve(__dirname, 'src/stores'),
+      '@': path.resolve(__dirname, 'src/renderer'),
+      '@components': path.resolve(__dirname, 'src/renderer/components'),
+      '@lib': path.resolve(__dirname, 'src/renderer/lib'),
+      '@types': path.resolve(__dirname, 'src/renderer/types'),
+      '@hooks': path.resolve(__dirname, 'src/renderer/hooks'),
+      '@stores': path.resolve(__dirname, 'src/renderer/stores'),
     },
   },
   server: {
