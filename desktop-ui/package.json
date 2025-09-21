@@ -20,8 +20,6 @@
     "lint": "eslint src --ext .ts,.tsx",
     "lint:fix": "eslint src --ext .ts,.tsx --fix"
   },
-  "main": "dist/main.js",
-  "homepage": "./",
   "build": {
     "appId": "com.duckbot.desktop",
     "productName": "DuckBot Desktop",
@@ -107,8 +105,11 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "recharts": "^2.10.3",
+    "bufferutil": "^4.0.7",
     "socket.io": "^4.7.4",
     "socket.io-client": "^4.7.4",
+    "utf-8-validate": "^5.0.10",
+    "ws": "^8.14.2",
     "tailwind-merge": "^2.2.0",
     "tailwindcss-animate": "^1.0.7",
     "zustand": "^4.4.7"
