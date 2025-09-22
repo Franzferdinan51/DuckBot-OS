@@ -1,0 +1,2 @@
+2025-09-19 17:16:34,062 - DuckBot.Ecosystem - ERROR - [PID:29444] - [FAIL] Service detector failed: No module named 'duckbot'
+2025-09-19 17:16:34,063 - DuckBot.Ecosystem - ERROR - [PID:29444] - [FAIL] Could not find or start ComfyUI

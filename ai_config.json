@@ -1,0 +1,17 @@
+{
+  "provider": "lm_studio",
+  "lm_studio_url": "http://localhost:1234/v1",
+  "lm_studio_model": "qwen3-30b-a3b-thinking-2507-deepseek-v3.1-distill",
+  "openrouter_api_key": "your_openrouter_api_key_here",
+  "openrouter_url": "https://openrouter.ai/api/v1",
+  "openrouter_model": "qwen/qwen3-coder:free",
+  "max_tokens": "512",
+  "temperature": "0.2",
+  "conversation_history_limit": 50,
+  "decision_confidence_threshold": 0.7,
+  "auto_action_enabled": true,
+  "monitoring_interval": 30,
+  "report_interval": 300,
+  "enable_caching": true,
+  "cache_ttl_seconds": 300
+}

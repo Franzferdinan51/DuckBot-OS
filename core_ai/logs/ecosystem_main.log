@@ -1,0 +1,185 @@
+2025-09-15 19:21:32,764 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] Database initialized successfully
+2025-09-15 19:21:32,766 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Created default configuration file
+2025-09-15 19:21:32,769 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Loaded configuration for 6 services
+2025-09-15 19:21:32,769 - DuckBot.Ecosystem - INFO - [PID:49956] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-15 19:21:32,769 - DuckBot.Ecosystem - INFO - [PID:49956] - [LAUNCH] Starting DuckBot Enterprise Ecosystem...
+2025-09-15 19:21:32,769 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Performing enterprise dependency validation...
+2025-09-15 19:21:32,770 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting enterprise dependency check...
+2025-09-15 19:21:32,770 - DuckBot.Ecosystem - WARNING - [PID:49956] - [WARN] .env file not found
+2025-09-15 19:22:03,998 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] .env file created with default settings
+2025-09-15 19:22:03,999 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] Checking required Python packages...
+2025-09-15 19:22:04,173 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] discord.py already installed
+2025-09-15 19:22:04,174 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] aiohttp already installed
+2025-09-15 19:22:04,174 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] requests already installed
+2025-09-15 19:22:07,072 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] torch already installed
+2025-09-15 19:22:07,187 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] opencv-python already installed
+2025-09-15 19:22:07,189 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] Pillow already installed
+2025-09-15 19:22:07,189 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] python-dotenv already installed
+2025-09-15 19:22:07,189 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] psutil already installed
+2025-09-15 19:22:07,191 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] websockets already installed
+2025-09-15 19:22:07,791 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] neo4j already installed
+2025-09-15 19:22:07,841 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] SpeechRecognition already installed
+2025-09-15 19:22:07,851 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] pyttsx3 already installed
+2025-09-15 19:22:07,853 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] watchdog already installed
+2025-09-15 19:22:07,854 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] PyYAML already installed
+2025-09-15 19:22:08,038 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] beautifulsoup4 already installed
+2025-09-15 19:22:08,038 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] Checking optional Python packages...
+2025-09-15 19:22:08,040 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] jupyter already installed
+2025-09-15 19:22:09,311 - DuckBot.Ecosystem - DEBUG - [PID:49956] - [OK] streamlit already installed
+2025-09-15 19:22:09,311 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] Checking Node.js and n8n...
+2025-09-15 19:22:09,335 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Node.js already installed: v22.17.0
+2025-09-15 19:22:09,403 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] n8n already installed at C:\Users\Ryan/AppData/Roaming/npm/n8n.cmd: 1.106.3
+2025-09-15 19:22:09,442 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Git available: git version 2.51.0.windows.1
+2025-09-15 19:22:09,686 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Docker available: Docker version 28.4.0, build d8eb465
+2025-09-15 19:22:09,686 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] All dependencies satisfied
+2025-09-15 19:22:09,687 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] Checking open-notebook installation...
+2025-09-15 19:22:09,687 - DuckBot.Ecosystem - INFO - [PID:49956] - ⬇[EMOJI] Cloning open-notebook repository...
+2025-09-15 19:22:10,853 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-notebook repository cloned successfully
+2025-09-15 19:22:10,863 - DuckBot.Ecosystem - INFO - [PID:49956] - [SETTINGS] Creating open-notebook .env configuration...
+2025-09-15 19:22:10,863 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-notebook .env file created
+2025-09-15 19:22:10,864 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-notebook installation completed
+2025-09-15 19:22:10,864 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting services in dependency order...
+2025-09-15 19:22:10,864 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting comfyui...
+2025-09-15 19:22:10,865 - DuckBot.Ecosystem - INFO - [PID:49956] - [ART] Starting ComfyUI server...
+2025-09-15 19:22:10,869 - DuckBot.Ecosystem - ERROR - [PID:49956] - [FAIL] Service detector failed: No module named 'duckbot'
+2025-09-15 19:22:10,869 - DuckBot.Ecosystem - ERROR - [PID:49956] - [FAIL] Could not find or start ComfyUI
+2025-09-15 19:22:10,870 - DuckBot.Ecosystem - WARNING - [PID:49956] - [WARN] comfyui failed to start or is already running
+2025-09-15 19:22:10,870 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting lm_studio...
+2025-09-15 19:22:10,870 - DuckBot.Ecosystem - INFO - [PID:49956] - [AI] Starting LM Studio AI server...
+2025-09-15 19:22:10,872 - DuckBot.Ecosystem - INFO - [PID:49956] - [LAUNCH] Starting LM Studio from: C:\Users\Ryan\AppData\Local\Programs\LM Studio\LM Studio.exe
+2025-09-15 19:22:11,429 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] LM Studio started successfully (PID: 19004)
+2025-09-15 19:22:11,446 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting jupyter...
+2025-09-15 19:22:11,447 - DuckBot.Ecosystem - INFO - [PID:49956] - [CHART] Starting Jupyter Notebook server...
+2025-09-15 19:22:14,777 - DuckBot.Ecosystem - DEBUG - [PID:49956] - Created sample notebook: DuckBot_Integration.ipynb
+2025-09-15 19:22:14,792 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Jupyter started successfully (PID: 33076)
+2025-09-15 19:22:24,801 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting n8n...
+2025-09-15 19:22:24,801 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting n8n workflow automation...
+2025-09-15 19:22:24,878 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] n8n found at: C:\Users\Ryan/AppData/Roaming/npm/n8n.cmd
+2025-09-15 19:22:24,878 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting n8n via desktop terminal method...
+2025-09-15 19:22:24,886 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] n8n started via desktop terminal method (PID: 2220)
+2025-09-15 19:22:44,895 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting open-webui...
+2025-09-15 19:22:44,895 - DuckBot.Ecosystem - INFO - [PID:49956] - [GLOBE] Starting Open WebUI...
+2025-09-15 19:22:45,355 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] open-webui not found, installing...
+2025-09-15 19:22:45,355 - DuckBot.Ecosystem - INFO - [PID:49956] - [PACKAGE] Installing open-webui (attempt 1/3)
+2025-09-15 19:23:11,237 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-webui installed successfully
+2025-09-15 19:23:17,579 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Open WebUI started successfully (PID: 20452)
+2025-09-15 19:23:37,605 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting open_notebook...
+2025-09-15 19:23:37,605 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting Open Notebook...
+2025-09-15 19:23:37,658 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting open-notebook via Docker Compose...
+2025-09-15 19:23:38,340 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] Open Notebook started via Docker Compose
+2025-09-15 19:24:03,365 - DuckBot.Ecosystem - INFO - [PID:49956] - ▶[EMOJI] Starting duckbot...
+2025-09-15 19:24:03,366 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Starting DuckBot Discord bot...
+2025-09-15 19:24:03,366 - DuckBot.Ecosystem - WARNING - [PID:49956] - [WARN] ComfyUI dependency not running, DuckBot may have limited functionality
+2025-09-15 19:24:03,366 - DuckBot.Ecosystem - ERROR - [PID:49956] - [FAIL] DuckBot script not found
+2025-09-15 19:24:03,367 - DuckBot.Ecosystem - WARNING - [PID:49956] - [WARN] duckbot failed to start or is already running
+2025-09-15 19:24:03,367 - DuckBot.Ecosystem - INFO - [PID:49956] - [EMOJI] Performing initial health checks...
+2025-09-15 19:24:03,367 - DuckBot.Ecosystem - INFO - [PID:49956] - ⏳ Waiting for n8n health check...
+2025-09-15 19:24:03,368 - DuckBot.Ecosystem - INFO - [PID:49956] - ⏳ Waiting for open_notebook health check...
+2025-09-15 19:24:03,368 - DuckBot.Ecosystem - INFO - [PID:49956] - ⏳ Waiting for jupyter health check...
+2025-09-15 19:24:03,368 - DuckBot.Ecosystem - INFO - [PID:49956] - ⏳ Waiting for open-webui health check...
+2025-09-15 19:24:03,375 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] n8n is healthy! (Status: 200)
+2025-09-15 19:24:03,386 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] n8n health check passed
+2025-09-15 19:24:03,395 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] jupyter is healthy! (Status: 200)
+2025-09-15 19:24:03,404 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] jupyter health check passed
+2025-09-15 19:24:05,405 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-webui is healthy! (Status: 200)
+2025-09-15 19:24:05,413 - DuckBot.Ecosystem - INFO - [PID:49956] - [OK] open-webui health check passed
+2025-09-15 19:24:07,403 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 1)
+2025-09-15 19:24:12,462 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 2)
+2025-09-15 19:24:18,512 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 3)
+2025-09-15 19:24:26,562 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 4)
+2025-09-15 19:24:38,618 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 5)
+2025-09-15 19:24:38,618 - DuckBot.Ecosystem - INFO - [PID:49956] -    Still waiting for open_notebook... (5/50)
+2025-09-15 19:24:58,670 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 6)
+2025-09-15 19:25:32,736 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 7)
+2025-09-15 19:26:06,815 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 8)
+2025-09-15 19:26:40,869 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 9)
+2025-09-15 19:27:14,951 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 10)
+2025-09-15 19:27:14,951 - DuckBot.Ecosystem - INFO - [PID:49956] -    Still waiting for open_notebook... (10/50)
+2025-09-15 19:27:49,040 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 11)
+2025-09-15 19:28:23,100 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 12)
+2025-09-15 19:28:57,177 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 13)
+2025-09-15 19:29:31,263 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 14)
+2025-09-15 19:30:05,346 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 15)
+2025-09-15 19:30:05,347 - DuckBot.Ecosystem - INFO - [PID:49956] -    Still waiting for open_notebook... (15/50)
+2025-09-15 19:30:39,425 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 16)
+2025-09-15 19:31:13,483 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 17)
+2025-09-15 19:31:47,561 - DuckBot.Ecosystem - DEBUG - [PID:49956] -    open_notebook connection refused (attempt 18)
+2025-09-19 02:48:20,178 - DuckBot.Ecosystem - DEBUG - [PID:55904] - [OK] Database initialized successfully
+2025-09-19 02:48:20,180 - DuckBot.Ecosystem - INFO - [PID:55904] - [OK] Loaded configuration for 6 services
+2025-09-19 02:48:20,180 - DuckBot.Ecosystem - INFO - [PID:55904] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-19 02:48:20,212 - DuckBot.Ecosystem - INFO - [PID:55904] - ðŸ¤– AI-Enhanced Ecosystem Manager initialized with caching
+2025-09-19 02:48:20,469 - DuckBot.Ecosystem - INFO - [PID:55904] - LM Studio auto-detected model: deepseek-ai.deepseek-r1-distill-qwen-32b
+2025-09-19 02:48:40,788 - DuckBot.Ecosystem - WARNING - [PID:55904] - LM Studio warm-up failed: 
+2025-09-19 02:49:27,631 - DuckBot.Ecosystem - DEBUG - [PID:32792] - [OK] Database initialized successfully
+2025-09-19 02:49:27,634 - DuckBot.Ecosystem - INFO - [PID:32792] - [OK] Loaded configuration for 6 services
+2025-09-19 02:49:27,634 - DuckBot.Ecosystem - INFO - [PID:32792] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-19 02:49:27,637 - DuckBot.Ecosystem - INFO - [PID:32792] - âœ… AI configuration loaded from file
+2025-09-19 02:49:27,637 - DuckBot.Ecosystem - INFO - [PID:32792] - ðŸ¤– AI-Enhanced Ecosystem Manager initialized with caching
+2025-09-19 02:49:27,906 - DuckBot.Ecosystem - INFO - [PID:32792] - LM Studio auto-detected model: deepseek-ai.deepseek-r1-distill-qwen-32b
+2025-09-19 02:49:30,563 - DuckBot.Ecosystem - INFO - [PID:32792] - LM Studio warm-up completed
+2025-09-19 17:01:46,839 - DuckBot.Ecosystem - DEBUG - [PID:34076] - [OK] Database initialized successfully
+2025-09-19 17:01:46,841 - DuckBot.Ecosystem - INFO - [PID:34076] - [OK] Loaded configuration for 6 services
+2025-09-19 17:01:46,841 - DuckBot.Ecosystem - INFO - [PID:34076] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-19 17:01:46,843 - DuckBot.Ecosystem - INFO - [PID:34076] - âœ… AI configuration loaded from file
+2025-09-19 17:01:46,844 - DuckBot.Ecosystem - INFO - [PID:34076] - ðŸ¤– AI-Enhanced Ecosystem Manager initialized with caching
+2025-09-19 17:13:45,290 - DuckBot.Ecosystem - DEBUG - [PID:49592] - [OK] Database initialized successfully
+2025-09-19 17:13:45,293 - DuckBot.Ecosystem - INFO - [PID:49592] - [OK] Loaded configuration for 6 services
+2025-09-19 17:13:45,293 - DuckBot.Ecosystem - INFO - [PID:49592] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-19 17:13:45,295 - DuckBot.Ecosystem - INFO - [PID:49592] - âœ… AI configuration loaded from file
+2025-09-19 17:13:45,295 - DuckBot.Ecosystem - INFO - [PID:49592] - ðŸ¤– AI-Enhanced Ecosystem Manager initialized with caching
+2025-09-19 17:13:46,194 - DuckBot.Ecosystem - INFO - [PID:49592] - LM Studio warm-up completed
+2025-09-19 17:16:30,841 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] Database initialized successfully
+2025-09-19 17:16:30,844 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] Loaded configuration for 6 services
+2025-09-19 17:16:30,844 - DuckBot.Ecosystem - INFO - [PID:29444] - [LAUNCH] DuckBot Enterprise Ecosystem Manager initialized
+2025-09-19 17:16:30,846 - DuckBot.Ecosystem - INFO - [PID:29444] - âœ… AI configuration loaded from file
+2025-09-19 17:16:30,847 - DuckBot.Ecosystem - INFO - [PID:29444] - ðŸ¤– AI-Enhanced Ecosystem Manager initialized with caching
+2025-09-19 17:16:31,469 - DuckBot.Ecosystem - INFO - [PID:29444] - LM Studio warm-up completed
+2025-09-19 17:16:31,472 - DuckBot.Ecosystem - INFO - [PID:29444] - [LAUNCH] Starting DuckBot Enterprise Ecosystem...
+2025-09-19 17:16:31,472 - DuckBot.Ecosystem - INFO - [PID:29444] - [EMOJI] Performing enterprise dependency validation...
+2025-09-19 17:16:31,472 - DuckBot.Ecosystem - INFO - [PID:29444] - [EMOJI] Starting enterprise dependency check...
+2025-09-19 17:16:31,472 - DuckBot.Ecosystem - INFO - [PID:29444] - [PACKAGE] Checking required Python packages...
+2025-09-19 17:16:31,567 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] discord.py already installed
+2025-09-19 17:16:31,567 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] aiohttp already installed
+2025-09-19 17:16:31,568 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] requests already installed
+2025-09-19 17:16:32,825 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] torch already installed
+2025-09-19 17:16:32,846 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] opencv-python already installed
+2025-09-19 17:16:32,848 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] Pillow already installed
+2025-09-19 17:16:32,848 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] python-dotenv already installed
+2025-09-19 17:16:32,848 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] psutil already installed
+2025-09-19 17:16:32,850 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] websockets already installed
+2025-09-19 17:16:33,285 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] neo4j already installed
+2025-09-19 17:16:33,300 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] SpeechRecognition already installed
+2025-09-19 17:16:33,301 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] pyttsx3 already installed
+2025-09-19 17:16:33,302 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] watchdog already installed
+2025-09-19 17:16:33,302 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] PyYAML already installed
+2025-09-19 17:16:33,394 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] beautifulsoup4 already installed
+2025-09-19 17:16:33,394 - DuckBot.Ecosystem - INFO - [PID:29444] - [PACKAGE] Checking optional Python packages...
+2025-09-19 17:16:33,396 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] jupyter already installed
+2025-09-19 17:16:33,873 - DuckBot.Ecosystem - DEBUG - [PID:29444] - [OK] streamlit already installed
+2025-09-19 17:16:33,874 - DuckBot.Ecosystem - INFO - [PID:29444] - [PACKAGE] Checking Node.js and n8n...
+2025-09-19 17:16:33,894 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] Node.js already installed: v22.17.0
+2025-09-19 17:16:33,947 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] n8n already installed at C:\Users\Ryan/AppData/Roaming/npm/n8n.cmd: 1.106.3
+2025-09-19 17:16:33,961 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] Git available: git version 2.51.0.windows.1
+2025-09-19 17:16:34,056 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] Docker available: Docker version 28.4.0, build d8eb465
+2025-09-19 17:16:34,057 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] All dependencies satisfied
+2025-09-19 17:16:34,057 - DuckBot.Ecosystem - INFO - [PID:29444] - [PACKAGE] Checking open-notebook installation...
+2025-09-19 17:16:34,058 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] open-notebook installation completed
+2025-09-19 17:16:34,058 - DuckBot.Ecosystem - INFO - [PID:29444] - [EMOJI] Starting services in dependency order...
+2025-09-19 17:16:34,058 - DuckBot.Ecosystem - INFO - [PID:29444] - ▶[EMOJI] Starting comfyui...
+2025-09-19 17:16:34,058 - DuckBot.Ecosystem - INFO - [PID:29444] - [ART] Starting ComfyUI server...
+2025-09-19 17:16:34,062 - DuckBot.Ecosystem - ERROR - [PID:29444] - [FAIL] Service detector failed: No module named 'duckbot'
+2025-09-19 17:16:34,063 - DuckBot.Ecosystem - ERROR - [PID:29444] - [FAIL] Could not find or start ComfyUI
+2025-09-19 17:16:34,063 - DuckBot.Ecosystem - WARNING - [PID:29444] - [WARN] comfyui failed to start or is already running
+2025-09-19 17:16:34,064 - DuckBot.Ecosystem - INFO - [PID:29444] - ▶[EMOJI] Starting lm_studio...
+2025-09-19 17:16:34,064 - DuckBot.Ecosystem - INFO - [PID:29444] - [AI] Starting LM Studio AI server...
+2025-09-19 17:16:34,065 - DuckBot.Ecosystem - DEBUG - [PID:29444] - Port 1234 is occupied by PID: 6484
+2025-09-19 17:16:34,066 - DuckBot.Ecosystem - WARNING - [PID:29444] - [WARN] Port 1234 already in use
+2025-09-19 17:16:34,066 - DuckBot.Ecosystem - WARNING - [PID:29444] - [WARN] lm_studio failed to start or is already running
+2025-09-19 17:16:34,066 - DuckBot.Ecosystem - INFO - [PID:29444] - ▶[EMOJI] Starting jupyter...
+2025-09-19 17:16:34,066 - DuckBot.Ecosystem - INFO - [PID:29444] - [CHART] Starting Jupyter Notebook server...
+2025-09-19 17:16:35,471 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] Jupyter started successfully (PID: 14668)
+2025-09-19 17:16:45,481 - DuckBot.Ecosystem - INFO - [PID:29444] - ▶[EMOJI] Starting n8n...
+2025-09-19 17:16:45,481 - DuckBot.Ecosystem - INFO - [PID:29444] - [EMOJI] Starting n8n workflow automation...
+2025-09-19 17:16:45,537 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] n8n found at: C:\Users\Ryan/AppData/Roaming/npm/n8n.cmd
+2025-09-19 17:16:45,537 - DuckBot.Ecosystem - INFO - [PID:29444] - [EMOJI] Starting n8n via desktop terminal method...
+2025-09-19 17:16:45,540 - DuckBot.Ecosystem - INFO - [PID:29444] - [OK] n8n started via desktop terminal method (PID: 45264)

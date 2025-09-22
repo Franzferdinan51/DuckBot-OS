@@ -1,0 +1,5 @@
+2025-09-15 19:22:09,686 - DuckBot.Performance - INFO - [PID:49956] - Dependency check completed in 36.92s
+2025-09-15 19:24:03,377 - DuckBot.Performance - INFO - [PID:49956] - n8n health check succeeded in 1 attempts
+2025-09-15 19:24:03,395 - DuckBot.Performance - INFO - [PID:49956] - jupyter health check succeeded in 1 attempts
+2025-09-15 19:24:05,405 - DuckBot.Performance - INFO - [PID:49956] - open-webui health check succeeded in 1 attempts
+2025-09-19 17:16:34,057 - DuckBot.Performance - INFO - [PID:29444] - Dependency check completed in 2.59s

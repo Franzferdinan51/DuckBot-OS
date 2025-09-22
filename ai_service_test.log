@@ -1,0 +1,40 @@
+2025-09-16 15:17:58,045 - __main__ - INFO - Starting comprehensive AI service testing...
+2025-09-16 15:17:58,046 - __main__ - INFO - Test ID: 01e644d0-7fd6-4f6f-8369-bea752528979
+2025-09-16 15:17:58,046 - __main__ - INFO - Base URL: http://localhost:8787
+2025-09-16 15:17:58,046 - __main__ - INFO - Testing GeminiChat API endpoint...
+2025-09-16 15:18:02,138 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:04,182 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:06,206 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:06,207 - __main__ - INFO - Testing system metrics API...
+2025-09-16 15:18:08,263 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:10,309 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:12,372 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:21,705 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:21,705 - __main__ - INFO - Testing AI service request handling...
+2025-09-16 15:18:29,882 - __main__ - ERROR - Error details: 'dict' object has no attribute 'lower'
+2025-09-16 15:18:29,882 - __main__ - INFO - Testing concurrent request handling...
+2025-09-16 15:18:35,908 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:38,005 - __main__ - INFO - Testing timeout mechanisms...
+2025-09-16 15:18:43,153 - __main__ - INFO - Testing local vs cloud AI modes...
+2025-09-16 15:18:53,360 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:18:59,505 - __main__ - INFO - Testing AI provider manager...
+2025-09-16 15:19:03,128 - duckbot.core.cost_management - WARNING - Analytics integration not available
+2025-09-16 15:19:03,130 - duckbot.integrations.vibevoice_client - INFO - [OK] VibeVoice integration initialized (manager created)
+2025-09-16 15:19:05,951 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-16 15:19:10,377 - duckbot.core.ai_provider_manager - INFO - [BRAIN] Main brain established: qwen/qwen3-coder:free (LM Studio)
+2025-09-16 15:19:11,435 - __main__ - ERROR - Error details: Unknown error
+2025-09-16 15:19:11,437 - __main__ - INFO - Testing API authentication...
+2025-09-16 15:19:19,621 - __main__ - INFO - Testing service availability...
+2025-09-16 15:19:19,733 - duckbot.core.monitoring_system - INFO - DuckBot monitoring system initialized
+2025-09-16 15:19:20,763 - __main__ - INFO - Generating comprehensive test report...
+2025-09-16 15:19:20,766 - __main__ - INFO - Test report saved: ai_service_test_report_01e644d0-7fd6-4f6f-8369-bea752528979.json
+2025-09-16 15:19:20,766 - __main__ - INFO - ============================================================
+2025-09-16 15:19:20,766 - __main__ - INFO - AI SERVICE TEST SUMMARY
+2025-09-16 15:19:20,766 - __main__ - INFO - ============================================================
+2025-09-16 15:19:20,766 - __main__ - INFO - Total Tests: 35
+2025-09-16 15:19:20,766 - __main__ - INFO - Passed: 24
+2025-09-16 15:19:20,766 - __main__ - INFO - Failed: 11
+2025-09-16 15:19:20,766 - __main__ - INFO - Success Rate: 68.6%
+2025-09-16 15:19:20,766 - __main__ - INFO - ============================================================
+2025-09-16 15:19:20,766 - __main__ - INFO - • Overall success rate is low - investigate systemic issues
+2025-09-16 15:19:20,766 - __main__ - INFO - ============================================================

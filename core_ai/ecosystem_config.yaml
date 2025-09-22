@@ -1,0 +1,66 @@
+monitoring:
+  health_check_interval: 30
+  performance_log_interval: 60
+  restart_cooldown: 300
+services:
+  comfyui:
+    critical: true
+    dependencies: []
+    health_endpoint: http://localhost:8188
+    name: ComfyUI
+    port: 8188
+    restart_attempts: 5
+    restart_delay: 45
+    startup_delay: 15
+    timeout: 120
+  duckbot:
+    critical: true
+    dependencies:
+    - comfyui
+    health_endpoint: ''
+    name: DuckBot
+    port: 0
+    restart_attempts: 5
+    restart_delay: 30
+    startup_delay: 5
+    timeout: 30
+  jupyter:
+    critical: false
+    dependencies: []
+    health_endpoint: http://localhost:8889
+    name: Jupyter
+    port: 8889
+    restart_attempts: 2
+    restart_delay: 20
+    startup_delay: 10
+    timeout: 60
+  n8n:
+    critical: false
+    dependencies: []
+    health_endpoint: http://localhost:5678/healthz
+    name: n8n
+    port: 5678
+    restart_attempts: 3
+    restart_delay: 30
+    startup_delay: 20
+    timeout: 90
+  open-webui:
+    critical: false
+    dependencies: []
+    health_endpoint: http://localhost:8080
+    name: Open WebUI
+    port: 8080
+    restart_attempts: 3
+    restart_delay: 30
+    startup_delay: 20
+    timeout: 90
+  open_notebook:
+    critical: false
+    dependencies: []
+    health_endpoint: http://localhost:8502/health
+    name: Open Notebook
+    port: 8502
+    restart_attempts: 3
+    restart_delay: 40
+    startup_delay: 25
+    timeout: 100
