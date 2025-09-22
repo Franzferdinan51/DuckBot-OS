@@ -1,0 +1,90 @@
+{
+  "huggingface": {
+    "token": null,
+    "endpoint": "https://huggingface.co",
+    "cache_dir": null,
+    "default_cache_dir": "~/.cache/duckbot_models",
+    "max_workers": 4,
+    "timeout": 300,
+    "retry_attempts": 3,
+    "retry_delay": 5
+  },
+  "download": {
+    "resume_download": true,
+    "force_download": false,
+    "local_files_only": false,
+    "validate_checksum": true,
+    "chunk_size": 1048576,
+    "max_concurrent_downloads": 3
+  },
+  "conversion": {
+    "convert_to_gguf": false,
+    "gguf_quantization": null,
+    "llama_cpp_path": null,
+    "auto_find_llama_cpp": true,
+    "supported_quantizations": [
+      "q4_0",
+      "q4_1",
+      "q5_0",
+      "q5_1",
+      "q8_0",
+      "q8_1",
+      "f16",
+      "f32"
+    ]
+  },
+  "cache": {
+    "enabled": true,
+    "max_cache_size_gb": 100,
+    "cache_cleanup_days": 30,
+    "auto_cleanup": true,
+    "metadata_file": "cache_metadata.json"
+  },
+  "security": {
+    "verify_ssl": true,
+    "allow_insecure_connections": false,
+    "token_env_var": "HUGGINGFACE_TOKEN",
+    "allow_public_models": true
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "model_downloader.log",
+    "max_size_mb": 10,
+    "backup_count": 5,
+    "enable_console": true
+  },
+  "ui": {
+    "show_progress_bar": true,
+    "progress_bar_format": "{desc}: {percentage:3.0f}%|{bar}| {n_fmt}/{total_fmt} [{elapsed}<{remaining}, {rate_fmt}]",
+    "enable_rich_output": true,
+    "color_scheme": {
+      "downloading": "blue",
+      "completed": "green",
+      "failed": "red",
+      "paused": "yellow"
+    }
+  },
+  "defaults": {
+    "revision": "main",
+    "model_type": "huggingface",
+    "download_patterns": [
+      "*.json",
+      "*.bin",
+      "*.safetensors",
+      "*.py",
+      "*.txt",
+      "*.md",
+      "config.json",
+      "tokenizer.json",
+      "tokenizer_config.json",
+      "special_tokens_map.json"
+    ],
+    "ignore_patterns": [
+      "*.git*",
+      "*.DS_Store",
+      "Thumbs.db",
+      "*.pyc",
+      "__pycache__"
+    ]
+  }
+}

@@ -1,0 +1,376 @@
+{% extends "deepcode/base.html" %}
+
+{% block title %}🧠 DeepCode Dashboard - DuckBot{% endblock %}
+{% block header_title %}DeepCode AI Development Suite{% endblock %}
+
+{% block content %}
+  <!-- DeepCode Feature Tabs -->
+  <div class="tabs-container">
+    <div class="tabs">
+      <button class="tab-button active" data-tab="overview">📊 Overview</button>
+      <button class="tab-button" data-tab="paper2code">📄 Paper2Code</button>
+      <button class="tab-button" data-tab="text2web">🌐 Text2Web</button>
+      <button class="tab-button" data-tab="text2backend">⚙️ Text2Backend</button>
+      <button class="tab-button" data-tab="agents">🤖 Agents</button>
+      <button class="tab-button" data-tab="mcp">🔌 MCP Servers</button>
+    </div>
+  </div>
+
+  <!-- Tab Content -->
+  <div class="tab-content">
+    <!-- Overview Tab -->
+    <div id="overview" class="tab-pane active">
+      <div class="dashboard-grid">
+        <!-- System Status -->
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🎯 System Status</h2>
+          </div>
+          <div class="card-content">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="active-agents">{{ agents|length }}</div>
+                <div class="stat-label">Active Agents</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="mcp-servers">{{ mcp_servers|length }}</div>
+                <div class="stat-label">MCP Servers</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="tasks-completed">{{ tasks|selectattr('status', 'equalto', 'completed')|list|length }}</div>
+                <div class="stat-label">Tasks Completed</div>
+              </div>
+              <div class="stat-card">
+                {% set success_rate = (tasks|selectattr('status', 'equalto', 'completed')|list|length * 100 / tasks|length)|round|int if tasks else 0 %}
+                <div class="stat-value" id="success-rate">{{ success_rate }}%</div>
+                <div class="stat-label">Success Rate</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">📈 Recent Activity</h2>
+          </div>
+          <div class="card-content">
+            <div id="activity-feed" class="activity-feed">
+              {% for activity in recent_activities %}
+              <div class="activity-item">
+                <div class="activity-time">{{ activity.timestamp.strftime('%H:%M:%S') }}</div>
+                <div class="activity-content">{{ activity.message }}</div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🚀 Quick Actions</h2>
+          </div>
+          <div class="card-content">
+            <div class="quick-actions">
+              <button class="action-btn primary" onclick="deepcodeUI.showNewTaskModal()">
+                📝 New Task
+              </button>
+              <button class="action-btn secondary" onclick="deepcodeUI.showPaperUploadModal()">
+                📄 Upload Paper
+              </button>
+              <button class="action-btn secondary" onclick="deepcodeUI.showProjectModal()">
+                🚀 New Project
+              </button>
+              <button class="action-btn secondary" onclick="deepcodeUI.showAgentsModal()">
+                🤖 Manage Agents
+              </button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Paper2Code Tab -->
+    <div id="paper2code" class="tab-pane">
+      <div class="dashboard-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">📄 Paper2Code</h2>
+            <button class="btn-sm primary" onclick="deepcodeUI.showPaperUploadModal()">Upload Paper</button>
+          </div>
+          <div class="card-content">
+            <div class="upload-zone" id="paper-upload-zone">
+              <div class="upload-content">
+                <div class="upload-icon">📄</div>
+                <h3>Drop PDF/Research Paper Here</h3>
+                <p>Supports PDF, DOC, TXT, and academic formats</p>
+                <button class="btn primary" onclick="document.getElementById('paper-input').click()">
+                  Choose File
+                </button>
+                <input type="file" id="paper-input" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+              </div>
+            </div>
+
+            <div class="paper-list" id="paper-list">
+              {% for paper in papers %}
+              <div class="paper-item">
+                <div class="paper-info">
+                  <div class="paper-title">{{ paper.title }}</div>
+                  <div class="paper-meta">
+                    Uploaded: {{ paper.uploaded_at.strftime('%Y-%m-%d %H:%M') }}
+                  </div>
+                </div>
+                <div class="paper-actions">
+                  <button class="btn-sm primary" onclick="deepcodeUI.analyzePaper('{{ paper.id }}')">
+                    Analyze
+                  </button>
+                  <button class="btn-sm secondary" onclick="deepcodeUI.generateCodeFromPaper('{{ paper.id }}')">
+                    Generate Code
+                  </button>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🔍 Paper Analysis</h2>
+          </div>
+          <div class="card-content">
+            <div id="paper-analysis">
+              <p class="text-muted">Upload a paper to begin analysis...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Text2Web Tab -->
+    <div id="text2web" class="tab-pane">
+      <div class="dashboard-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🌐 Text2Web</h2>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label>Project Description</label>
+              <textarea id="web-description" rows="6" placeholder="Describe the web application you want to create..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Framework</label>
+                <select id="web-framework">
+                  <option value="react">React</option>
+                  <option value="vue">Vue.js</option>
+                  <option value="angular">Angular</option>
+                  <option value="svelte">Svelte</option>
+                  <option value="next">Next.js</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Styling</label>
+                <select id="web-styling">
+                  <option value="tailwind">Tailwind CSS</option>
+                  <option value="bootstrap">Bootstrap</option>
+                  <option value="material">Material UI</option>
+                  <option value="chakra">Chakra UI</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn primary" onclick="deepcodeUI.generateWebApp()">Generate Web Application</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">📁 Generated Projects</h2>
+          </div>
+          <div class="card-content">
+            <div id="web-projects">
+              {% for project in projects|selectattr('type', 'equalto', 'web') %}
+              <div class="project-card">
+                <div class="project-header">
+                  <span class="project-name">{{ project.name }}</span>
+                  <span class="project-type">{{ project.framework }}</span>
+                </div>
+                <div class="project-description">{{ project.description }}</div>
+                <div class="project-stats">
+                  <span>Created: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                  <span>Status: {{ project.status }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Text2Backend Tab -->
+    <div id="text2backend" class="tab-pane">
+      <div class="dashboard-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">⚙️ Text2Backend</h2>
+          </div>
+          <div class="card-content">
+            <div class="form-group">
+              <label>Backend Description</label>
+              <textarea id="backend-description" rows="6" placeholder="Describe the backend system you want to create..."></textarea>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Language/Framework</label>
+                <select id="backend-framework">
+                  <option value="python-fastapi">Python FastAPI</option>
+                  <option value="python-flask">Python Flask</option>
+                  <option value="node-express">Node.js Express</option>
+                  <option value="node-nestjs">Node.js NestJS</option>
+                  <option value="go-gin">Go Gin</option>
+                  <option value="rust-axum">Rust Axum</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label>Database</label>
+                <select id="backend-database">
+                  <option value="postgresql">PostgreSQL</option>
+                  <option value="mysql">MySQL</option>
+                  <option value="mongodb">MongoDB</option>
+                  <option value="sqlite">SQLite</option>
+                  <option value="redis">Redis</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn primary" onclick="deepcodeUI.generateBackend()">Generate Backend</button>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🔧 Backend Services</h2>
+          </div>
+          <div class="card-content">
+            <div id="backend-services">
+              {% for project in projects|selectattr('type', 'equalto', 'backend') %}
+              <div class="project-card">
+                <div class="project-header">
+                  <span class="project-name">{{ project.name }}</span>
+                  <span class="project-type">{{ project.framework }}</span>
+                </div>
+                <div class="project-description">{{ project.description }}</div>
+                <div class="project-stats">
+                  <span>Created: {{ project.created_at.strftime('%Y-%m-%d') }}</span>
+                  <span>Status: {{ project.status }}</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- Agents Tab -->
+    <div id="agents" class="tab-pane">
+      <div class="dashboard-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🤖 Active Agents</h2>
+            <button class="btn-sm primary" onclick="deepcodeUI.showNewAgentModal()">New Agent</button>
+          </div>
+          <div class="card-content">
+            <div id="agents-list" class="agents-grid">
+              {% for agent in agents %}
+              <div class="agent-card">
+                <div class="agent-header">
+                  <span class="agent-name">{{ agent.name }}</span>
+                  <span class="agent-status {{ agent.status }}"></span>
+                </div>
+                <div class="agent-description">{{ agent.description }}</div>
+                <div class="agent-stats">
+                  <span>Tasks: {{ agent.tasks_completed }}</span>
+                  <span>Success: {{ agent.success_rate }}%</span>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">📊 Agent Performance</h2>
+          </div>
+          <div class="card-content">
+            <div class="chart-container">
+              <canvas id="agent-performance-chart"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- MCP Servers Tab -->
+    <div id="mcp" class="tab-pane">
+      <div class="dashboard-grid">
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">🔌 MCP Servers</h2>
+          </div>
+          <div class="card-content">
+            <div id="mcp-servers-list" class="mcp-servers-grid">
+              {% for server in mcp_servers %}
+              <div class="mcp-server-card">
+                <div class="mcp-server-name">{{ server.name }}</div>
+                <div class="mcp-server-type">{{ server.type }}</div>
+                <div class="mcp-server-status">
+                  <span class="agent-status {{ server.status }}"></span>
+                  <span>{{ server.status }}</span>
+                </div>
+                <div class="mcp-server-connection">
+                  <span>Port: {{ server.port }}</span>
+                  <button class="btn-sm" onclick="deepcodeUI.toggleMCPServer('{{ server.id }}')">
+                    {{ 'Disconnect' if server.status == 'connected' else 'Connect' }}
+                  </button>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="card-header">
+            <h2 class="card-title">📡 Server Connections</h2>
+          </div>
+          <div class="card-content">
+            <div class="chart-container">
+              <canvas id="mcp-connections-chart"></canvas>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+  // Set current tab
+  document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab') || 'overview';
+    window.deepcodeUI.switchTab(tab);
+  });
+</script>
+{% endblock %}

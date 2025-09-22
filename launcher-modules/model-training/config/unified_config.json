@@ -1,0 +1,25 @@
+{
+  "version": "4.2",
+  "ai_providers": {},
+  "integrations": {},
+  "webui": {
+    "host": "127.0.0.1",
+    "port": 8787,
+    "theme": "Soft",
+    "interface_mode": "classic",
+    "enable_websocket": true,
+    "enable_file_upload": true,
+    "max_upload_size": 104857600
+  },
+  "system": {
+    "log_level": "INFO",
+    "log_directory": "logs",
+    "temp_directory": "temp",
+    "enable_monitoring": true,
+    "monitoring_port": 8789,
+    "enable_auto_update": false,
+    "max_memory_usage": 4294967296
+  },
+  "created_at": "2025-09-16T19:13:01.821513",
+  "updated_at": "2025-09-16T19:13:01.821513"
+}

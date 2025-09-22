@@ -1,0 +1,14 @@
+[
+  {
+    "file": "config/ai_config.json",
+    "content": "{\"providers\": {\"openai\": {\"api_key\": \"sk-...\", \"model\": \"gpt-4\"}}, \"local_only\": true}",
+    "description": "AI provider configuration with keys and models.",
+    "anonymized": true
+  },
+  {
+    "file": ".env",
+    "content": "OPENROUTER_API_KEY=your_key\nAI_LOCAL_ONLY_MODE=true",
+    "description": "Environment variables for API and modes.",
+    "anonymized": true
+  }
+]

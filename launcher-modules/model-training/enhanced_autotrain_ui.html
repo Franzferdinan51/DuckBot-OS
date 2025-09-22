@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckBot AutoTrain - Enhanced Model Training Interface</title>
+    <script src="https://cdn.jsdelivr.net/npm/react@18.2.0/umd/react.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/react-dom@18.2.0/umd/react-dom.development.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7.22.0/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+            background-color: #111827;
+            color: #e5e7eb;
+        }
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 36px;
+            height: 20px;
+        }
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #374151;
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+        input:checked + .slider:before {
+            transform: translateX(16px);
+        }
+        select, input[type="text"], input[type="number"], textarea {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            color: #e5e7eb;
+            width: 100%;
+        }
+        select:focus, input:focus, textarea:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+        }
+        .file-upload-area {
+            border: 2px dashed #4b5563;
+            border-radius: 0.5rem;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .file-upload-area:hover {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        .file-upload-area.drag-over {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #374151;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            background-color: #3b82f6;
+            transition: width 0.3s ease;
+        }
+        .log-output {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.25rem;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.875rem;
+            height: 300px;
+            overflow-y: auto;
+        }
+        .log-entry {
+            margin-bottom: 0.25rem;
+        }
+        .log-entry.info { color: #93c5fd; }
+        .log-entry.success { color: #86efac; }
+        .log-entry.warning { color: #fde047; }
+        .log-entry.error { color: #fca5a5; }
+        .training-status-running {
+            color: #86efac;
+        }
+        .training-status-stopped {
+            color: #fca5a5;
+        }
+        .training-status-paused {
+            color: #fde047;
+        }
+        .model-card {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            transition: all 0.2s;
+        }
+        .model-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+        }
+        .model-card.selected {
+            border-color: #3b82f6;
+            background-color: rgba(59, 130, 246, 0.1);
+        }
+        .param-section {
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .param-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+        .badge-success { background-color: #166534; color: #86efac; }
+        .badge-warning { background-color: #713f12; color: #fde047; }
+        .badge-error { background-color: #7f1d1d; color: #fca5a5; }
+        .badge-info { background-color: #1e3a8a; color: #93c5fd; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useRef } = React;
+
+        const App = () => {
+            const [activeTab, setActiveTab] = useState('projects');
+            const [projects, setProjects] = useState([]);
+            const [selectedProject, setSelectedProject] = useState(null);
+            const [models, setModels] = useState([]);
+            const [trainingStatus, setTrainingStatus] = useState('stopped'); // stopped, running, paused
+            const [trainingProgress, setTrainingProgress] = useState(0);
+            const [logs, setLogs] = useState([]);
+            const [isDragging, setIsDragging] = useState(false);
+            const fileInputRef = useRef(null);
+            const logContainerRef = useRef(null);
+
+            // Initialize with sample data
+            useEffect(() => {
+                // Sample models
+                setModels([
+                    {
+                        id: 'custom-gpt',
+                        name: 'Custom GPT',
+                        description: 'Self-implemented GPT architecture',
+                        parameters: '1.5B',
+                        type: 'gguf',
+                        size: '2.1 GB'
+                    },
+                    {
+                        id: 'custom-bert',
+                        name: 'Custom BERT',
+                        description: 'Self-implemented BERT architecture',
+                        parameters: '110M',
+                        type: 'hf',
+                        size: '420 MB'
+                    },
+                    {
+                        id: 'llama-2-7b',
+                        name: 'Llama 2 7B',
+                        description: 'Meta Llama 2 7B parameter model',
+                        parameters: '7B',
+                        type: 'gguf',
+                        size: '3.2 GB'
+                    },
+                    {
+                        id: 'mistral-7b',
+                        name: 'Mistral 7B',
+                        description: 'Mistral 7B parameter model',
+                        parameters: '7B',
+                        type: 'hf',
+                        size: '12.2 GB'
+                    }
+                ]);
+
+                // Sample projects
+                setProjects([
+                    {
+                        id: 'proj-001',
+                        name: 'Text Classification Model',
+                        model: 'custom-bert',
+                        status: 'completed',
+                        createdAt: '2023-06-15',
+                        lastTrained: '2023-06-16'
+                    },
+                    {
+                        id: 'proj-002',
+                        name: 'Chatbot Fine-tuning',
+                        model: 'llama-2-7b',
+                        status: 'training',
+                        createdAt: '2023-06-18',
+                        lastTrained: '2023-06-18'
+                    }
+                ]);
+
+                // Sample logs
+                setLogs([
+                    { type: 'info', message: 'AutoTrain system initialized', timestamp: '14:30:22' },
+                    { type: 'success', message: 'Model registry loaded successfully', timestamp: '14:30:23' },
+                    { type: 'info', message: '2 projects loaded', timestamp: '14:30:24' },
+                    { type: 'info', message: '4 models available', timestamp: '14:30:25' }
+                ]);
+            }, []);
+
+            // Auto-scroll logs to bottom
+            useEffect(() => {
+                if (logContainerRef.current) {
+                    logContainerRef.current.scrollTop = logContainerRef.current.scrollHeight;
+                }
+            }, [logs]);
+
+            const addLog = (type, message) => {
+                const timestamp = new Date().toLocaleTimeString();
+                setLogs(prev => [...prev, { type, message, timestamp }]);
+            };
+
+            const handleFileUpload = (files) => {
+                addLog('info', `Uploading ${files.length} file(s)...`);
+                // Simulate file upload
+                setTimeout(() => {
+                    addLog('success', 'Files uploaded successfully');
+                }, 1000);
+            };
+
+            const handleDragOver = (e) => {
+                e.preventDefault();
+                setIsDragging(true);
+            };
+
+            const handleDragLeave = (e) => {
+                e.preventDefault();
+                setIsDragging(false);
+            };
+
+            const handleDrop = (e) => {
+                e.preventDefault();
+                setIsDragging(false);
+                const files = Array.from(e.dataTransfer.files);
+                handleFileUpload(files);
+            };
+
+            const handleFileInputChange = (e) => {
+                const files = Array.from(e.target.files);
+                handleFileUpload(files);
+            };
+
+            const startTraining = () => {
+                if (!selectedProject) {
+                    addLog('error', 'Please select a project first');
+                    return;
+                }
+                
+                setTrainingStatus('running');
+                setTrainingProgress(0);
+                addLog('info', `Starting training for project: ${selectedProject.name}`);
+                
+                // Simulate training progress
+                const interval = setInterval(() => {
+                    setTrainingProgress(prev => {
+                        const newProgress = prev + Math.random() * 5;
+                        if (newProgress >= 100) {
+                            clearInterval(interval);
+                            setTrainingStatus('stopped');
+                            addLog('success', 'Training completed successfully!');
+                            return 100;
+                        }
+                        // Add random log messages during training
+                        if (Math.random() > 0.7) {
+                            const messages = [
+                                'Processing batch...',
+                                'Computing gradients...',
+                                'Updating weights...',
+                                'Validating model...'
+                            ];
+                            addLog('info', messages[Math.floor(Math.random() * messages.length)]);
+                        }
+                        return newProgress;
+                    });
+                }, 500);
+            };
+
+            const stopTraining = () => {
+                setTrainingStatus('stopped');
+                addLog('info', 'Training stopped by user');
+            };
+
+            const pauseTraining = () => {
+                setTrainingStatus('paused');
+                addLog('info', 'Training paused');
+            };
+
+            const createNewProject = () => {
+                const newProject = {
+                    id: `proj-${String(projects.length + 1).padStart(3, '0')}`,
+                    name: `New Project ${projects.length + 1}`,
+                    model: '',
+                    status: 'created',
+                    createdAt: new Date().toISOString().split('T')[0],
+                    lastTrained: null
+                };
+                setProjects(prev => [...prev, newProject]);
+                setSelectedProject(newProject);
+                addLog('info', `Created new project: ${newProject.name}`);
+            };
+
+            return (
+                <div className="flex h-screen bg-gray-900 text-white">
+                    {/* Sidebar */}
+                    <div className="w-64 bg-gray-800 flex-shrink-0 overflow-y-auto">
+                        <div className="p-4 border-b border-gray-700">
+                            <h1 className="text-xl font-bold flex items-center">
+                                <i className="fas fa-robot mr-2 text-blue-400"></i>
+                                DuckBot AutoTrain
+                            </h1>
+                            <p className="text-sm text-gray-400 mt-1">Model Training Studio</p>
+                        </div>
+                        
+                        <nav className="mt-4">
+                            <SidebarItem 
+                                icon="fas fa-folder" 
+                                text="Projects" 
+                                active={activeTab === 'projects'} 
+                                onClick={() => setActiveTab('projects')}
+                            />
+                            <SidebarItem 
+                                icon="fas fa-brain" 
+                                text="Models" 
+                                active={activeTab === 'models'} 
+                                onClick={() => setActiveTab('models')}
+                            />
+                            <SidebarItem 
+                                icon="fas fa-database" 
+                                text="Datasets" 
+                                active={activeTab === 'datasets'} 
+                                onClick={() => setActiveTab('datasets')}
+                            />
+                            <SidebarItem 
+                                icon="fas fa-sliders-h" 
+                                text="Parameters" 
+                                active={activeTab === 'parameters'} 
+                                onClick={() => setActiveTab('parameters')}
+                            />
+                            
+                            <div className="border-t border-gray-700 mt-4 pt-4">
+                                <SidebarItem 
+                                    icon="fas fa-microchip" 
+                                    text="Hardware" 
+                                    info={true} 
+                                    onClick={() => setActiveTab('hardware')}
+                                />
+                                <SidebarItem 
+                                    icon="fas fa-server" 
+                                    text="Local/Space" 
+                                    dropdown={true} 
+                                    onClick={() => setActiveTab('local')}
+                                />
+                                
+                                <div className="border-t border-gray-700 mt-4 pt-4">
+                                    <SidebarItem 
+                                        icon="fas fa-cog" 
+                                        text="Settings" 
+                                        onClick={() => setActiveTab('settings')}
+                                    />
+                                    <SidebarItem 
+                                        icon="fas fa-file-alt" 
+                                        text="Logs" 
+                                        onClick={() => setActiveTab('logs')}
+                                    />
+                                    <SidebarItem 
+                                        icon="fas fa-book" 
+                                        text="Documentation" 
+                                        onClick={() => setActiveTab('docs')}
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className="absolute bottom-4 left-4 text-xs text-gray-500">
+                                v1.0.0
+                            </div>
+                        </nav>
+                    </div>
+                    
+                    {/* Main Content */}
+                    <div className="flex-1 flex flex-col overflow-hidden">
+                        {/* Top Navigation */}
+                        <header className="bg-gray-800 px-6 py-3 flex justify-between items-center border-b border-gray-700">
+                            <div className="flex items-center space-x-4">
+                                <span className={`text-sm font-medium ${
+                                    trainingStatus === 'running' ? 'text-green-400' : 
+                                    trainingStatus === 'paused' ? 'text-yellow-400' : 'text-red-400'
+                                }`}>
+                                    {trainingStatus === 'running' ? 'Running' : 
+                                     trainingStatus === 'paused' ? 'Paused' : 'Stopped'}
+                                </span>
+                                <span className="text-gray-400 text-sm">
+                                    {selectedProject ? selectedProject.name : 'No project selected'}
+                                </span>
+                            </div>
+                            <div className="flex items-center space-x-4">
+                                <button className="px-3 py-1 rounded-md bg-gray-700 text-sm hover:bg-gray-600">
+                                    <i className="fas fa-sync-alt mr-2"></i>Refresh
+                                </button>
+                                <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center">
+                                    <i className="fas fa-user"></i>
+                                </div>
+                            </div>
+                        </header>
+                        
+                        {/* Training Status Bar */}
+                        <div className="bg-gray-800 px-6 py-3 flex justify-between items-center border-b border-gray-700">
+                            <div className="flex items-center space-x-6">
+                                <div>
+                                    <div className="text-sm">Progress: {Math.round(trainingProgress)}%</div>
+                                    <div className="w-32 h-2 bg-gray-700 rounded-full mt-1">
+                                        <div 
+                                            className="h-full bg-blue-500 rounded-full" 
+                                            style={{ width: `${trainingProgress}%` }}
+                                        ></div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div className="text-sm">Accelerators: 1</div>
+                                    <div className="text-xs text-green-400">GPU Available</div>
+                                </div>
+                            </div>
+                            <div className="flex space-x-2">
+                                {trainingStatus === 'running' ? (
+                                    <>
+                                        <button 
+                                            onClick={pauseTraining}
+                                            className="bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-md flex items-center"
+                                        >
+                                            <i className="fas fa-pause mr-2"></i>Pause
+                                        </button>
+                                        <button 
+                                            onClick={stopTraining}
+                                            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md flex items-center"
+                                        >
+                                            <i className="fas fa-stop mr-2"></i>Stop
+                                        </button>
+                                    </>
+                                ) : (
+                                    <button 
+                                        onClick={startTraining}
+                                        disabled={!selectedProject}
+                                        className={`${
+                                            selectedProject 
+                                                ? 'bg-blue-600 hover:bg-blue-700' 
+                                                : 'bg-gray-600 cursor-not-allowed'
+                                        } text-white px-4 py-2 rounded-md flex items-center`}
+                                    >
+                                        <i className="fas fa-play mr-2"></i>Start Training
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                        
+                        {/* Main Content Area */}
+                        <div className="flex-1 overflow-hidden">
+                            {activeTab === 'projects' && (
+                                <ProjectsTab 
+                                    projects={projects}
+                                    selectedProject={selectedProject}
+                                    onSelectProject={setSelectedProject}
+                                    onCreateProject={createNewProject}
+                                />
+                            )}
+                            
+                            {activeTab === 'models' && (
+                                <ModelsTab models={models} />
+                            )}
+                            
+                            {activeTab === 'datasets' && (
+                                <DatasetsTab 
+                                    isDragging={isDragging}
+                                    onDragOver={handleDragOver}
+                                    onDragLeave={handleDragLeave}
+                                    onDrop={handleDrop}
+                                    onFileInputChange={handleFileInputChange}
+                                    fileInputRef={fileInputRef}
+                                />
+                            )}
+                            
+                            {activeTab === 'parameters' && (
+                                <ParametersTab />
+                            )}
+                            
+                            {activeTab === 'logs' && (
+                                <LogsTab logs={logs} logContainerRef={logContainerRef} />
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        const SidebarItem = ({ icon, text, active, info, dropdown, onClick }) => {
+            return (
+                <div 
+                    className={`flex items-center px-4 py-3 cursor-pointer ${
+                        active ? 'bg-gray-700' : 'hover:bg-gray-700'
+                    }`}
+                    onClick={onClick}
+                >
+                    <i className={`${icon} w-5`}></i>
+                    <span className="ml-3">{text}</span>
+                    {info && <i className="fas fa-info-circle ml-auto text-xs text-gray-400"></i>}
+                    {dropdown && <i className="fas fa-chevron-down ml-auto text-xs text-gray-400"></i>}
+                </div>
+            );
+        };
+        
+        const ProjectsTab = ({ projects, selectedProject, onSelectProject, onCreateProject }) => {
+            return (
+                <div className="p-6 h-full overflow-y-auto">
+                    <div className="flex justify-between items-center mb-6">
+                        <h2 className="text-2xl font-bold">Training Projects</h2>
+                        <button 
+                            onClick={onCreateProject}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md flex items-center"
+                        >
+                            <i className="fas fa-plus mr-2"></i>New Project
+                        </button>
+                    </div>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {projects.map(project => (
+                            <div 
+                                key={project.id}
+                                className={`model-card cursor-pointer ${
+                                    selectedProject && selectedProject.id === project.id ? 'selected' : ''
+                                }`}
+                                onClick={() => onSelectProject(project)}
+                            >
+                                <div className="flex justify-between items-start">
+                                    <h3 className="font-bold text-lg">{project.name}</h3>
+                                    <span className={`badge ${
+                                        project.status === 'completed' ? 'badge-success' :
+                                        project.status === 'training' ? 'badge-warning' : 'badge-info'
+                                    }`}>
+                                        {project.status}
+                                    </span>
+                                </div>
+                                <p className="text-gray-400 text-sm mt-2">Model: {project.model || 'Not selected'}</p>
+                                <div className="flex justify-between text-xs text-gray-500 mt-4">
+                                    <span>Created: {project.createdAt}</span>
+                                    {project.lastTrained && <span>Trained: {project.lastTrained}</span>}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    {selectedProject && (
+                        <div className="mt-8 param-section">
+                            <h3 className="font-bold text-lg mb-4">Project Configuration</h3>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block mb-2">Project Name</label>
+                                    <input 
+                                        type="text" 
+                                        value={selectedProject.name}
+                                        className="w-full"
+                                        onChange={(e) => {
+                                            // In a real app, this would update the project
+                                        }}
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Base Model</label>
+                                    <select className="w-full">
+                                        <option>Select a model</option>
+                                        <option value="custom-gpt">Custom GPT (1.5B)</option>
+                                        <option value="custom-bert">Custom BERT (110M)</option>
+                                        <option value="llama-2-7b">Llama 2 7B</option>
+                                        <option value="mistral-7b">Mistral 7B</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        
+        const ModelsTab = ({ models }) => {
+            return (
+                <div className="p-6 h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold mb-6">Available Models</h2>
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        {models.map(model => (
+                            <div key={model.id} className="model-card">
+                                <div className="flex justify-between items-start">
+                                    <h3 className="font-bold text-lg">{model.name}</h3>
+                                    <span className={`badge ${
+                                        model.type === 'gguf' ? 'badge-warning' : 'badge-info'
+                                    }`}>
+                                        {model.type.toUpperCase()}
+                                    </span>
+                                </div>
+                                <p className="text-gray-400 mt-2">{model.description}</p>
+                                <div className="flex justify-between mt-4 text-sm">
+                                    <span>Parameters: {model.parameters}</span>
+                                    <span>Size: {model.size}</span>
+                                </div>
+                                <div className="mt-4 flex space-x-2">
+                                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">
+                                        Select
+                                    </button>
+                                    <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">
+                                        Details
+                                    </button>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            );
+        };
+        
+        const DatasetsTab = ({ isDragging, onDragOver, onDragLeave, onDrop, onFileInputChange, fileInputRef }) => {
+            return (
+                <div className="p-6 h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold mb-6">Training Data</h2>
+                    
+                    <div 
+                        className={`file-upload-area ${isDragging ? 'drag-over' : ''}`}
+                        onDragOver={onDragOver}
+                        onDragLeave={onDragLeave}
+                        onDrop={onDrop}
+                    >
+                        <div className="flex justify-center mb-4">
+                            <i className="fas fa-cloud-upload-alt text-4xl text-gray-400"></i>
+                        </div>
+                        <p className="text-gray-400 mb-2">Drag and drop files here</p>
+                        <p className="text-gray-500 text-sm mb-4">or</p>
+                        <button 
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md"
+                            onClick={() => fileInputRef.current.click()}
+                        >
+                            Browse Files
+                        </button>
+                        <input 
+                            type="file" 
+                            ref={fileInputRef}
+                            className="hidden"
+                            onChange={onFileInputChange}
+                            multiple
+                        />
+                        <p className="text-gray-500 text-xs mt-4">
+                            Supported formats: JSON, CSV, TXT
+                        </p>
+                    </div>
+                    
+                    <div className="mt-8">
+                        <h3 className="font-bold text-lg mb-4">Column Mapping</h3>
+                        <div className="param-section">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block mb-2">Text Column</label>
+                                    <input 
+                                        type="text" 
+                                        value="text"
+                                        className="w-full"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block mb-2">Label Column</label>
+                                    <input 
+                                        type="text" 
+                                        value="label"
+                                        className="w-full"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        const ParametersTab = () => {
+            const [useJson, setUseJson] = useState(false);
+            
+            return (
+                <div className="p-6 h-full overflow-y-auto">
+                    <h2 className="text-2xl font-bold mb-6">Training Parameters</h2>
+                    
+                    <div className="flex items-center mb-6">
+                        <label className="toggle-switch mr-3">
+                            <input 
+                                type="checkbox" 
+                                checked={useJson}
+                                onChange={(e) => setUseJson(e.target.checked)}
+                            />
+                            <span className="slider"></span>
+                        </label>
+                        <span>Advanced JSON Configuration</span>
+                    </div>
+                    
+                    {useJson ? (
+                        <div className="param-section">
+                            <label className="block mb-2">JSON Configuration</label>
+                            <textarea 
+                                rows="15"
+                                className="font-mono text-sm"
+                                defaultValue={`{
+  "training_args": {
+    "num_train_epochs": 3,
+    "per_device_train_batch_size": 4,
+    "learning_rate": 3e-4,
+    "weight_decay": 0.01,
+    "warmup_steps": 100,
+    "logging_steps": 50,
+    "save_steps": 500,
+    "evaluation_strategy": "steps",
+    "eval_steps": 500,
+    "save_total_limit": 2,
+    "load_best_model_at_end": true
+  },
+  "lora_config": {
+    "r": 8,
+    "lora_alpha": 16,
+    "lora_dropout": 0.1,
+    "bias": "none",
+    "task_type": "CAUSAL_LM"
+  }
+}`}
+                            ></textarea>
+                        </div>
+                    ) : (
+                        <div className="space-y-6">
+                            <div className="param-section">
+                                <h3 className="font-bold mb-4">Training Configuration</h3>
+                                <div className="param-grid">
+                                    <div>
+                                        <label className="block mb-2">Epochs</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="3"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Batch Size</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="4"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Learning Rate</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="0.0003"
+                                            step="0.0001"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Warmup Steps</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="100"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="param-section">
+                                <h3 className="font-bold mb-4">LoRA Configuration</h3>
+                                <div className="param-grid">
+                                    <div>
+                                        <label className="block mb-2">Rank (r)</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="8"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Alpha</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="16"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Dropout</label>
+                                        <input 
+                                            type="number" 
+                                            defaultValue="0.1"
+                                            step="0.01"
+                                            className="w-full"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div className="param-section">
+                                <h3 className="font-bold mb-4">Advanced Options</h3>
+                                <div className="param-grid">
+                                    <div>
+                                        <label className="block mb-2">Chat Template</label>
+                                        <select className="w-full">
+                                            <option>none</option>
+                                            <option>alpaca</option>
+                                            <option>llama2</option>
+                                            <option>vicuna</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Distributed Backend</label>
+                                        <select className="w-full">
+                                            <option>ddp</option>
+                                            <option>fsdp</option>
+                                            <option>none</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label className="block mb-2">Mixed Precision</label>
+                                        <select className="w-full">
+                                            <option>fp16</option>
+                                            <option>bf16</option>
+                                            <option>fp32</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+        
+        const LogsTab = ({ logs, logContainerRef }) => {
+            return (
+                <div className="p-6 h-full flex flex-col">
+                    <h2 className="text-2xl font-bold mb-4">Training Logs</h2>
+                    <div className="flex-1 overflow-hidden">
+                        <div 
+                            ref={logContainerRef}
+                            className="log-output"
+                        >
+                            {logs.map((log, index) => (
+                                <div key={index} className={`log-entry ${log.type}`}>
+                                    <span className="text-gray-500 mr-2">[{log.timestamp}]</span>
+                                    {log.message}
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                    <div className="mt-4 flex space-x-2">
+                        <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">
+                            Clear Logs
+                        </button>
+                        <button className="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded text-sm">
+                            Export Logs
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+        
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>

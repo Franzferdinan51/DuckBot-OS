@@ -1,0 +1,14 @@
+[
+  {
+    "source": "CLAUDE.md",
+    "content": "DuckBot Enhanced v4.2 is a comprehensive AI-powered operating system featuring desktop automation, multi-agent coordination, local AI capabilities, and cross-platform integration.",
+    "type": "overview",
+    "summary": "Project overview from main documentation."
+  },
+  {
+    "source": "README.md",
+    "content": "Quick Start: python start_local_ecosystem.py for local-only mode.",
+    "type": "setup",
+    "summary": "Installation and startup instructions."
+  }
+]

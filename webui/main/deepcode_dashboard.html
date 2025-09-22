@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🧠 DeepCode - AI-Powered Development Suite</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/modern-styles.css">
+  <link rel="stylesheet" href="/static/deepcode-styles.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1>
+        <span class="status-indicator" id="deepcode-status"></span>
+        DeepCode AI Development Suite
+      </h1>
+
+      <nav class="header-nav">
+        <a href="/dashboard" class="nav-link">🦆 DuckBot</a>
+        <a href="/deepcode" class="nav-link active">🧠 DeepCode</a>
+        <a href="/settings" class="nav-link">⚙️ Settings</a>
+        <a href="/cost" class="nav-link">💰 Cost Analysis</a>
+
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    <!-- DeepCode Feature Tabs -->
+    <div class="tabs-container">
+      <div class="tabs">
+        <button class="tab-button active" data-tab="overview">📊 Overview</button>
+        <button class="tab-button" data-tab="paper2code">📄 Paper2Code</button>
+        <button class="tab-button" data-tab="text2web">🌐 Text2Web</button>
+        <button class="tab-button" data-tab="text2backend">⚙️ Text2Backend</button>
+        <button class="tab-button" data-tab="agents">🤖 Agents</button>
+        <button class="tab-button" data-tab="mcp">🔌 MCP Servers</button>
+      </div>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      <!-- Overview Tab -->
+      <div id="overview" class="tab-pane active">
+        <div class="dashboard-grid">
+          <!-- System Status -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🎯 System Status</h2>
+            </div>
+            <div class="card-content">
+              <div class="stats-grid">
+                <div class="stat-card">
+                  <div class="stat-value" id="active-agents">0</div>
+                  <div class="stat-label">Active Agents</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="mcp-servers">0</div>
+                  <div class="stat-label">MCP Servers</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="tasks-completed">0</div>
+                  <div class="stat-label">Tasks Completed</div>
+                </div>
+                <div class="stat-card">
+                  <div class="stat-value" id="success-rate">0%</div>
+                  <div class="stat-label">Success Rate</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Recent Activity -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">📈 Recent Activity</h2>
+            </div>
+            <div class="card-content">
+              <div id="activity-feed" class="activity-feed">
+                <div class="activity-item">
+                  <div class="activity-time">Just now</div>
+                  <div class="activity-content">DeepCode system initialized</div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Quick Actions -->
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🚀 Quick Actions</h2>
+            </div>
+            <div class="card-content">
+              <div class="quick-actions">
+                <button class="action-btn primary" onclick="showNewTaskModal()">
+                  📝 New Task
+                </button>
+                <button class="action-btn secondary" onclick="showPaperUploadModal()">
+                  📄 Upload Paper
+                </button>
+                <button class="action-btn secondary" onclick="showProjectModal()">
+                  🚀 New Project
+                </button>
+                <button class="action-btn secondary" onclick="showAgentsModal()">
+                  🤖 Manage Agents
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Paper2Code Tab -->
+      <div id="paper2code" class="tab-pane">
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">📄 Paper2Code</h2>
+              <button class="btn-sm primary" onclick="showPaperUploadModal()">Upload Paper</button>
+            </div>
+            <div class="card-content">
+              <div class="upload-zone" id="paper-upload-zone">
+                <div class="upload-content">
+                  <div class="upload-icon">📄</div>
+                  <h3>Drop PDF/Research Paper Here</h3>
+                  <p>Supports PDF, DOC, TXT, and academic formats</p>
+                  <button class="btn primary" onclick="document.getElementById('paper-input').click()">
+                    Choose File
+                  </button>
+                  <input type="file" id="paper-input" accept=".pdf,.doc,.docx,.txt" style="display: none;">
+                </div>
+              </div>
+
+              <div class="paper-list" id="paper-list">
+                <!-- Uploaded papers will appear here -->
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🔍 Paper Analysis</h2>
+            </div>
+            <div class="card-content">
+              <div id="paper-analysis">
+                <p class="text-muted">Upload a paper to begin analysis...</p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Text2Web Tab -->
+      <div id="text2web" class="tab-pane">
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🌐 Text2Web</h2>
+            </div>
+            <div class="card-content">
+              <div class="form-group">
+                <label>Project Description</label>
+                <textarea id="web-description" rows="6" placeholder="Describe the web application you want to create..."></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Framework</label>
+                  <select id="web-framework">
+                    <option value="react">React</option>
+                    <option value="vue">Vue.js</option>
+                    <option value="angular">Angular</option>
+                    <option value="svelte">Svelte</option>
+                    <option value="next">Next.js</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Styling</label>
+                  <select id="web-styling">
+                    <option value="tailwind">Tailwind CSS</option>
+                    <option value="bootstrap">Bootstrap</option>
+                    <option value="material">Material UI</option>
+                    <option value="chakra">Chakra UI</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="btn primary" onclick="generateWebApp()">Generate Web Application</button>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">📁 Generated Projects</h2>
+            </div>
+            <div class="card-content">
+              <div id="web-projects">
+                <!-- Generated projects will appear here -->
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Text2Backend Tab -->
+      <div id="text2backend" class="tab-pane">
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">⚙️ Text2Backend</h2>
+            </div>
+            <div class="card-content">
+              <div class="form-group">
+                <label>Backend Description</label>
+                <textarea id="backend-description" rows="6" placeholder="Describe the backend system you want to create..."></textarea>
+              </div>
+
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Language/Framework</label>
+                  <select id="backend-framework">
+                    <option value="python-fastapi">Python FastAPI</option>
+                    <option value="python-flask">Python Flask</option>
+                    <option value="node-express">Node.js Express</option>
+                    <option value="node-nestjs">Node.js NestJS</option>
+                    <option value="go-gin">Go Gin</option>
+                    <option value="rust-axum">Rust Axum</option>
+                  </select>
+                </div>
+
+                <div class="form-group">
+                  <label>Database</label>
+                  <select id="backend-database">
+                    <option value="postgresql">PostgreSQL</option>
+                    <option value="mysql">MySQL</option>
+                    <option value="mongodb">MongoDB</option>
+                    <option value="sqlite">SQLite</option>
+                    <option value="redis">Redis</option>
+                  </select>
+                </div>
+              </div>
+
+              <button class="btn primary" onclick="generateBackend()">Generate Backend</button>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🔧 Backend Services</h2>
+            </div>
+            <div class="card-content">
+              <div id="backend-services">
+                <!-- Generated backend services will appear here -->
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- Agents Tab -->
+      <div id="agents" class="tab-pane">
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🤖 Active Agents</h2>
+              <button class="btn-sm primary" onclick="showNewAgentModal()">New Agent</button>
+            </div>
+            <div class="card-content">
+              <div id="agents-list" class="agents-grid">
+                <!-- Agents will be displayed here -->
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">📊 Agent Performance</h2>
+            </div>
+            <div class="card-content">
+              <canvas id="agent-performance-chart"></canvas>
+            </div>
+          </section>
+        </div>
+      </div>
+
+      <!-- MCP Servers Tab -->
+      <div id="mcp" class="tab-pane">
+        <div class="dashboard-grid">
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">🔌 MCP Servers</h2>
+            </div>
+            <div class="card-content">
+              <div id="mcp-servers-list" class="mcp-servers-grid">
+                <!-- MCP servers will be displayed here -->
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">
+              <h2 class="card-title">📡 Server Connections</h2>
+            </div>
+            <div class="card-content">
+              <canvas id="mcp-connections-chart"></canvas>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modals -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Modal Title</h3>
+        <button class="modal-close" onclick="closeModal()">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <!-- Modal content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/static/deepcode-ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</body>
+</html>

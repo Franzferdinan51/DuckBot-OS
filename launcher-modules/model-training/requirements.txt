@@ -1,0 +1,95 @@
+# DuckBot Model Training Module Requirements - Enhanced for GGUF Training
+transformers>=4.30.0
+datasets>=2.14.0
+torch>=2.0.0
+accelerate>=0.20.0
+peft>=0.4.0
+bitsandbytes>=0.41.0
+huggingface_hub>=0.16.0
+sentencepiece>=0.1.99
+protobuf<=3.20.3
+scipy>=1.10.0
+numpy>=1.21.0
+tokenizers>=0.13.0
+safetensors>=0.3.1
+fastapi>=0.78.0
+uvicorn>=0.18.2
+python-multipart>=0.0.5
+pandas>=1.4.3
+pyyaml>=6.0
+requests>=2.28.0
+GitPython>=3.1.30
+# Enhanced downloader dependencies
+tqdm>=4.64.0
+aiohttp>=3.8.0
+asyncio-throttle>=1.0.0
+pydantic>=1.10.0
+click>=8.0.0
+rich>=12.0.0
+
+# GGUF and llama.cpp dependencies
+llama-cpp-python>=0.2.0
+# For CUDA acceleration (optional, uncomment if needed)
+# llama-cpp-python[cuda]>=0.2.0
+
+# Advanced training dependencies
+optimum>=1.15.0
+deepspeed>=0.9.0
+wandb>=0.15.0
+tensorboard>=2.13.0
+# For distributed training
+torch-distributed>=0.1.0
+
+# Performance monitoring
+psutil>=5.9.0
+# For advanced memory management
+memory-profiler>=0.60.0
+# For hardware detection
+py-cpuinfo>=9.0.0
+nvidia-ml-py3>=7.352.0
+
+# Dataset processing
+datasets>=2.14.0
+# For large dataset handling
+fsspec>=2023.6.0
+# For various data formats
+pyarrow>=12.0.0
+
+# Model optimization
+# For quantization after training
+auto-gptq>=0.4.0
+# For model pruning
+torch-pruner>=0.1.0
+
+# Utilities
+colorama>=0.4.6
+packaging>=21.0
+# For configuration management
+hydra-core>=1.3.0
+omegaconf>=2.3.0
+
+# Web UI dependencies (for enhanced interface)
+jinja2>=3.1.0
+# For real-time updates
+websockets>=11.0.0
+
+# Additional training tools
+# For learning rate scheduling
+torch-lr-finder>=0.2.0
+# For mixed precision training
+apex>=0.9.10dev
+# For gradient checkpointing
+torch-optimizer>=0.3.0
+
+# Testing and validation
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+# For model evaluation
+rouge-score>=0.1.2
+sacrebleu>=2.3.0
+
+# Hugging Face AutoTrain-Advanced
+autotrain-advanced>=0.7.0
+# Additional AutoTrain dependencies
+huggingface-hub>=0.19.0
+python-dotenv>=1.0.0

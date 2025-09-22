@@ -1,0 +1,14 @@
+[
+  {
+    "file": "duckbot/core/ai_provider_manager.py",
+    "code": "class AIProviderManager:\n    def __init__(self):\n        self.providers = {}\n    def register_provider(self, name, provider):\n        self.providers[name] = provider\n    async def get_response(self, prompt):\n        # Route to appropriate provider\n        pass",
+    "description": "Manages multiple AI providers with registration and async response routing.",
+    "tags": ["AI", "async", "provider"]
+  },
+  {
+    "file": "ai_ecosystem_manager.py",
+    "code": "class EcosystemManager:\n    def __init__(self, config):\n        self.services = []\n    def start_services(self):\n        for service in self.services:\n            asyncio.create_task(service.start())\n    def monitor_health(self):\n        # Health checks\n        pass",
+    "description": "Orchestrates AI ecosystem services with startup and monitoring.",
+    "tags": ["ecosystem", "monitoring", "asyncio"]
+  }
+]

@@ -1,0 +1,253 @@
+{
+  "timestamp": "2025-09-16T13:59:46.101180",
+  "report_version": "1.0",
+  "analysis_summary": {
+    "total_result_files": 2,
+    "analysis_duration": "60 seconds per test",
+    "services_analyzed": 6,
+    "ai_models_analyzed": 0,
+    "bottlenecks_identified": 3,
+    "recommendations_generated": 2
+  },
+  "performance_metrics": {
+    "system": {
+      "cpu_usage": [
+        13.2,
+        18.2,
+        23.7
+      ],
+      "memory_usage": [
+        27.9,
+        28.5,
+        28.0
+      ],
+      "disk_usage": [
+        87.5,
+        87.5,
+        87.5
+      ],
+      "network_latency": [
+        20.67859994713217
+      ],
+      "service_uptime": [],
+      "error_rates": [
+        0
+      ]
+    },
+    "services": {
+      "duckbot": {
+        "response_times": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "memory_usage": [
+          6.859375,
+          6.8125,
+          6.8125,
+          0.0
+        ],
+        "cpu_usage": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "error_count": 0,
+        "startup_times": [
+          0.00040520000038668513
+        ],
+        "success_rate": 0
+      },
+      "comfyui": {
+        "startup_times": [
+          0.00023110001347959042
+        ],
+        "memory_usage": [
+          0.0
+        ],
+        "success_rate": 0,
+        "error_count": 0
+      },
+      "n8n": {
+        "startup_times": [
+          0.08592869999120012
+        ],
+        "memory_usage": [
+          8.6015625
+        ],
+        "success_rate": 1,
+        "error_count": 0
+      },
+      "open_notebook": {
+        "startup_times": [
+          0.026927200029604137
+        ],
+        "memory_usage": [
+          83.30078125
+        ],
+        "success_rate": 1,
+        "error_count": 0
+      },
+      "jupyter": {
+        "startup_times": [
+          4.156912100035697
+        ],
+        "memory_usage": [
+          11.40625
+        ],
+        "success_rate": 1,
+        "error_count": 0
+      },
+      "open_webui": {
+        "startup_times": [
+          0.9750026999972761
+        ],
+        "memory_usage": [
+          0.0
+        ],
+        "success_rate": 0,
+        "error_count": 0
+      }
+    },
+    "ai": {},
+    "database": {
+      "query_times": [
+        0.0002581999870017171,
+        7.880001794546843e-05,
+        7.789995288476348e-05
+      ],
+      "connection_times": [
+        0.0
+      ],
+      "table_scan_times": [
+        5.4100004490464926e-05,
+        6.150000263005495e-05,
+        5.9399986639618874e-05,
+        5.659996531903744e-05,
+        5.809997674077749e-05
+      ],
+      "cache_hit_ratios": [
+        0.0
+      ]
+    },
+    "network": {
+      "latencies": [
+        20.67859994713217
+      ],
+      "bandwidth": [
+        3.5947122624049754
+      ],
+      "connection_times": [],
+      "request_times": {}
+    }
+  },
+  "performance_scores": {
+    "system": 81.05356667547797,
+    "services": 70.62882749994363,
+    "ai": 50,
+    "database": 99.86170001405601,
+    "overall": 75.3860235473694
+  },
+  "bottlenecks": [
+    {
+      "type": "service",
+      "component": "duckbot",
+      "severity": "high",
+      "description": "duckbot has low success rate: 0.0%",
+      "impact": "service_reliability"
+    },
+    {
+      "type": "service",
+      "component": "comfyui",
+      "severity": "high",
+      "description": "comfyui has low success rate: 0.0%",
+      "impact": "service_reliability"
+    },
+    {
+      "type": "service",
+      "component": "open_webui",
+      "severity": "high",
+      "description": "open_webui has low success rate: 0.0%",
+      "impact": "service_reliability"
+    }
+  ],
+  "optimization_recommendations": [
+    {
+      "category": "service_optimization",
+      "priority": "high",
+      "title": "Improve Service Performance and Reliability",
+      "description": "Service performance and reliability issues detected.",
+      "actions": [
+        "Implement service health monitoring",
+        "Add automatic service recovery mechanisms",
+        "Optimize service startup processes",
+        "Implement proper error handling and logging"
+      ],
+      "expected_improvement": "30-50% service reliability improvement"
+    },
+    {
+      "category": "general_optimization",
+      "priority": "medium",
+      "title": "Implement Performance Monitoring",
+      "description": "Comprehensive performance monitoring is essential for maintaining optimal performance.",
+      "actions": [
+        "Set up continuous performance monitoring",
+        "Implement automated performance testing",
+        "Add performance metrics to dashboards",
+        "Establish performance baselines and alerts"
+      ],
+      "expected_improvement": "Proactive performance management"
+    }
+  ],
+  "executive_summary": {
+    "overall_health": "Good",
+    "overall_score": 75.3860235473694,
+    "key_findings": [
+      "Overall system health: Good (75.4/100)",
+      "Total bottlenecks identified: 3 (3 high, 0 medium, 0 low)",
+      "Optimization recommendations: 2 (1 high priority, 1 medium priority)",
+      "System performance score: 81.1/100",
+      "Service performance score: 70.6/100",
+      "AI performance score: 50.0/100",
+      "Database performance score: 99.9/100"
+    ],
+    "critical_issues": [
+      {
+        "type": "service",
+        "component": "duckbot",
+        "severity": "high",
+        "description": "duckbot has low success rate: 0.0%",
+        "impact": "service_reliability"
+      },
+      {
+        "type": "service",
+        "component": "comfyui",
+        "severity": "high",
+        "description": "comfyui has low success rate: 0.0%",
+        "impact": "service_reliability"
+      },
+      {
+        "type": "service",
+        "component": "open_webui",
+        "severity": "high",
+        "description": "open_webui has low success rate: 0.0%",
+        "impact": "service_reliability"
+      }
+    ],
+    "top_recommendations": [
+      {
+        "category": "service_optimization",
+        "priority": "high",
+        "title": "Improve Service Performance and Reliability",
+        "description": "Service performance and reliability issues detected.",
+        "actions": [
+          "Implement service health monitoring",
+          "Add automatic service recovery mechanisms",
+          "Optimize service startup processes",
+          "Implement proper error handling and logging"
+        ],
+        "expected_improvement": "30-50% service reliability improvement"
+      }
+    ]
+  }
+}

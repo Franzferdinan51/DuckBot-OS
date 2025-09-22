@@ -1,0 +1,84 @@
+{
+  "questions": [
+    {
+      "id": 1,
+      "question": "What is the capital of France?",
+      "options": ["London", "Berlin", "Paris", "Madrid"],
+      "correct_answer": 2,
+      "category": "Geography",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 2,
+      "question": "Which planet is known as the Red Planet?",
+      "options": ["Venus", "Mars", "Jupiter", "Saturn"],
+      "correct_answer": 1,
+      "category": "Science",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 3,
+      "question": "Who painted the Mona Lisa?",
+      "options": ["Vincent van Gogh", "Pablo Picasso", "Leonardo da Vinci", "Michelangelo"],
+      "correct_answer": 2,
+      "category": "Art",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 4,
+      "question": "What is the largest ocean on Earth?",
+      "options": ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
+      "correct_answer": 3,
+      "category": "Geography",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 5,
+      "question": "In which year did World War II end?",
+      "options": ["1943", "1944", "1945", "1946"],
+      "correct_answer": 2,
+      "category": "History",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 6,
+      "question": "What is the chemical symbol for gold?",
+      "options": ["Go", "Gd", "Au", "Ag"],
+      "correct_answer": 2,
+      "category": "Science",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 7,
+      "question": "Which programming language was created by Guido van Rossum?",
+      "options": ["Java", "Python", "C++", "JavaScript"],
+      "correct_answer": 1,
+      "category": "Programming",
+      "difficulty": "Medium"
+    },
+    {
+      "id": 8,
+      "question": "What is the smallest country in the world?",
+      "options": ["Monaco", "Vatican City", "San Marino", "Liechtenstein"],
+      "correct_answer": 1,
+      "category": "Geography",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 9,
+      "question": "Who wrote 'Romeo and Juliet'?",
+      "options": ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+      "correct_answer": 1,
+      "category": "Literature",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 10,
+      "question": "What is the speed of light in vacuum?",
+      "options": ["299,792 km/s", "150,000 km/s", "500,000 km/s", "1,000,000 km/s"],
+      "correct_answer": 0,
+      "category": "Science",
+      "difficulty": "Hard"
+    }
+  ]
+}

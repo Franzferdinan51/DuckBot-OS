@@ -1,0 +1,148 @@
+{
+  "system_metrics": [
+    {
+      "timestamp": "2025-09-16T13:49:25.906053",
+      "cpu_percent": 13.2,
+      "memory_percent": 27.9,
+      "memory_used_mb": 36492.72265625,
+      "disk_usage_percent": 87.5,
+      "network_sent_mb": 8797.72010421753,
+      "network_recv_mb": 285719.15993976593,
+      "process_count": 360,
+      "thread_count": 34,
+      "load_average": 0.0
+    },
+    {
+      "timestamp": "2025-09-16T13:49:52.213998",
+      "cpu_percent": 18.2,
+      "memory_percent": 28.5,
+      "memory_used_mb": 37275.3515625,
+      "disk_usage_percent": 87.5,
+      "network_sent_mb": 8802.537142753601,
+      "network_recv_mb": 285779.1038351059,
+      "process_count": 359,
+      "thread_count": 35,
+      "load_average": 0.06
+    },
+    {
+      "timestamp": "2025-09-16T13:50:18.570875",
+      "cpu_percent": 23.7,
+      "memory_percent": 28.0,
+      "memory_used_mb": 36610.47265625,
+      "disk_usage_percent": 87.5,
+      "network_sent_mb": 8806.04894065857,
+      "network_recv_mb": 285829.3469057083,
+      "process_count": 358,
+      "thread_count": 34,
+      "load_average": 0.04
+    }
+  ],
+  "service_metrics": {
+    "duckbot": [
+      {
+        "service_name": "duckbot",
+        "startup_time": 0.0,
+        "memory_mb": 6.859375,
+        "cpu_percent": 0.0,
+        "response_time": 0.0,
+        "health_check_time": 0.0,
+        "status": "unknown",
+        "error_count": 0,
+        "restart_count": 0
+      },
+      {
+        "service_name": "duckbot",
+        "startup_time": 0.0,
+        "memory_mb": 6.8125,
+        "cpu_percent": 0.0,
+        "response_time": 0.0,
+        "health_check_time": 0.0,
+        "status": "unknown",
+        "error_count": 0,
+        "restart_count": 0
+      },
+      {
+        "service_name": "duckbot",
+        "startup_time": 0.0,
+        "memory_mb": 6.8125,
+        "cpu_percent": 0.0,
+        "response_time": 0.0,
+        "health_check_time": 0.0,
+        "status": "unknown",
+        "error_count": 0,
+        "restart_count": 0
+      }
+    ]
+  },
+  "database_metrics": {
+    "query_times": [
+      0.0002581999870017171,
+      7.880001794546843e-05,
+      7.789995288476348e-05
+    ],
+    "connection_time": 0.0,
+    "table_scan_times": {
+      "service_history": 5.4100004490464926e-05,
+      "sqlite_sequence": 6.150000263005495e-05,
+      "performance_metrics": 5.9399986639618874e-05,
+      "projects": 5.659996531903744e-05,
+      "tasks": 5.809997674077749e-05
+    },
+    "index_usage": {},
+    "cache_hit_ratio": 0.0
+  },
+  "network_metrics": {
+    "request_times": {},
+    "bandwidth_mbps": 3.5947122624049754,
+    "latency_ms": 20.67859994713217,
+    "connection_pool_size": 0,
+    "timeout_count": 0,
+    "error_rate": 0.0
+  },
+  "memory_analysis": {
+    "leak_indicators": [
+      {
+        "file": "    traces = _get_traces()",
+        "size_diff": 5688,
+        "count_diff": 103
+      }
+    ],
+    "total_allocated": 457248,
+    "leak_score": 0.1
+  },
+  "concurrent_performance": {
+    "thread_performance": {
+      "avg_time": 0.10094387498684228,
+      "max_time": 0.10163280001142994,
+      "min_time": 0.10045990004437044,
+      "std_dev": 0.00038406985217672416
+    },
+    "async_performance": {
+      "avg_time": 0.11103557999886107,
+      "max_time": 0.11117210000520572,
+      "min_time": 0.1109121999470517,
+      "std_dev": 7.638099276849526e-05
+    },
+    "contention_issues": []
+  },
+  "ai_benchmarks": {
+    "model_load_times": {
+      "lm_studio": 2.021105499996338
+    },
+    "inference_times": {},
+    "memory_usage": {}
+  },
+  "websocket_performance": {
+    "connection_times": [],
+    "message_latency": [],
+    "throughput": 0.0,
+    "connection_stability": 0.0
+  },
+  "ui_performance": {
+    "webui_load_times": {},
+    "rendering_performance": {},
+    "interactive_latency": {}
+  },
+  "bottlenecks": [],
+  "recommendations": []
+}

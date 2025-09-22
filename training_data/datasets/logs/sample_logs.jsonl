@@ -1,0 +1,16 @@
+[
+  {
+    "source": "logs/ecosystem_errors.log",
+    "entry": "2025-09-17 ERROR: MCP server failed to bind port 8080",
+    "level": "error",
+    "description": "Sample log entry for service startup error.",
+    "anonymized": true
+  },
+  {
+    "source": "performance_results/db",
+    "entry": "{\"timestamp\": \"2025-09-17\", \"cpu_usage\": 45.2, \"memory\": 2048}",
+    "level": "info",
+    "description": "Performance metric from database export.",
+    "anonymized": true
+  }
+]

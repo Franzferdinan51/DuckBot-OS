@@ -1,0 +1,59 @@
+{
+  "timestamp": "390463.031",
+  "total_tests": 10,
+  "passed_tests": 7,
+  "failed_tests": 3,
+  "success_rate": 70.0,
+  "results": [
+    {
+      "test": "Server Connectivity",
+      "status": "FAIL",
+      "details": "Connection refused - server may not be running"
+    },
+    {
+      "test": "Tool Registration",
+      "status": "PASS",
+      "details": "Registered 0 tools and 0 resources"
+    },
+    {
+      "test": "Integration Availability",
+      "status": "PASS",
+      "details": "All expected integrations available: ['ui_tars', 'bytebot', 'archon', 'wsl', 'cost_tracker', 'server_manager']"
+    },
+    {
+      "test": "MCP Protocol",
+      "status": "FAIL",
+      "details": "Error: HTTPConnectionPool(host='127.0.0.1', port=8790): Max retries exceeded with url: /mcp (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F4D2FF79D0>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    {
+      "test": "Error Handling",
+      "status": "FAIL",
+      "details": "Error: HTTPConnectionPool(host='127.0.0.1', port=8790): Max retries exceeded with url: /mcp (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x000001F4D3003050>: Failed to establish a new connection: [WinError 10061] No connection could be made because the target machine actively refused it'))"
+    },
+    {
+      "test": "ByteBot Integration",
+      "status": "PASS",
+      "details": "ByteBot instance created successfully"
+    },
+    {
+      "test": "Archon Integration",
+      "status": "PASS",
+      "details": "Archon instance created successfully"
+    },
+    {
+      "test": "WSL Integration",
+      "status": "PASS",
+      "details": "WSL instance created successfully"
+    },
+    {
+      "test": "Cost Tracker Integration",
+      "status": "PASS",
+      "details": "Cost Tracker instance created successfully"
+    },
+    {
+      "test": "Server Manager Integration",
+      "status": "PASS",
+      "details": "Server Manager instance created successfully"
+    }
+  ]
+}

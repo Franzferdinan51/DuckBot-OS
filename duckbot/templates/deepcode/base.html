@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}🧠 DeepCode - AI-Powered Development Suite{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/modern-styles.css">
+  <link rel="stylesheet" href="/static/deepcode-styles.css">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <h1>
+        <span class="status-indicator {{ system_status.overall if system_status else 'offline' }}" id="deepcode-status"></span>
+        {% block header_title %}DeepCode AI Development Suite{% endblock %}
+      </h1>
+
+      <nav class="header-nav">
+        <a href="/dashboard" class="nav-link">🦆 DuckBot</a>
+        <a href="/deepcode" class="nav-link active">🧠 DeepCode</a>
+        <a href="/settings" class="nav-link">⚙️ Settings</a>
+        <a href="/cost" class="nav-link">💰 Cost Analysis</a>
+
+        <button class="theme-toggle" id="themeToggle" title="Toggle theme">🌙</button>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main-container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- Modals -->
+  <div id="modal-overlay" class="modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="modal-title">Modal Title</h3>
+        <button class="modal-close" onclick="deepcodeUI.closeModal()">&times;</button>
+      </div>
+      <div id="modal-body" class="modal-body">
+        <!-- Modal content will be injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- Scripts -->
+  <script src="/static/deepcode-ui.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    // Initialize with server-side data
+    document.addEventListener('DOMContentLoaded', () => {
+      // Set initial system status
+      {% if system_status %}
+      window.deepcodeUI.updateSystemStatus({{ system_status|tojson }});
+      {% endif %}
+
+      // Set initial data
+      {% if agents %}
+      window.deepcodeUI.agents = {{ agents|tojson }};
+      {% endif %}
+
+      {% if mcp_servers %}
+      window.deepcodeUI.mcpServers = {{ mcp_servers|tojson }};
+      {% endif %}
+
+      {% if projects %}
+      window.deepcodeUI.projects = {{ projects|tojson }};
+      {% endif %}
+
+      {% if tasks %}
+      window.deepcodeUI.tasks = {{ tasks|tojson }};
+      {% endif %}
+
+      // Update UI
+      window.deepcodeUI.updateUI();
+    });
+  </script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

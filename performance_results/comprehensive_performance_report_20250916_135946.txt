@@ -1,0 +1,93 @@
+================================================================================
+DUCKBOT v4.2 COMPREHENSIVE PERFORMANCE PROFILE REPORT
+================================================================================
+Generated: 2025-09-16 13:59:46
+Report Version: 1.0
+
+EXECUTIVE SUMMARY
+----------------------------------------
+Overall System Health: Good
+Overall Performance Score: 75.4/100
+
+KEY FINDINGS
+• Overall system health: Good (75.4/100)
+• Total bottlenecks identified: 3 (3 high, 0 medium, 0 low)
+• Optimization recommendations: 2 (1 high priority, 1 medium priority)
+• System performance score: 81.1/100
+• Service performance score: 70.6/100
+• AI performance score: 50.0/100
+• Database performance score: 99.9/100
+
+PERFORMANCE SCORES
+----------------------------------------
+System: 81.1/100
+Services: 70.6/100
+Ai: 50.0/100
+Database: 99.9/100
+Overall: 75.4/100
+
+IDENTIFIED BOTTLENECKS
+----------------------------------------
+🔴 SERVICE - duckbot
+   duckbot has low success rate: 0.0%
+   Impact: service_reliability
+
+🔴 SERVICE - comfyui
+   comfyui has low success rate: 0.0%
+   Impact: service_reliability
+
+🔴 SERVICE - open_webui
+   open_webui has low success rate: 0.0%
+   Impact: service_reliability
+
+OPTIMIZATION RECOMMENDATIONS
+----------------------------------------
+🔥 Improve Service Performance and Reliability (high priority)
+   Service performance and reliability issues detected.
+   Expected Improvement: 30-50% service reliability improvement
+   Actions:
+   - Implement service health monitoring
+   - Add automatic service recovery mechanisms
+   - Optimize service startup processes
+   - Implement proper error handling and logging
+
+⚡ Implement Performance Monitoring (medium priority)
+   Comprehensive performance monitoring is essential for maintaining optimal performance.
+   Expected Improvement: Proactive performance management
+   Actions:
+   - Set up continuous performance monitoring
+   - Implement automated performance testing
+   - Add performance metrics to dashboards
+   - Establish performance baselines and alerts
+
+DETAILED PERFORMANCE METRICS
+----------------------------------------
+System CPU Usage: 18.4% average
+System Memory Usage: 28.1% average
+Network Latency: 20.7ms average
+
+Service Performance:
+  duckbot:
+    Average Startup Time: 0.00s
+    Success Rate: 0.0%
+  comfyui:
+    Average Startup Time: 0.00s
+    Success Rate: 0.0%
+  n8n:
+    Average Startup Time: 0.09s
+    Success Rate: 100.0%
+  open_notebook:
+    Average Startup Time: 0.03s
+    Success Rate: 100.0%
+  jupyter:
+    Average Startup Time: 4.16s
+    Success Rate: 100.0%
+  open_webui:
+    Average Startup Time: 0.98s
+    Success Rate: 0.0%
+
+Database Query Performance: 0.1ms average
+
+================================================================================
+END OF REPORT
+================================================================================

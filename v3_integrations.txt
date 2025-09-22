@@ -1,0 +1,16 @@
+__pycache__
+archon_integration.py
+bytebot_integration.py
+chromium_integration.py
+claude_code_integration.py
+docker_mcp_gateway.py
+mcp_server.py
+memento_integration.py
+n8n_agent_integration.py
+notebook_commands.py
+openwebui
+qwen_agent_integration.py
+README.md
+spec_kit_integration.py
+vibevoice_client.py
+zai_claude_code_integration.py

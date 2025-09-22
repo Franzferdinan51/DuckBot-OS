@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "category": "Programming",
+    "setup": "Why do programmers prefer dark mode?",
+    "punchline": "Because light attracts bugs!",
+    "rating": "G"
+  },
+  {
+    "id": 2,
+    "category": "Programming",
+    "setup": "Why do Java developers wear glasses?",
+    "punchline": "Because they don't C#!",
+    "rating": "G"
+  },
+  {
+    "id": 3,
+    "category": "General",
+    "setup": "Why did the scarecrow win an award?",
+    "punchline": "Because he was outstanding in his field!",
+    "rating": "G"
+  },
+  {
+    "id": 4,
+    "category": "Technology",
+    "setup": "Why was the computer cold?",
+    "punchline": "It left its Windows open!",
+    "rating": "G"
+  },
+  {
+    "id": 5,
+    "category": "Animals",
+    "setup": "What do you call a bear with no teeth?",
+    "punchline": "A gummy bear!",
+    "rating": "G"
+  },
+  {
+    "id": 6,
+    "category": "Programming",
+    "setup": "How many programmers does it take to change a light bulb?",
+    "punchline": "None, that's a hardware problem!",
+    "rating": "G"
+  },
+  {
+    "id": 7,
+    "category": "General",
+    "setup": "Why don't scientists trust atoms?",
+    "punchline": "Because they make up everything!",
+    "rating": "G"
+  },
+  {
+    "id": 8,
+    "category": "Food",
+    "setup": "Why did the tomato turn red?",
+    "punchline": "Because it saw the salad dressing!",
+    "rating": "G"
+  },
+  {
+    "id": 9,
+    "category": "Math",
+    "setup": "Why was the equal sign so humble?",
+    "punchline": "Because it knew it wasn't less than or greater than anyone else!",
+    "rating": "G"
+  },
+  {
+    "id": 10,
+    "category": "Programming",
+    "setup": "What's a programmer's favorite hangout place?",
+    "punchline": "The Foo Bar!",
+    "rating": "G"
+  }
+]

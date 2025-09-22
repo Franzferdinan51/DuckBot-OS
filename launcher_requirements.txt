@@ -1,0 +1,45 @@
+# DuckBot Modular Launcher Requirements
+# Core dependencies for the next-generation launcher architecture
+
+# Standard library modules (no additional requirements needed for basic functionality)
+
+# Optional dependencies for enhanced features
+# Uncomment these lines if you need the specific features
+
+# For advanced HTTP health checks and API calls
+# requests>=2.28.0
+
+# For YAML configuration support
+# PyYAML>=6.0
+
+# For enhanced process monitoring
+# psutil>=5.9.0
+
+# For better terminal UI (optional)
+# rich>=13.0.0
+# colorama>=0.4.6
+
+# For configuration validation
+# pydantic>=2.0.0
+
+# For async operations (future enhancement)
+# aiohttp>=3.8.0
+# asyncio-mqtt>=0.11.0
+
+# For database-backed configuration (future enhancement)
+# sqlalchemy>=2.0.0
+# aiosqlite>=0.19.0
+
+# For Windows-specific enhancements
+# pywin32>=305; sys_platform == 'win32'
+
+# For system tray integration (future enhancement)
+# pystray>=0.19.0
+
+# Development dependencies (uncomment for development)
+# pytest>=7.0.0
+# pytest-asyncio>=0.21.0
+# pytest-cov>=4.0.0
+# black>=23.0.0
+# flake8>=6.0.0
+# mypy>=1.0.0

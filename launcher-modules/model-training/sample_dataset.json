@@ -1,0 +1,32 @@
+[
+  {
+    "text": "The quick brown fox jumps over the lazy dog. This is a sample sentence for training."
+  },
+  {
+    "text": "Machine learning is a subset of artificial intelligence that focuses on algorithms."
+  },
+  {
+    "text": "Natural language processing enables computers to understand human language."
+  },
+  {
+    "text": "Deep learning models use neural networks with multiple layers to learn patterns."
+  },
+  {
+    "text": "Transformer architectures have revolutionized the field of NLP with attention mechanisms."
+  },
+  {
+    "text": "Fine-tuning involves adapting a pre-trained model to a specific task or domain."
+  },
+  {
+    "text": "LoRA (Low-Rank Adaptation) is an efficient method for fine-tuning large language models."
+  },
+  {
+    "text": "Quantization reduces the precision of model weights to decrease memory and compute requirements."
+  },
+  {
+    "text": "Hugging Face provides a platform for sharing and accessing machine learning models."
+  },
+  {
+    "text": "GGUF is a file format for efficiently storing and loading quantized language models."
+  }
+]

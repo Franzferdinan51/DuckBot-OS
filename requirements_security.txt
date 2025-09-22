@@ -1,0 +1,88 @@
+# DuckBot Security Framework Dependencies
+
+# Core Security
+pydantic>=2.0.0
+bcrypt>=4.0.0
+pyotp>=2.8.0
+qrcode[pil]>=7.4.0
+secrets>=1.0.0
+
+# Cryptography
+cryptography>=41.0.0
+fernet>=1.0.0
+
+# JWT Support
+PyJWT>=2.8.0
+cryptography>=41.0.0
+
+# Database and Storage
+aiofiles>=23.0.0
+aiosqlite>=0.19.0
+
+# HTTP Client
+aiohttp>=3.8.0
+requests>=2.31.0
+
+# Web Security
+bleach>=6.0.0
+html-sanitizer>=2.0.0
+
+# Validation and Parsing
+email-validator>=2.0.0
+phonenumbers>=8.13.0
+python-magic>=0.4.27
+python-dateutil>=2.8.0
+
+# Monitoring and Logging
+structlog>=23.1.0
+prometheus-client>=0.17.0
+
+# Development and Testing
+pytest>=7.4.0
+pytest-asyncio>=0.21.0
+pytest-cov>=4.1.0
+black>=23.0.0
+flake8>=6.0.0
+mypy>=1.5.0
+
+# Optional: OAuth2 Providers
+google-auth>=2.23.0
+google-auth-oauthlib>=1.0.0
+authlib>=1.2.0
+
+# Optional: Advanced Threat Detection
+scapy>=2.5.0
+pyshark>=0.4.6
+
+# Optional: Compliance Reporting
+pandas>=2.0.0
+openpyxl>=3.1.0
+
+# Optional: Email Notifications
+smtplib-ssl>=1.0.0
+sendgrid>=6.10.0
+
+# Optional: SMS Notifications
+twilio>=8.5.0
+
+# Optional: Advanced Monitoring
+elasticsearch>=8.9.0
+redis>=4.6.0
+celery>=5.3.0
+
+# Optional: Web Application Firewall
+modsecurity>=1.0.0
+owasp-csrftoken>=1.0.0
+
+# System Dependencies (Ubuntu/Debian)
+# libmagic1
+# libmagic-dev
+# build-essential
+# libssl-dev
+# libffi-dev
+# python3-dev
+
+# System Dependencies (Windows)
+# Microsoft Visual C++ Build Tools
+# OpenSSL
+# Python development headers

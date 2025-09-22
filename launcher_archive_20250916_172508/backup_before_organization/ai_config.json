@@ -1,0 +1,17 @@
+{
+  "provider": "lm_studio",
+  "lm_studio_url": "http://localhost:1234/v1",
+  "lm_studio_model": "bartowski/nvidia_AceReason-Nemotron-14B-GGUF",
+  "openrouter_api_key": "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",
+  "openrouter_url": "https://openrouter.ai/api/v1",
+  "openrouter_model": "qwen/qwen3-coder:free",
+  "max_tokens": 1500,
+  "temperature": 0.3,
+  "conversation_history_limit": 50,
+  "decision_confidence_threshold": 0.7,
+  "auto_action_enabled": true,
+  "monitoring_interval": 30,
+  "report_interval": 300,
+  "enable_caching": true,
+  "cache_ttl_seconds": 300
+}

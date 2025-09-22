@@ -1,0 +1,72 @@
+{
+  "mcp_server": {
+    "host": "127.0.0.1",
+    "port": 8000,
+    "debug": false,
+    "log_level": "INFO",
+    "cors_enabled": true,
+    "cors_origins": ["*"]
+  },
+  "tools": {
+    "enabled": true,
+    "categories": [
+      "system",
+      "desktop",
+      "ai",
+      "memory",
+      "terminal",
+      "integration"
+    ],
+    "timeout": 30,
+    "max_concurrent": 5
+  },
+  "docker": {
+    "enabled": true,
+    "image_name": "duckbot-mcp",
+    "container_name": "duckbot-mcp",
+    "auto_build": true,
+    "auto_remove": false
+  },
+  "docker_mcp_gateway": {
+    "enabled": true,
+    "auto_initialize": true,
+    "fallback_mode": true,
+    "config_path": "~/.docker/mcp",
+    "default_catalog": "duckbot",
+    "server_management": {
+      "auto_discovery": true,
+      "auto_start": false,
+      "health_check_interval": 30,
+      "timeout": 60
+    },
+    "tool_execution": {
+      "timeout": 120,
+      "max_retries": 3,
+      "fallback_to_local": true
+    },
+    "security": {
+      "enable_secrets": true,
+      "allowed_images": ["duckbot-*", "mcp-*"],
+      "network_isolation": true
+    }
+  },
+  "webui_integration": {
+    "enabled": true,
+    "realtime_updates": true,
+    "websocket_endpoint": "/ws/mcp",
+    "api_prefix": "/api/mcp"
+  },
+  "security": {
+    "auth_required": false,
+    "api_key": null,
+    "rate_limit": 100,
+    "allowed_hosts": ["127.0.0.1", "localhost"]
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/mcp_server.log",
+    "max_size": "10MB",
+    "backup_count": 5,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  }
+}

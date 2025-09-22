@@ -1,0 +1,3290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DuckBot AI Launcher</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #0a0a0a;
+            color: #e0e0e0;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            grid-template-rows: 60px 1fr 40px;
+            height: 100vh;
+            gap: 1px;
+            background: #333;
+        }
+
+        /* Header */
+        .header {
+            grid-column: 1 / -1;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            font-size: 24px;
+        }
+
+        .logo-text {
+            font-size: 18px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: #2a2a2a;
+            border-radius: 20px;
+            font-size: 12px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #4CAF50;
+        }
+
+        .status-dot.disconnected {
+            background: #f44336;
+        }
+
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+        }
+
+        .btn-secondary {
+            background: #424242;
+            color: #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #4a4a4a;
+        }
+
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #d32f2f;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            background: #1a1a1a;
+            border-right: 1px solid #333;
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            padding: 16px;
+        }
+
+        .sidebar-title {
+            font-size: 12px;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        /* Sidebar Startup Modes Grid */
+        .startup-modes-sidebar-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .sidebar-mode-btn {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            position: relative;
+        }
+
+        .sidebar-mode-btn:hover {
+            background: #333;
+            border-color: #2196F3;
+        }
+
+        .sidebar-mode-btn.running {
+            border-color: #4CAF50;
+            background: #1e3a1e;
+        }
+
+        .sidebar-mode-btn.error {
+            border-color: #f44336;
+            background: #3a1e1e;
+        }
+
+        .sidebar-mode-icon {
+            font-size: 18px;
+            width: 24px;
+            text-align: center;
+        }
+
+        .sidebar-mode-content {
+            flex: 1;
+        }
+
+        .sidebar-mode-name {
+            font-size: 12px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 2px;
+        }
+
+        .sidebar-mode-desc {
+            font-size: 10px;
+            color: #888;
+            line-height: 1.2;
+        }
+
+        .sidebar-mode-status {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #666;
+        }
+
+        .sidebar-mode-status.running {
+            background: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        .sidebar-mode-status.error {
+            background: #f44336;
+            box-shadow: 0 0 8px rgba(244, 67, 54, 0.5);
+        }
+
+        .mode-grid {
+            display: grid;
+            gap: 8px;
+        }
+
+        .mode-card {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mode-card:hover {
+            background: #333;
+            border-color: #2196F3;
+        }
+
+        .mode-card.running {
+            border-color: #4CAF50;
+            background: #1e3a1e;
+        }
+
+        .mode-card.error {
+            border-color: #f44336;
+            background: #3a1e1e;
+        }
+
+        .mode-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+
+        .mode-icon {
+            font-size: 16px;
+        }
+
+        .mode-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .mode-description {
+            font-size: 11px;
+            color: #888;
+            line-height: 1.3;
+        }
+
+        .mode-status {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .mode-status.running {
+            background: #4CAF50;
+            box-shadow: 0 0 4px #4CAF50;
+        }
+
+        .mode-status.error {
+            background: #f44336;
+            box-shadow: 0 0 4px #f44336;
+        }
+
+        .mode-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .btn-small {
+            padding: 4px 8px;
+            font-size: 11px;
+            border-radius: 4px;
+        }
+
+        /* Startup Dashboard */
+        .startup-dashboard {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .startup-header {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            border-radius: 12px;
+            color: white;
+        }
+
+        .startup-header h2 {
+            margin: 0 0 8px 0;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .startup-header p {
+            margin: 0;
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .startup-categories {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .startup-category {
+            background: #252525;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #333;
+        }
+
+        .startup-category h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .startup-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .startup-mode-btn {
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 8px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .startup-mode-btn:hover {
+            background: #333;
+            border-color: #2196F3;
+            transform: translateY(-2px);
+        }
+
+        .startup-mode-btn.running {
+            background: #1b5e20;
+            border-color: #4CAF50;
+        }
+
+        .startup-mode-btn.running::before {
+            content: '●';
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            color: #4CAF50;
+            font-size: 12px;
+        }
+
+        .startup-mode-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .startup-mode-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .startup-mode-desc {
+            font-size: 12px;
+            color: #888;
+            line-height: 1.4;
+        }
+
+        .quick-actions {
+            background: #252525;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #333;
+        }
+
+        .quick-actions h3 {
+            margin: 0 0 16px 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+
+        .quick-action-btn {
+            background: linear-gradient(135deg, #2196F3 0%, #1976D2 100%);
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            color: white;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(33, 150, 243, 0.3);
+        }
+
+        .quick-action-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Main Content */
+        .main-content {
+            background: #141414;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content-header {
+            padding: 20px;
+            border-bottom: 1px solid #333;
+        }
+
+        .content-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .content-subtitle {
+            font-size: 14px;
+            color: #888;
+        }
+
+        .content-tabs {
+            display: flex;
+            gap: 1px;
+            background: #333;
+            margin: 0 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            background: #2a2a2a;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .tab:hover {
+            background: #333;
+            color: #bbb;
+        }
+
+        .tab.active {
+            background: #141414;
+            color: #fff;
+        }
+
+        .content-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* System Monitor */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .metric-label {
+            font-size: 12px;
+            color: #888;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .metric-bar {
+            height: 4px;
+            background: #333;
+            border-radius: 2px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .metric-fill {
+            height: 100%;
+            background: #2196F3;
+            transition: width 0.3s;
+        }
+
+        .metric-fill.warning {
+            background: #ff9800;
+        }
+
+        .metric-fill.danger {
+            background: #f44336;
+        }
+
+        /* Process Manager */
+        .process-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .process-item {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .process-info {
+            flex: 1;
+        }
+
+        .process-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .process-details {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .process-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        /* Startup Modes Grid */
+        .startup-modes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+            padding: 16px 0;
+        }
+
+        .startup-mode-card {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .startup-mode-card:hover {
+            background: #333;
+            border-color: #2196F3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .startup-mode-card.running {
+            border-color: #4CAF50;
+            background: #1e3a1e;
+        }
+
+        .startup-mode-card.error {
+            border-color: #f44336;
+            background: #3a1e1e;
+        }
+
+        .startup-mode-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .startup-mode-icon {
+            font-size: 28px;
+            filter: grayscale(0%) brightness(1.2);
+        }
+
+        .startup-mode-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            flex: 1;
+        }
+
+        .startup-mode-description {
+            font-size: 13px;
+            color: #bbb;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .startup-mode-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .startup-mode-category {
+            font-size: 11px;
+            color: #888;
+            text-transform: uppercase;
+            background: #1a1a1a;
+            padding: 4px 8px;
+            border-radius: 12px;
+        }
+
+        .startup-mode-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .startup-mode-btn {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .startup-mode-btn.start {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .startup-mode-btn.start:hover {
+            background: #45a049;
+        }
+
+        .startup-mode-btn.stop {
+            background: #f44336;
+            color: white;
+        }
+
+        .startup-mode-btn.stop:hover {
+            background: #da190b;
+        }
+
+        .startup-mode-status {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #666;
+            transition: all 0.3s;
+        }
+
+        .startup-mode-status.running {
+            background: #4CAF50;
+            box-shadow: 0 0 10px rgba(76, 175, 80, 0.5);
+        }
+
+        .startup-mode-status.error {
+            background: #f44336;
+            box-shadow: 0 0 10px rgba(244, 67, 54, 0.5);
+        }
+
+        .startup-mode-requirements {
+            margin-top: 12px;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .startup-mode-requirement {
+            font-size: 10px;
+            color: #888;
+            background: #1a1a1a;
+            padding: 2px 6px;
+            border-radius: 8px;
+        }
+
+        /* Log Viewer */
+        .log-container {
+            background: #0a0a0a;
+            border: 1px solid #333;
+            border-radius: 8px;
+            height: 400px;
+            overflow-y: auto;
+            font-family: 'Consolas', 'Monaco', monospace;
+            font-size: 12px;
+            padding: 12px;
+        }
+
+        .log-entry {
+            margin-bottom: 4px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: pre-wrap;
+        }
+
+        .log-entry.info {
+            background: #1a237e;
+            color: #8c9eff;
+        }
+
+        .log-entry.success {
+            background: #1b5e20;
+            color: #69f0ae;
+        }
+
+        .log-entry.warning {
+            background: #e65100;
+            color: #ffab40;
+        }
+
+        .log-entry.error {
+            background: #b71c1c;
+            color: #ff8a80;
+        }
+
+        .log-entry.debug {
+            background: #1a237e;
+            color: #8c9eff;
+        }
+
+        .log-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            align-items: center;
+        }
+
+        .log-file-btn {
+            background: #333;
+            color: #fff;
+            border: 1px solid #555;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .log-file-btn:hover {
+            background: #444;
+        }
+
+        .log-file-btn.active {
+            background: #2196F3;
+            border-color: #2196F3;
+        }
+
+        .log-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 8px;
+        }
+
+        .log-timestamp {
+            color: #888;
+            margin-right: 8px;
+            font-size: 11px;
+        }
+
+        .log-level {
+            color: #2196F3;
+            margin-right: 8px;
+            font-weight: 600;
+            font-size: 11px;
+        }
+
+        /* Connection Status Styles */
+        .connection-status {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px;
+            margin-bottom: 20px;
+        }
+
+        .connection-status h3 {
+            margin: 0 0 16px 0;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .status-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-right: 8px;
+            background: #f44336;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.connected {
+            background: #4caf50;
+            animation: none;
+        }
+
+        .status-dot.connecting {
+            background: #ff9800;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+
+        .status-details {
+            flex: 1;
+        }
+
+        .status-name {
+            font-weight: 600;
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 2px;
+        }
+
+        .status-desc {
+            color: #aaa;
+            font-size: 12px;
+        }
+
+        .connection-actions {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+
+        .connection-guidance {
+            padding: 12px;
+            background: rgba(33, 150, 243, 0.1);
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            border-radius: 6px;
+            color: #64b5f6;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        .connection-guidance.warning {
+            background: rgba(255, 152, 0, 0.1);
+            border-color: rgba(255, 152, 0, 0.3);
+            color: #ffb74d;
+        }
+
+        .connection-guidance.success {
+            background: rgba(76, 175, 80, 0.1);
+            border-color: rgba(76, 175, 80, 0.3);
+            color: #81c784;
+        }
+
+        .log-message {
+            color: #ccc;
+        }
+
+        /* Chat Interface */
+        .chat-container {
+            background: #1a1a1a;
+            border-left: 1px solid #333;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            padding: 16px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .chat-status {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .message {
+            display: flex;
+            gap: 12px;
+            max-width: 80%;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            flex-direction: row-reverse;
+        }
+
+        .message-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #2196F3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            flex-shrink: 0;
+        }
+
+        .message.system .message-avatar {
+            background: #4CAF50;
+        }
+
+        .message-content {
+            background: #2a2a2a;
+            border-radius: 12px;
+            padding: 12px;
+            max-width: 100%;
+        }
+
+        .message.user .message-content {
+            background: #2196F3;
+        }
+
+        .message-text {
+            font-size: 13px;
+            line-height: 1.4;
+            color: #e0e0e0;
+        }
+
+        .message.user .message-text {
+            color: #fff;
+        }
+
+        /* Startup AI message styling */
+        .message.startup-ai .message-avatar {
+            background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+            font-size: 16px;
+        }
+
+        .message.startup-ai .message-content {
+            background: linear-gradient(135deg, rgba(255, 107, 107, 0.1), rgba(78, 205, 196, 0.1));
+            border: 1px solid rgba(255, 107, 107, 0.3);
+        }
+
+        .message.startup-ai .message-agent {
+            font-size: 11px;
+            color: #4ECDC4;
+            font-weight: bold;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .message.startup-ai .message-text {
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+
+        .message-time {
+            font-size: 11px;
+            color: #666;
+            margin-top: 4px;
+        }
+
+        .chat-input-container {
+            padding: 16px;
+            border-top: 1px solid #333;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 8px;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 20px;
+            padding: 8px 16px;
+            color: #e0e0e0;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .chat-input:focus {
+            border-color: #2196F3;
+        }
+
+        /* Settings */
+        .settings-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+        }
+
+        .settings-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 12px;
+            color: #888;
+            font-weight: 500;
+        }
+
+        .form-input {
+            background: #2a2a2a;
+            border: 1px solid #333;
+            border-radius: 6px;
+            padding: 8px 12px;
+            color: #e0e0e0;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .form-input:focus {
+            border-color: #2196F3;
+        }
+
+        .form-textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .form-checkbox input {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            grid-column: 1 / -1;
+            background: #1a1a1a;
+            border-top: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            font-size: 12px;
+            color: #888;
+        }
+
+        .status-left {
+            display: flex;
+            gap: 20px;
+        }
+
+        .status-right {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #444;
+        }
+
+        /* Loading */
+        .loading {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border: 2px solid #333;
+            border-radius: 50%;
+            border-top-color: #2196F3;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .container {
+                grid-template-columns: 1fr 350px;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 60px 1fr 300px 40px;
+            }
+
+            .chat-container {
+                border-left: none;
+                border-top: 1px solid #333;
+            }
+        }
+
+        /* Settings Modal */
+        .settings-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .settings-modal.active {
+            display: flex;
+        }
+
+        .settings-content {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 24px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .settings-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid #333;
+        }
+
+        .settings-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .settings-close {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .settings-close:hover {
+            background: #333;
+            color: #fff;
+        }
+
+        .settings-section {
+            margin-bottom: 24px;
+        }
+
+        .settings-section h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .settings-section h3::before {
+            content: '';
+            width: 4px;
+            height: 16px;
+            background: #2196F3;
+            border-radius: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #ccc;
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 12px;
+            background: #2a2a2a;
+            border: 1px solid #444;
+            border-radius: 6px;
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2196F3;
+            background: #333;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .form-help {
+            font-size: 12px;
+            color: #888;
+            margin-top: 4px;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding: 16px 20px;
+            border-top: 1px solid #333;
+            background: #1a1a1a;
+            position: sticky;
+            bottom: 0;
+            z-index: 10;
+        }
+
+        .btn-secondary {
+            background: #444;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: #555;
+        }
+
+        .btn-primary {
+            background: #2196F3;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1976D2;
+        }
+
+        .api-key-status {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+
+        .api-key-status.valid {
+            background: #4CAF50;
+        }
+
+        .api-key-status.invalid {
+            background: #f44336;
+        }
+
+        .api-key-status.unknown {
+            background: #888;
+        }
+
+        /* Settings Dashboard */
+        .settings-dashboard {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+        }
+
+        .settings-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .system-info {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 12px;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            font-size: 14px;
+            color: #fff;
+            font-weight: 500;
+        }
+
+        .settings-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            padding-top: 16px;
+            border-top: 1px solid #333;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="logo">
+                <div class="logo-icon">🤖</div>
+                <div class="logo-text">DuckBot AI Launcher</div>
+            </div>
+            <div class="header-actions">
+                <div class="status-indicator">
+                    <div class="status-dot" id="mcpStatus"></div>
+                    <span id="mcpStatusText">MCP</span>
+                </div>
+                <div class="status-indicator">
+                    <div class="status-dot" id="chatStatus"></div>
+                    <span id="chatStatusText">Chat</span>
+                </div>
+                <button class="btn btn-primary" onclick="showSettings()">
+                    ⚙️ Settings
+                </button>
+                <button class="btn btn-secondary" onclick="runDiagnostics()">
+                    🩺 Diagnostics
+                </button>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="content-header">
+                <div class="content-title" id="contentTitle">System Monitor</div>
+                <div class="content-subtitle" id="contentSubtitle">Real-time system metrics and process status</div>
+            </div>
+
+            <div class="content-tabs">
+                <button class="tab" onclick="switchTab('startup')">Startup Modes</button>
+                <button class="tab" onclick="switchTab('monitor')">Monitor</button>
+                <button class="tab" onclick="switchTab('processes')">Processes</button>
+                <button class="tab" onclick="switchTab('logs')">Logs</button>
+                <button class="tab" onclick="switchTab('config')">Configuration</button>
+                <button class="tab" onclick="switchTab('recommendations')">AI Recommendations</button>
+            </div>
+
+            <div class="content-body">
+                <!-- Startup Modes Tab -->
+                <div class="tab-content active" id="startup-tab">
+                    <div class="startup-dashboard">
+                        <div class="startup-header">
+                            <h2>🚀 DuckBot Startup Modes</h2>
+                            <p>Launch individual components or complete AI-powered configurations</p>
+                        </div>
+
+                        <div style="text-align: right; margin-bottom: 16px;">
+                            <button class="btn btn-secondary" onclick="refreshStartupModes()">
+                                🔄 Refresh Startup Modes
+                            </button>
+                        </div>
+
+                        <div class="startup-categories">
+                            <!-- Complete Modes -->
+                            <div class="startup-category">
+                                <h3>🎯 Complete AI Modes</h3>
+                                <div class="startup-grid" id="completeModesGrid">
+                                    <!-- Complete modes will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Individual Components -->
+                            <div class="startup-category">
+                                <h3>🔧 Individual Components</h3>
+                                <div class="startup-grid" id="componentsGrid">
+                                    <!-- Individual components will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- AI Services -->
+                            <div class="startup-category">
+                                <h3>🤖 AI Services</h3>
+                                <div class="startup-grid" id="aiServicesGrid">
+                                    <!-- AI services will be populated by JavaScript -->
+                                </div>
+                            </div>
+
+                            <!-- Monitoring & Tools -->
+                            <div class="startup-category">
+                                <h3>📊 Monitoring & Tools</h3>
+                                <div class="startup-grid" id="toolsGrid">
+                                    <!-- Tools will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quick Actions -->
+                        <div class="quick-actions">
+                            <h3>⚡ Quick Actions</h3>
+                            <div class="quick-actions-grid">
+                                <button class="quick-action-btn" onclick="startAllServices()">
+                                    🚀 Start All Services
+                                </button>
+                                <button class="quick-action-btn" onclick="stopAllServices()">
+                                    🛑 Stop All Services
+                                </button>
+                                <button class="quick-action-btn" onclick="restartEssentialServices()">
+                                    🔄 Restart Essential
+                                </button>
+                                <button class="quick-action-btn" onclick="getStartupRecommendations()">
+                                    💡 Get Recommendations
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monitor Tab -->
+                <div class="tab-content" id="monitor-tab">
+                    <!-- DuckBot Connection Status -->
+                    <div class="connection-status" id="connectionStatus">
+                        <h3>🤖 DuckBot Connection Status</h3>
+                        <div class="status-grid">
+                            <div class="status-item" id="mcpStatus">
+                                <div class="status-indicator" id="mcpIndicator"></div>
+                                <div class="status-details">
+                                    <div class="status-name">MCP Server</div>
+                                    <div class="status-desc" id="mcpStatusText">Disconnected</div>
+                                </div>
+                            </div>
+                            <div class="status-item" id="chatStatus">
+                                <div class="status-indicator" id="chatIndicator"></div>
+                                <div class="status-details">
+                                    <div class="status-name">Chat Server</div>
+                                    <div class="status-desc" id="chatStatusText">Disconnected</div>
+                                </div>
+                            </div>
+                            <div class="status-item" id="duckbotStatus">
+                                <div class="status-indicator" id="duckbotIndicator"></div>
+                                <div class="status-details">
+                                    <div class="status-name">DuckBot Services</div>
+                                    <div class="status-desc" id="duckbotStatusText">Checking...</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="connection-actions">
+                            <button class="btn btn-primary" onclick="retryConnections()" id="retryBtn">
+                                🔁 Retry Connections
+                            </button>
+                            <button class="btn btn-success" onclick="startDuckBot()" id="startDuckbotBtn">
+                                🚀 Start DuckBot Ultimate
+                            </button>
+                        </div>
+                        <div class="connection-guidance" id="connectionGuidance">
+                            <!-- Dynamic guidance messages will appear here -->
+                        </div>
+                    </div>
+
+                    <div class="metrics-grid">
+                        <div class="metric-card">
+                            <div class="metric-label">CPU Usage</div>
+                            <div class="metric-value" id="cpuValue">0%</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="cpuBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Memory Usage</div>
+                            <div class="metric-value" id="memoryValue">0%</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="memoryBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Disk Usage</div>
+                            <div class="metric-value" id="diskValue">0%</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="diskBar"></div>
+                            </div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-label">Network</div>
+                            <div class="metric-value" id="networkValue">0 KB/s</div>
+                            <div class="metric-bar">
+                                <div class="metric-fill" id="networkBar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Processes Tab -->
+                <div class="tab-content" id="processes-tab">
+                    <div class="process-list" id="processList">
+                        <!-- Process items will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Logs Tab -->
+                <div class="tab-content" id="logs-tab">
+                    <div class="log-container" id="logContainer">
+                        <!-- Log entries will be populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Configuration Tab -->
+                <div class="tab-content" id="config-tab">
+                    <div class="settings-dashboard">
+                        <!-- API Keys Section -->
+                        <div class="settings-section">
+                            <h3>🔑 API Keys Configuration</h3>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="geminiApiKey">Gemini API Key</label>
+                                    <input type="password" id="geminiApiKey" placeholder="Enter your Gemini API key">
+                                    <div class="form-help">Required for ByteBot, UI-TARS, and Learning System</div>
+                                    <span class="api-key-status" id="geminiStatus"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="openrouterApiKey">OpenRouter API Key</label>
+                                    <input type="password" id="openrouterApiKey" placeholder="Enter your OpenRouter API key">
+                                    <div class="form-help">Required for AI-Enhanced modes and Archon</div>
+                                    <span class="api-key-status" id="openrouterStatus"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="zaiApiKey">Z.ai API Key</label>
+                                    <input type="password" id="zaiApiKey" placeholder="Enter your Z.ai API key">
+                                    <div class="form-help">Required for N8N Workflow Automation</div>
+                                    <span class="api-key-status" id="zaiStatus"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Startup AI Configuration Section -->
+                        <div class="settings-section">
+                            <h3>🤖 Startup AI Agent Configuration</h3>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="startupAIName">AI Agent Name</label>
+                                    <input type="text" id="startupAIName" placeholder="DuckBot Startup AI Agent" value="DuckBot Startup AI Agent">
+                                    <div class="form-help">Custom name for the startup AI assistant</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="startupAISystemPrompt">System Prompt</label>
+                                    <textarea id="startupAISystemPrompt" rows="8" placeholder="Enter the system prompt for the startup AI agent..."></textarea>
+                                    <div class="form-help">Custom system prompt that defines the AI agent's behavior and capabilities</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="enableStartupAI" checked>
+                                        <label for="enableStartupAI">Enable Startup AI Assistant</label>
+                                    </div>
+                                    <div class="form-help">Allow the startup AI to process chat messages and provide assistance</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="startupAIEnhancedMode" checked>
+                                        <label for="startupAIEnhancedMode">Enhanced AI Mode</label>
+                                    </div>
+                                    <div class="form-help">Use DuckBot main AI for enhanced responses (requires connection)</div>
+                                </div>
+
+                                <div class="form-actions">
+                                    <button class="btn btn-secondary" onclick="resetStartupAISettings()">Reset to Defaults</button>
+                                    <button class="btn btn-primary" onclick="saveStartupAISettings()">Save AI Configuration</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Preferences Section -->
+                        <div class="settings-section">
+                            <h3>⚙️ Preferences</h3>
+                            <div class="settings-form">
+                                <div class="form-group">
+                                    <label for="logLevel">Log Level</label>
+                                    <select id="logLevel">
+                                        <option value="debug">Debug</option>
+                                        <option value="info" selected>Info</option>
+                                        <option value="warning">Warning</option>
+                                        <option value="error">Error</option>
+                                    </select>
+                                    <div class="form-help">Set the verbosity of log messages</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="theme">Theme</label>
+                                    <select id="theme">
+                                        <option value="dark" selected>Dark</option>
+                                        <option value="light">Light</option>
+                                        <option value="auto">Auto</option>
+                                    </select>
+                                    <div class="form-help">Choose the application theme</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="autoStartMCP">
+                                        <label for="autoStartMCP">Auto-start MCP Server</label>
+                                    </div>
+                                    <div class="form-help">Automatically start DuckBot services when needed for better connectivity</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="enableAIAssistant">
+                                        <label for="enableAIAssistant">Enable AI Assistant</label>
+                                    </div>
+                                    <div class="form-help">Enable AI-powered features and chat functionality</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="autoReconnect">
+                                        <label for="autoReconnect">Auto-reconnect</label>
+                                    </div>
+                                    <div class="form-help">Automatically reconnect to DuckBot services if connection is lost</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="form-checkbox">
+                                        <input type="checkbox" id="enableNotifications" checked>
+                                        <label for="enableNotifications">Enable Notifications</label>
+                                    </div>
+                                    <div class="form-help">Show desktop notifications for important events</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- System Information Section -->
+                        <div class="settings-section">
+                            <h3>📊 System Information</h3>
+                            <div class="system-info">
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-label">Platform</div>
+                                        <div class="info-value" id="platformInfo">Loading...</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Node.js Version</div>
+                                        <div class="info-value" id="nodeVersion">Loading...</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Electron Version</div>
+                                        <div class="info-value" id="electronVersion">Loading...</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Memory Usage</div>
+                                        <div class="info-value" id="memoryUsage">Loading...</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Modular Launcher Section -->
+                        <div class="settings-section">
+                            <h3>🔄 Modular Launcher Integration</h3>
+                            <div class="system-info">
+                                <div class="info-grid">
+                                    <div class="info-item">
+                                        <div class="info-label">Modular Launcher</div>
+                                        <div class="info-value" id="modularLauncherStatus">Checking...</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Available Modes</div>
+                                        <div class="info-value" id="modularLauncherModes">Loading...</div>
+                                    </div>
+                                    <div class="info-item">
+                                        <div class="info-label">Integration Status</div>
+                                        <div class="info-value" id="modularIntegrationStatus">Loading...</div>
+                                    </div>
+                                </div>
+                                <div class="settings-actions" style="margin-top: 16px;">
+                                    <button class="btn btn-secondary" onclick="refreshModularLauncherStatus()">🔄 Refresh Status</button>
+                                    <button class="btn btn-primary" onclick="regenerateConfiguration()">⚙️ Regenerate Configuration</button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+                        <div class="settings-actions">
+                            <button class="btn btn-secondary" onclick="resetSettings()">Reset to Defaults</button>
+                            <button class="btn btn-primary" onclick="saveSettingsFromTab()">💾 Save Settings</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recommendations Tab -->
+                <div class="tab-content" id="recommendations-tab">
+                    <div id="recommendationsContent">
+                        <p>Click "Get Recommendations" to receive AI-powered suggestions.</p>
+                        <button class="btn btn-primary" onclick="getRecommendations()" style="margin-top: 16px;">
+                            🧠 Get AI Recommendations
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Interface -->
+        <div class="chat-container">
+            <div class="chat-header">
+                <div class="chat-title">Chat with DuckBot</div>
+                <div class="chat-status" id="chatConnectionStatus">Connecting...</div>
+            </div>
+            <div class="chat-messages" id="chatMessages">
+                <!-- Chat messages will be populated by JavaScript -->
+            </div>
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Type your message..." onkeypress="handleChatKeyPress(event)">
+                    <button class="btn btn-primary" onclick="sendChatMessage()">Send</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span id="statusText">Ready</span>
+                <span id="processCount">0 processes running</span>
+            </div>
+            <div class="status-right">
+                <span id="systemTime"></span>
+                <span id="version">v1.0.0</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div class="modal" id="settingsModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title">Settings</div>
+                <button class="modal-close" onclick="closeSettings()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="settings-section">
+                    <div class="settings-title">API Keys</div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-label">Gemini API Key</label>
+                            <input type="password" class="form-input" id="geminiApiKey" placeholder="Enter your Gemini API key">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">OpenRouter API Key</label>
+                            <input type="password" class="form-input" id="openrouterApiKey" placeholder="Enter your OpenRouter API key">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Z.ai API Key</label>
+                            <input type="password" class="form-input" id="zaiApiKey" placeholder="Enter your Z.ai API key">
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-section">
+                    <div class="settings-title">Preferences</div>
+                    <div class="settings-form">
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="autoStart">
+                                <span>Auto-start DuckBot on launch</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="startMinimized">
+                                <span>Start minimized</span>
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-checkbox">
+                                <input type="checkbox" id="enableNotifications">
+                                <span>Enable notifications</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeSettings()">Cancel</button>
+                <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let startupModes = {};
+        let processStatus = {};
+        let systemStats = {};
+        let currentTab = 'startup';
+
+        // Initialize the application
+        async function init() {
+            try {
+                // Get startup modes from main process
+                startupModes = await window.ipcRenderer.invoke('get-startup-modes');
+
+                // Get initial process status
+                processStatus = await window.ipcRenderer.invoke('get-process-status');
+
+                // Render main dashboard startup modes
+                renderStartupDashboard();
+
+                // Start system monitoring
+                startMonitoring();
+
+                // Setup event listeners
+                setupEventListeners();
+
+                // Update system time
+                updateSystemTime();
+                setInterval(updateSystemTime, 1000);
+
+                // Initialize connection status monitoring
+                updateConnectionStatus();
+                setInterval(updateConnectionStatus, 10000); // Check every 10 seconds
+
+                // Load system information
+                loadSystemInfo();
+                
+                // Load modular launcher status
+                loadModularLauncherStatus();
+
+                // Load settings
+                loadSettings();
+
+                console.log('DuckBot AI Launcher initialized successfully');
+            } catch (error) {
+                console.error('Failed to initialize:', error);
+            }
+        }
+
+        // Refresh startup modes
+        async function refreshStartupModes() {
+            try {
+                updateStatus('Refreshing startup modes...');
+                const result = await window.ipcRenderer.invoke('refresh-startup-modes');
+                
+                if (result.success) {
+                    startupModes = result.startupModes;
+                    renderStartupDashboard();
+                    updateStatus('Startup modes refreshed successfully');
+                    showNotification('Startup modes refreshed successfully', 'success');
+                } else {
+                    updateStatus(`Failed to refresh startup modes: ${result.error}`);
+                    showNotification(`Failed to refresh startup modes: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to refresh startup modes:', error);
+                updateStatus('Failed to refresh startup modes');
+                showNotification('Failed to refresh startup modes', 'error');
+            }
+        }
+
+        // Render mode cards
+        function renderModeCards() {
+            const modeGrid = document.getElementById('modeGrid');
+            modeGrid.innerHTML = '';
+
+            Object.entries(startupModes).forEach(([modeId, mode]) => {
+                const status = processStatus[modeId];
+                const card = document.createElement('div');
+                card.className = `mode-card ${status ? 'running' : ''}`;
+                card.innerHTML = `
+                    <div class="mode-status ${status ? 'running' : ''}"></div>
+                    <div class="mode-header">
+                        <div class="mode-icon">${mode.icon}</div>
+                        <div class="mode-name">${mode.name}</div>
+                    </div>
+                    <div class="mode-description">${mode.description}</div>
+                    <div class="mode-actions">
+                        <button class="btn btn-primary btn-small" onclick="launchMode('${modeId}')" ${status ? 'disabled' : ''}>
+                            ${status ? 'Running' : 'Launch'}
+                        </button>
+                        <button class="btn btn-secondary btn-small" onclick="showModeDetails('${modeId}')">
+                            Details
+                        </button>
+                        ${status ? `<button class="btn btn-danger btn-small" onclick="stopMode('${modeId}')">Stop</button>` : ''}
+                    </div>
+                `;
+                modeGrid.appendChild(card);
+            });
+        }
+
+  
+        // Render startup modes grid for main interface
+        function renderStartupModesGrid() {
+            const grid = document.getElementById('startupModesGrid');
+            grid.innerHTML = '';
+
+            Object.entries(startupModes).forEach(([modeId, mode]) => {
+                const status = processStatus[modeId];
+                const card = document.createElement('div');
+                card.className = `startup-mode-card ${status ? 'running' : ''}`;
+
+                const requirementsHtml = mode.requires && mode.requires.length > 0
+                    ? mode.requires.map(req => `<span class="startup-mode-requirement">${req}</span>`).join('')
+                    : '';
+
+                card.innerHTML = `
+                    <div class="startup-mode-status ${status ? 'running' : ''}"></div>
+                    <div class="startup-mode-header">
+                        <div class="startup-mode-icon">${mode.icon}</div>
+                        <div class="startup-mode-title">${mode.name}</div>
+                    </div>
+                    <div class="startup-mode-description">${mode.description}</div>
+                    <div class="startup-mode-footer">
+                        <div class="startup-mode-category">${mode.category}</div>
+                        <div class="startup-mode-actions">
+                            ${status
+                                ? `<button class="startup-mode-btn stop" onclick="stopMode('${modeId}')">Stop</button>`
+                                : `<button class="startup-mode-btn start" onclick="launchMode('${modeId}')">Start</button>`
+                            }
+                            <button class="startup-mode-btn" style="background: #2196F3;" onclick="showModeDetails('${modeId}')">Info</button>
+                        </div>
+                    </div>
+                    ${requirementsHtml ? `<div class="startup-mode-requirements">${requirementsHtml}</div>` : ''}
+                `;
+
+                grid.appendChild(card);
+            });
+        }
+
+        // Launch mode
+        async function launchMode(modeId) {
+            try {
+                await window.ipcRenderer.invoke('launch-mode', modeId);
+                updateStatus(`Starting ${startupModes[modeId].name}...`);
+            } catch (error) {
+                console.error('Failed to launch mode:', error);
+                updateStatus(`Failed to launch ${startupModes[modeId].name}: ${error.message}`);
+            }
+        }
+
+        // Stop mode
+        async function stopMode(modeId) {
+            try {
+                await window.ipcRenderer.invoke('stop-mode', modeId);
+                updateStatus(`Stopping ${startupModes[modeId].name}...`);
+            } catch (error) {
+                console.error('Failed to stop mode:', error);
+                updateStatus(`Failed to stop ${startupModes[modeId].name}: ${error.message}`);
+            }
+        }
+
+        // Show mode details
+        function showModeDetails(modeId) {
+            const mode = startupModes[modeId];
+            const details = `
+Mode: ${mode.name}
+Description: ${mode.description}
+Category: ${mode.category}
+Requirements: ${mode.requires ? mode.requires.join(', ') : 'None'}
+Ports: ${mode.ports ? mode.ports.join(', ') : 'None'}
+Command: ${mode.command}
+            `;
+            alert(details);
+        }
+
+        // Render categorized startup modes
+        function renderStartupDashboard() {
+            renderCategoryGrid('completeModesGrid', 'complete');
+            renderCategoryGrid('componentsGrid', 'component');
+            renderCategoryGrid('aiServicesGrid', 'ai');
+            renderCategoryGrid('toolsGrid', 'tool');
+        }
+
+        function renderCategoryGrid(gridId, category) {
+            const grid = document.getElementById(gridId);
+            if (!grid) return;
+
+            let html = '';
+            for (const [modeId, mode] of Object.entries(startupModes)) {
+                if (mode.category === category) {
+                    const isRunning = processStatus[modeId]?.running || false;
+                    const statusClass = isRunning ? 'running' : '';
+
+                    html += `
+                        <div class="startup-mode-btn ${statusClass}" onclick="toggleMode('${modeId}')">
+                            <div class="startup-mode-icon">${mode.icon}</div>
+                            <div class="startup-mode-name">${mode.name}</div>
+                            <div class="startup-mode-desc">${mode.description}</div>
+                        </div>
+                    `;
+                }
+            }
+            grid.innerHTML = html;
+        }
+
+        // Quick actions
+        async function startAllServices() {
+            try {
+                updateStatus('Starting all essential services...');
+                // Start essential services
+                const essentialModes = ['ultimate', 'mcp', 'webui', 'bytebot'];
+                for (const modeId of essentialModes) {
+                    if (startupModes[modeId]) {
+                        await window.ipcRenderer.invoke('start-mode', modeId);
+                    }
+                }
+                updateStatus('All essential services started');
+            } catch (error) {
+                console.error('Failed to start all services:', error);
+                updateStatus('Failed to start all services');
+            }
+        }
+
+        async function stopAllServices() {
+            try {
+                updateStatus('Stopping all services...');
+                for (const modeId of Object.keys(startupModes)) {
+                    if (processStatus[modeId]?.running) {
+                        await window.ipcRenderer.invoke('stop-mode', modeId);
+                    }
+                }
+                updateStatus('All services stopped');
+            } catch (error) {
+                console.error('Failed to stop all services:', error);
+                updateStatus('Failed to stop all services');
+            }
+        }
+
+        async function restartEssentialServices() {
+            try {
+                updateStatus('Restarting essential services...');
+                const essentialModes = ['ultimate', 'mcp', 'webui'];
+                for (const modeId of essentialModes) {
+                    if (processStatus[modeId]?.running) {
+                        await window.ipcRenderer.invoke('stop-mode', modeId);
+                        await new Promise(resolve => setTimeout(resolve, 2000));
+                        await window.ipcRenderer.invoke('start-mode', modeId);
+                    }
+                }
+                updateStatus('Essential services restarted');
+            } catch (error) {
+                console.error('Failed to restart essential services:', error);
+                updateStatus('Failed to restart essential services');
+            }
+        }
+
+        async function getStartupRecommendations() {
+            try {
+                updateStatus('Getting AI startup recommendations...');
+                const recommendations = await window.ipcRenderer.invoke('get-recommendations');
+
+                // Show recommendations in a user-friendly way
+                const recContent = document.getElementById('recommendationsContent');
+                if (recContent) {
+                    recContent.innerHTML = `
+                        <div class="recommendations-list">
+                            <h4>🤖 AI Startup Recommendations</h4>
+                            <div class="recommendation-items">
+                                ${recommendations.map(rec => `
+                                    <div class="recommendation-item">
+                                        <div class="recommendation-title">${rec.title}</div>
+                                        <div class="recommendation-desc">${rec.description}</div>
+                                        <div class="recommendation-action">
+                                            <button class="btn btn-primary" onclick="toggleMode('${rec.modeId}')">
+                                                Launch ${rec.modeName}
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Switch to recommendations tab
+                switchTab('recommendations');
+                updateStatus('Recommendations loaded');
+            } catch (error) {
+                console.error('Failed to get recommendations:', error);
+                updateStatus('Failed to get recommendations');
+            }
+        }
+
+        // Settings tab functions
+        async function saveSettingsFromTab() {
+            try {
+                const settings = {
+                    apiKeys: {
+                        gemini: document.getElementById('geminiApiKey').value,
+                        openrouter: document.getElementById('openrouterApiKey').value,
+                        zai: document.getElementById('zaiApiKey').value
+                    },
+                    preferences: {
+                        autoStartMcp: document.getElementById('autoStartMcp').checked,
+                        enableNotifications: document.getElementById('enableNotifications').checked,
+                        logLevel: document.getElementById('logLevel').value,
+                        theme: document.getElementById('theme').value
+                    }
+                };
+
+                await window.ipcRenderer.invoke('save-settings', settings);
+                updateStatus('Settings saved successfully');
+
+                // Update API key status indicators
+                updateApiKeyStatus();
+            } catch (error) {
+                console.error('Failed to save settings:', error);
+                alert('Failed to save settings: ' + error.message);
+            }
+        }
+
+        async function resetSettings() {
+            if (confirm('Are you sure you want to reset all settings to defaults?')) {
+                try {
+                    // Clear form fields
+                    document.getElementById('geminiApiKey').value = '';
+                    document.getElementById('openrouterApiKey').value = '';
+                    document.getElementById('zaiApiKey').value = '';
+                    document.getElementById('autoStartMcp').checked = false;
+                    document.getElementById('enableNotifications').checked = true;
+                    document.getElementById('logLevel').value = 'info';
+                    document.getElementById('theme').value = 'dark';
+
+                    // Save empty settings
+                    await window.ipcRenderer.invoke('save-settings', {
+                        apiKeys: { gemini: '', openrouter: '', zai: '' },
+                        preferences: { autoStartMcp: false, enableNotifications: true, logLevel: 'info', theme: 'dark' }
+                    });
+
+                    updateStatus('Settings reset to defaults');
+                    updateApiKeyStatus();
+                } catch (error) {
+                    console.error('Failed to reset settings:', error);
+                    alert('Failed to reset settings: ' + error.message);
+                }
+            }
+        }
+
+        // Startup AI Settings functions
+        async function saveStartupAISettings() {
+            try {
+                const startupAIConfig = {
+                    name: document.getElementById('startupAIName').value,
+                    system_prompt: document.getElementById('startupAISystemPrompt').value,
+                    enabled: document.getElementById('enableStartupAI').checked,
+                    enhanced_mode: document.getElementById('startupAIEnhancedMode').checked
+                };
+
+                await window.ipcRenderer.invoke('update-startup-ai-config', startupAIConfig);
+                updateStatus('Startup AI configuration saved successfully');
+            } catch (error) {
+                console.error('Failed to save startup AI settings:', error);
+                alert('Failed to save startup AI settings: ' + error.message);
+            }
+        }
+
+        async function resetStartupAISettings() {
+            if (confirm('Are you sure you want to reset startup AI settings to defaults?')) {
+                try {
+                    // Reset to default configuration
+                    const defaultConfig = {
+                        name: 'DuckBot Startup AI Agent',
+                        system_prompt: '# DuckBot Startup AI Agent - System Prompt\n\nYou are the DuckBot Startup AI Agent, responsible for managing startup operations and providing intelligent assistance.',
+                        enabled: true,
+                        enhanced_mode: true
+                    };
+
+                    // Update form fields
+                    document.getElementById('startupAIName').value = defaultConfig.name;
+                    document.getElementById('startupAISystemPrompt').value = defaultConfig.system_prompt;
+                    document.getElementById('enableStartupAI').checked = defaultConfig.enabled;
+                    document.getElementById('startupAIEnhancedMode').checked = defaultConfig.enhanced_mode;
+
+                    // Save defaults
+                    await window.ipcRenderer.invoke('update-startup-ai-config', defaultConfig);
+                    updateStatus('Startup AI settings reset to defaults');
+                } catch (error) {
+                    console.error('Failed to reset startup AI settings:', error);
+                    alert('Failed to reset startup AI settings: ' + error.message);
+                }
+            }
+        }
+
+        async function loadStartupAISettings() {
+            try {
+                const config = await window.ipcRenderer.invoke('get-startup-ai-config');
+
+                if (config && config.config) {
+                    // Update form fields with loaded configuration
+                    document.getElementById('startupAIName').value = config.config.name || 'DuckBot Startup AI Agent';
+                    document.getElementById('startupAISystemPrompt').value = config.config.system_prompt || '';
+                    document.getElementById('enableStartupAI').checked = config.config.enabled !== false;
+                    document.getElementById('startupAIEnhancedMode').checked = config.config.enhanced_mode !== false;
+                }
+            } catch (error) {
+                console.error('Failed to load startup AI settings:', error);
+                // Use defaults if loading fails
+                document.getElementById('startupAIName').value = 'DuckBot Startup AI Agent';
+                document.getElementById('enableStartupAI').checked = true;
+                document.getElementById('startupAIEnhancedMode').checked = true;
+            }
+        }
+
+        // Load system information
+        async function loadSystemInfo() {
+            try {
+                const systemInfo = await window.ipcRenderer.invoke('get-system-info');
+
+                document.getElementById('platformInfo').textContent = systemInfo.platform || 'Unknown';
+                document.getElementById('nodeVersion').textContent = systemInfo.nodeVersion || 'Unknown';
+                document.getElementById('electronVersion').textContent = systemInfo.electronVersion || 'Unknown';
+                document.getElementById('memoryUsage').textContent = systemInfo.memoryUsage || 'Unknown';
+            } catch (error) {
+                console.error('Failed to load system info:', error);
+            }
+        }
+
+        // Load modular launcher status
+        async function loadModularLauncherStatus() {
+            try {
+                const modularStatus = await window.ipcRenderer.invoke('get-modular-launcher-status');
+                
+                if (modularStatus.available) {
+                    document.getElementById('modularLauncherStatus').textContent = 'Available';
+                    document.getElementById('modularLauncherStatus').style.color = '#4CAF50';
+                    document.getElementById('modularLauncherModes').textContent = modularStatus.modes_count || 0;
+                    document.getElementById('modularIntegrationStatus').textContent = 'Integrated';
+                    document.getElementById('modularIntegrationStatus').style.color = '#4CAF50';
+                } else {
+                    document.getElementById('modularLauncherStatus').textContent = 'Not Available';
+                    document.getElementById('modularLauncherStatus').style.color = '#f44336';
+                    document.getElementById('modularLauncherModes').textContent = '0';
+                    document.getElementById('modularIntegrationStatus').textContent = 'Not Integrated';
+                    document.getElementById('modularIntegrationStatus').style.color = '#f44336';
+                }
+            } catch (error) {
+                console.error('Failed to load modular launcher status:', error);
+                document.getElementById('modularLauncherStatus').textContent = 'Error';
+                document.getElementById('modularLauncherStatus').style.color = '#f44336';
+                document.getElementById('modularLauncherModes').textContent = 'Error';
+                document.getElementById('modularIntegrationStatus').textContent = 'Error';
+                document.getElementById('modularIntegrationStatus').style.color = '#f44336';
+            }
+        }
+
+        // Refresh startup modes
+        async function refreshStartupModes() {
+            try {
+                updateStatus('Refreshing startup modes...');
+                const result = await window.ipcRenderer.invoke('refresh-startup-modes');
+                
+                if (result.success) {
+                    startupModes = result.startupModes;
+                    renderStartupDashboard();
+                    updateStatus('Startup modes refreshed successfully');
+                    showNotification('Startup modes refreshed successfully', 'success');
+                } else {
+                    updateStatus(`Failed to refresh startup modes: ${result.error}`);
+                    showNotification(`Failed to refresh startup modes: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to refresh startup modes:', error);
+                updateStatus('Failed to refresh startup modes');
+                showNotification('Failed to refresh startup modes', 'error');
+            }
+        }
+
+        // Regenerate configuration
+        async function regenerateConfiguration() {
+            try {
+                updateStatus('Regenerating configuration...');
+                const result = await window.ipcRenderer.invoke('regenerate-configuration');
+                
+                if (result.success) {
+                    updateStatus('Configuration regenerated successfully');
+                    showNotification('Configuration regenerated successfully', 'success');
+                    // Reload the configuration
+                    await loadSettings();
+                    await loadModularLauncherStatus();
+                } else {
+                    updateStatus(`Failed to regenerate configuration: ${result.error}`);
+                    showNotification(`Failed to regenerate configuration: ${result.error}`, 'error');
+                }
+            } catch (error) {
+                console.error('Failed to regenerate configuration:', error);
+                updateStatus('Failed to regenerate configuration');
+                showNotification('Failed to regenerate configuration', 'error');
+            }
+        }
+
+        // Start monitoring
+        function startMonitoring() {
+            // Update metrics
+            setInterval(updateMetrics, 2000);
+
+            // Update process list
+            setInterval(updateProcessList, 5000);
+        }
+
+        // Enhanced tab switching with log viewer management
+        function switchTab(tabName) {
+            // Update tab buttons
+            document.querySelectorAll('.tab').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(`${tabName}-tab`).classList.add('active');
+
+            // Handle log viewer start/stop
+            if (tabName === 'logs') {
+                startLogViewer();
+            } else {
+                stopLogViewer();
+            }
+
+            // Update title and subtitle based on tab
+            const titleElement = document.getElementById('contentTitle');
+            const subtitleElement = document.getElementById('contentSubtitle');
+
+            switch(tabName) {
+                case 'startup':
+                    titleElement.textContent = 'Startup Modes';
+                    subtitleElement.textContent = 'Launch individual components or complete AI-powered configurations';
+                    break;
+                case 'monitor':
+                    titleElement.textContent = 'System Monitor';
+                    subtitleElement.textContent = 'Real-time system metrics and process status';
+                    break;
+                case 'processes':
+                    titleElement.textContent = 'Process Manager';
+                    subtitleElement.textContent = 'Manage running processes and services';
+                    break;
+                case 'logs':
+                    titleElement.textContent = 'Log Viewer';
+                    subtitleElement.textContent = 'Real-time log monitoring and analysis';
+                    break;
+                case 'config':
+                    titleElement.textContent = 'Configuration';
+                    subtitleElement.textContent = 'System settings and API key management';
+
+                    // Load startup AI settings when config tab is opened
+                    loadStartupAISettings();
+                    // Load modular launcher status
+                    loadModularLauncherStatus();
+                    break;
+                case 'recommendations':
+                    titleElement.textContent = 'AI Recommendations';
+                    subtitleElement.textContent = 'Intelligent suggestions and optimization tips';
+                    break;
+            }
+
+            currentTab = tabName;
+        }
+
+        // Update metrics
+        function updateMetrics() {
+            if (systemStats.cpu !== undefined) {
+                const cpuPercent = Math.round(systemStats.cpu);
+                document.getElementById('cpuValue').textContent = `${cpuPercent}%`;
+                document.getElementById('cpuBar').style.width = `${cpuPercent}%`;
+
+                // Update color based on usage
+                const cpuBar = document.getElementById('cpuBar');
+                if (cpuPercent > 80) {
+                    cpuBar.className = 'metric-fill danger';
+                } else if (cpuPercent > 60) {
+                    cpuBar.className = 'metric-fill warning';
+                } else {
+                    cpuBar.className = 'metric-fill';
+                }
+            }
+
+            if (systemStats.memory !== undefined) {
+                const memoryPercent = Math.round(systemStats.memory);
+                document.getElementById('memoryValue').textContent = `${memoryPercent}%`;
+                document.getElementById('memoryBar').style.width = `${memoryPercent}%`;
+
+                const memoryBar = document.getElementById('memoryBar');
+                if (memoryPercent > 80) {
+                    memoryBar.className = 'metric-fill danger';
+                } else if (memoryPercent > 60) {
+                    memoryBar.className = 'metric-fill warning';
+                } else {
+                    memoryBar.className = 'metric-fill';
+                }
+            }
+
+            if (systemStats.disk !== undefined) {
+                const diskPercent = Math.round(systemStats.disk);
+                document.getElementById('diskValue').textContent = `${diskPercent}%`;
+                document.getElementById('diskBar').style.width = `${diskPercent}%`;
+            }
+
+            if (systemStats.network !== undefined) {
+                const networkKB = Math.round(systemStats.network / 1024);
+                document.getElementById('networkValue').textContent = `${networkKB} KB/s`;
+            }
+        }
+
+        // Update process list
+        async function updateProcessList() {
+            try {
+                processStatus = await window.ipcRenderer.invoke('get-process-status');
+                renderStartupDashboard();
+                updateProcessCount();
+            } catch (error) {
+                console.error('Failed to update process list:', error);
+            }
+        }
+
+        // Update process count
+        function updateProcessCount() {
+            const runningProcesses = Object.values(processStatus).filter(p => p.running).length;
+            document.getElementById('processCount').textContent = `${runningProcesses} processes running`;
+        }
+
+        // Send chat message
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+
+            if (message) {
+                addChatMessage(message, 'user');
+                input.value = '';
+
+                // Send to main process
+                window.ipcRenderer.invoke('send-chat-message', message);
+            }
+        }
+
+        // Handle chat input key press
+        function handleChatKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendChatMessage();
+            }
+        }
+
+        // Add chat message
+        function addChatMessage(content, type = 'system') {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${type}`;
+
+            const time = new Date().toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="message-avatar">${type === 'user' ? 'U' : 'D'}</div>
+                <div class="message-content">
+                    <div class="message-text">${content}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Add startup AI message with special styling
+        function addStartupAIMessage(content, agent = 'DuckBot Startup AI Agent') {
+            const messagesContainer = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message startup-ai';
+
+            const time = new Date().toLocaleTimeString();
+            messageDiv.innerHTML = `
+                <div class="message-avatar startup-ai-avatar">🤖</div>
+                <div class="message-content">
+                    <div class="message-agent">${agent}</div>
+                    <div class="message-text">${content.replace(/\n/g, '<br>')}</div>
+                    <div class="message-time">${time}</div>
+                </div>
+            `;
+
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // System stats
+            window.ipcRenderer.on('system-stats', (event, stats) => {
+                systemStats = stats;
+                updateMetrics();
+            });
+
+            // Mode status
+            window.ipcRenderer.on('mode-status', (event, data) => {
+                updateStatus(data.message);
+                // Update process list to reflect changes
+                setTimeout(updateProcessList, 1000);
+            });
+
+            // Process output
+            window.ipcRenderer.on('process-output', (event, data) => {
+                addLogEntry(data.modeId, data.data, data.type);
+            });
+
+            // MCP status
+            window.ipcRenderer.on('mcp-status', (event, data) => {
+                updateMCPStatus(data);
+            });
+
+            // Chat status
+            window.ipcRenderer.on('chat-status', (event, data) => {
+                updateChatStatus(data);
+            });
+
+            // Chat messages
+            window.ipcRenderer.on('chat-message', (event, data) => {
+                addChatMessage(data.content, 'system');
+            });
+
+            // Startup AI responses
+            window.ipcRenderer.on('startup-ai-response', (event, data) => {
+                addStartupAIMessage(data.content, data.agent || 'DuckBot Startup AI Agent');
+            });
+
+            // Log updates
+            window.ipcRenderer.on('log-update', (event, data) => {
+                addLogEntry(data.logName, data.line, 'info');
+            });
+
+            // Diagnostics results
+            window.ipcRenderer.on('diagnostics-results', (event, data) => {
+                showDiagnosticsResults(data);
+            });
+        }
+
+        // Update status
+        function updateStatus(message) {
+            document.getElementById('statusText').textContent = message;
+            console.log('Status:', message);
+        }
+
+        // Update MCP status
+        function updateMCPStatus(data) {
+            const statusDot = document.getElementById('mcpStatus');
+            const statusText = document.getElementById('mcpStatusText');
+            const connectionGuidance = document.getElementById('connectionGuidance');
+
+            if (data.connected) {
+                statusDot.classList.remove('disconnected');
+                statusText.textContent = 'MCP Connected';
+                if (data.message) {
+                    showNotification(data.message, 'success');
+                }
+                hideConnectionGuidance();
+            } else {
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'MCP Disconnected';
+
+                if (data.showGuidance || data.maxRetries) {
+                    showConnectionGuidance(data.error || 'DuckBot MCP connection failed');
+                }
+
+                if (data.maxRetries) {
+                    showNotification('MCP connection retries exhausted. Some AI features may be limited.', 'warning');
+                }
+            }
+        }
+
+        // Update chat status
+        function updateChatStatus(data) {
+            const statusDot = document.getElementById('chatStatus');
+            const statusText = document.getElementById('chatStatusText');
+            const chatConnectionStatus = document.getElementById('chatConnectionStatus');
+
+            if (data.connected) {
+                statusDot.classList.remove('disconnected');
+                statusText.textContent = 'Chat Connected';
+                chatConnectionStatus.textContent = 'Connected to DuckBot';
+                if (data.message) {
+                    showNotification(data.message, 'success');
+                }
+                hideConnectionGuidance();
+            } else {
+                statusDot.classList.add('disconnected');
+                statusText.textContent = 'Chat Disconnected';
+                chatConnectionStatus.textContent = 'Disconnected';
+
+                if (data.showGuidance || data.maxRetries) {
+                    showConnectionGuidance(data.error || 'DuckBot Chat connection failed');
+                }
+
+                if (data.maxRetries) {
+                    showNotification('Chat connection retries exhausted. Using local Startup AI assistant.', 'info');
+                }
+            }
+        }
+
+        // Show connection guidance
+        function showConnectionGuidance(message) {
+            let guidance = document.getElementById('connectionGuidance');
+
+            if (!guidance) {
+                guidance = document.createElement('div');
+                guidance.id = 'connectionGuidance';
+                guidance.className = 'connection-guidance';
+                document.querySelector('.main-content').insertBefore(guidance, document.querySelector('.content-tabs'));
+            }
+
+            guidance.innerHTML = `
+                <div class="guidance-content">
+                    <div class="guidance-icon">💡</div>
+                    <div class="guidance-text">
+                        <h4>DuckBot Connection Required</h4>
+                        <p>${message.replace(/\n/g, '<br>')}</p>
+                        <div class="guidance-actions">
+                            <button class="btn btn-primary" onclick="startDuckBot()">Start DuckBot Now</button>
+                            <button class="btn btn-secondary" onclick="hideConnectionGuidance()">Dismiss</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            guidance.style.display = 'block';
+        }
+
+        // Hide connection guidance
+        function hideConnectionGuidance() {
+            const guidance = document.getElementById('connectionGuidance');
+            if (guidance) {
+                guidance.style.display = 'none';
+            }
+        }
+
+        // Start DuckBot helper function
+        async function startDuckBot() {
+            try {
+                hideConnectionGuidance();
+                updateStatus('Launching DuckBot...');
+
+                // Use the existing launch mode function to start Ultimate mode
+                await window.ipcRenderer.invoke('launch-mode', '1');
+
+                showNotification('DuckBot startup initiated. Please wait for connections to establish.', 'info');
+            } catch (error) {
+                console.error('Failed to start DuckBot:', error);
+                showNotification('Failed to start DuckBot automatically. Please run START_ENHANCED_DUCKBOT.bat manually.', 'error');
+            }
+        }
+
+        // Add log entry
+        function addLogEntry(source, message, type = 'info') {
+            const logContainer = document.getElementById('logContainer');
+            const logEntry = document.createElement('div');
+            logEntry.className = `log-entry ${type}`;
+            logEntry.textContent = `[${source}] ${message}`;
+
+            logContainer.appendChild(logEntry);
+            logContainer.scrollTop = logContainer.scrollHeight;
+
+            // Keep only last 100 entries
+            while (logContainer.children.length > 100) {
+                logContainer.removeChild(logContainer.firstChild);
+            }
+        }
+
+        // Settings functionality
+        function showSettings() {
+            // Switch to settings tab instead of opening modal
+            switchTab('config');
+        }
+
+        function closeSettings() {
+            const modal = document.getElementById('settingsModal');
+            modal.classList.remove('active');
+        }
+
+        async function loadSettings() {
+            try {
+                const settings = await window.ipcRenderer.invoke('get-settings');
+
+                // Load API keys
+                document.getElementById('geminiApiKey').value = settings.apiKeys?.gemini || '';
+                document.getElementById('openrouterApiKey').value = settings.apiKeys?.openrouter || '';
+                document.getElementById('zaiApiKey').value = settings.apiKeys?.zai || '';
+
+                // Load preferences
+                document.getElementById('autoStartMcp').checked = settings.preferences?.autoStartMcp || false;
+                document.getElementById('enableNotifications').checked = settings.preferences?.enableNotifications || true;
+                document.getElementById('logLevel').value = settings.preferences?.logLevel || 'info';
+                document.getElementById('theme').value = settings.preferences?.theme || 'dark';
+
+                // Update API key status indicators
+                updateApiKeyStatus();
+            } catch (error) {
+                console.error('Failed to load settings:', error);
+            }
+        }
+
+        async function saveSettings() {
+            try {
+                const settings = {
+                    apiKeys: {
+                        gemini: document.getElementById('geminiApiKey').value,
+                        openrouter: document.getElementById('openrouterApiKey').value,
+                        zai: document.getElementById('zaiApiKey').value
+                    },
+                    preferences: {
+                        autoStartMcp: document.getElementById('autoStartMcp').checked,
+                        enableNotifications: document.getElementById('enableNotifications').checked,
+                        logLevel: document.getElementById('logLevel').value,
+                        theme: document.getElementById('theme').value
+                    }
+                };
+
+                await window.ipcRenderer.invoke('save-settings', settings);
+                updateStatus('Settings saved successfully');
+                closeSettings();
+
+                // Update API key status indicators
+                updateApiKeyStatus();
+            } catch (error) {
+                console.error('Failed to save settings:', error);
+                alert('Failed to save settings: ' + error.message);
+            }
+        }
+
+        function updateApiKeyStatus() {
+            const geminiKey = document.getElementById('geminiApiKey').value;
+            const openrouterKey = document.getElementById('openrouterApiKey').value;
+            const zaiKey = document.getElementById('zaiApiKey').value;
+
+            // Update status indicators
+            updateStatusIndicator('geminiStatus', geminiKey);
+            updateStatusIndicator('openrouterStatus', openrouterKey);
+            updateStatusIndicator('zaiStatus', zaiKey);
+        }
+
+        function updateStatusIndicator(elementId, apiKey) {
+            const indicator = document.getElementById(elementId);
+            if (!indicator) return;
+
+            if (apiKey && apiKey.length > 10) {
+                indicator.className = 'api-key-status valid';
+            } else if (apiKey && apiKey.length > 0) {
+                indicator.className = 'api-key-status invalid';
+            } else {
+                indicator.className = 'api-key-status unknown';
+            }
+        }
+
+        // Run diagnostics
+        async function runDiagnostics() {
+            try {
+                await window.ipcRenderer.invoke('run-diagnostics');
+                updateStatus('Running diagnostics...');
+            } catch (error) {
+                console.error('Failed to run diagnostics:', error);
+                updateStatus('Failed to run diagnostics');
+            }
+        }
+
+        // Show diagnostics results
+        function showDiagnosticsResults(data) {
+            const results = JSON.stringify(data, null, 2);
+            alert(`Diagnostics Results:\n\n${results}`);
+        }
+
+        // Get recommendations
+        async function getRecommendations() {
+            try {
+                await window.ipcRenderer.invoke('get-recommendations');
+                updateStatus('Getting AI recommendations...');
+                document.getElementById('recommendationsContent').innerHTML = '<p>Getting recommendations from DuckBot...</p>';
+            } catch (error) {
+                console.error('Failed to get recommendations:', error);
+                updateStatus('Failed to get recommendations');
+            }
+        }
+
+        // Show notification
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            // Style the notification
+            notification.style.position = 'fixed';
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.padding = '12px 20px';
+            notification.style.borderRadius = '6px';
+            notification.style.color = 'white';
+            notification.style.fontWeight = '500';
+            notification.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+            notification.style.zIndex = '10000';
+            notification.style.maxWidth = '400px';
+            
+            // Set background color based on type
+            switch(type) {
+                case 'success':
+                    notification.style.background = '#4CAF50';
+                    break;
+                case 'error':
+                    notification.style.background = '#f44336';
+                    break;
+                case 'warning':
+                    notification.style.background = '#ff9800';
+                    break;
+                default:
+                    notification.style.background = '#2196F3';
+            }
+            
+            // Add to document
+            document.body.appendChild(notification);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        // Update system time
+        function updateSystemTime() {
+            const now = new Date();
+            document.getElementById('systemTime').textContent = now.toLocaleString();
+        }
+
+        // Log viewer functionality
+        let logUpdateInterval = null;
+        let currentLogFile = null;
+
+        function startLogViewer() {
+            if (logUpdateInterval) {
+                clearInterval(logUpdateInterval);
+            }
+
+            // Update logs every 2 seconds
+            logUpdateInterval = setInterval(updateLogDisplay, 2000);
+            updateLogDisplay(); // Initial update
+        }
+
+        function stopLogViewer() {
+            if (logUpdateInterval) {
+                clearInterval(logUpdateInterval);
+                logUpdateInterval = null;
+            }
+        }
+
+        async function updateLogDisplay() {
+            try {
+                const logsContent = document.getElementById('logsContent');
+                if (!logsContent) return;
+
+                // Get logs from main process
+                const logs = await window.ipcRenderer.invoke('get-logs', {
+                    file: currentLogFile,
+                    limit: 100
+                });
+
+                displayLogs(logs);
+            } catch (error) {
+                console.error('Failed to update log display:', error);
+            }
+        }
+
+        function displayLogs(logs) {
+            const logsContent = document.getElementById('logsContent');
+            if (!logsContent) return;
+
+            if (!logs || logs.length === 0) {
+                logsContent.innerHTML = '<div class="log-entry info">No logs available</div>';
+                return;
+            }
+
+            let html = '';
+            logs.forEach(log => {
+                const timestamp = new Date(log.timestamp).toLocaleTimeString();
+                const level = log.level.toLowerCase();
+                const message = log.message.replace(/\n/g, '<br>');
+
+                html += `<div class="log-entry ${level}">
+                    <span class="log-timestamp">[${timestamp}]</span>
+                    <span class="log-level">[${level.toUpperCase()}]</span>
+                    <span class="log-message">${message}</span>
+                </div>`;
+            });
+
+            logsContent.innerHTML = html;
+            logsContent.scrollTop = logsContent.scrollHeight;
+        }
+
+        function selectLogFile(logFile) {
+            currentLogFile = logFile;
+
+            // Update active state of log file buttons
+            document.querySelectorAll('.log-file-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            if (logFile) {
+                event.target.classList.add('active');
+            }
+
+            updateLogDisplay();
+        }
+
+        function clearLogs() {
+            const logsContent = document.getElementById('logsContent');
+            if (logsContent) {
+                logsContent.innerHTML = '<div class="log-entry info">Logs cleared</div>';
+            }
+        }
+
+        async function downloadLogs() {
+            try {
+                const logs = await window.ipcRenderer.invoke('get-logs', {
+                    file: currentLogFile,
+                    limit: 1000
+                });
+
+                const logText = logs.map(log => {
+                    const timestamp = new Date(log.timestamp).toISOString();
+                    return `[${timestamp}] [${log.level.toUpperCase()}] ${log.message}`;
+                }).join('\n');
+
+                const blob = new Blob([logText], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `duckbot-logs-${currentLogFile || 'all'}-${new Date().toISOString().split('T')[0]}.txt`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } catch (error) {
+                console.error('Failed to download logs:', error);
+                alert('Failed to download logs');
+            }
+        }
+
+        // Connection Status Management
+        async function updateConnectionStatus() {
+            try {
+                const status = await window.ipcRenderer.invoke('check-duckbot-status');
+                updateDuckBotStatusUI(status);
+            } catch (error) {
+                console.error('Failed to check DuckBot status:', error);
+            }
+        }
+
+        function updateDuckBotStatusUI(status) {
+            const indicator = document.getElementById('duckbotIndicator');
+            const statusText = document.getElementById('duckbotStatusText');
+            const guidance = document.getElementById('connectionGuidance');
+            const startBtn = document.getElementById('startDuckbotBtn');
+
+            // Update DuckBot status
+            if (status.isRunning) {
+                indicator.classList.add('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = `Running (${status.services.length} services)`;
+
+                guidance.className = 'connection-guidance success';
+                guidance.innerHTML = `
+                    <strong>✅ DuckBot is running</strong><br>
+                    Services: ${status.services.map(s => s.name).join(', ')}<br>
+                    ${status.recommendation.message}
+                `;
+
+                startBtn.style.display = 'none';
+            } else {
+                indicator.classList.remove('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = 'Not Running';
+
+                guidance.className = 'connection-guidance warning';
+                guidance.innerHTML = `
+                    <strong>⚠️ DuckBot is not running</strong><br>
+                    ${status.recommendation.message}<br>
+                    <small>Click "Start DuckBot Ultimate" to launch all services</small>
+                `;
+
+                startBtn.style.display = 'block';
+            }
+        }
+
+        function updateMCPStatus(connected, error = null) {
+            const indicator = document.getElementById('mcpIndicator');
+            const statusText = document.getElementById('mcpStatusText');
+
+            if (connected) {
+                indicator.classList.add('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = 'Connected';
+            } else if (error) {
+                indicator.classList.remove('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = `Error: ${error}`;
+            } else {
+                indicator.classList.remove('connected');
+                indicator.classList.add('connecting');
+                statusText.textContent = 'Connecting...';
+            }
+        }
+
+        function updateChatStatus(connected, error = null) {
+            const indicator = document.getElementById('chatIndicator');
+            const statusText = document.getElementById('chatStatusText');
+
+            if (connected) {
+                indicator.classList.add('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = 'Connected';
+            } else if (error) {
+                indicator.classList.remove('connected');
+                indicator.classList.remove('connecting');
+                statusText.textContent = `Error: ${error}`;
+            } else {
+                indicator.classList.remove('connected');
+                indicator.classList.add('connecting');
+                statusText.textContent = 'Connecting...';
+            }
+        }
+
+        function showConnectionGuidance(message, type = 'info') {
+            const guidance = document.getElementById('connectionGuidance');
+            guidance.className = `connection-guidance ${type}`;
+            guidance.innerHTML = message;
+        }
+
+        async function retryConnections() {
+            const retryBtn = document.getElementById('retryBtn');
+            retryBtn.disabled = true;
+            retryBtn.textContent = '🔄 Retrying...';
+
+            try {
+                await window.ipcRenderer.invoke('retry-connections');
+                showConnectionGuidance('🔄 Connection retry initiated...', 'info');
+
+                // Update status indicators to show connecting state
+                updateMCPStatus(false);
+                updateChatStatus(false);
+
+                // Check status after delay
+                setTimeout(() => {
+                    updateConnectionStatus();
+                    retryBtn.disabled = false;
+                    retryBtn.textContent = '🔁 Retry Connections';
+                }, 3000);
+            } catch (error) {
+                showConnectionGuidance(`❌ Failed to retry connections: ${error.message}`, 'warning');
+                retryBtn.disabled = false;
+                retryBtn.textContent = '🔁 Retry Connections';
+            }
+        }
+
+        async function startDuckBot() {
+            const startBtn = document.getElementById('startDuckbotBtn');
+            startBtn.disabled = true;
+            startBtn.textContent = '🚀 Starting...';
+
+            try {
+                showConnectionGuidance('🚀 Starting DuckBot Ultimate mode...', 'info');
+
+                const result = await window.ipcRenderer.invoke('start-duckbot-recommended', 'ultimate');
+
+                if (result.started) {
+                    showConnectionGuidance(`
+                        <strong>✅ DuckBot started successfully!</strong><br>
+                        Mode: ${result.mode}<br>
+                        Services detected: ${result.services.length}<br>
+                        Allow 10-15 seconds for all services to fully initialize.
+                    `, 'success');
+
+                    // Update status to show starting
+                    const indicator = document.getElementById('duckbotIndicator');
+                    const statusText = document.getElementById('duckbotStatusText');
+                    indicator.classList.add('connecting');
+                    statusText.textContent = 'Starting...';
+
+                    // Poll for status updates
+                    const statusInterval = setInterval(async () => {
+                        const status = await window.ipcRenderer.invoke('check-duckbot-status');
+                        updateDuckBotStatusUI(status);
+
+                        if (status.isRunning) {
+                            clearInterval(statusInterval);
+                        }
+                    }, 2000);
+
+                } else {
+                    showConnectionGuidance(`
+                        <strong>⚠️ DuckBot startup may be delayed</strong><br>
+                        The startup process was initiated but services are not yet responding.<br>
+                        This is normal - please allow 10-15 seconds for full initialization.
+                    `, 'warning');
+                }
+            } catch (error) {
+                showConnectionGuidance(`❌ Failed to start DuckBot: ${error.message}`, 'warning');
+            }
+
+            startBtn.disabled = false;
+            startBtn.textContent = '🚀 Start DuckBot Ultimate';
+        }
+
+        // Listen for connection status updates
+        window.ipcRenderer.on('mcp-status', (event, status) => {
+            updateMCPStatus(status.connected, status.error);
+
+            if (status.showGuidance) {
+                showConnectionGuidance(status.error, 'warning');
+            } else if (status.maxRetries) {
+                showConnectionGuidance(status.error, 'warning');
+            }
+        });
+
+        window.ipcRenderer.on('chat-status', (event, status) => {
+            updateChatStatus(status.connected, status.error);
+        });
+
+        // Initialize when DOM is loaded
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
