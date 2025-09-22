@@ -1,0 +1,223 @@
+2025-09-17 18:30:23,387 - DuckBot.Launcher - INFO - [PID:7340] - Launching DuckBot in ultimate mode
+2025-09-17 18:30:23,389 - DuckBot.Launcher - INFO - [PID:7340] - Validating environment...
+2025-09-17 18:30:23,429 - DuckBot.Launcher - INFO - [PID:7340] - Environment validation passed
+2025-09-17 18:32:51,954 - DuckBot.Launcher - INFO - [PID:14944] - Launching DuckBot in ultimate mode
+2025-09-17 18:32:51,958 - DuckBot.Launcher - INFO - [PID:14944] - Validating environment...
+2025-09-17 18:32:51,992 - DuckBot.Launcher - INFO - [PID:14944] - Environment validation passed
+2025-09-17 18:32:51,994 - DuckBot.Launcher - ERROR - [PID:14944] - [SERVICE] Failed to launch ultimate mode
+2025-09-17 18:32:51,994 - DuckBot.Launcher - INFO - [PID:14944] - Attempting service error recovery...
+2025-09-17 18:35:39,598 - DuckBot.Launcher - INFO - [PID:34824] - Launching DuckBot in ultimate mode
+2025-09-17 18:35:39,601 - DuckBot.Launcher - INFO - [PID:34824] - Validating environment...
+2025-09-17 18:35:39,636 - DuckBot.Launcher - INFO - [PID:34824] - Environment validation passed
+2025-09-17 18:35:39,637 - DuckBot.Launcher - INFO - [PID:34824] - Validating environment...
+2025-09-17 18:35:39,673 - DuckBot.Launcher - INFO - [PID:34824] - Environment validation passed
+2025-09-17 18:35:39,676 - DuckBot.Launcher - ERROR - [PID:34824] - [SERVICE] Failed to launch ultimate mode
+2025-09-17 18:35:39,677 - DuckBot.Launcher - INFO - [PID:34824] - Attempting service error recovery...
+2025-09-17 18:36:40,838 - DuckBot.Launcher - INFO - [PID:57932] - Initializing port manager...
+2025-09-17 18:36:40,838 - DuckBot.Launcher - INFO - [PID:57932] - Scanning ports...
+2025-09-17 18:36:40,838 - DuckBot.Launcher - INFO - [PID:57932] - Port 8787 (Enhanced WebUI) is in use
+2025-09-17 18:36:42,855 - DuckBot.Launcher - INFO - [PID:57932] - Port 8790 (Modern WebUI) is in use
+2025-09-17 18:36:42,856 - DuckBot.Launcher - INFO - [PID:57932] - Port 3000 (Open WebUI) is in use
+2025-09-17 18:36:44,890 - DuckBot.Launcher - INFO - [PID:57932] - Port 8000 (MCP Server) is in use
+2025-09-17 18:36:44,890 - DuckBot.Launcher - INFO - [PID:57932] - Port 1234 (LM Studio) is in use
+2025-09-17 18:36:48,928 - DuckBot.Launcher - INFO - [PID:57932] - Port health check thread started
+2025-09-17 18:36:48,928 - DuckBot.Launcher - INFO - [PID:57932] - Port manager initialized
+2025-09-17 18:36:48,928 - DuckBot.Launcher - INFO - [PID:57932] - Launching DuckBot in ultimate mode
+2025-09-17 18:36:48,929 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:48,962 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:48,962 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:48,993 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:48,993 - DuckBot.Launcher - ERROR - [PID:57932] - Port 8787 already in use by None
+2025-09-17 18:36:48,993 - DuckBot.Launcher - ERROR - [PID:57932] - Port 8787 not available for enhanced_webui
+2025-09-17 18:36:48,993 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:49,025 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:49,025 - DuckBot.Launcher - INFO - [PID:57932] - Port 8789 allocated to unknown_service
+2025-09-17 18:36:49,025 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start service system_monitor: name 'ServiceType' is not defined
+2025-09-17 18:36:49,025 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start system_monitor
+2025-09-17 18:36:49,025 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:49,056 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:49,056 - DuckBot.Launcher - ERROR - [PID:57932] - Port 8790 already in use by None
+2025-09-17 18:36:49,056 - DuckBot.Launcher - ERROR - [PID:57932] - Port 8790 not available for ai_router
+2025-09-17 18:36:49,056 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:49,091 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:49,091 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start service bytebot: name 'ServiceType' is not defined
+2025-09-17 18:36:49,091 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start bytebot
+2025-09-17 18:36:49,091 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start service discord_bot: name 'ServiceType' is not defined
+2025-09-17 18:36:49,091 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start discord_bot
+2025-09-17 18:36:49,091 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:49,124 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:49,124 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start service vibevoice: name 'ServiceType' is not defined
+2025-09-17 18:36:49,124 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start vibevoice
+2025-09-17 18:36:49,124 - DuckBot.Launcher - INFO - [PID:57932] - Validating environment...
+2025-09-17 18:36:49,157 - DuckBot.Launcher - INFO - [PID:57932] - Environment validation passed
+2025-09-17 18:36:49,157 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start service cost_tracker: name 'ServiceType' is not defined
+2025-09-17 18:36:49,157 - DuckBot.Launcher - ERROR - [PID:57932] - Failed to start cost_tracker
+2025-09-17 18:36:49,157 - DuckBot.Launcher - INFO - [PID:57932] - Successfully started 0/7 services
+2025-09-17 18:37:08,113 - DuckBot.Launcher - INFO - [PID:16252] - Initializing port manager...
+2025-09-17 18:37:08,113 - DuckBot.Launcher - INFO - [PID:16252] - Scanning ports...
+2025-09-17 18:37:08,115 - DuckBot.Launcher - INFO - [PID:16252] - Port 8787 (Enhanced WebUI) is in use
+2025-09-17 18:37:10,140 - DuckBot.Launcher - INFO - [PID:16252] - Port 8790 (Modern WebUI) is in use
+2025-09-17 18:37:10,140 - DuckBot.Launcher - INFO - [PID:16252] - Port 3000 (Open WebUI) is in use
+2025-09-17 18:37:12,161 - DuckBot.Launcher - INFO - [PID:16252] - Port 8000 (MCP Server) is in use
+2025-09-17 18:37:12,161 - DuckBot.Launcher - INFO - [PID:16252] - Port 1234 (LM Studio) is in use
+2025-09-17 18:37:16,201 - DuckBot.Launcher - INFO - [PID:16252] - Port health check thread started
+2025-09-17 18:37:16,201 - DuckBot.Launcher - INFO - [PID:16252] - Port manager initialized
+2025-09-17 18:37:16,201 - DuckBot.Launcher - INFO - [PID:16252] - Launching DuckBot in ultimate mode
+2025-09-17 18:37:16,202 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,238 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,238 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,271 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,271 - DuckBot.Launcher - ERROR - [PID:16252] - Port 8787 already in use by None
+2025-09-17 18:37:16,271 - DuckBot.Launcher - ERROR - [PID:16252] - Port 8787 not available for enhanced_webui
+2025-09-17 18:37:16,271 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,304 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,304 - DuckBot.Launcher - INFO - [PID:16252] - Port 8789 allocated to unknown_service
+2025-09-17 18:37:16,304 - DuckBot.Launcher - INFO - [PID:16252] - Starting service system_monitor: python -m duckbot.services.enhanced_monitoring_dashboard
+2025-09-17 18:37:16,309 - DuckBot.Launcher - INFO - [PID:16252] - Service system_monitor started with PID 49420
+2025-09-17 18:37:16,309 - DuckBot.Launcher - INFO - [PID:16252] - Started system_monitor
+2025-09-17 18:37:16,309 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,342 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,342 - DuckBot.Launcher - ERROR - [PID:16252] - Port 8790 already in use by None
+2025-09-17 18:37:16,343 - DuckBot.Launcher - ERROR - [PID:16252] - Port 8790 not available for ai_router
+2025-09-17 18:37:16,343 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,377 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,378 - DuckBot.Launcher - INFO - [PID:16252] - Starting service bytebot: python -c from duckbot.integrations.bytebot_integration import ByteBotIntegration; import asyncio; asyncio.run(ByteBotIntegration().start_interactive_mode())
+2025-09-17 18:37:16,381 - DuckBot.Launcher - INFO - [PID:16252] - Service bytebot started with PID 33064
+2025-09-17 18:37:16,381 - DuckBot.Launcher - INFO - [PID:16252] - Started bytebot
+2025-09-17 18:37:16,382 - DuckBot.Launcher - INFO - [PID:16252] - Starting service discord_bot: python -m duckbot.ui.discord_bot
+2025-09-17 18:37:16,385 - DuckBot.Launcher - INFO - [PID:16252] - Service discord_bot started with PID 50144
+2025-09-17 18:37:16,385 - DuckBot.Launcher - INFO - [PID:16252] - Started discord_bot
+2025-09-17 18:37:16,385 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,419 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,419 - DuckBot.Launcher - INFO - [PID:16252] - Starting service vibevoice: python -m duckbot.integrations.vibevoice_client
+2025-09-17 18:37:16,423 - DuckBot.Launcher - INFO - [PID:16252] - Service vibevoice started with PID 26152
+2025-09-17 18:37:16,423 - DuckBot.Launcher - INFO - [PID:16252] - Started vibevoice
+2025-09-17 18:37:16,423 - DuckBot.Launcher - INFO - [PID:16252] - Validating environment...
+2025-09-17 18:37:16,457 - DuckBot.Launcher - INFO - [PID:16252] - Environment validation passed
+2025-09-17 18:37:16,458 - DuckBot.Launcher - INFO - [PID:16252] - Starting service cost_tracker: python -m duckbot.core.cost_management
+2025-09-17 18:37:16,460 - DuckBot.Launcher - INFO - [PID:16252] - Service cost_tracker started with PID 57380
+2025-09-17 18:37:16,461 - DuckBot.Launcher - INFO - [PID:16252] - Started cost_tracker
+2025-09-17 18:37:16,461 - DuckBot.Launcher - INFO - [PID:16252] - Successfully started 5/7 services
+2025-09-17 18:47:49,645 - DuckBot.Launcher - INFO - [PID:37060] - Initializing port manager...
+2025-09-17 18:47:49,646 - DuckBot.Launcher - INFO - [PID:37060] - Scanning ports...
+2025-09-17 18:47:49,659 - DuckBot.Launcher - INFO - [PID:37060] - Port 8787 (Enhanced WebUI) is in use
+2025-09-17 18:47:51,676 - DuckBot.Launcher - INFO - [PID:37060] - Port 8790 (Modern WebUI) is in use
+2025-09-17 18:47:51,691 - DuckBot.Launcher - INFO - [PID:37060] - Port 3000 (Open WebUI) is in use
+2025-09-17 18:47:53,712 - DuckBot.Launcher - INFO - [PID:37060] - Port 8000 (MCP Server) is in use
+2025-09-17 18:47:53,712 - DuckBot.Launcher - INFO - [PID:37060] - Port 1234 (LM Studio) is in use
+2025-09-17 18:47:57,762 - DuckBot.Launcher - INFO - [PID:37060] - Port health check thread started
+2025-09-17 18:47:57,762 - DuckBot.Launcher - INFO - [PID:37060] - Port manager initialized
+2025-09-17 18:47:57,762 - DuckBot.Launcher - INFO - [PID:37060] - Launching DuckBot in ultimate mode
+2025-09-17 18:47:57,762 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,796 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,796 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,826 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,826 - DuckBot.Launcher - ERROR - [PID:37060] - Port 8787 already in use by None
+2025-09-17 18:47:57,826 - DuckBot.Launcher - ERROR - [PID:37060] - Port 8787 not available for enhanced_webui
+2025-09-17 18:47:57,826 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,856 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,856 - DuckBot.Launcher - INFO - [PID:37060] - Port 8789 allocated to unknown_service
+2025-09-17 18:47:57,856 - DuckBot.Launcher - INFO - [PID:37060] - Starting service system_monitor: python -m duckbot.services.enhanced_monitoring_dashboard
+2025-09-17 18:47:57,859 - DuckBot.Launcher - INFO - [PID:37060] - Service system_monitor started with PID 2144
+2025-09-17 18:47:57,859 - DuckBot.Launcher - INFO - [PID:37060] - Started system_monitor
+2025-09-17 18:47:57,859 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,889 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,889 - DuckBot.Launcher - ERROR - [PID:37060] - Port 8790 already in use by None
+2025-09-17 18:47:57,889 - DuckBot.Launcher - ERROR - [PID:37060] - Port 8790 not available for ai_router
+2025-09-17 18:47:57,889 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,918 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,918 - DuckBot.Launcher - INFO - [PID:37060] - Starting service bytebot: python -c from duckbot.integrations.bytebot_integration import ByteBotIntegration; import asyncio; asyncio.run(ByteBotIntegration().start_interactive_mode())
+2025-09-17 18:47:57,921 - DuckBot.Launcher - INFO - [PID:37060] - Service bytebot started with PID 11144
+2025-09-17 18:47:57,921 - DuckBot.Launcher - INFO - [PID:37060] - Started bytebot
+2025-09-17 18:47:57,921 - DuckBot.Launcher - INFO - [PID:37060] - Starting service discord_bot: python -m duckbot.ui.discord_bot
+2025-09-17 18:47:57,923 - DuckBot.Launcher - INFO - [PID:37060] - Service discord_bot started with PID 31628
+2025-09-17 18:47:57,923 - DuckBot.Launcher - INFO - [PID:37060] - Started discord_bot
+2025-09-17 18:47:57,924 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,956 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,956 - DuckBot.Launcher - INFO - [PID:37060] - Starting service vibevoice: python -m duckbot.integrations.vibevoice_client
+2025-09-17 18:47:57,959 - DuckBot.Launcher - INFO - [PID:37060] - Service vibevoice started with PID 26816
+2025-09-17 18:47:57,960 - DuckBot.Launcher - INFO - [PID:37060] - Started vibevoice
+2025-09-17 18:47:57,960 - DuckBot.Launcher - INFO - [PID:37060] - Validating environment...
+2025-09-17 18:47:57,990 - DuckBot.Launcher - INFO - [PID:37060] - Environment validation passed
+2025-09-17 18:47:57,990 - DuckBot.Launcher - INFO - [PID:37060] - Starting service cost_tracker: python -m duckbot.core.cost_management
+2025-09-17 18:47:57,994 - DuckBot.Launcher - INFO - [PID:37060] - Service cost_tracker started with PID 50320
+2025-09-17 18:47:57,995 - DuckBot.Launcher - INFO - [PID:37060] - Started cost_tracker
+2025-09-17 18:47:57,995 - DuckBot.Launcher - INFO - [PID:37060] - Successfully started 5/7 services
+2025-09-17 18:48:00,004 - DuckBot.Launcher - WARNING - [PID:37060] - Service system_monitor unhealthy
+2025-09-17 18:48:00,004 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart system_monitor
+2025-09-17 18:48:00,004 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service system_monitor: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:48:00,004 - DuckBot.Launcher - INFO - [PID:37060] - Service system_monitor is already running
+2025-09-17 18:48:00,004 - DuckBot.Launcher - INFO - [PID:37060] - Restarted system_monitor
+2025-09-17 18:48:00,004 - DuckBot.Launcher - WARNING - [PID:37060] - Service bytebot unhealthy
+2025-09-17 18:48:32,018 - DuckBot.Launcher - WARNING - [PID:37060] - Service system_monitor unhealthy
+2025-09-17 18:48:32,018 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart system_monitor
+2025-09-17 18:48:32,018 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service system_monitor: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:48:32,018 - DuckBot.Launcher - INFO - [PID:37060] - Service system_monitor is already running
+2025-09-17 18:48:32,018 - DuckBot.Launcher - INFO - [PID:37060] - Restarted system_monitor
+2025-09-17 18:48:32,018 - DuckBot.Launcher - WARNING - [PID:37060] - Service bytebot unhealthy
+2025-09-17 18:48:32,018 - DuckBot.Launcher - WARNING - [PID:37060] - Service discord_bot unhealthy
+2025-09-17 18:48:32,018 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart discord_bot
+2025-09-17 18:48:32,019 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service discord_bot: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:48:32,019 - DuckBot.Launcher - INFO - [PID:37060] - Starting service discord_bot: python -m duckbot.ui.discord_bot
+2025-09-17 18:48:32,021 - DuckBot.Launcher - INFO - [PID:37060] - Service discord_bot started with PID 31736
+2025-09-17 18:48:32,021 - DuckBot.Launcher - INFO - [PID:37060] - Restarted discord_bot
+2025-09-17 18:48:32,021 - DuckBot.Launcher - WARNING - [PID:37060] - Service vibevoice unhealthy
+2025-09-17 18:48:32,021 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart vibevoice
+2025-09-17 18:48:32,021 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service vibevoice: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:48:32,021 - DuckBot.Launcher - INFO - [PID:37060] - Starting service vibevoice: python -m duckbot.integrations.vibevoice_client
+2025-09-17 18:48:32,024 - DuckBot.Launcher - INFO - [PID:37060] - Service vibevoice started with PID 53400
+2025-09-17 18:48:32,024 - DuckBot.Launcher - INFO - [PID:37060] - Restarted vibevoice
+2025-09-17 18:48:32,024 - DuckBot.Launcher - WARNING - [PID:37060] - Service cost_tracker unhealthy
+2025-09-17 18:48:32,024 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart cost_tracker
+2025-09-17 18:48:32,024 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service cost_tracker: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:48:32,024 - DuckBot.Launcher - INFO - [PID:37060] - Starting service cost_tracker: python -m duckbot.core.cost_management
+2025-09-17 18:48:32,027 - DuckBot.Launcher - INFO - [PID:37060] - Service cost_tracker started with PID 50552
+2025-09-17 18:48:32,027 - DuckBot.Launcher - INFO - [PID:37060] - Restarted cost_tracker
+2025-09-17 18:49:04,042 - DuckBot.Launcher - WARNING - [PID:37060] - Service system_monitor unhealthy
+2025-09-17 18:49:04,042 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart system_monitor
+2025-09-17 18:49:04,042 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service system_monitor: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:04,042 - DuckBot.Launcher - INFO - [PID:37060] - Service system_monitor is already running
+2025-09-17 18:49:04,042 - DuckBot.Launcher - INFO - [PID:37060] - Restarted system_monitor
+2025-09-17 18:49:04,042 - DuckBot.Launcher - WARNING - [PID:37060] - Service bytebot unhealthy
+2025-09-17 18:49:04,042 - DuckBot.Launcher - WARNING - [PID:37060] - Service discord_bot unhealthy
+2025-09-17 18:49:04,042 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart discord_bot
+2025-09-17 18:49:04,042 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service discord_bot: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:04,042 - DuckBot.Launcher - INFO - [PID:37060] - Starting service discord_bot: python -m duckbot.ui.discord_bot
+2025-09-17 18:49:04,046 - DuckBot.Launcher - INFO - [PID:37060] - Service discord_bot started with PID 24624
+2025-09-17 18:49:04,046 - DuckBot.Launcher - INFO - [PID:37060] - Restarted discord_bot
+2025-09-17 18:49:04,046 - DuckBot.Launcher - WARNING - [PID:37060] - Service vibevoice unhealthy
+2025-09-17 18:49:04,046 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart vibevoice
+2025-09-17 18:49:04,046 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service vibevoice: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:04,046 - DuckBot.Launcher - INFO - [PID:37060] - Starting service vibevoice: python -m duckbot.integrations.vibevoice_client
+2025-09-17 18:49:04,049 - DuckBot.Launcher - INFO - [PID:37060] - Service vibevoice started with PID 43884
+2025-09-17 18:49:04,049 - DuckBot.Launcher - INFO - [PID:37060] - Restarted vibevoice
+2025-09-17 18:49:04,049 - DuckBot.Launcher - WARNING - [PID:37060] - Service cost_tracker unhealthy
+2025-09-17 18:49:04,049 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart cost_tracker
+2025-09-17 18:49:04,049 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service cost_tracker: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:04,049 - DuckBot.Launcher - INFO - [PID:37060] - Starting service cost_tracker: python -m duckbot.core.cost_management
+2025-09-17 18:49:04,051 - DuckBot.Launcher - INFO - [PID:37060] - Service cost_tracker started with PID 25544
+2025-09-17 18:49:04,051 - DuckBot.Launcher - INFO - [PID:37060] - Restarted cost_tracker
+2025-09-17 18:49:36,063 - DuckBot.Launcher - WARNING - [PID:37060] - Service system_monitor unhealthy
+2025-09-17 18:49:36,063 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart system_monitor
+2025-09-17 18:49:36,063 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service system_monitor: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:36,063 - DuckBot.Launcher - INFO - [PID:37060] - Service system_monitor is already running
+2025-09-17 18:49:36,063 - DuckBot.Launcher - INFO - [PID:37060] - Restarted system_monitor
+2025-09-17 18:49:36,063 - DuckBot.Launcher - WARNING - [PID:37060] - Service bytebot unhealthy
+2025-09-17 18:49:36,063 - DuckBot.Launcher - WARNING - [PID:37060] - Service discord_bot unhealthy
+2025-09-17 18:49:36,063 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart discord_bot
+2025-09-17 18:49:36,063 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service discord_bot: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:36,063 - DuckBot.Launcher - INFO - [PID:37060] - Starting service discord_bot: python -m duckbot.ui.discord_bot
+2025-09-17 18:49:36,066 - DuckBot.Launcher - INFO - [PID:37060] - Service discord_bot started with PID 55624
+2025-09-17 18:49:36,066 - DuckBot.Launcher - INFO - [PID:37060] - Restarted discord_bot
+2025-09-17 18:49:36,067 - DuckBot.Launcher - WARNING - [PID:37060] - Service vibevoice unhealthy
+2025-09-17 18:49:36,067 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart vibevoice
+2025-09-17 18:49:36,067 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service vibevoice: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:36,067 - DuckBot.Launcher - INFO - [PID:37060] - Starting service vibevoice: python -m duckbot.integrations.vibevoice_client
+2025-09-17 18:49:36,069 - DuckBot.Launcher - INFO - [PID:37060] - Service vibevoice started with PID 27896
+2025-09-17 18:49:36,069 - DuckBot.Launcher - INFO - [PID:37060] - Restarted vibevoice
+2025-09-17 18:49:36,069 - DuckBot.Launcher - WARNING - [PID:37060] - Service cost_tracker unhealthy
+2025-09-17 18:49:36,069 - DuckBot.Launcher - INFO - [PID:37060] - Attempting to restart cost_tracker
+2025-09-17 18:49:36,069 - DuckBot.Launcher - ERROR - [PID:37060] - Failed to stop service cost_tracker: ServiceManager.stop_service() missing 1 required positional argument: 'process'
+2025-09-17 18:49:36,069 - DuckBot.Launcher - INFO - [PID:37060] - Starting service cost_tracker: python -m duckbot.core.cost_management
+2025-09-17 18:49:36,072 - DuckBot.Launcher - INFO - [PID:37060] - Service cost_tracker started with PID 37540
+2025-09-17 18:49:36,072 - DuckBot.Launcher - INFO - [PID:37060] - Restarted cost_tracker

@@ -1,0 +1,40 @@
+INFO:duckbot.core.monitoring_system:DuckBot monitoring system initialized
+INFO:__main__:Starting Enhanced Monitoring Dashboard on 127.0.0.1:8790
+INFO:duckbot.core.monitoring_system:Starting DuckBot monitoring system
+INFO:duckbot.core.monitoring_system:Started metrics collection with 2.0s interval
+INFO:duckbot.core.monitoring_system:Started service health monitoring with 15.0s interval
+INFO:duckbot.core.monitoring_system:DuckBot monitoring system started
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 832, in <module>
+    main()
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 829, in main
+    dashboard.start()
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 387, in start
+    self.update_task = asyncio.create_task(self.start_real_time_updates())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 381, in create_task
+    loop = events.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop
+INFO:duckbot.core.monitoring_system:DuckBot monitoring system initialized
+INFO:__main__:Starting Enhanced Monitoring Dashboard on 127.0.0.1:8790
+INFO:duckbot.core.monitoring_system:Starting DuckBot monitoring system
+INFO:duckbot.core.monitoring_system:Started metrics collection with 2.0s interval
+INFO:duckbot.core.monitoring_system:Started service health monitoring with 15.0s interval
+INFO:duckbot.core.monitoring_system:DuckBot monitoring system started
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 832, in <module>
+    main()
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 829, in main
+    dashboard.start()
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\services\enhanced_monitoring_dashboard.py", line 387, in start
+    self.update_task = asyncio.create_task(self.start_real_time_updates())
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\tasks.py", line 381, in create_task
+    loop = events.get_running_loop()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: no running event loop

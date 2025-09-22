@@ -1,0 +1,180 @@
+WARNING:root:Some integrations not available: No module named 'multi_agent_activator'
+WARNING:duckbot.core.cost_management:Analytics integration not available
+INFO:__main__:VibeVoice commands available
+INFO:__main__:Cost tracking available
+INFO:__main__:LiveKit integration available
+INFO:__main__:Mining manager available
+INFO:__main__:Mining commands available
+INFO:duckbot.integrations.vibevoice_client:[OK] VibeVoice integration initialized (manager created)
+INFO:__main__:Entertainment commands available
+INFO:__main__:Cost tracker initialized
+WARNING:duckbot.integrations.livekit_integration:LiveKit SDK not available. Install with: pip install livekit livekit-api
+INFO:__main__:LiveKit initialized
+INFO:__main__:Mining manager initialized
+Traceback (most recent call last):
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 633, in start_interactive_mode
+    print("\u274c DISCORD_BOT_TOKEN environment variable not set!")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 664, in <module>
+    asyncio.run(start_interactive_mode())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 649, in start_interactive_mode
+    print(f"\u274c Error: {e}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+=== DUCKBOT DISCORD BOT - INTERACTIVE MODE ===
+Initializing Discord bot with VibeVoice integration...
+WARNING:root:Some integrations not available: No module named 'multi_agent_activator'
+WARNING:duckbot.core.cost_management:Analytics integration not available
+INFO:__main__:VibeVoice commands available
+INFO:__main__:Cost tracking available
+INFO:__main__:LiveKit integration available
+INFO:__main__:Mining manager available
+INFO:__main__:Mining commands available
+INFO:duckbot.integrations.vibevoice_client:[OK] VibeVoice integration initialized (manager created)
+INFO:__main__:Entertainment commands available
+INFO:__main__:Cost tracker initialized
+WARNING:duckbot.integrations.livekit_integration:LiveKit SDK not available. Install with: pip install livekit livekit-api
+INFO:__main__:LiveKit initialized
+INFO:__main__:Mining manager initialized
+Traceback (most recent call last):
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 633, in start_interactive_mode
+    print("\u274c DISCORD_BOT_TOKEN environment variable not set!")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 664, in <module>
+    asyncio.run(start_interactive_mode())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 649, in start_interactive_mode
+    print(f"\u274c Error: {e}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+=== DUCKBOT DISCORD BOT - INTERACTIVE MODE ===
+Initializing Discord bot with VibeVoice integration...
+WARNING:root:Some integrations not available: No module named 'multi_agent_activator'
+WARNING:duckbot.core.cost_management:Analytics integration not available
+INFO:__main__:VibeVoice commands available
+INFO:__main__:Cost tracking available
+INFO:__main__:LiveKit integration available
+INFO:__main__:Mining manager available
+INFO:__main__:Mining commands available
+INFO:duckbot.integrations.vibevoice_client:[OK] VibeVoice integration initialized (manager created)
+INFO:__main__:Entertainment commands available
+INFO:__main__:Cost tracker initialized
+WARNING:duckbot.integrations.livekit_integration:LiveKit SDK not available. Install with: pip install livekit livekit-api
+INFO:__main__:LiveKit initialized
+INFO:__main__:Mining manager initialized
+Traceback (most recent call last):
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 633, in start_interactive_mode
+    print("\u274c DISCORD_BOT_TOKEN environment variable not set!")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 664, in <module>
+    asyncio.run(start_interactive_mode())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 649, in start_interactive_mode
+    print(f"\u274c Error: {e}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+=== DUCKBOT DISCORD BOT - INTERACTIVE MODE ===
+Initializing Discord bot with VibeVoice integration...
+WARNING:root:Some integrations not available: No module named 'multi_agent_activator'
+WARNING:duckbot.core.cost_management:Analytics integration not available
+INFO:__main__:VibeVoice commands available
+INFO:__main__:Cost tracking available
+INFO:__main__:LiveKit integration available
+INFO:__main__:Mining manager available
+INFO:__main__:Mining commands available
+INFO:duckbot.integrations.vibevoice_client:[OK] VibeVoice integration initialized (manager created)
+INFO:__main__:Entertainment commands available
+INFO:__main__:Cost tracker initialized
+WARNING:duckbot.integrations.livekit_integration:LiveKit SDK not available. Install with: pip install livekit livekit-api
+INFO:__main__:LiveKit initialized
+INFO:__main__:Mining manager initialized
+Traceback (most recent call last):
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 633, in start_interactive_mode
+    print("\u274c DISCORD_BOT_TOKEN environment variable not set!")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 664, in <module>
+    asyncio.run(start_interactive_mode())
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 190, in run
+    return runner.run(main)
+           ^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\runners.py", line 118, in run
+    return self._loop.run_until_complete(task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\asyncio\base_events.py", line 654, in run_until_complete
+    return future.result()
+           ^^^^^^^^^^^^^^^
+  File "C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\ui\discord_bot.py", line 649, in start_interactive_mode
+    print(f"\u274c Error: {e}")
+  File "C:\Program Files\WindowsApps\PythonSoftwareFoundation.Python.3.11_3.11.2544.0_x64__qbz5n2kfra8p0\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u274c' in position 0: character maps to <undefined>
+=== DUCKBOT DISCORD BOT - INTERACTIVE MODE ===
+Initializing Discord bot with VibeVoice integration...
