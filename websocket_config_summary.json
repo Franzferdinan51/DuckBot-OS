@@ -1,0 +1,13 @@
+{
+  "timestamp": "2025-09-20 17:24:36",
+  "total_services": 17,
+  "port_ranges": 6,
+  "key_allocations": {
+    "websocket_mcp": 8791,
+    "websocket_chat": 8792,
+    "mcp_server": 8794,
+    "webui": 8787,
+    "monitoring": 8789,
+    "react_dev": 3000
+  }
+}

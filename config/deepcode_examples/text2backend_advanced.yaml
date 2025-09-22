@@ -1,0 +1,311 @@
+# Text2Backend Advanced Configuration Example
+# Enterprise-grade backend system generation with comprehensive features
+
+text2backend:
+  # Advanced settings
+  enabled: true
+  supported_formats: ["txt", "md", "json", "yaml", "xml", "openapi"]
+  max_description_length: 8000
+  output_format: "microservice_architecture"
+
+  # Multi-framework support
+  default_framework: "fastapi"
+  supported_frameworks: ["fastapi", "flask", "django", "express", "spring", "nestjs"]
+  framework_configs:
+    fastapi:
+      version: "0.100.0"
+      features: ["async", "dependency_injection", "middleware"]
+      include_background_tasks: true
+      include_websockets: true
+      include_graphql: true
+
+    django:
+      version: "4.0"
+      include_drf: true
+      include_django_channels: true
+      include_celery: true
+      include_django_rest_framework: true
+
+  # Advanced architecture settings
+  architecture:
+    pattern: "microservices"
+    include_database: true
+    include_auth: true
+    include_api_docs: true
+    include_validation: true
+    include_error_handling: true
+    include_caching: true
+    include_messaging: true
+    include_event_sourcing: true
+    include_circuit_breaker: true
+    include_service_discovery: true
+
+  # Enterprise database settings
+  database:
+    type: "postgresql"
+    orm: "sqlalchemy"
+    include_migrations: true
+    include_seeding: true
+    include_replication: true
+    include_sharding: false
+    include_connection_pooling: true
+    backup_strategy: "automated"
+    monitoring: true
+
+  # Advanced API settings
+  api:
+    style: "rest"
+    include_swagger: true
+    include_openapi: true
+    include_graphql: true
+    include_websockets: true
+    include_cors: true
+    include_rate_limiting: true
+    include_versioning: true
+    include_hateoas: false
+    include_async_support: true
+    version: "v1"
+    backward_compatibility: true
+
+  # Enterprise security settings
+  security:
+    include_authentication: true
+    include_authorization: true
+    include_oauth: true
+    include_jwt: true
+    include_api_keys: true
+    include_input_validation: true
+    include_output_sanitization: true
+    include_rate_limiting: true
+    include_cors: true
+    include_csrf_protection: true
+    include_audit_logs: true
+    include_data_encryption: true
+    include_compliance_checks: true
+
+  # Enterprise code generation
+  code_style: "enterprise_ready"
+  include_comments: true
+  include_type_hints: true
+  include_logging: true
+  include_tests: true
+  include_documentation: true
+  include_examples: true
+  include_benchmarks: true
+  include_profiling: true
+  design_patterns: ["repository", "service", "factory", "observer", "singleton"]
+  include_solid_principles: true
+  include_clean_architecture: true
+
+  # Enterprise features
+  features:
+    include_background_jobs: true
+    include_scheduling: true
+    include_notifications: true
+    include_file_storage: true
+    include_search: true
+    include_analytics: true
+    include_monitoring: true
+    include_health_checks: true
+    include_metrics: true
+    include_tracing: true
+    include_circuit_breakers: true
+    include_retry_logic: true
+    include_bulk_operations: true
+    include_data_validation: true
+    include_data_transformation: true
+    include_event_processing: true
+    include_message_queuing: true
+
+  # Enterprise AI model settings
+  ai_model: "qwen3-coder"
+  fallback_model: "nemotron-49b"
+  temperature: 0.2
+  max_tokens: 8000
+  confidence_threshold: 0.85
+  enable_model_ensemble: true
+  enable_context_awareness: true
+  enable_domain_knowledge: true
+
+  # Advanced output structure
+  output_structure:
+    src:
+      models: ["models/", "models/entities/", "models/vo/"]
+      services: ["services/", "services/domain/", "services/application/"]
+      controllers: ["controllers/", "controllers/api/", "controllers/websocket/"]
+      repositories: ["repositories/", "repositories/interfaces/"]
+      utils: ["utils/", "utils/validators/", "utils/transformers/"]
+      config: ["config/", "config/database/", "config/security/"]
+      middleware: ["middleware/", "middleware/auth/", "middleware/logging/"]
+      events: ["events/", "events/handlers/", "events/producers/"]
+      jobs: ["jobs/", "jobs/schedulers/", "jobs/workers/"]
+      schemas: ["schemas/", "schemas/api/", "schemas/database/"]
+
+    tests:
+      unit: ["tests/unit/", "tests/unit/services/", "tests/unit/controllers/"]
+      integration: ["tests/integration/", "tests/integration/api/"]
+      e2e: ["tests/e2e/", "tests/e2e/workflows/"]
+      performance: ["tests/performance/", "tests/performance/load/"]
+      fixtures: ["tests/fixtures/", "tests/fixtures/data/"]
+
+    docs:
+      api: ["docs/api/", "docs/api/endpoints/"]
+      architecture: ["docs/architecture/", "docs/architecture/components/"]
+      deployment: ["docs/deployment/", "docs/deployment/kubernetes/"]
+      developer: ["docs/developer/", "docs/developer/guides/"]
+
+    scripts:
+      run: ["scripts/run.py", "scripts/run.prod.py"]
+      test: ["scripts/test.py", "scripts/test.ci.py"]
+      deploy: ["scripts/deploy.py", "scripts/deploy.k8s.py"]
+      migrate: ["scripts/migrate.py", "scripts/migrate.rollback.py"]
+      seed: ["scripts/seed.py", "scripts/seed.prod.py"]
+      monitor: ["scripts/monitor.py", "scripts/monitor.health.py"]
+
+    config:
+      development: ["config/development.yaml", "config/database.development.yaml"]
+      staging: ["config/staging.yaml", "config/database.staging.yaml"]
+      production: ["config/production.yaml", "config/database.production.yaml"]
+      docker: ["config/docker/", "config/docker/development/"]
+
+  # Enterprise dependencies
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+    include_optional_dependencies: true
+    package_manager: "pip"
+    dependency_groups:
+      core: ["fastapi", "uvicorn", "sqlalchemy", "pydantic"]
+      database: ["psycopg2", "alembic", "redis", "elasticsearch"]
+      auth: ["python-jose", "passlib", "python-multipart", "bcrypt"]
+      security: ["cryptography", "python-dotenv", "python-decouple"]
+      monitoring: ["prometheus-client", "structlog", "opentelemetry"]
+      testing: ["pytest", "pytest-asyncio", "pytest-cov", "httpx"]
+      dev: ["black", "mypy", "flake8", "isort"]
+
+  # Enterprise development setup
+  development:
+    include_docker: true
+    include_ci_cd: true
+    include_linting: true
+    include_testing: true
+    include_hot_reload: true
+    include_code_analysis: true
+    include_security_scanning: true
+    include_performance_monitoring: true
+    include_error_tracking: true
+    include_feature_flags: true
+    include_a_b_testing: true
+    include_local_development: true
+    include_debugging_tools: true
+
+  # Enterprise performance
+  performance:
+    enable_caching: true
+    cache_ttl: 3600
+    parallel_processing: true
+    max_concurrent_tasks: 10
+    memory_optimization: true
+    cpu_optimization: true
+    enable_compression: true
+    enable_lazy_loading: true
+    enable_connection_pooling: true
+    enable_query_optimization: true
+    enable_index_optimization: true
+    enable_load_balancing: true
+    enable_horizontal_scaling: true
+
+  # Enterprise monitoring
+  monitoring:
+    enabled: true
+    metrics_collection: true
+    health_checks: true
+    performance_monitoring: true
+    error_tracking: true
+    log_aggregation: true
+    distributed_tracing: true
+    alerting: true
+    dashboard: true
+    uptime_monitoring: true
+    resource_monitoring: true
+    business_metrics: true
+
+  # Enterprise deployment
+  deployment:
+    include_docker: true
+    include_kubernetes: true
+    include_ci_cd: true
+    include_monitoring: true
+    include_scaling: true
+    include_load_balancing: true
+    include_ssl: true
+    include_backup: true
+    include_disaster_recovery: true
+    include_blue_green_deployment: true
+    include_canary_deployment: true
+    include_zero_downtime: true
+
+  # Enterprise logging
+  logging:
+    enabled: true
+    level: "DEBUG"
+    structured_logging: true
+    include_traceback: true
+    log_rotation: true
+    log_aggregation: true
+    log_format: "json"
+    include_correlation_ids: true
+    include_request_tracing: true
+    include_performance_metrics: true
+    include_error_context: true
+    include_sensitive_data_filtering: true
+
+  # Quality assurance
+  quality:
+    enable_validation: true
+    enable_security_analysis: true
+    enable_performance_analysis: true
+    enable_memory_analysis: true
+    code_quality_threshold: 0.9
+    security_threshold: 0.95
+    include_code_review: true
+    include_static_analysis: true
+    include_dynamic_analysis: true
+    include_compliance_checks: true
+    include_contract_testing: true
+    include_integration_testing: true
+    include_performance_testing: true
+    include_security_testing: true
+
+  # Enterprise messaging
+  messaging:
+    include_message_broker: true
+    broker_type: "redis"
+    include_event_bus: true
+    include_command_bus: true
+    include_query_bus: true
+    include_saga_pattern: true
+    include_event_sourcing: true
+    include_cqrs: true
+    include_distributed_transactions: true
+
+  # Enterprise caching
+  caching:
+    include_redis: true
+    include_memcached: false
+    include_local_cache: true
+    include_distributed_cache: true
+    cache_strategy: "write_through"
+    cache_ttl: 3600
+    include_cache_invalidation: true
+    include_cache_warming: true
+
+  # Enterprise search
+  search:
+    include_elasticsearch: true
+    include_full_text_search: true
+    include_faceted_search: true
+    include_search_analytics: true
+    include_search_indexing: true
+    include_search_optimization: true

@@ -1,0 +1,122 @@
+# AI Providers Configuration for VibeVoice and RealtimeVoiceChat
+
+# OpenRouter Configuration
+openrouter:
+  api_key: ""  # Set your OpenRouter API key here or in OPENROUTER_API_KEY environment variable
+  model: "anthropic/claude-3.5-sonnet"
+  max_tokens: 2000
+  temperature: 0.7
+  base_url: "https://openrouter.ai/api/v1"
+
+# Gemini Configuration
+gemini:
+  api_key: ""  # Set your Gemini API key here or in GEMINI_API_KEY environment variable
+  model: "gemini-pro"
+  max_tokens: 2000
+  temperature: 0.7
+  base_url: "https://generativelanguage.googleapis.com/v1beta"
+
+# LM Studio Configuration
+lm_studio:
+  api_url: "http://localhost:1234"
+  model: "local"
+  max_tokens: 2000
+  temperature: 0.7
+  timeout: 30
+
+# DuckBot Configuration
+duckbot:
+  api_url: "local"
+  model: "duckbot"
+  max_tokens: 2000
+  temperature: 0.7
+  mode: "voice_chat"
+
+# VibeVoice Configuration
+vibevoice:
+  api_url: "http://localhost:8000"
+  enabled: true
+  default_voice: "en-alice"
+  available_voices:
+    - "en-alice"
+    - "en-carter"
+    - "en-david"
+    - "en-emily"
+    - "zh-xiaoli"
+    - "zh-wang"
+  voice_profiles:
+    en-alice:
+      name: "Alice"
+      gender: "female"
+      pitch: 0.0
+      speed: 1.0
+    en-carter:
+      name: "Carter"
+      gender: "male"
+      pitch: -2.0
+      speed: 1.0
+    en-david:
+      name: "David"
+      gender: "male"
+      pitch: 1.0
+      speed: 0.9
+    en-emily:
+      name: "Emily"
+      gender: "female"
+      pitch: 1.5
+      speed: 1.1
+
+# RealtimeVoiceChat Configuration
+realtime_voicechat:
+  port: 8001
+  host: "0.0.0.0"
+  max_concurrent_sessions: 100
+  session_timeout: 3600  # 1 hour
+  max_conversation_history: 50
+  enable_web_interface: true
+
+# Discord Integration Configuration
+discord:
+  vibevoice:
+    enabled: true
+    max_text_length: 2000
+    max_file_size_mb: 8
+    cleanup_delay_seconds: 300
+    presets:
+      alice: ["en-alice"]
+      carter: ["en-carter"]
+      conversation: ["en-alice", "en-carter"]
+      debate: ["en-david", "en-emily"]
+      podcast: ["en-alice", "en-carter", "en-david"]
+      news: ["en-emily", "en-carter"]
+    rate_limits:
+      calls_per_minute: 10
+      calls_per_hour: 100
+
+# General Settings
+general:
+  default_ai_provider: "lm_studio"
+  default_voice_profile: "en-alice"
+  enable_logging: true
+  log_level: "INFO"
+  temp_directory: "/tmp/vibevoice"
+  cleanup_temp_files: true
+  cleanup_delay_hours: 1
+
+# Feature Flags
+features:
+  enable_emotion_detection: true
+  enable_style_transfer: true
+  enable_multi_speaker: true
+  enable_batch_processing: true
+  enable_real_time_voice: true
+  enable_web_interface: true
+  enable_discord_integration: true
+
+# Performance Settings
+performance:
+  max_workers: 4
+  cache_size: 100
+  timeout_seconds: 30
+  retry_attempts: 3
+  retry_delay_seconds: 1

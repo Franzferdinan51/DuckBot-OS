@@ -1,0 +1,109 @@
+# Text2Backend Basic Configuration Example
+# Create backend systems from natural language descriptions
+
+text2backend:
+  # Basic settings
+  enabled: true
+  supported_formats: ["txt", "md", "json"]
+  max_description_length: 3000
+  output_format: "api_service"
+
+  # Backend framework selection
+  default_framework: "fastapi"
+  supported_frameworks: ["fastapi", "flask", "django", "express", "spring"]
+
+  # Architecture settings
+  architecture:
+    pattern: "mvc"
+    include_database: true
+    include_auth: false
+    include_api_docs: true
+    include_validation: true
+    include_error_handling: true
+
+  # Database settings
+  database:
+    type: "sqlite"
+    orm: "sqlalchemy"
+    include_migrations: true
+    include_seeding: false
+
+  # API settings
+  api:
+    style: "rest"
+    include_swagger: true
+    include_openapi: true
+    include_cors: true
+    include_rate_limiting: false
+    version: "v1"
+
+  # Security settings
+  security:
+    include_authentication: false
+    include_authorization: false
+    include_input_validation: true
+    include_output_sanitization: true
+
+  # Code generation settings
+  code_style: "clean"
+  include_comments: true
+  include_type_hints: true
+  include_logging: true
+  include_tests: false
+  include_documentation: true
+
+  # AI model settings
+  ai_model: "qwen3-coder"
+  temperature: 0.2
+  max_tokens: 5000
+  confidence_threshold: 0.75
+
+  # Output structure
+  output_structure:
+    src:
+      models: ["models/", "models/database.py"]
+      services: ["services/", "services/main_service.py"]
+      controllers: ["controllers/", "controllers/api_controller.py"]
+      utils: ["utils/", "utils/helpers.py"]
+      config: ["config/", "config/database.py"]
+
+    tests:
+      unit: ["tests/", "tests/test_services.py"]
+      integration: ["tests/integration/"]
+
+    docs:
+      api: ["docs/api.md", "docs/usage.md"]
+      setup: ["docs/setup.md", "docs/running.md"]
+
+    scripts:
+      run: ["scripts/run.py", "scripts/test.py"]
+      migrate: ["scripts/migrate.py"]
+
+  # Dependencies
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+    package_manager: "pip"
+
+  # Development setup
+  development:
+    include_docker: false
+    include_ci_cd: false
+    include_linting: true
+    include_testing: false
+    include_hot_reload: true
+
+  # Performance
+  performance:
+    enable_caching: true
+    cache_ttl: 1800
+    parallel_processing: false
+    max_concurrent_tasks: 1
+
+  # Logging
+  logging:
+    enabled: true
+    level: "INFO"
+    save_logs: true
+    log_format: "structured"

@@ -1,0 +1,181 @@
+# Paper2Code Advanced Configuration Example
+# Advanced research paper to code conversion with optimization
+
+paper2code:
+  # Advanced settings
+  enabled: true
+  supported_formats: ["pdf", "docx", "txt", "latex"]
+  max_file_size_mb: 100
+  output_format: "production_ready"
+
+  # Multi-language support
+  target_languages: ["python", "javascript", "java", "cpp"]
+  default_language: "python"
+  language_specific_configs:
+    python:
+      style_guide: "pep8"
+      type_hints: true
+      docstring_style: "google"
+      include_mypy: true
+
+    javascript:
+      style_guide: "eslint"
+      include_typescript: true
+      include_jest: true
+      framework: "node.js"
+
+    java:
+      style_guide: "google"
+      include_maven: true
+      include_junit: true
+      java_version: "17"
+
+  # Advanced code generation
+  code_style: "enterprise_ready"
+  design_patterns: ["singleton", "factory", "observer", "strategy"]
+  include_design_patterns: true
+  include_solid_principles: true
+  include_best_practices: true
+
+  # Comprehensive documentation
+  include_documentation: true
+  documentation_style: "sphinx"
+  include_api_docs: true
+  include_architecture_docs: true
+  include_deployment_docs: true
+  include_contributing_docs: true
+
+  # Advanced testing
+  include_tests: true
+  test_framework: "pytest"
+  include_unit_tests: true
+  include_integration_tests: true
+  include_performance_tests: true
+  include_e2e_tests: false
+  test_coverage_target: 0.9
+  include_benchmarks: true
+
+  # Enterprise quality assurance
+  enable_validation: true
+  enable_security_analysis: true
+  enable_performance_analysis: true
+  enable_memory_analysis: true
+  code_quality_threshold: 0.9
+  security_threshold: 0.95
+
+  # Advanced AI model settings
+  ai_model: "qwen3-coder"
+  fallback_model: "nemotron-49b"
+  temperature: 0.2
+  max_tokens: 8000
+  confidence_threshold: 0.8
+  enable_model_ensemble: true
+
+  # Advanced output structure
+  output_structure:
+    src:
+      main: ["main.py", "app.py"]
+      core: ["core/algorithms.py", "core/utils.py", "core/config.py"]
+      models: ["models/data_models.py", "models/ml_models.py"]
+      services: ["services/algorithm_service.py", "services/data_service.py"]
+      utils: ["utils/logger.py", "utils/metrics.py"]
+
+    tests:
+      unit: ["tests/unit/test_algorithms.py", "tests/unit/test_services.py"]
+      integration: ["tests/integration/test_integration.py"]
+      performance: ["tests/performance/benchmarks.py"]
+      fixtures: ["tests/fixtures/sample_data.py", "tests/fixtures/test_config.py"]
+
+    docs:
+      user: ["docs/user_guide.md", "docs/api_reference.md"]
+      developer: ["docs/developer_guide.md", "docs/architecture.md"]
+      deployment: ["docs/deployment.md", "docs/configuration.md"]
+
+    config:
+      development: ["config/development.yaml", "config/test.yaml"]
+      production: ["config/production.yaml", "config/docker.yaml"]
+
+    scripts:
+      build: ["scripts/build.py", "scripts/test.py"]
+      deployment: ["scripts/deploy.py", "scripts/docker_build.sh"]
+
+  # Enterprise file naming
+  file_naming:
+    convention: "snake_case"
+    module_separator: "_"
+    test_suffix: "_test"
+    integration_prefix: "integration_"
+    performance_prefix: "performance_"
+
+  # Advanced formatting
+  formatting:
+    line_length: 88
+    indent_size: 4
+    quote_style: "double"
+    trailing_commas: "forbid"
+    import_sorting: "isort"
+    docstring_format: "google"
+
+  # Enterprise dependencies
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+    include_optional_dependencies: true
+    dependency_groups:
+      core: ["numpy", "pandas", "scikit-learn"]
+      ml: ["tensorflow", "torch", "transformers"]
+      web: ["fastapi", "uvicorn", "sqlalchemy"]
+      dev: ["pytest", "black", "mypy", "flake8"]
+
+  # Enterprise logging
+  logging:
+    enabled: true
+    level: "DEBUG"
+    structured_logging: true
+    include_traceback: true
+    log_rotation: true
+    log_aggregation: true
+    log_format: "json"
+
+  # Advanced performance
+  performance:
+    enable_caching: true
+    cache_ttl: 7200
+    parallel_processing: true
+    max_concurrent_tasks: 3
+    memory_optimization: true
+    cpu_optimization: true
+
+  # Enterprise monitoring
+  monitoring:
+    enabled: true
+    metrics_collection: true
+    health_checks: true
+    performance_monitoring: true
+    error_tracking: true
+    alerting: true
+
+  # Security features
+  security:
+    enable_input_validation: true
+    enable_output_sanitization: true
+    include_authentication: true
+    include_authorization: true
+    include_rate_limiting: true
+
+  # Deployment configuration
+  deployment:
+    include_docker: true
+    include_kubernetes: true
+    include_ci_cd: true
+    include_monitoring: true
+    include_scaling: true
+
+  # Advanced features
+  features:
+    include_profiling: true
+    include_debugging: true
+    include_optimization: true
+    include_documentation: true
+    include_examples: true

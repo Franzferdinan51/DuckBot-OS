@@ -1,0 +1,95 @@
+# Development Environment Configuration
+# Overrides base duckbot_config.yaml for development environment
+
+# Development-specific system settings
+system:
+  debug_mode: true
+  log_level: "DEBUG"
+  enable_developer_tools: true
+
+# Development service overrides
+services:
+  webui:
+    enabled: true
+    debug_mode: true
+    auto_reload: true
+
+  monitoring:
+    enabled: true
+    debug_mode: true
+    data_collection_interval: 5
+
+  terminal:
+    enabled: true
+    debug_mode: true
+
+  ai_router:
+    enabled: true
+    debug_mode: true
+
+  # Enable additional services for development
+  postgres:
+    enabled: true
+    required: false
+
+  redis:
+    enabled: true
+    required: false
+
+  n8n:
+    enabled: true
+    required: false
+
+# Development feature flags
+features:
+  debug_mode: true
+  developer_tools: true
+  testing_mode: true
+  telemetry_enabled: true
+  analytics_enabled: true
+  enable_debug_endpoints: true
+
+# Development hardware settings
+hardware:
+  max_concurrent_services: 15
+  max_memory_usage_percent: 90
+  max_cpu_usage_percent: 85
+  enable_caching: true
+  cache_ttl_seconds: 60
+
+# Development logging
+logging:
+  level: "DEBUG"
+  enable_console: true
+  enable_file: true
+  enable_json: false
+  log_rotation: true
+  max_file_size_mb: 50
+
+# Development security (relaxed)
+security:
+  enable_authentication: false
+  enable_rate_limiting: false
+  cors_enabled: true
+  cors_origins: ["*"]
+  ssl_enabled: false
+
+# Development AI providers (all enabled)
+ai_providers:
+  lm_studio:
+    enabled: true
+  ollama:
+    enabled: true
+  openrouter:
+    enabled: true
+  openai:
+    enabled: false  # Requires API key
+  anthropic:
+    enabled: false  # Requires API key
+
+# Development network settings
+network:
+  connection_timeout: 10
+  retry_attempts: 5
+  retry_delay: 0.5
+  enable_keepalive: true

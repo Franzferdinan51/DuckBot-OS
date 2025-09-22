@@ -1,0 +1,101 @@
+{
+  "comfyui": {
+    "path": null,
+    "api_url": "http://localhost:8188",
+    "enabled": true,
+    "auto_start": true,
+    "gpu_memory_limit": 0.8,
+    "max_concurrent_workflows": 3,
+    "default_models": {
+      "checkpoint": "v1-5-pruned.ckpt",
+      "vae": "vae-ft-mse-840000-ema-pruned.ckpt",
+      "upscaler": "4x-UltraSharp"
+    },
+    "workflow_settings": {
+      "default_steps": 20,
+      "default_cfg": 7.0,
+      "default_sampler": "euler",
+      "default_scheduler": "normal"
+    }
+  },
+  "trellis": {
+    "path": null,
+    "api_url": "http://localhost:8288",
+    "enabled": true,
+    "auto_start": true,
+    "max_concurrent_generations": 2,
+    "generation_settings": {
+      "default_resolution": 512,
+      "default_quality": "medium",
+      "default_output_format": "gaussians",
+      "supported_formats": ["radiance_fields", "gaussians", "meshes"]
+    },
+    "workflow_structures": ["sequential", "parallel", "hierarchical", "adaptive"]
+  },
+  "vibevoice": {
+    "api_url": "http://localhost:8000",
+    "enabled": true,
+    "auto_start": true,
+    "batch_processing": true,
+    "voice_settings": {
+      "default_speakers": ["en-alice", "en-carter"],
+      "available_voices": ["en-alice", "en-carter", "en-david", "en-emily", "zh-xiaoli", "zh-wang"],
+      "voice_presets": {
+        "alice": ["en-alice"],
+        "carter": ["en-carter"],
+        "conversation": ["en-alice", "en-carter"],
+        "debate": ["en-david", "en-emily"],
+        "podcast": ["en-alice", "en-carter", "en-david"],
+        "news": ["en-emily", "en-carter"]
+      },
+      "emotion_support": ["happy", "sad", "angry", "surprised", "neutral"],
+      "style_options": ["conversational", "professional", "emotional", "narrative"]
+    }
+  },
+  "unified": {
+    "health_check_interval": 30,
+    "metrics_retention_days": 7,
+    "auto_restart_services": true,
+    "resource_monitoring": true,
+    "cross_service_integration": true,
+    "performance_tracking": {
+      "enable_metrics": true,
+      "log_level": "INFO",
+      "alert_thresholds": {
+        "high_memory_usage": 0.9,
+        "high_failure_rate": 0.1,
+        "slow_response_time": 60
+      }
+    },
+    "security": {
+      "api_key_required": false,
+      "cors_enabled": true,
+      "rate_limiting": {
+        "enabled": false,
+        "requests_per_minute": 100
+      }
+    },
+    "storage": {
+      "output_directory": "./generated_content",
+      "cleanup_older_than_days": 30,
+      "max_storage_gb": 100
+    }
+  },
+  "cross_service_workflows": {
+    "text_to_multimedia": {
+      "description": "Convert text to image, 3D, and audio",
+      "services": ["comfyui", "trellis", "vibevoice"],
+      "enabled": true
+    },
+    "storytelling_pipeline": {
+      "description": "Create stories with images, 3D scenes, and narration",
+      "services": ["comfyui", "trellis", "vibevoice"],
+      "enabled": true
+    },
+    "educational_content": {
+      "description": "Generate educational materials with multiple media types",
+      "services": ["comfyui", "vibevoice"],
+      "enabled": true
+    }
+  }
+}

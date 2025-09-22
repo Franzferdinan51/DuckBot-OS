@@ -1,0 +1,284 @@
+{
+  "electron_config": {
+    "debug_mode": true,
+    "log_level": "DEBUG",
+    "mcp_host": "127.0.0.1",
+    "mcp_port": 8789,
+    "webui_port": 8787,
+    "ai_router_port": 8790,
+    "enable_ai_assistant": true,
+    "enable_notifications": true,
+    "enable_auto_reconnect": true,
+    "enable_auto_start_mcp": true,
+    "theme": "dark",
+    "font_size": 14,
+    "chat_position": "right",
+    "show_system_info": true,
+    "compact_mode": false,
+    "max_concurrent_services": 10,
+    "service_timeout": 30,
+    "health_check_interval": 5,
+    "startup_modes": {
+      "ultimate": {
+        "name": "Ultimate Complete Mode",
+        "description": "Complete AI integration with all features",
+        "icon": "🚀",
+        "category": "complete",
+        "requires": [
+          "lm_studio",
+          "openrouter"
+        ],
+        "command": "python start_ecosystem.py",
+        "ports": [
+          8787,
+          8789,
+          8790
+        ],
+        "enabled": true
+      },
+      "enhanced-webui": {
+        "name": "Enhanced WebUI",
+        "description": "Modern web interface with AI features",
+        "icon": "🌐",
+        "category": "web",
+        "requires": [
+          "openrouter"
+        ],
+        "command": "python duckbot/enhanced_webui.py --port 8787",
+        "ports": [
+          8787
+        ],
+        "enabled": true
+      },
+      "monitoring": {
+        "name": "System Monitoring",
+        "description": "Real-time system metrics and performance",
+        "icon": "📊",
+        "category": "monitoring",
+        "requires": [],
+        "command": "python ai_ecosystem_manager.py --port 8789",
+        "ports": [
+          8789
+        ],
+        "enabled": true
+      },
+      "bytebot": {
+        "name": "ByteBot Desktop Automation",
+        "description": "Complete computer control with AI",
+        "icon": "🤖",
+        "category": "automation",
+        "requires": [
+          "gemini"
+        ],
+        "command": "python -c \"from duckbot.bytebot_integration import ByteBotIntegration; import asyncio; asyncio.run(ByteBotIntegration().start_interactive_mode())\"",
+        "ports": [],
+        "enabled": true
+      },
+      "ai-router": {
+        "name": "AI Router System",
+        "description": "Intelligent AI model selection",
+        "icon": "🔀",
+        "category": "ai",
+        "requires": [
+          "lm_studio",
+          "openrouter"
+        ],
+        "command": "python duckbot/ai_router_gpt.py --port 8790",
+        "ports": [
+          8790
+        ],
+        "enabled": true
+      },
+      "vibevoice": {
+        "name": "Microsoft VibeVoice TTS",
+        "description": "Text-to-speech with Microsoft VibeVoice",
+        "icon": "🎤",
+        "category": "voice",
+        "requires": [],
+        "command": "python duckbot/vibevoice_integration.py",
+        "ports": [],
+        "enabled": true
+      },
+      "model_training": {
+        "name": "Model Training Studio",
+        "description": "Train and fine-tune AI models with GGUF and Hugging Face support",
+        "icon": "🤖",
+        "category": "ai",
+        "requires": [],
+        "command": "python launcher-modules/model-training/model_trainer.py",
+        "ports": [],
+        "enabled": true
+      },
+      "discord-bot": {
+        "name": "Discord Bot with VibeVoice",
+        "description": "Discord integration with voice capabilities",
+        "icon": "🎮",
+        "category": "communication",
+        "requires": [],
+        "command": "python duckbot/discord_bot.py",
+        "ports": [],
+        "enabled": true
+      }
+    }
+  },
+  "api_keys_status": {
+    "gemini": false,
+    "openrouter": false,
+    "zai": false,
+    "zai_coding_plan": false
+  },
+  "services_status": {
+    "webui": {
+      "name": "Enhanced WebUI Dashboard",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8787,
+      "health_endpoint": "/enhanced/health",
+      "environment_vars": {
+        "DUCKBOT_WEBUI_PORT": "{port}",
+        "DUCKBOT_WEBUI_HOST": "{host}"
+      },
+      "status": "stopped"
+    },
+    "monitoring": {
+      "name": "System Monitoring Dashboard",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8789,
+      "health_endpoint": "/health",
+      "environment_vars": {
+        "HOST": "{host}",
+        "PORT": "{port}"
+      },
+      "status": "stopped"
+    },
+    "terminal": {
+      "name": "Charm Terminal Interface",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8788,
+      "health_endpoint": "/health",
+      "environment_vars": {
+        "CHARM_HOST": "{host}",
+        "CHARM_PORT": "{port}"
+      },
+      "status": "stopped"
+    },
+    "ai_router": {
+      "name": "AI Router Service",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8790,
+      "health_endpoint": "/health",
+      "environment_vars": {
+        "AI_ROUTER_PORT": "{port}"
+      },
+      "status": "stopped"
+    },
+    "lm_studio": {
+      "name": "LM Studio Local AI",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 1234,
+      "health_endpoint": "/v1/models",
+      "environment_vars": {
+        "LM_STUDIO_URL": "http://{host}:{port}/v1"
+      },
+      "status": "stopped"
+    },
+    "openwebui": {
+      "name": "OpenWebUI Interface",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8080,
+      "health_endpoint": "/",
+      "environment_vars": {
+        "OPENWEBUI_HOST": "{host}",
+        "OPENWEBUI_PORT": "{port}"
+      },
+      "status": "stopped"
+    },
+    "n8n": {
+      "name": "N8N Workflow Automation",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 5678,
+      "health_endpoint": "/healthz",
+      "environment_vars": {
+        "N8N_PORT": "{port}",
+        "WEBHOOK_URL": "http://{host}:{port}/"
+      },
+      "status": "stopped"
+    },
+    "vibevoice": {
+      "name": "VibeVoice TTS Service",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8000,
+      "health_endpoint": "/health",
+      "environment_vars": {
+        "VIBEVOICE_API_URL": "http://{host}:{port}"
+      },
+      "status": "stopped"
+    },
+    "comfyui": {
+      "name": "ComfyUI Image Generation",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 8188,
+      "health_endpoint": "/prompt",
+      "environment_vars": {
+        "COMFYUI_HOST": "{host}",
+        "COMFYUI_PORT": "{port}",
+        "COMFYUI_WS_URL": "ws://{host}:{port}/ws"
+      },
+      "status": "stopped"
+    },
+    "postgres": {
+      "name": "PostgreSQL Database",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 5432,
+      "health_endpoint": null,
+      "environment_vars": {
+        "DATABASE_URL": "postgresql://postgres:password@{host}:{port}/duckbot"
+      },
+      "status": "stopped"
+    },
+    "redis": {
+      "name": "Redis Cache",
+      "enabled": true,
+      "host": "127.0.0.1",
+      "port": 6379,
+      "health_endpoint": null,
+      "environment_vars": {
+        "REDIS_URL": "redis://{host}:{port}"
+      },
+      "status": "stopped"
+    }
+  },
+  "feature_flags": {
+    "webui_enabled": true,
+    "monitoring_enabled": true,
+    "ai_routing_enabled": true,
+    "local_ai_enabled": true,
+    "cloud_ai_enabled": true,
+    "desktop_automation_enabled": true,
+    "voice_enabled": true,
+    "local_only_mode": false,
+    "debug_mode": false
+  },
+  "system_info": {
+    "name": "DuckBot Enhanced v4.2",
+    "version": "4.2",
+    "build_date": "2025-09-16",
+    "environment": "development",
+    "debug_mode": true,
+    "log_level": "DEBUG",
+    "min_ram_gb": 4,
+    "recommended_ram_gb": 8,
+    "gpu_enabled": true,
+    "max_concurrent_services": 10
+  },
+  "config_path": "config/duckbot_config.yaml"
+}

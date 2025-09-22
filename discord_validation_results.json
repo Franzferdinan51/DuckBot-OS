@@ -1,0 +1,71 @@
+{
+  "validation_time": "2025-09-17T04:56:16.276842",
+  "commands_status": {
+    "vibevoice_vibevoice_command": "AVAILABLE",
+    "vibevoice_voice_presets_command": "AVAILABLE",
+    "vibevoice_voice_status_command": "AVAILABLE",
+    "vibevoice_voice_help_command": "AVAILABLE",
+    "entertainment_joke_command": "AVAILABLE",
+    "entertainment_meme_command": "AVAILABLE",
+    "entertainment_quote_command": "AVAILABLE",
+    "entertainment_fact_command": "AVAILABLE",
+    "entertainment_trivia_command": "AVAILABLE",
+    "entertainment_eightball_command": "AVAILABLE",
+    "entertainment_rps_command": "AVAILABLE",
+    "entertainment_hangman_command": "AVAILABLE",
+    "entertainment_userinfo_command": "AVAILABLE",
+    "entertainment_serverinfo_command": "AVAILABLE",
+    "entertainment_avatar_command": "AVAILABLE",
+    "entertainment_ping_command": "AVAILABLE",
+    "entertainment_uptime_command": "AVAILABLE",
+    "entertainment_invite_command": "AVAILABLE",
+    "entertainment_tell_joke_command": "AVAILABLE",
+    "cost_cost_summary": "AVAILABLE",
+    "cost_cost_chart": "AVAILABLE",
+    "cost_cost_predict": "AVAILABLE",
+    "mining_mining_status": "AVAILABLE",
+    "mining_mining_start": "AVAILABLE",
+    "mining_mining_stop": "AVAILABLE",
+    "mining_mining_optimize": "AVAILABLE",
+    "mining_mining_switch": "AVAILABLE",
+    "mining_mining_profitability": "AVAILABLE",
+    "mining_mining_help": "AVAILABLE",
+    "livekit_setup_commands": "AVAILABLE",
+    "livekit_create_voice_room_command": "MISSING",
+    "livekit_list_voice_rooms_command": "MISSING"
+  },
+  "integrations": {
+    "discord_bot": "AVAILABLE",
+    "vibevoice": "AVAILABLE",
+    "entertainment": "AVAILABLE",
+    "cost_tracking": "AVAILABLE",
+    "mining": "AVAILABLE",
+    "livekit": "AVAILABLE"
+  },
+  "issues": [
+    "LiveKit command create_voice_room_command is missing",
+    "LiveKit command list_voice_rooms_command is missing",
+    "Discord bot token is not set in environment"
+  ],
+  "recommendations": [
+    "Fix all identified issues before deploying the bot",
+    "Set DISCORD_BOT_TOKEN environment variable",
+    "Test all commands in a development server first",
+    "Set up proper logging and monitoring",
+    "Regular testing after updates"
+  ],
+  "configuration": "AVAILABLE",
+  "config_features": [
+    "vibevoice",
+    "voice_channels",
+    "cost_tracking",
+    "livekit",
+    "mining"
+  ],
+  "discord_token": "NOT_SET",
+  "statistics": {
+    "total_commands_checked": 32,
+    "available_commands": 30,
+    "availability_percentage": 93.75
+  }
+}

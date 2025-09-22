@@ -1,0 +1,8 @@
+{
+  "api_keys": {
+    "gemini_api_key": "AIzaSyD8ISWxx3fk92MutwWnojuK07QfDJuyhiA",
+    "openrouter_api_key": "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",
+    "zai_api_key": null,
+    "zai_coding_plan": null
+  }
+}

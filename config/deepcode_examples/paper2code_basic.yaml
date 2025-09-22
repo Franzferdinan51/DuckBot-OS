@@ -1,0 +1,82 @@
+# Paper2Code Basic Configuration Example
+# Convert research papers to production-ready code
+
+paper2code:
+  # Basic settings
+  enabled: true
+  supported_formats: ["pdf", "docx", "txt"]
+  max_file_size_mb: 50
+  output_format: "project_structure"
+
+  # Code generation settings
+  default_language: "python"
+  code_style: "production_ready"
+  include_comments: true
+  include_type_hints: true
+  include_error_handling: true
+
+  # Documentation settings
+  include_documentation: true
+  documentation_style: "sphinx"
+  include_readme: true
+  include_examples: true
+
+  # Testing settings
+  include_tests: true
+  test_framework: "pytest"
+  test_coverage_target: 0.8
+  include_integration_tests: false
+
+  # Quality assurance
+  enable_validation: true
+  enable_security_analysis: true
+  code_quality_threshold: 0.8
+
+  # AI model settings
+  ai_model: "qwen3-coder"
+  temperature: 0.2
+  max_tokens: 4000
+  confidence_threshold: 0.75
+
+  # Output structure
+  output_structure:
+    src: ["main.py", "utils.py", "algorithms.py"]
+    tests: ["test_algorithms.py", "test_utils.py"]
+    docs: ["README.md", "algorithm_documentation.md"]
+    data: ["sample_data.json", "config.yaml"]
+    requirements: ["requirements.txt", "setup.py"]
+
+  # File naming conventions
+  file_naming:
+    main_file: "main.py"
+    utils_file: "utils.py"
+    algorithm_file: "algorithms.py"
+    test_file_prefix: "test_"
+    documentation_file: "README.md"
+
+  # Code formatting
+  formatting:
+    line_length: 88
+    indent_size: 4
+    quote_style: "double"
+    trailing_commas: "forbid"
+
+  # Dependencies management
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+
+  # Logging and monitoring
+  logging:
+    enabled: true
+    level: "INFO"
+    save_logs: true
+    log_format: "structured"
+
+  # Performance settings
+  performance:
+    enable_caching: true
+    cache_ttl: 3600
+    parallel_processing: false
+    max_concurrent_tasks: 1

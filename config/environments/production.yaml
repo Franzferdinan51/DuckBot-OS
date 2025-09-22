@@ -1,0 +1,103 @@
+# Production Environment Configuration
+# Overrides base duckbot_config.yaml for production environment
+
+# Production-specific system settings
+system:
+  debug_mode: false
+  log_level: "INFO"
+  enable_developer_tools: false
+
+# Production service overrides
+services:
+  webui:
+    enabled: true
+    debug_mode: false
+    auto_reload: false
+
+  monitoring:
+    enabled: true
+    debug_mode: false
+    data_collection_interval: 30
+
+  terminal:
+    enabled: true
+    debug_mode: false
+
+  ai_router:
+    enabled: true
+    debug_mode: false
+
+  # Essential services for production
+  postgres:
+    enabled: true
+    required: true
+
+  redis:
+    enabled: true
+    required: true
+
+  n8n:
+    enabled: true
+    required: false
+
+# Production feature flags
+features:
+  debug_mode: false
+  developer_tools: false
+  testing_mode: false
+  telemetry_enabled: false
+  analytics_enabled: true
+  enable_debug_endpoints: false
+  local_only_mode: false
+
+# Production hardware settings
+hardware:
+  max_concurrent_services: 8
+  max_memory_usage_percent: 80
+  max_cpu_usage_percent: 75
+  enable_caching: true
+  cache_ttl_seconds: 300
+  gpu_optimization: true
+
+# Production logging
+logging:
+  level: "INFO"
+  enable_console: true
+  enable_file: true
+  enable_json: true
+  log_rotation: true
+  max_file_size_mb: 200
+  backup_count: 10
+
+# Production security (strict)
+security:
+  enable_authentication: true
+  enable_rate_limiting: true
+  rate_limit_requests: 100
+  rate_limit_window: 60
+  cors_enabled: true
+  cors_origins: ["https://yourdomain.com"]
+  ssl_enabled: true
+  ssl_cert_path: "/etc/ssl/certs/duckbot.crt"
+  ssl_key_path: "/etc/ssl/private/duckbot.key"
+
+# Production AI providers (selective)
+ai_providers:
+  lm_studio:
+    enabled: true
+  ollama:
+    enabled: true
+  openrouter:
+    enabled: true
+  openai:
+    enabled: false  # Enable if you have API key
+  anthropic:
+    enabled: false  # Enable if you have API key
+
+# Production network settings
+network:
+  connection_timeout: 30
+  retry_attempts: 3
+  retry_delay: 1
+  enable_keepalive: true
+  keepalive_timeout: 300

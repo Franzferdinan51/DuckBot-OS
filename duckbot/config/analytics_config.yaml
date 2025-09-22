@@ -1,0 +1,215 @@
+# DuckBot Analytics Configuration
+# Advanced analytics, business intelligence, and predictive analytics settings
+
+# General Settings
+analytics:
+  enabled: true
+  data_retention_days: 90
+  cleanup_interval_hours: 24
+  monitoring_enabled: true
+  dashboard_enabled: true
+
+# Database Settings
+database:
+  path: "analytics.db"
+  backup_enabled: true
+  backup_interval_hours: 24
+  max_db_size_mb: 1000
+
+# User Behavior Analytics
+user_behavior:
+  enabled: true
+  session_timeout_minutes: 30
+  engagement_calculation:
+    recency_weight: 0.3
+    frequency_weight: 0.3
+    diversity_weight: 0.2
+    session_weight: 0.2
+  segmentation:
+    power_user_threshold:
+      requests: 100
+      engagement_score: 80
+      features: 5
+    new_user_period_days: 7
+    churned_user_inactive_days: 30
+
+# Performance Analytics
+performance:
+  enabled: true
+  monitoring:
+    interval_seconds: 30
+    collect_system_metrics: true
+    collect_service_metrics: true
+  thresholds:
+    cpu_warning: 70
+    cpu_critical: 85
+    memory_warning: 75
+    memory_critical: 85
+    disk_warning: 80
+    disk_critical: 90
+    response_time_warning_ms: 1000
+    response_time_critical_ms: 5000
+  alerting:
+    enabled: true
+    cooldown_minutes: 15
+
+# Business Intelligence
+business_intelligence:
+  enabled: true
+  cost_analysis:
+    categorization_enabled: true
+    optimization_enabled: true
+    roi_calculation_enabled: true
+  forecasting:
+    enabled: true
+    methods: ["linear_trend", "moving_average", "exponential_smoothing"]
+    confidence_level: 0.95
+  insights:
+    auto_generation_enabled: true
+    impact_threshold: 50
+    confidence_threshold: 60
+
+# Predictive Analytics
+predictive:
+  enabled: true
+  models:
+    linear_regression:
+      enabled: true
+      auto_retrain_days: 7
+      min_training_samples: 10
+    moving_average:
+      enabled: true
+      default_window_size: 7
+      max_window_size: 30
+    exponential_smoothing:
+      enabled: true
+      default_alpha: 0.3
+      auto_alpha_optimization: true
+    isolation_forest:
+      enabled: true
+      contamination: 0.1
+      n_estimators: 100
+  anomaly_detection:
+    enabled: true
+    z_score_threshold: 2.5
+    min_data_points: 10
+    auto_resolution_enabled: false
+
+# Real-time Dashboard
+dashboard:
+  enabled: true
+  host: "127.0.0.1"
+  port: 8790
+  auto_start: true
+  widgets:
+    active_users:
+      enabled: true
+      refresh_interval_seconds: 30
+      type: "metric_card"
+    system_performance:
+      enabled: true
+      refresh_interval_seconds: 15
+      type: "gauge"
+    cost_trends:
+      enabled: true
+      refresh_interval_seconds: 60
+      type: "line_chart"
+    feature_usage:
+      enabled: true
+      refresh_interval_seconds: 120
+      type: "bar_chart"
+    performance_metrics:
+      enabled: true
+      refresh_interval_seconds: 30
+      type: "table"
+    business_insights:
+      enabled: true
+      refresh_interval_seconds: 300
+      type: "table"
+  alerts:
+    enabled: true
+    max_displayed: 50
+    auto_dismiss_minutes: 1440  # 24 hours
+
+# API Settings
+api:
+  enabled: true
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+    requests_per_hour: 1000
+  authentication:
+    enabled: false
+    api_key_required: false
+  endpoints:
+    metrics: "/api/metrics"
+    widgets: "/api/widgets"
+    alerts: "/api/alerts"
+    analytics: "/api/analytics/{data_type}"
+    predictions: "/api/predictions"
+    reports: "/api/reports"
+
+# Integration Settings
+integrations:
+  cost_management:
+    enabled: true
+    sync_interval_minutes: 15
+  observability:
+    enabled: true
+    metrics_export: true
+    health_check_enabled: true
+  logging:
+    enabled: true
+    level: "INFO"
+    format: "json"
+    file: "analytics.log"
+    max_size_mb: 100
+    backup_count: 5
+
+# Feature Flags
+features:
+  user_behavior_tracking: true
+  performance_monitoring: true
+  cost_optimization: true
+  predictive_analytics: true
+  real_time_dashboard: true
+  business_intelligence: true
+  anomaly_detection: true
+  trend_analysis: true
+  forecasting: true
+  automated_insights: true
+  export_functionality: true
+
+# Data Export
+export:
+  enabled: true
+  formats: ["json", "csv", "xlsx"]
+  max_records_per_export: 10000
+  compression_enabled: true
+  scheduled_exports:
+    enabled: false
+    schedule: "0 0 * * *"  # Daily at midnight
+    formats: ["json", "csv"]
+
+# Security
+security:
+  data_encryption: false
+  anonymize_user_data: false
+  access_logging: true
+  audit_trail: true
+  retention_policy_days: 365
+
+# Advanced Settings
+advanced:
+  parallel_processing:
+    enabled: true
+    max_workers: 4
+    queue_size: 1000
+  caching:
+    enabled: true
+    ttl_seconds: 300
+    max_size_mb: 100
+  machine_learning:
+    model_cache_dir: "models"
+    auto_retrain_enabled: true
+    feature_engineering: true

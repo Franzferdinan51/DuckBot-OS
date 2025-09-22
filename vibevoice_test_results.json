@@ -1,0 +1,250 @@
+[
+  {
+    "test_name": "Environment Variables",
+    "status": "PASS",
+    "details": {
+      "VIBEVOICE_API_URL": "NOT_SET",
+      "ENABLE_VIBEVOICE": "NOT_SET",
+      "OPENROUTER_API_KEY": "NOT_SET",
+      "GEMINI_API_KEY": "NOT_SET"
+    },
+    "timestamp": 1758100284.5968394
+  },
+  {
+    "test_name": "Configuration File",
+    "status": "PASS",
+    "details": {
+      "loaded": true,
+      "sections": [
+        "openrouter",
+        "gemini",
+        "lm_studio",
+        "duckbot",
+        "vibevoice",
+        "realtime_voicechat",
+        "discord",
+        "general",
+        "features",
+        "performance"
+      ]
+    },
+    "timestamp": 1758100284.5998402
+  },
+  {
+    "test_name": "VibeVoice Server Health",
+    "status": "PASS",
+    "details": {
+      "status": "healthy",
+      "service": "VibeVoice TTS Server (Mock)",
+      "timestamp": "2025-09-17T05:11:24.865811",
+      "version": "1.0.0",
+      "available_voices": 6,
+      "active_tasks": 0
+    },
+    "timestamp": 1758100284.865811
+  },
+  {
+    "test_name": "RealtimeVoiceChat Server Health",
+    "status": "FAIL",
+    "details": "Connection error: Cannot connect to host localhost:8001 ssl:default [The remote computer refused the network connection]",
+    "timestamp": 1758100287.1789794
+  },
+  {
+    "test_name": "VibeVoice Capabilities",
+    "status": "PASS",
+    "details": {
+      "available": true,
+      "service_type": "tts",
+      "multi_speaker": true,
+      "emotional_support": true,
+      "style_transfer": true,
+      "batch_processing": true,
+      "podcast_generation": true,
+      "max_duration": "90 minutes",
+      "supported_languages": [
+        "en",
+        "zh"
+      ],
+      "voice_count": 6,
+      "features": [
+        "Multi-speaker TTS",
+        "Emotional speech synthesis",
+        "Style transfer",
+        "Batch processing",
+        "Podcast generation",
+        "Real-time voice chat",
+        "Next-token diffusion",
+        "7.5Hz tokenizers"
+      ]
+    },
+    "timestamp": 1758100287.4456916
+  },
+  {
+    "test_name": "VibeVoice Health Status",
+    "status": "PASS",
+    "details": {
+      "service_available": true,
+      "client_initialized": true,
+      "api_url": "http://localhost:8000",
+      "timestamp": "2025-09-17T05:11:27.445691",
+      "config": {
+        "api_url": "http://localhost:8000",
+        "enabled": true,
+        "default_voice": "en-alice",
+        "available_voices": [
+          "en-alice",
+          "en-carter",
+          "en-david",
+          "en-emily",
+          "zh-xiaoli",
+          "zh-wang"
+        ],
+        "voice_profiles": {
+          "en-alice": {
+            "name": "Alice",
+            "gender": "female",
+            "pitch": 0.0,
+            "speed": 1.0
+          },
+          "en-carter": {
+            "name": "Carter",
+            "gender": "male",
+            "pitch": -2.0,
+            "speed": 1.0
+          },
+          "en-david": {
+            "name": "David",
+            "gender": "male",
+            "pitch": 1.0,
+            "speed": 0.9
+          },
+          "en-emily": {
+            "name": "Emily",
+            "gender": "female",
+            "pitch": 1.5,
+            "speed": 1.1
+          }
+        }
+      },
+      "connection_status": true,
+      "available_voices": 6,
+      "voice_list": [
+        {
+          "id": "en-alice",
+          "name": "en-US-AriaNeural",
+          "language": "en",
+          "gender": "female"
+        },
+        {
+          "id": "en-carter",
+          "name": "en-US-GuyNeural",
+          "language": "en",
+          "gender": "male"
+        },
+        {
+          "id": "en-david",
+          "name": "en-US-ChristopherNeural",
+          "language": "en",
+          "gender": "male"
+        },
+        {
+          "id": "en-emily",
+          "name": "en-US-JennyNeural",
+          "language": "en",
+          "gender": "female"
+        },
+        {
+          "id": "zh-xiaoli",
+          "name": "zh-CN-XiaoxiaoNeural",
+          "language": "zh",
+          "gender": "female"
+        },
+        {
+          "id": "zh-wang",
+          "name": "zh-CN-YunxiNeural",
+          "language": "zh",
+          "gender": "male"
+        }
+      ],
+      "server_health": {
+        "status": "healthy",
+        "service": "VibeVoice TTS Server (Mock)",
+        "timestamp": "2025-09-17T05:11:27.446693",
+        "version": "1.0.0",
+        "available_voices": 6,
+        "active_tasks": 0
+      },
+      "integration_available": true
+    },
+    "timestamp": 1758100287.4476905
+  },
+  {
+    "test_name": "Basic Speech Generation",
+    "status": "PASS",
+    "details": {
+      "audio_path": "C:\\Users\\Ryan\\AppData\\Local\\Temp\\duckbot_voice\\vibevoice_31f83c46-3134-4d6c-91bc-c6a5101d218d.wav",
+      "file_size_bytes": 166250,
+      "result": {
+        "success": true,
+        "task_id": "31f83c46-3134-4d6c-91bc-c6a5101d218d",
+        "audio_path": "C:\\Users\\Ryan\\AppData\\Local\\Temp\\duckbot_voice\\vibevoice_31f83c46-3134-4d6c-91bc-c6a5101d218d.wav",
+        "speakers": [
+          "en-alice"
+        ],
+        "voice_style": "conversational",
+        "emotion": "neutral",
+        "text_length": 56,
+        "model_used": "Microsoft VibeVoice"
+      }
+    },
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Discord Commands Import",
+    "status": "PASS",
+    "details": "Commands imported successfully",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: vibevoice_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: voice_presets_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: voice_status_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: voice_help_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: emotional_voice_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: realtime_voice_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  },
+  {
+    "test_name": "Command Method: voice_batch_command",
+    "status": "PASS",
+    "details": "Method exists",
+    "timestamp": 1758100289.700906
+  }
+]

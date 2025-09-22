@@ -1,0 +1,20 @@
+# DuckBot Configuration Dependencies
+# Required for API key management and setup wizard
+
+# Interactive CLI for setup wizard
+inquirer>=3.1.0
+
+# PyYAML for configuration file parsing
+PyYAML>=6.0
+
+# Requests for API key validation
+requests>=2.31.0
+
+# Python-dotenv for .env file management
+python-dotenv>=1.0.0
+
+# Colorama for colored terminal output
+colorama>=0.4.6
+
+# Optional: rich for enhanced terminal output
+rich>=13.0.0

@@ -1,0 +1,81 @@
+{
+  "github_token": "${GITHUB_TOKEN}",
+  "repository": "your-username/your-repository",
+  "base_url": "https://api.github.com",
+  "webhook_secret": "${WEBHOOK_SECRET}",
+  "enabled_workflows": [
+    "ci_cd",
+    "issue_management",
+    "pr_review",
+    "release_management",
+    "security_scanning",
+    "repository_maintenance"
+  ],
+  "ai_review_enabled": true,
+  "cost_tracking_enabled": true,
+  "notification_channels": [
+    "discord:https://discord.com/api/webhooks/your-webhook-url",
+    "email:team@example.com"
+  ],
+  "workflow_settings": {
+    "ci_cd": {
+      "python_versions": ["3.8", "3.9", "3.10", "3.11"],
+      "run_security_scan": true,
+      "deploy_on_main": true,
+      "timeout_minutes": 30
+    },
+    "issue_management": {
+      "auto_label": true,
+      "auto_assign": true,
+      "ai_analysis": true,
+      "priority_keywords": {
+        "critical": ["critical", "urgent", "emergency", "blocking"],
+        "high": ["high", "important", "priority"],
+        "low": ["low", "minor", "trivial"]
+      }
+    },
+    "pr_review": {
+      "auto_welcome": true,
+      "ai_review": true,
+      "required_checks": ["tests", "linting", "security"],
+      "auto_label_sizes": true,
+      "size_thresholds": {
+        "xs": 5,
+        "s": 10,
+        "m": 25,
+        "l": 50
+      }
+    },
+    "release_management": {
+      "auto_changelog": true,
+      "post_release_tasks": true,
+      "notify_team": true,
+      "update_documentation": true
+    },
+    "security_scanning": {
+      "tools": ["bandit", "safety", "semgrep", "trufflehog"],
+      "create_issues_for_critical": true,
+      "scheduled_scans": true,
+      "scan_schedule": "0 2 * * *"
+    },
+    "repository_maintenance": {
+      "cleanup_old_branches": true,
+      "branch_age_days": 30,
+      "archive_old_issues": true,
+      "issue_age_days": 90,
+      "update_labels": true
+    }
+  },
+  "ai_settings": {
+    "confidence_threshold": 0.75,
+    "max_tokens": 2000,
+    "temperature": 0.3,
+    "model": "gpt-4"
+  },
+  "cost_settings": {
+    "daily_budget": 10.0,
+    "monthly_budget": 200.0,
+    "alert_threshold": 0.8,
+    "currency": "USD"
+  }
+}

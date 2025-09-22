@@ -1,0 +1,93 @@
+{
+  "bot": {
+    "version": "3.1.0+",
+    "command_prefix": "!",
+    "activity": {
+      "type": "playing",
+      "name": "DuckBot v3.1.0+ Enhanced | /help"
+    },
+    "intents": {
+      "default": true,
+      "message_content": true,
+      "guilds": true,
+      "voice_states": true
+    }
+  },
+  "permissions": {
+    "required": {
+      "view_channel": true,
+      "send_messages": true,
+      "embed_links": true,
+      "attach_files": true,
+      "read_message_history": true,
+      "connect": true,
+      "speak": true
+    },
+    "admin_bypass": true
+  },
+  "rate_limits": {
+    "vibevoice": {
+      "calls": 3,
+      "period": 300,
+      "description": "VibeVoice TTS generation - 3 calls per 5 minutes"
+    },
+    "voice_commands": {
+      "calls": 5,
+      "period": 60,
+      "description": "Voice channel commands - 5 calls per minute"
+    },
+    "general": {
+      "calls": 10,
+      "period": 60,
+      "description": "General commands - 10 calls per minute"
+    }
+  },
+  "features": {
+    "vibevoice": {
+      "enabled": true,
+      "max_text_length": 2000,
+      "max_file_size_mb": 8,
+      "cleanup_delay_seconds": 300,
+      "presets": {
+        "alice": ["en-alice"],
+        "carter": ["en-carter"],
+        "conversation": ["en-alice", "en-carter"],
+        "debate": ["en-david", "en-emily"],
+        "podcast": ["en-alice", "en-carter", "en-david"],
+        "news": ["en-emily", "en-carter"]
+      }
+    },
+    "voice_channels": {
+      "enabled": true,
+      "auto_leave_on_empty": true,
+      "auto_leave_delay_seconds": 300
+    },
+    "cost_tracking": {
+      "enabled": true
+    },
+    "livekit": {
+      "enabled": true
+    },
+    "mining": {
+      "enabled": true
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "file": "logs/discord_bot.log",
+    "max_file_size_mb": 10,
+    "backup_count": 5
+  },
+  "error_handling": {
+    "graceful_degradation": true,
+    "show_detailed_errors": false,
+    "auto_restart": true,
+    "max_retries": 3
+  },
+  "development": {
+    "debug_mode": false,
+    "test_guild_id": null,
+    "log_command_usage": true
+  }
+}

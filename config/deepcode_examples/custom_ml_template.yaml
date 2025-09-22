@@ -1,0 +1,251 @@
+# Custom ML Template Configuration Example
+# Specialized template for machine learning project generation
+
+custom_template:
+  # Template metadata
+  name: "ML Project Template"
+  version: "1.0.0"
+  description: "Complete machine learning project template with training, evaluation, and deployment"
+  category: "machine_learning"
+  author: "DeepCode Team"
+
+  # Template settings
+  enabled: true
+  supported_frameworks: ["pytorch", "tensorflow", "sklearn", "xgboost", "lightgbm"]
+  default_framework: "pytorch"
+
+  # Project structure
+  project_structure:
+    data:
+      raw: ["data/raw/"]
+      processed: ["data/processed/"]
+      external: ["data/external/"]
+      interim: ["data/interim/"]
+
+    notebooks:
+      exploration: ["notebooks/exploration/"]
+      experiments: ["notebooks/experiments/"]
+      validation: ["notebooks/validation/"]
+
+    src:
+      models: ["src/models/", "src/models/architectures/"]
+      training: ["src/training/", "src/training/loops/"]
+      evaluation: ["src/evaluation/", "src/evaluation/metrics/"]
+      preprocessing: ["src/preprocessing/", "src/preprocessing/transforms/"]
+      utils: ["src/utils/", "src/utils/data/"]
+      configs: ["src/configs/", "src/configs/models/"]
+
+    tests:
+      unit: ["tests/unit/", "tests/unit/models/"]
+      integration: ["tests/integration/", "tests/integration/pipelines/"]
+
+    docs:
+      user: ["docs/user_guide.md", "docs/api_reference.md"]
+      technical: ["docs/architecture.md", "docs/data_flow.md"]
+
+    scripts:
+      training: ["scripts/train.py", "scripts/train.distributed.py"]
+      evaluation: ["scripts/evaluate.py", "scripts/evaluate.model.py"]
+      deployment: ["scripts/deploy.py", "scripts/deploy.api.py"]
+      data: ["scripts/prepare_data.py", "scripts/augment_data.py"]
+
+  # ML specific settings
+  ml_config:
+    include_data_versioning: true
+    include_experiment_tracking: true
+    include_hyperparameter_tuning: true
+    include_model_registry: true
+    include_monitoring: true
+    include_deployment: true
+    include_api_serving: true
+    include_batch_inference: true
+    include_real_time_inference: true
+
+  # Framework specific configurations
+  frameworks:
+    pytorch:
+      version: "2.0"
+      include_lightning: true
+      include_accelerate: true
+      include_torchserve: true
+      include_torchscript: true
+      include_onnx: true
+
+    tensorflow:
+      version: "2.13"
+      include_keras: true
+      include_tensorboard: true
+      include_tfx: true
+      include_tflite: true
+      include_tfjs: true
+
+    sklearn:
+      version: "1.3"
+      include_pipeline: true
+      include_hyperopt: true
+      include_mlflow: true
+      include_joblib: true
+
+  # Data handling
+  data_config:
+    include_dataloader: true
+    include_dataset_class: true
+    include_augmentation: true
+    include_validation_split: true
+    include_test_split: true
+    include_cross_validation: true
+    include_data_quality_checks: true
+
+  # Model architecture
+  model_config:
+    include_pretrained_models: true
+    include_custom_architectures: true
+    include_transfer_learning: true
+    include_fine_tuning: true
+    include_model_ensemble: true
+    include_model_pruning: true
+    include_quantization: true
+
+  # Training configuration
+  training_config:
+    include_distributed_training: true
+    include_mixed_precision: true
+    include_gradient_accumulation: true
+    include_learning_rate_scheduling: true
+    include_early_stopping: true
+    include_model_checkpointing: true
+    include_gradient_clipping: true
+    include_warmup: true
+
+  # Evaluation configuration
+  evaluation_config:
+    include_multiple_metrics: true
+    include_custom_metrics: true
+    include_confusion_matrix: true
+    include_roc_curves: true
+    include_precision_recall: true
+    include_feature_importance: true
+    include_model_interpretability: true
+    include_ablation_studies: true
+
+  # Experiment tracking
+  experiment_config:
+    include_mlflow: true
+    include_wandb: true
+    include_tensorboard: true
+    include_neptune: true
+    include_comet: true
+    include_custom_logging: true
+
+  # Deployment configuration
+  deployment_config:
+    include_docker: true
+    include_kubernetes: true
+    include_api_server: true
+    include_batch_server: true
+    include_streaming: true
+    include_monitoring: true
+    include_scaling: true
+    include_a_b_testing: true
+
+  # Performance optimization
+  performance_config:
+    enable_gpu_acceleration: true
+    enable_mixed_precision: true
+    enable_gradient_checkpointing: true
+    enable_model_pruning: true
+    enable_quantization: true
+    enable_distillation: true
+    enable_caching: true
+    enable_parallel_processing: true
+
+  # Monitoring and observability
+  monitoring_config:
+    include_model_monitoring: true
+    include_data_drift_detection: true
+    include_model_drift_detection: true
+    include_performance_monitoring: true
+    include_resource_monitoring: true
+    include_alerting: true
+    include_dashboard: true
+
+  # Security and compliance
+  security_config:
+    include_data_privacy: true
+    include_model_security: true
+    include_adversarial_testing: true
+    include_fairness_testing: true
+    include_bias_detection: true
+    include_compliance_checks: true
+
+  # Dependencies
+  dependencies:
+    core_ml: ["torch", "torchvision", "torchaudio", "numpy", "pandas"]
+    data_processing: ["scikit-learn", "pillow", "opencv-python", "albumentations"]
+    training: ["pytorch-lightning", "accelerate", "deepspeed", "wandb"]
+    evaluation: ["mlflow", "neptune-client", "comet-ml", "tensorboard"]
+    deployment: ["fastapi", "uvicorn", "redis", "celery"]
+    monitoring: ["prometheus-client", "structlog", "opentelemetry"]
+    testing: ["pytest", "pytest-cov", "pytest-mock", "coverage"]
+    dev: ["black", "mypy", "flake8", "isort", "pre-commit"]
+
+  # Code generation settings
+  code_generation:
+    include_type_hints: true
+    include_docstrings: true
+    include_error_handling: true
+    include_logging: true
+    include_configuration: true
+    include_tests: true
+    include_documentation: true
+    include_examples: true
+
+  # AI model settings
+  ai_model: "qwen3-coder"
+  temperature: 0.2
+  max_tokens: 6000
+  confidence_threshold: 0.8
+
+  # Template variables
+  template_variables:
+    project_name: "{{project_name}}"
+    model_type: "{{model_type}}"
+    data_source: "{{data_source}}"
+    target_variable: "{{target_variable}}"
+    evaluation_metrics: "{{evaluation_metrics}}"
+    deployment_method: "{{deployment_method}}"
+
+  # Predefined architectures
+  architectures:
+    image_classification:
+      resnet: ["resnet18", "resnet34", "resnet50", "resnet101"]
+      efficientnet: ["efficientnet-b0", "efficientnet-b1", "efficientnet-b2"]
+      vision_transformer: ["vit-base", "vit-small", "vit-tiny"]
+
+    text_classification:
+      transformer: ["bert-base", "roberta-base", "distilbert-base"]
+      lstm: ["lstm-small", "lstm-medium", "lstm-large"]
+      cnn: ["text-cnn-small", "text-cnn-medium", "text-cnn-large"]
+
+    tabular_classification:
+      tree_based: ["random-forest", "xgboost", "lightgbm", "catboost"]
+      neural_network: ["mlp-small", "mlp-medium", "mlp-large"]
+      ensemble: ["stacking", "blending", "voting"]
+
+  # Quality checks
+  quality_checks:
+    include_code_quality: true
+    include_model_quality: true
+    include_data_quality: true
+    include_performance_quality: true
+    include_security_quality: true
+    include_compliance_quality: true
+
+  # Documentation
+  documentation:
+    include_readme: true
+    include_api_docs: true
+    include_user_guide: true
+    include_developer_guide: true
+    include_deployment_guide: true
+    include_troubleshooting_guide: true

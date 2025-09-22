@@ -1,0 +1,257 @@
+# Text2Web Advanced Configuration Example
+# Enterprise-grade web application generation with comprehensive features
+
+text2web:
+  # Advanced settings
+  enabled: true
+  supported_formats: ["txt", "md", "html", "json", "yaml", "xml"]
+  max_description_length: 10000
+  output_format: "enterprise_ready"
+
+  # Multi-framework support
+  default_framework: "nextjs"
+  supported_frameworks: ["react", "vue", "angular", "svelte", "nextjs", "nuxtjs", "gatsby"]
+  framework_configs:
+    nextjs:
+      version: "14.0"
+      features: ["app-router", "server-components", "edge-runtime"]
+      include_middleware: true
+      include_api_routes: true
+      include_dynamic_routes: true
+
+    vue:
+      version: "3.0"
+      build_tool: "vite"
+      include_pinia: true
+      include_vue_router: true
+      include_nuxtjs_layer: true
+
+  # Advanced frontend architecture
+  frontend:
+    framework: "nextjs"
+    version: "14.0"
+    language: "typescript"
+    styling: "tailwind"
+    css_framework: "tailwind"
+    include_responsive: true
+    include_accessibility: true
+    include_pwa: true
+    include_i18n: true
+    include_theme_system: true
+    include_component_library: true
+
+  # Advanced backend architecture
+  backend:
+    framework: "fastapi"
+    version: "0.100.0"
+    database: "postgresql"
+    orm: "sqlalchemy"
+    include_auth: true
+    include_oauth: true
+    include_jwt: true
+    include_rate_limiting: true
+    include_cors: true
+    include_caching: true
+    include_api_docs: true
+    include_graphql: false
+    include_websockets: true
+
+  # Enterprise code generation
+  code_style: "enterprise_ready"
+  include_comments: true
+  include_error_handling: true
+  include_type_hints: true
+  include_tests: true
+  include_documentation: true
+  include_examples: true
+  include_benchmarks: true
+  include_profiling: true
+  design_patterns: ["mvc", "repository", "observer", "singleton"]
+  include_solid_principles: true
+
+  # Comprehensive UI Components
+  ui_components:
+    include_navigation: true
+    include_forms: true
+    include_tables: true
+    include_charts: true
+    include_modals: true
+    include_toast: true
+    include_drawer: true
+    include_tabs: true
+    include_accordion: true
+    include_carousel: true
+    include_calendar: true
+    include_upload: true
+    include_rich_editor: true
+
+  # Advanced features
+  features:
+    include_dark_mode: true
+    include_responsive_design: true
+    include_search: true
+    include_filters: true
+    include_pagination: true
+    include_sorting: true
+    include_export: true
+    include_real_time: true
+    include_notifications: true
+    include_analytics: true
+    include_audit_logs: true
+    include_user_management: true
+    include_role_based_access: true
+
+  # Enterprise AI model settings
+  ai_model: "qwen3-coder"
+  fallback_model: "nemotron-49b"
+  temperature: 0.2
+  max_tokens: 8000
+  confidence_threshold: 0.85
+  enable_model_ensemble: true
+  enable_context_awareness: true
+
+  # Advanced output structure
+  output_structure:
+    src:
+      components: ["components/ui/", "components/forms/", "components/charts/"]
+      pages: ["app/", "pages/", "layouts/"]
+      services: ["services/api/", "services/auth/", "services/cache/"]
+      hooks: ["hooks/", "hooks/api/"]
+      utils: ["utils/", "utils/validation/", "utils/helpers/"]
+      types: ["types/", "types/api/"]
+      store: ["store/", "store/slices/"]
+      middleware: ["middleware/", "middleware/auth/"]
+
+    public: ["public/", "public/images/", "public/fonts/", "public/icons/"]
+
+    tests:
+      unit: ["tests/unit/", "tests/unit/components/"]
+      integration: ["tests/integration/", "tests/integration/api/"]
+      e2e: ["tests/e2e/", "tests/e2e/pages/"]
+      fixtures: ["tests/fixtures/", "tests/fixtures/data/"]
+
+    docs:
+      user: ["docs/user/", "docs/user/guides/"]
+      developer: ["docs/developer/", "docs/developer/api/"]
+      deployment: ["docs/deployment/", "docs/deployment/docker/"]
+      architecture: ["docs/architecture/", "docs/architecture/components/"]
+
+    config:
+      development: ["config/development.ts", "config/database.ts"]
+      staging: ["config/staging.ts", "config/database.staging.ts"]
+      production: ["config/production.ts", "config/database.production.ts"]
+      environment: ["config/env.ts", "config/env.development.ts"]
+
+    scripts:
+      build: ["scripts/build.ts", "scripts/docker.ts"]
+      deployment: ["scripts/deploy.ts", "scripts/ci.ts"]
+      development: ["scripts/dev.ts", "scripts/test.ts"]
+      utilities: ["scripts/migrate.ts", "scripts/seed.ts"]
+
+  # Enterprise dependencies
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+    include_optional_dependencies: true
+    package_manager: "npm"
+    dependency_groups:
+      frontend: ["next", "react", "react-dom", "typescript"]
+      ui: ["tailwindcss", "shadcn/ui", "lucide-react"]
+      backend: ["fastapi", "uvicorn", "sqlalchemy", "psycopg2"]
+      auth: ["next-auth", "jsonwebtoken", "bcrypt"]
+      database: ["prisma", "postgresql"]
+      testing: ["jest", "react-testing-library", "playwright"]
+      dev: ["eslint", "prettier", "husky", "lint-staged"]
+
+  # Enterprise development setup
+  development:
+    include_docker: true
+    include_ci_cd: true
+    include_linting: true
+    include_testing: true
+    include_hot_reload: true
+    include_code_analysis: true
+    include_security_scanning: true
+    include_performance_monitoring: true
+    include_error_tracking: true
+    include_feature_flags: true
+    include_a_b_testing: true
+
+  # Enterprise performance
+  performance:
+    enable_caching: true
+    cache_ttl: 3600
+    parallel_processing: true
+    max_concurrent_tasks: 5
+    memory_optimization: true
+    cpu_optimization: true
+    enable_compression: true
+    enable_lazy_loading: true
+    enable_code_splitting: true
+    enable_image_optimization: true
+
+  # Enterprise monitoring
+  monitoring:
+    enabled: true
+    metrics_collection: true
+    health_checks: true
+    performance_monitoring: true
+    error_tracking: true
+    user_analytics: true
+    system_monitoring: true
+    alerting: true
+    logging: true
+    tracing: true
+
+  # Enterprise security
+  security:
+    enable_input_validation: true
+    enable_output_sanitization: true
+    include_authentication: true
+    include_authorization: true
+    include_rate_limiting: true
+    include_cors: true
+    include_csrf_protection: true
+    include_xss_protection: true
+    include_sql_injection_protection: true
+    include_audit_logs: true
+    include_data_encryption: true
+
+  # Enterprise deployment
+  deployment:
+    include_docker: true
+    include_kubernetes: true
+    include_ci_cd: true
+    include_monitoring: true
+    include_scaling: true
+    include_load_balancing: true
+    include_ssl: true
+    include_backup: true
+    include_disaster_recovery: true
+
+  # Enterprise logging
+  logging:
+    enabled: true
+    level: "DEBUG"
+    structured_logging: true
+    include_traceback: true
+    log_rotation: true
+    log_aggregation: true
+    log_format: "json"
+    include_correlation_ids: true
+    include_request_tracing: true
+    include_performance_metrics: true
+
+  # Quality assurance
+  quality:
+    enable_validation: true
+    enable_security_analysis: true
+    enable_performance_analysis: true
+    enable_memory_analysis: true
+    code_quality_threshold: 0.9
+    security_threshold: 0.95
+    include_code_review: true
+    include_static_analysis: true
+    include_dynamic_analysis: true
+    include_compliance_checks: true

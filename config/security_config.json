@@ -1,0 +1,236 @@
+{
+  "security_framework": {
+    "enabled": true,
+    "debug_mode": false,
+    "log_level": "INFO",
+    "audit_retention_days": 365
+  },
+  "authentication": {
+    "jwt_secret": "YOUR_SUPER_SECRET_JWT_KEY_CHANGE_ME",
+    "jwt_algorithm": "HS256",
+    "jwt_expiration_minutes": 60,
+    "refresh_token_expire_days": 7,
+    "bcrypt_rounds": 12,
+    "mfa_enabled": true,
+    "mfa_issuer": "DuckBot-v4.2",
+    "oauth2_providers": {
+      "google": {
+        "enabled": false,
+        "client_id": "",
+        "client_secret": "",
+        "redirect_uri": "http://localhost:8787/auth/google/callback",
+        "scopes": ["email", "profile"],
+        "auth_url": "https://accounts.google.com/o/oauth2/auth",
+        "token_url": "https://oauth2.googleapis.com/token",
+        "user_info_url": "https://www.googleapis.com/oauth2/v2/userinfo"
+      },
+      "github": {
+        "enabled": false,
+        "client_id": "",
+        "client_secret": "",
+        "redirect_uri": "http://localhost:8787/auth/github/callback",
+        "scopes": ["user:email"],
+        "auth_url": "https://github.com/login/oauth/authorize",
+        "token_url": "https://github.com/login/oauth/access_token",
+        "user_info_url": "https://api.github.com/user"
+      }
+    }
+  },
+  "authorization": {
+    "rbac_enabled": true,
+    "default_role": "user",
+    "super_admin_role": "super_admin",
+    "admin_role": "admin",
+    "session_timeout_minutes": 60,
+    "max_concurrent_sessions": 5,
+    "idle_timeout_minutes": 30
+  },
+  "password_policy": {
+    "min_length": 12,
+    "max_length": 128,
+    "require_uppercase": true,
+    "require_lowercase": true,
+    "require_numbers": true,
+    "require_special_chars": true,
+    "forbid_common_passwords": true,
+    "forbid_personal_info": true,
+    "max_repeated_chars": 2,
+    "password_history": 5,
+    "expiry_days": 90,
+    "warning_days": 7,
+    "complexity_score_min": 60
+  },
+  "rate_limiting": {
+    "enabled": true,
+    "requests_per_minute": 60,
+    "requests_per_hour": 3600,
+    "requests_per_day": 86400,
+    "burst_limit": 10,
+    "window_size_seconds": 60
+  },
+  "input_validation": {
+    "enabled": true,
+    "sanitize_html": true,
+    "sanitize_markdown": true,
+    "max_input_length": 10000,
+    "block_suspicious_patterns": true,
+    "validate_filenames": true
+  },
+  "file_upload": {
+    "max_file_size_mb": 10,
+    "allowed_extensions": [
+      ".jpg", ".jpeg", ".png", ".gif", ".pdf", ".txt", ".doc", ".docx",
+      ".xls", ".xlsx", ".ppt", ".pptx", ".csv", ".json", ".xml", ".zip"
+    ],
+    "allowed_mime_types": [
+      "image/jpeg", "image/png", "image/gif", "application/pdf",
+      "text/plain", "application/msword", "application/vnd.openxmlformats-officedocument.*",
+      "application/vnd.ms-excel", "application/json", "text/xml", "application/zip"
+    ],
+    "scan_for_malware": true,
+    "sanitize_filenames": true,
+    "generate_unique_names": true,
+    "store_separately": true
+  },
+  "security_headers": {
+    "content_security_policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; frame-ancestors 'none';",
+    "x_frame_options": "DENY",
+    "x_content_type_options": "nosniff",
+    "x_xss_protection": "1; mode=block",
+    "referrer_policy": "strict-origin-when-cross-origin",
+    "permissions_policy": "geolocation=(), microphone=(), camera=(), payment=()",
+    "strict_transport_security": "max-age=31536000; includeSubDomains; preload",
+    "cache_control": "no-store, no-cache, must-revalidate, proxy-revalidate",
+    "pragma": "no-cache",
+    "expires": "0"
+  },
+  "csrf_protection": {
+    "enabled": true,
+    "token_expiry_hours": 1,
+    "require_token": true
+  },
+  "session_security": {
+    "secure_cookies": true,
+    "same_site_policy": "lax",
+    "extend_on_activity": true,
+    "regenerate_id_on_login": true
+  },
+  "ip_filtering": {
+    "enabled": false,
+    "whitelist": [],
+    "blacklist": [],
+    "geolocation_blocking": false,
+    "blocked_countries": []
+  },
+  "encryption": {
+    "encryption_key": "YOUR_SUPER_SECRET_ENCRYPTION_KEY_CHANGE_ME",
+    "algorithm": "AES-256-GCM",
+    "data_at_rest_encryption": true,
+    "backup_encryption": true
+  },
+  "audit_logging": {
+    "enabled": true,
+    "storage_backend": "sqlite",
+    "database_path": "audit_log.db",
+    "log_directory": "audit_logs",
+    "max_file_size_mb": 100,
+    "include_sensitive_data": false,
+    "real_time_monitoring": true
+  },
+  "threat_detection": {
+    "enabled": true,
+    "anomaly_detection": {
+      "enabled": true,
+      "sensitivity": 0.7,
+      "window_size": 100,
+      "baseline_period_days": 7,
+      "check_interval_seconds": 60
+    },
+    "brute_force_threshold": 5,
+    "rate_limit_threshold": 100,
+    "suspicious_ip_threshold": 50,
+    "concurrent_session_threshold": 3,
+    "config_change_threshold": 10
+  },
+  "compliance": {
+    "enabled": true,
+    "standards": ["GDPR", "PCI_DSS", "ISO27001"],
+    "data_retention_days": 365,
+    "user_consent_required": true,
+    "data_breach_notification": true,
+    "privacy_policy_url": "https://example.com/privacy"
+  },
+  "backup_security": {
+    "enabled": true,
+    "encryption_enabled": true,
+    "retention_days": 30,
+    "offsite_backup": true,
+    "backup_frequency_hours": 24
+  },
+  "api_security": {
+    "enabled": true,
+    "key_authentication": true,
+    "rate_limiting": true,
+    "cors_enabled": true,
+    "allowed_origins": ["http://localhost:3000", "http://localhost:8787"],
+    "api_versioning": true,
+    "documentation_security": true
+  },
+  "monitoring": {
+    "enabled": true,
+    "dashboard_enabled": true,
+    "alert_notification_enabled": true,
+    "metrics_collection_enabled": true,
+    "health_check_enabled": true,
+    "performance_monitoring": true
+  },
+  "default_users": [
+    {
+      "username": "admin",
+      "email": "admin@duckbot.local",
+      "password": "ChangeMe123!",
+      "roles": ["super_admin"],
+      "force_password_change": true
+    }
+  ],
+  "default_roles": [
+    {
+      "name": "super_admin",
+      "description": "Super administrator with full system access",
+      "permissions": [
+        "read", "write", "execute", "delete", "admin", "security_admin",
+        "system_config", "user_management", "audit_view", "api_access",
+        "desktop_automation", "ai_model_access", "webui_access", "terminal_access"
+      ]
+    },
+    {
+      "name": "admin",
+      "description": "Administrator with elevated privileges",
+      "permissions": [
+        "read", "write", "execute", "admin", "user_management",
+        "audit_view", "system_config", "webui_access", "terminal_access"
+      ]
+    },
+    {
+      "name": "security_admin",
+      "description": "Security administrator role",
+      "permissions": [
+        "read", "write", "security_admin", "audit_view", "user_management",
+        "system_config", "webui_access"
+      ]
+    },
+    {
+      "name": "user",
+      "description": "Standard user role",
+      "permissions": [
+        "read", "write", "execute", "webui_access", "terminal_access",
+        "desktop_automation", "ai_model_access"
+      ]
+    },
+    {
+      "name": "guest",
+      "description": "Guest user with read-only access",
+      "permissions": ["read"]
+    }
+  ]
+}

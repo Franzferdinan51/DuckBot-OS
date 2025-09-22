@@ -1,0 +1,84 @@
+{
+  "rate_limiting": {
+    "basic_functionality": {
+      "status": "PASS",
+      "details": "Rate limiting works correctly for different command types"
+    },
+    "error": {
+      "status": "FAIL",
+      "details": "12345"
+    }
+  },
+  "permissions": {
+    "all_permissions": {
+      "status": "PASS",
+      "details": "Permission check works with all permissions"
+    },
+    "admin_bypass": {
+      "status": "PASS",
+      "details": "Admin bypass works correctly"
+    },
+    "missing_permissions": {
+      "status": "PASS",
+      "details": "Correctly identifies missing permissions"
+    }
+  },
+  "error_handling": {
+    "vibevoice_unavailable": {
+      "status": "PASS",
+      "details": "Gracefully handles VibeVoice unavailability"
+    },
+    "error": {
+      "status": "FAIL",
+      "details": "name 'CostCommands' is not defined"
+    }
+  },
+  "api_validation": {
+    "missing_discord_token": {
+      "status": "PASS",
+      "details": "Correctly detects missing Discord token"
+    },
+    "invalid_pricing": {
+      "status": "PASS",
+      "details": "Gracefully handles invalid provider/model combinations"
+    }
+  },
+  "cost_tracking": {
+    "usage_recording": {
+      "status": "PASS",
+      "details": "Successfully recorded usage with cost $0.002500"
+    },
+    "free_tier": {
+      "status": "PASS",
+      "details": "Local models correctly marked as free"
+    },
+    "usage_summary": {
+      "status": "PASS",
+      "details": "Summary generated: $0.0025, 3000 tokens"
+    },
+    "predictions": {
+      "status": "PASS",
+      "details": "Cost predictions generated successfully"
+    },
+    "error": {
+      "status": "FAIL",
+      "details": "[WinError 32] The process cannot access the file because it is being used by another process: 'C:\\\\Users\\\\Ryan\\\\AppData\\\\Local\\\\Temp\\\\tmp8troao0w\\\\test_cost.db'"
+    }
+  },
+  "voice_channel_integration": {
+    "methods_available": {
+      "status": "PASS",
+      "details": "Voice channel integration methods are available"
+    },
+    "permissions_integration": {
+      "status": "PASS",
+      "details": "Permission checking integrated with voice channels"
+    }
+  },
+  "overall_status": {
+    "total_tests": 16,
+    "passed_tests": 13,
+    "failed_tests": 3,
+    "success_rate": 81.25
+  }
+}

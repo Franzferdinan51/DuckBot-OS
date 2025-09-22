@@ -1,0 +1,107 @@
+# Text2Web Basic Configuration Example
+# Generate complete web applications from text descriptions
+
+text2web:
+  # Basic settings
+  enabled: true
+  supported_formats: ["txt", "md", "html", "json"]
+  max_description_length: 5000
+  output_format: "complete_project"
+
+  # Web framework selection
+  default_framework: "react"
+  supported_frameworks: ["react", "vue", "angular", "svelte", "nextjs"]
+
+  # Frontend settings
+  frontend:
+    framework: "react"
+    version: "18.0"
+    language: "typescript"
+    styling: "tailwind"
+    include_responsive: true
+    include_accessibility: true
+
+  # Backend settings
+  backend:
+    framework: "fastapi"
+    database: "sqlite"
+    include_auth: false
+    include_api_docs: true
+
+  # Code generation settings
+  code_style: "modern"
+  include_comments: true
+  include_error_handling: true
+  include_type_hints: true
+  include_tests: false
+  include_documentation: true
+
+  # UI Components
+  ui_components:
+    include_navigation: true
+    include_forms: true
+    include_tables: true
+    include_charts: false
+    include_modals: true
+    include_toast: true
+
+  # Features
+  features:
+    include_dark_mode: true
+    include_responsive_design: true
+    include_search: false
+    include_filters: false
+    include_pagination: false
+
+  # AI model settings
+  ai_model: "qwen3-coder"
+  temperature: 0.3
+  max_tokens: 6000
+  confidence_threshold: 0.8
+
+  # Output structure
+  output_structure:
+    src:
+      components: ["components/", "hooks/", "utils/"]
+      pages: ["pages/", "layouts/"]
+      services: ["services/", "api/"]
+      assets: ["assets/", "styles/"]
+
+    public: ["public/", "images/", "favicon.ico"]
+
+    config:
+      development: ["config/development.js", "config/env.js"]
+      production: ["config/production.js"]
+
+    docs: ["README.md", "API_DOCS.md"]
+
+    scripts: ["scripts/", "docker/"]
+
+  # Dependencies
+  dependencies:
+    auto_detect: true
+    include_versions: true
+    separate_dev_dependencies: true
+    package_manager: "npm"
+
+  # Development setup
+  development:
+    include_docker: false
+    include_ci_cd: false
+    include_linting: true
+    include_testing: false
+    include_hot_reload: true
+
+  # Performance
+  performance:
+    enable_caching: true
+    cache_ttl: 1800
+    parallel_processing: false
+    max_concurrent_tasks: 1
+
+  # Logging
+  logging:
+    enabled: true
+    level: "INFO"
+    save_logs: true
+    log_format: "structured"

@@ -1,0 +1,318 @@
+# DuckBot Configuration Architecture
+# Centralized configuration management system for all DuckBot services
+
+# System-wide settings
+system:
+  name: "DuckBot Enhanced v4.2"
+  version: "4.2"
+  build_date: "2025-09-16"
+  debug_mode: false
+  log_level: "INFO"
+  encoding: "utf-8"
+
+# Service definitions with ports and endpoints
+services:
+  # Core WebUI Services
+  webui:
+    enabled: true
+    name: "Enhanced WebUI Dashboard"
+    default_host: "127.0.0.1"
+    default_port: 8787
+    health_endpoint: "/enhanced/health"
+    startup_script: "duckbot.enhanced_webui"
+    environment_vars:
+      DUCKBOT_WEBUI_PORT: "{port}"
+      DUCKBOT_WEBUI_HOST: "{host}"
+
+  monitoring:
+    enabled: true
+    name: "System Monitoring Dashboard"
+    default_host: "127.0.0.1"
+    default_port: 8789
+    health_endpoint: "/health"
+    startup_script: "ai_ecosystem_manager"
+    environment_vars:
+      HOST: "{host}"
+      PORT: "{port}"
+
+  terminal:
+    enabled: true
+    name: "Charm Terminal Interface"
+    default_host: "127.0.0.1"
+    default_port: 8788
+    health_endpoint: "/health"
+    startup_script: "duckbot.charm_integration"
+    environment_vars:
+      CHARM_HOST: "{host}"
+      CHARM_PORT: "{port}"
+
+  # AI and Language Model Services
+  ai_router:
+    enabled: true
+    name: "AI Router Service"
+    default_host: "127.0.0.1"
+    default_port: 8790
+    health_endpoint: "/health"
+    startup_script: "duckbot.ai_router"
+    environment_vars:
+      AI_ROUTER_PORT: "{port}"
+
+  lm_studio:
+    enabled: true
+    name: "LM Studio Local AI"
+    default_host: "127.0.0.1"
+    default_port: 1234
+    health_endpoint: "/v1/models"
+    external_service: true
+    startup_check: true
+    environment_vars:
+      LM_STUDIO_URL: "http://{host}:{port}/v1"
+
+  # External Integration Services
+  openwebui:
+    enabled: true
+    name: "OpenWebUI Interface"
+    default_host: "127.0.0.1"
+    default_port: 8080
+    health_endpoint: "/"
+    external_service: true
+    startup_args: ["open-webui", "serve", "--host", "{host}", "--port", "{port}"]
+    environment_vars:
+      OPENWEBUI_HOST: "{host}"
+      OPENWEBUI_PORT: "{port}"
+
+  n8n:
+    enabled: true
+    name: "N8N Workflow Automation"
+    default_host: "127.0.0.1"
+    default_port: 5678
+    health_endpoint: "/healthz"
+    external_service: true
+    environment_vars:
+      N8N_PORT: "{port}"
+      WEBHOOK_URL: "http://{host}:{port}/"
+
+  # Voice and Audio Services
+  vibevoice:
+    enabled: true
+    name: "VibeVoice TTS Service"
+    default_host: "127.0.0.1"
+    default_port: 8000
+    health_endpoint: "/health"
+    startup_script: "setup_vibevoice.py"
+    environment_vars:
+      VIBEVOICE_API_URL: "http://{host}:{port}"
+
+  comfyui:
+    enabled: true
+    name: "ComfyUI Image Generation"
+    default_host: "127.0.0.1"
+    default_port: 8188
+    health_endpoint: "/prompt"
+    websocket_endpoint: "/ws"
+    external_service: true
+    environment_vars:
+      COMFYUI_HOST: "{host}"
+      COMFYUI_PORT: "{port}"
+      COMFYUI_WS_URL: "ws://{host}:{port}/ws"
+
+  # Database Services
+  postgres:
+    enabled: false
+    name: "PostgreSQL Database"
+    default_host: "127.0.0.1"
+    default_port: 5432
+    external_service: true
+    environment_vars:
+      DATABASE_URL: "postgresql://postgres:password@{host}:{port}/duckbot"
+
+  redis:
+    enabled: false
+    name: "Redis Cache"
+    default_host: "127.0.0.1"
+    default_port: 6379
+    external_service: true
+    environment_vars:
+      REDIS_URL: "redis://{host}:{port}"
+
+# Environment-specific configurations
+environments:
+  development:
+    system:
+      debug_mode: true
+      log_level: "DEBUG"
+      auto_reload: true
+      monitoring_interval: 5
+      enable_debug_endpoints: true
+    services:
+      postgres:
+        enabled: true
+      redis:
+        enabled: true
+
+  production:
+    system:
+      debug_mode: false
+      log_level: "INFO"
+      auto_reload: false
+      monitoring_interval: 30
+      enable_debug_endpoints: false
+      enable_ssl: true
+    services:
+      postgres:
+        enabled: true
+      redis:
+        enabled: true
+
+  local:
+    system:
+      debug_mode: false
+      log_level: "INFO"
+      auto_reload: false
+    monitoring_interval: 60
+    enable_debug_endpoints: false
+    offline_mode: true
+    services:
+      lm_studio:
+        required: true
+      openwebui:
+        enabled: false
+      n8n:
+        enabled: false
+
+# Feature flags and toggles
+features:
+  # Core Features
+  webui_enabled: true
+  monitoring_enabled: true
+  terminal_enabled: true
+
+  # AI Features
+  ai_routing_enabled: true
+  local_ai_enabled: true
+  cloud_ai_enabled: true
+  multi_agent_enabled: true
+
+  # Integration Features
+  desktop_automation_enabled: true
+  voice_enabled: true
+  image_generation_enabled: true
+  workflow_automation_enabled: true
+
+  # Privacy Features
+  local_only_mode: false
+  telemetry_enabled: false
+  analytics_enabled: true
+
+  # Development Features
+  debug_mode: false
+  developer_tools: false
+  testing_mode: false
+
+# Hardware and resource settings
+hardware:
+  # System requirements
+  min_ram_gb: 4
+  recommended_ram_gb: 8
+  min_disk_space_gb: 10
+
+  # GPU settings
+  gpu_enabled: true
+  gpu_memory_threshold_mb: 4096
+  gpu_optimization: true
+
+  # Resource limits
+  max_concurrent_services: 10
+  max_memory_usage_percent: 85
+  max_cpu_usage_percent: 80
+
+  # Performance optimization
+  enable_caching: true
+  cache_ttl_seconds: 300
+  enable_compression: true
+  batch_processing_size: 100
+
+# Port management
+ports:
+  # Port ranges for different service types
+  webui_range: [8780, 8799]
+  ai_services_range: [8700, 8779]
+  external_services_range: [8000, 8099]
+  database_range: [5400, 5500]
+  monitoring_range: [9000, 9099]
+
+  # Dynamic port allocation settings
+  enable_dynamic_ports: true
+  port_conflict_resolution: "increment"
+  max_port_attempts: 10
+
+  # Reserved ports
+  reserved_ports: [80, 443, 22, 21, 25, 53, 135, 139, 445]
+
+# Logging configuration
+logging:
+  level: "INFO"
+  format: "{timestamp} - {level} - {name} - {message}"
+  directory: "logs"
+  max_file_size_mb: 100
+  backup_count: 5
+  enable_console: true
+  enable_file: true
+  enable_json: true
+  log_rotation: true
+
+# Security settings
+security:
+  enable_authentication: false
+  enable_rate_limiting: true
+  rate_limit_requests: 100
+  rate_limit_window: 60
+  cors_enabled: true
+  cors_origins: ["*"]
+  ssl_enabled: false
+  ssl_cert_path: null
+  ssl_key_path: null
+
+# AI Provider configuration
+ai_providers:
+  # Local AI providers
+  lm_studio:
+    enabled: true
+    url_template: "http://{host}:{port}/v1"
+    default_model: "qwen3-30b-a3b-thinking-2507-deepseek-v3.1-distill"
+    timeout: 30
+
+  ollama:
+    enabled: true
+    url: "http://localhost:11434/v1"
+    default_model: "llama3.2"
+    timeout: 30
+
+  # Cloud AI providers
+  openrouter:
+    enabled: true
+    url: "https://openrouter.ai/api/v1"
+    default_model: "qwen/qwen3-coder:free"
+    timeout: 60
+
+  openai:
+    enabled: false
+    url: "https://api.openai.com/v1"
+    default_model: "gpt-4"
+    timeout: 60
+
+  anthropic:
+    enabled: false
+    url: "https://api.anthropic.com/v1"
+    default_model: "claude-3-sonnet-20240229"
+    timeout: 60
+
+# Network settings
+network:
+  default_host: "127.0.0.1"
+  enable_ipv6: false
+  connection_timeout: 30
+  retry_attempts: 3
+  retry_delay: 1
+  enable_keepalive: true
+  keepalive_timeout: 300

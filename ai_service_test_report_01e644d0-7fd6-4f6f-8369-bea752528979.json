@@ -1,0 +1,685 @@
+{
+  "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+  "timestamp": "2025-09-16T15:19:20.763989",
+  "base_url": "http://localhost:8787",
+  "summary": {
+    "total_tests": 35,
+    "passed_tests": 24,
+    "failed_tests": 11,
+    "success_rate": 68.57142857142857
+  },
+  "category_results": {
+    "gemini_health_check": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "gemini_chat_endpoint": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "gemini_models_endpoint": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "gemini_authentication": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "system_metrics_basic": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "system_status_endpoint": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "performance_metrics": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "realtime_metrics": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "valid_request_handling": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "invalid_request_handling": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "large_payload_handling": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "error_response_format": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "concurrent_health_checks": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "concurrent_mixed_requests": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "rate_limiting_test": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "fast_timeout_test": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "slow_timeout_test": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "invalid_hostname_timeout": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "graceful_degradation": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "local_mode_detection": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "cloud_mode_detection": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "feature_parity": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "mode_switching": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "provider_availability": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "model_capabilities": {
+      "total": 1,
+      "passed": 0,
+      "success_rate": 0.0
+    },
+    "task_execution": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "provider_switching": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "no_auth_required": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "invalid_auth": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "sql_injection_protection": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "xss_protection": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "core_services_health": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "monitoring_system": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "database_connectivity": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    },
+    "resource_availability": {
+      "total": 1,
+      "passed": 1,
+      "success_rate": 100.0
+    }
+  },
+  "failed_tests": [
+    {
+      "category": "gemini_chat_endpoint",
+      "message": "Chat endpoint returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "gemini_models_endpoint",
+      "message": "Models endpoint returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "gemini_authentication",
+      "message": "Auth test returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "system_metrics_basic",
+      "message": "Metrics endpoint returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "system_status_endpoint",
+      "message": "Status endpoint returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "performance_metrics",
+      "message": "Performance endpoint returned 404",
+      "error": "Unknown error"
+    },
+    {
+      "category": "realtime_metrics",
+      "message": "Collected 0 real-time metric samples",
+      "error": "Unknown error"
+    },
+    {
+      "category": "error_response_format",
+      "message": "Error response format test failed",
+      "error": "'dict' object has no attribute 'lower'"
+    },
+    {
+      "category": "concurrent_mixed_requests",
+      "message": "14/20 concurrent mixed requests succeeded",
+      "error": "Unknown error"
+    },
+    {
+      "category": "feature_parity",
+      "message": "Feature parity score: 0.25",
+      "error": "Unknown error"
+    }
+  ],
+  "recommendations": [
+    "Overall success rate is low - investigate systemic issues"
+  ],
+  "raw_results": {
+    "gemini_health_check": [
+      {
+        "success": true,
+        "message": "Health check returned 200",
+        "response_time": 2.043334,
+        "data": {
+          "status": "healthy",
+          "timestamp": "2025-09-16T15:18:00.091641"
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:00.092641"
+      }
+    ],
+    "gemini_chat_endpoint": [
+      {
+        "success": false,
+        "message": "Chat endpoint returned 404",
+        "response_time": 2.042479,
+        "data": null,
+        "payload_size": 111,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:02.138876"
+      }
+    ],
+    "gemini_models_endpoint": [
+      {
+        "success": false,
+        "message": "Models endpoint returned 404",
+        "response_time": 2.042044,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:04.181935"
+      }
+    ],
+    "gemini_authentication": [
+      {
+        "success": false,
+        "message": "Auth test returned 404",
+        "response_time": 2.022064,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:06.206787"
+      }
+    ],
+    "system_metrics_basic": [
+      {
+        "success": false,
+        "message": "Metrics endpoint returned 404",
+        "response_time": 2.050172,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:08.262070"
+      }
+    ],
+    "system_status_endpoint": [
+      {
+        "success": false,
+        "message": "Status endpoint returned 404",
+        "response_time": 2.043635,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:10.308354"
+      }
+    ],
+    "performance_metrics": [
+      {
+        "success": false,
+        "message": "Performance endpoint returned 404",
+        "response_time": 2.061914,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:12.371579"
+      }
+    ],
+    "realtime_metrics": [
+      {
+        "success": false,
+        "message": "Collected 0 real-time metric samples",
+        "data_samples": 0,
+        "variation": false,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:21.704735"
+      }
+    ],
+    "valid_request_handling": [
+      {
+        "success": true,
+        "message": "Valid request returned 404",
+        "response_time": 2.040948,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:23.747142"
+      }
+    ],
+    "invalid_request_handling": [
+      {
+        "success": true,
+        "message": "Invalid request returned 404",
+        "response_time": 2.044059,
+        "data": null,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:25.793523"
+      }
+    ],
+    "large_payload_handling": [
+      {
+        "success": true,
+        "message": "Large payload returned 404",
+        "response_time": 2.04406,
+        "payload_size": 10059,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:27.839425"
+      }
+    ],
+    "error_response_format": [
+      {
+        "success": false,
+        "message": "Error response format test failed",
+        "error": "'dict' object has no attribute 'lower'",
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:29.879189"
+      }
+    ],
+    "concurrent_health_checks": [
+      {
+        "success": true,
+        "message": "10/10 concurrent health checks succeeded",
+        "total_time": 2.0626800060272217,
+        "avg_time_per_request": 0.20626800060272216,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:31.944869"
+      }
+    ],
+    "concurrent_mixed_requests": [
+      {
+        "success": false,
+        "message": "14/20 concurrent mixed requests succeeded",
+        "total_time": 3.959672212600708,
+        "avg_time_per_request": 0.1979836106300354,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:35.906543"
+      }
+    ],
+    "rate_limiting_test": [
+      {
+        "success": true,
+        "message": "64/50 rate limit test requests succeeded",
+        "total_time": 2.0958993434906006,
+        "requests_per_second": 23.8561074773409,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:38.004442"
+      }
+    ],
+    "fast_timeout_test": [
+      {
+        "success": true,
+        "message": "Fast request completed in 1.02s",
+        "elapsed_time": 1.017319917678833,
+        "timeout_setting": 1,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:39.022761"
+      }
+    ],
+    "slow_timeout_test": [
+      {
+        "success": true,
+        "message": "Slow request completed in 2.04s",
+        "elapsed_time": 2.044306516647339,
+        "timeout_setting": 5,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:41.068066"
+      }
+    ],
+    "invalid_hostname_timeout": [
+      {
+        "success": true,
+        "message": "Invalid hostname timeout properly handled",
+        "elapsed_time": 0.0019998550415039062,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:41.070066"
+      }
+    ],
+    "graceful_degradation": [
+      {
+        "success": true,
+        "message": "Graceful degradation returned 404",
+        "response_time": 2.045194,
+        "is_client_error": true,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:43.152825"
+      }
+    ],
+    "local_mode_detection": [
+      {
+        "success": true,
+        "message": "Local services available: True",
+        "services": {
+          "lm_studio": true,
+          "ollama": false
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:49.281603"
+      }
+    ],
+    "cloud_mode_detection": [
+      {
+        "success": true,
+        "message": "Cloud services available: False",
+        "services": {
+          "openrouter": "no_api_key"
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:49.282603"
+      }
+    ],
+    "feature_parity": [
+      {
+        "success": false,
+        "message": "Feature parity score: 0.25",
+        "features": {
+          "chat_completion": true,
+          "model_selection": false,
+          "streaming": false,
+          "token_counting": false
+        },
+        "parity_score": 0.25,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:53.359755"
+      }
+    ],
+    "mode_switching": [
+      {
+        "success": true,
+        "message": "Mode switching test: {'auto': True, 'local': True, 'cloud': True}",
+        "test_results": {
+          "auto": true,
+          "local": true,
+          "cloud": true
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:18:59.504661"
+      }
+    ],
+    "provider_availability": [
+      {
+        "success": true,
+        "message": "Found 1 available providers",
+        "providers": [
+          "lm_studio"
+        ],
+        "status": {
+          "lm_studio": {
+            "available": true,
+            "main_brain_model": "qwen/qwen3-coder:free",
+            "currently_loaded": [
+              "qwen/qwen3-coder:free"
+            ],
+            "task_specific_models": [],
+            "system_resources": {
+              "free_ram_gb": 86.3,
+              "free_vram_gb": 7.8,
+              "cpu_percent": 18.0
+            },
+            "usage_stats": {
+              "qwen/qwen3-coder:free": 1
+            },
+            "recent_tasks": [],
+            "model_slots": {
+              "used": 1,
+              "max": 3,
+              "main_brain_protected": true
+            }
+          },
+          "claude_code": {
+            "available": false,
+            "error": "Provider not initialized"
+          },
+          "qwen_agent": {
+            "available": false,
+            "error": "Provider not initialized"
+          },
+          "zai_claude": {
+            "available": false,
+            "error": "Provider not initialized"
+          },
+          "vibevoice": {
+            "available": false,
+            "error": "Provider not initialized"
+          }
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:11.433112"
+      }
+    ],
+    "model_capabilities": [
+      {
+        "success": false,
+        "message": "Model capabilities retrieved",
+        "capabilities": {
+          "error": "Model not found"
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:11.434117"
+      }
+    ],
+    "task_execution": [
+      {
+        "success": true,
+        "message": "Task execution succeeded",
+        "result": {
+          "success": true,
+          "provider": "lm_studio",
+          "model": "qwen/qwen3-coder:free",
+          "response": "Task executed using LM Studio model: qwen/qwen3-coder:free"
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:11.435117"
+      }
+    ],
+    "provider_switching": [
+      {
+        "success": true,
+        "message": "Provider switching test completed",
+        "results": {
+          "task_0": {
+            "model": "qwen/qwen3-coder:free",
+            "provider": "lm_studio"
+          },
+          "task_1": {
+            "model": "qwen/qwen3-coder:free",
+            "provider": "lm_studio"
+          },
+          "task_2": {
+            "model": "qwen/qwen3-coder:free",
+            "provider": "lm_studio"
+          }
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:11.436117"
+      }
+    ],
+    "no_auth_required": [
+      {
+        "success": true,
+        "message": "No auth request returned 200",
+        "response_time": 2.047652,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:13.485139"
+      }
+    ],
+    "invalid_auth": [
+      {
+        "success": true,
+        "message": "Invalid auth returned 200",
+        "response_time": 2.047823,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:15.535025"
+      }
+    ],
+    "sql_injection_protection": [
+      {
+        "success": true,
+        "message": "SQL injection attempt returned 404",
+        "response_time": 2.043016,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:17.579715"
+      }
+    ],
+    "xss_protection": [
+      {
+        "success": true,
+        "message": "XSS attempt returned 404",
+        "response_time": 2.038917,
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:19.620849"
+      }
+    ],
+    "core_services_health": [
+      {
+        "success": true,
+        "message": "4/7 core services healthy",
+        "service_status": {
+          "lm_studio": "running",
+          "comfyui": "stopped",
+          "webui": "running",
+          "n8n": "running",
+          "open_notebook": "stopped",
+          "jupyter": "running",
+          "discord_bot": "unknown"
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:19.727551"
+      }
+    ],
+    "monitoring_system": [
+      {
+        "success": true,
+        "message": "Monitoring system status retrieved",
+        "status_keys": [
+          "timestamp",
+          "system_metrics",
+          "services",
+          "agents",
+          "alerts",
+          "user_activity",
+          "database_status"
+        ],
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:19.758552"
+      }
+    ],
+    "database_connectivity": [
+      {
+        "success": true,
+        "message": "Database connected, found 6 tables",
+        "tables": [
+          "system_metrics",
+          "sqlite_sequence",
+          "agent_metrics",
+          "service_health",
+          "alerts",
+          "user_activity"
+        ],
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:19.760552"
+      }
+    ],
+    "resource_availability": [
+      {
+        "success": true,
+        "message": "Resources check: OK",
+        "resource_status": {
+          "cpu_percent": 18.4,
+          "memory_percent": 32.3,
+          "disk_percent": 87.54937291658158,
+          "memory_available_gb": 86.41798400878906
+        },
+        "test_id": "01e644d0-7fd6-4f6f-8369-bea752528979",
+        "timestamp": "2025-09-16T15:19:20.762983"
+      }
+    ]
+  }
+}

@@ -1,0 +1,227 @@
+{
+  "mcp_server": {
+    "host": "127.0.0.1",
+    "port": 8790,
+    "debug": false,
+    "log_level": "INFO",
+    "cors_enabled": true,
+    "cors_origins": ["*"]
+  },
+  "external_mcp_servers": {
+    "playwright": {
+      "enabled": true,
+      "name": "playwright",
+      "description": "Microsoft Playwright MCP for browser automation",
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"],
+      "env": {},
+      "timeout": 60,
+      "priority": "high",
+      "category": "browser_automation",
+      "auto_start": true,
+      "health_check": true
+    },
+    "mcpcontrol": {
+      "enabled": true,
+      "name": "mcpcontrol",
+      "description": "Windows system control and automation",
+      "command": "mcp-control",
+      "args": ["--sse"],
+      "env": {
+        "MCP_CONTROL_RESOLUTION": "1280x720"
+      },
+      "timeout": 30,
+      "priority": "high",
+      "category": "system_control",
+      "auto_start": true,
+      "health_check": true
+    },
+    "wsl_filesystem": {
+      "enabled": true,
+      "name": "wsl-filesystem",
+      "description": "WSL filesystem access from Windows",
+      "command": "node",
+      "args": ["./mcp-servers/wsl-filesystem/dist/index.js", "--distro", "Ubuntu-20.04", "/home"],
+      "env": {},
+      "timeout": 30,
+      "priority": "high",
+      "category": "filesystem",
+      "auto_start": false,
+      "health_check": true
+    },
+    "claude_code_tools": {
+      "enabled": true,
+      "name": "claude-code-tools",
+      "description": "Development tools and utilities for Claude Code",
+      "command": "node",
+      "args": ["./mcp-servers/claude-code-tools/dist/index.js"],
+      "env": {},
+      "timeout": 45,
+      "priority": "medium",
+      "category": "development",
+      "auto_start": false,
+      "health_check": true
+    },
+    "mcp_inception": {
+      "enabled": true,
+      "name": "mcp-inception",
+      "description": "Agent for your agent - parallel task execution",
+      "command": "node",
+      "args": ["./mcp-servers/mcp-inception/dist/index.js"],
+      "env": {
+        "MCP_CLIENT_CLI_PATH": "mcp-client-cli"
+      },
+      "timeout": 120,
+      "priority": "medium",
+      "category": "agent_orchestration",
+      "auto_start": false,
+      "health_check": true
+    },
+    "exa_search": {
+      "enabled": true,
+      "name": "exa-search",
+      "description": "Web search using Exa API",
+      "command": "npx",
+      "args": ["@exa/mcp-server"],
+      "env": {
+        "EXA_API_KEY": "${EXA_API_KEY}"
+      },
+      "timeout": 30,
+      "priority": "medium",
+      "category": "web_search",
+      "auto_start": false,
+      "health_check": true
+    },
+    "filesystem": {
+      "enabled": true,
+      "name": "filesystem",
+      "description": "Local filesystem operations",
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem", "/tmp"],
+      "env": {},
+      "timeout": 15,
+      "priority": "high",
+      "category": "filesystem",
+      "auto_start": true,
+      "health_check": true
+    }
+  },
+  "server_categories": {
+    "browser_automation": {
+      "enabled": true,
+      "timeout": 60,
+      "priority": "high",
+      "servers": ["playwright"]
+    },
+    "system_control": {
+      "enabled": true,
+      "timeout": 30,
+      "priority": "high",
+      "servers": ["mcpcontrol"]
+    },
+    "filesystem": {
+      "enabled": true,
+      "timeout": 30,
+      "priority": "high",
+      "servers": ["filesystem", "wsl_filesystem"]
+    },
+    "web_search": {
+      "enabled": true,
+      "timeout": 30,
+      "priority": "medium",
+      "servers": ["exa_search"]
+    },
+    "development": {
+      "enabled": true,
+      "timeout": 45,
+      "priority": "medium",
+      "servers": ["claude_code_tools"]
+    },
+    "agent_orchestration": {
+      "enabled": true,
+      "timeout": 120,
+      "priority": "medium",
+      "servers": ["mcp_inception"]
+    }
+  },
+  "integration_settings": {
+    "auto_discovery": true,
+    "health_check_interval": 30,
+    "max_external_servers": 10,
+    "fallback_mode": true,
+    "unified_tool_access": true,
+    "cross_server_communication": true,
+    "error_handling": {
+      "retry_attempts": 3,
+      "retry_delay": 5,
+      "circuit_breaker": true
+    },
+    "performance": {
+      "cache_enabled": true,
+      "cache_ttl": 300,
+      "max_concurrent_requests": 8
+    }
+  },
+  "tools": {
+    "enabled": true,
+    "categories": [
+      "browser_automation",
+      "system_control",
+      "filesystem",
+      "web_search",
+      "development",
+      "agent_orchestration",
+      "system",
+      "desktop",
+      "ai",
+      "memory",
+      "terminal",
+      "integration"
+    ],
+    "timeout": 60,
+    "max_concurrent": 8
+  },
+  "security": {
+    "auth_required": false,
+    "api_key": null,
+    "rate_limit": 100,
+    "allowed_hosts": ["127.0.0.1", "localhost"],
+    "external_server_validation": true,
+    "allowed_external_servers": ["*"],
+    "path_security": {
+      "filesystem": {
+        "allowed_directories": ["./projects", "./workspace", "/tmp", "./documents"],
+        "max_file_size": "50MB",
+        "allowed_extensions": [".txt", ".md", ".py", ".js", ".json", ".yaml", ".yml", ".html", ".css"]
+      }
+    }
+  },
+  "performance": {
+    "cache_enabled": true,
+    "cache_ttl": 300,
+    "max_concurrent_requests": 10,
+    "request_timeout": 60,
+    "external_server_timeout": 120
+  },
+  "monitoring": {
+    "enabled": true,
+    "health_check_interval": 30,
+    "metrics_collection": true,
+    "alerting": {
+      "enabled": true,
+      "error_threshold": 5,
+      "response_time_threshold": 10000
+    }
+  },
+  "logging": {
+    "level": "INFO",
+    "file": "logs/mcp_server.log",
+    "max_size": "50MB",
+    "backup_count": 5,
+    "format": "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    "external_servers": {
+      "log_level": "INFO",
+      "separate_logs": true
+    }
+  }
+}

@@ -1,0 +1,117 @@
+# Local Environment Configuration
+# Overrides base duckbot_config.yaml for local/offline environment
+
+# Local-specific system settings
+system:
+  debug_mode: false
+  log_level: "INFO"
+  enable_developer_tools: false
+  offline_mode: true
+
+# Local service overrides
+services:
+  webui:
+    enabled: true
+    debug_mode: false
+    auto_reload: false
+
+  monitoring:
+    enabled: true
+    debug_mode: false
+    data_collection_interval: 60
+
+  terminal:
+    enabled: true
+    debug_mode: false
+
+  ai_router:
+    enabled: true
+    debug_mode: false
+
+  # LM Studio is required for local mode
+  lm_studio:
+    enabled: true
+    required: true
+    startup_check: true
+
+  # Disable external cloud services
+  openwebui:
+    enabled: false
+
+  n8n:
+    enabled: false
+
+  # Local database services
+  postgres:
+    enabled: false
+
+  redis:
+    enabled: false
+
+# Local feature flags
+features:
+  debug_mode: false
+  developer_tools: false
+  testing_mode: false
+  telemetry_enabled: false
+  analytics_enabled: false
+  local_only_mode: true
+  cloud_ai_enabled: false
+  enable_debug_endpoints: false
+
+# Local hardware settings
+hardware:
+  max_concurrent_services: 5
+  max_memory_usage_percent: 85
+  max_cpu_usage_percent: 80
+  enable_caching: true
+  cache_ttl_seconds: 600
+  gpu_optimization: true
+
+# Local logging
+logging:
+  level: "INFO"
+  enable_console: true
+  enable_file: true
+  enable_json: false
+  log_rotation: true
+  max_file_size_mb: 100
+  backup_count: 5
+
+# Local security (basic)
+security:
+  enable_authentication: false
+  enable_rate_limiting: false
+  cors_enabled: true
+  cors_origins: ["*"]
+  ssl_enabled: false
+
+# Local AI providers (only local)
+ai_providers:
+  lm_studio:
+    enabled: true
+    required: true
+  ollama:
+    enabled: true
+  openrouter:
+    enabled: false
+  openai:
+    enabled: false
+  anthropic:
+    enabled: false
+
+# Local network settings
+network:
+  connection_timeout: 60
+  retry_attempts: 3
+  retry_delay: 2
+  enable_keepalive: true
+  keepalive_timeout: 300
+
+# Local-specific settings
+local_mode:
+  auto_start_lm_studio: true
+  lm_studio_timeout: 30
+  enable_offline_models: true
+  model_cache_directory: "models"
+  enable_model_preloading: true

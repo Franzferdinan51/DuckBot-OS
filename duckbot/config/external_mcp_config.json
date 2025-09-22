@@ -1,0 +1,166 @@
+{
+  "external_servers": {
+    "mcp_chrome": {
+      "enabled": true,
+      "repository": "hangwin/mcp-chrome",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-chrome",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "high",
+      "description": "Chrome extension-based MCP server for browser automation",
+      "capabilities": ["navigation", "screenshot", "interaction", "content_analysis"]
+    },
+    "playwright": {
+      "enabled": true,
+      "repository": "samuelcolvin/mcp-playwright",
+      "install_method": "pip",
+      "package": "mcp-playwright",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "high",
+      "description": "Playwright-based browser automation with multi-browser support",
+      "capabilities": ["multi_browser", "automation", "testing", "screenshot"]
+    },
+    "exa_search": {
+      "enabled": true,
+      "repository": "exa-labs/mcp-server-exa",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-exa",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "medium",
+      "description": "Exa web search API integration",
+      "capabilities": ["web_search", "neural_search", "real_time_results"],
+      "env_vars": {
+        "EXA_API_KEY": ""
+      }
+    },
+    "perplexity": {
+      "enabled": true,
+      "repository": "perplexityai/mcp-server-perplexity",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-perplexity",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "medium",
+      "description": "Perplexity AI web search with citations",
+      "capabilities": ["ai_search", "citations", "real_time", "follow_up_questions"],
+      "env_vars": {
+        "PERPLEXITY_API_KEY": ""
+      }
+    },
+    "dbhub": {
+      "enabled": true,
+      "repository": "dbhub-io/mcp-server-dbhub",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-dbhub",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "medium",
+      "description": "Universal database connector for multiple database types",
+      "capabilities": ["mysql", "postgresql", "sqlserver", "mariadb", "query_execution"],
+      "env_vars": {
+        "DBHUB_API_KEY": ""
+      }
+    },
+    "filesystem": {
+      "enabled": true,
+      "repository": "modelcontextprotocol/server-filesystem",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-filesystem",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "high",
+      "description": "Secure filesystem operations with path validation",
+      "capabilities": ["file_read", "file_write", "directory_listing", "search_replace"],
+      "allowed_directories": ["/tmp", "./projects", "./workspace"],
+      "security": {
+        "path_validation": true,
+        "allowed_extensions": [".txt", ".md", ".py", ".js", ".json", ".yaml", ".yml"],
+        "max_file_size": "10MB"
+      }
+    },
+    "postgres_ops": {
+      "enabled": true,
+      "repository": "mcp-postgresql-ops",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-postgres-ops",
+      "auto_start": false,
+      "timeout": 30,
+      "priority": "low",
+      "description": "PostgreSQL operations and monitoring tools",
+      "capabilities": ["performance_analysis", "monitoring", "schema_introspection"],
+      "env_vars": {
+        "POSTGRES_CONNECTION_STRING": ""
+      }
+    },
+    "github": {
+      "enabled": true,
+      "repository": "mcp-server-github",
+      "install_method": "npm",
+      "package": "@modelcontextprotocol/server-github",
+      "auto_start": true,
+      "timeout": 30,
+      "priority": "medium",
+      "description": "GitHub integration for repository management",
+      "capabilities": ["repository_management", "issue_tracking", "pull_requests"],
+      "env_vars": {
+        "GITHUB_TOKEN": ""
+      }
+    }
+  },
+  "global_settings": {
+    "auto_install": true,
+    "auto_start": true,
+    "health_check_interval": 60,
+    "max_retries": 3,
+    "fallback_mode": true,
+    "timeout": 30,
+    "log_level": "INFO",
+    "security": {
+      "enable_api_key_validation": true,
+      "allowed_hosts": ["127.0.0.1", "localhost"],
+      "rate_limit": 100,
+      "enable_cors": true
+    },
+    "performance": {
+      "max_concurrent_requests": 10,
+      "cache_enabled": true,
+      "cache_ttl": 300
+    },
+    "monitoring": {
+      "enable_metrics": true,
+      "metrics_interval": 60,
+      "enable_health_checks": true
+    }
+  },
+  "server_settings": {
+    "host": "127.0.0.1",
+    "port_range": {
+      "start": 8800,
+      "end": 8899
+    },
+    "communication": {
+      "protocol": "stdio",
+      "fallback_protocol": "http"
+    }
+  },
+  "fallback_implementations": {
+    "enabled": true,
+    "browser_automation": {
+      "use_webbrowser": true,
+      "use_requests": true
+    },
+    "web_search": {
+      "use_basic_http": true,
+      "max_results": 5
+    },
+    "database": {
+      "use_sqlite_fallback": true
+    },
+    "filesystem": {
+      "use_native_python": true
+    }
+  }
+}

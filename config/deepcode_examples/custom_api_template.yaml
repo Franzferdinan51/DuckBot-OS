@@ -1,0 +1,307 @@
+# Custom API Template Configuration Example
+# Specialized template for RESTful API development
+
+custom_template:
+  # Template metadata
+  name: "REST API Template"
+  version: "1.0.0"
+  description: "Complete RESTful API template with authentication, documentation, and monitoring"
+  category: "api_development"
+  author: "DeepCode Team"
+
+  # Template settings
+  enabled: true
+  supported_frameworks: ["fastapi", "flask", "django", "express", "spring"]
+  default_framework: "fastapi"
+
+  # Project structure
+  project_structure:
+    src:
+      api: ["src/api/", "src/api/v1/", "src/api/v2/"]
+      models: ["src/models/", "src/models/schemas/"]
+      services: ["src/services/", "src/services/core/"]
+      repositories: ["src/repositories/", "src/repositories/interfaces/"]
+      utils: ["src/utils/", "src/utils/helpers/"]
+      config: ["src/config/", "src/config/database/"]
+      middleware: ["src/middleware/", "src/middleware/auth/"]
+      exceptions: ["src/exceptions/", "src/exceptions/handlers/"]
+
+    tests:
+      unit: ["tests/unit/", "tests/unit/api/"]
+      integration: ["tests/integration/", "tests/integration/api/"]
+      e2e: ["tests/e2e/", "tests/e2e/api/"]
+
+    docs:
+      api: ["docs/api/", "docs/api/endpoint/"]
+      deployment: ["docs/deployment/", "docs/deployment/docker/"]
+      architecture: ["docs/architecture/", "docs/architecture/components/"]
+
+    scripts:
+      run: ["scripts/run.py", "scripts/run.prod.py"]
+      test: ["scripts/test.py", "scripts/test.ci.py"]
+      migrate: ["scripts/migrate.py", "scripts/migrate.rollback.py"]
+      deploy: ["scripts/deploy.py", "scripts/deploy.k8s.py"]
+
+    config:
+      development: ["config/development.yaml", "config/development.env"]
+      staging: ["config/staging.yaml", "config/staging.env"]
+      production: ["config/production.yaml", "config/production.env"]
+
+  # API specific settings
+  api_config:
+    include_rest_standards: true
+    include_openapi: true
+    include_swagger_ui: true
+    include_re_doc: true
+    include_api_versioning: true
+    include_rate_limiting: true
+    include_caching: true
+    include_pagination: true
+    include_filtering: true
+    include_sorting: true
+    include_search: true
+    include_bulk_operations: true
+
+  # Authentication and authorization
+  auth_config:
+    include_jwt: true
+    include_oauth2: true
+    include_api_keys: true
+    include_basic_auth: true
+    include_role_based_access: true
+    include_permission_system: true
+    include_session_management: true
+    include_password_management: true
+    include_multi_factor_auth: true
+    include_social_login: true
+
+  # Database configuration
+  database_config:
+    include_orm: true
+    include_migrations: true
+    include_seeding: true
+    include_connection_pooling: true
+    include_transactions: true
+    include_relationships: true
+    include_indexes: true
+    include_constraints: true
+    include_soft_delete: true
+    include_audit_trails: true
+
+  # Validation and error handling
+  validation_config:
+    include_input_validation: true
+    include_output_validation: true
+    include_custom_validators: true
+    include_error_responses: true
+    include_error_logging: true
+    include_error_monitoring: true
+    include_exception_handling: true
+    include_graceful_degradation: true
+
+  # Performance optimization
+  performance_config:
+    enable_caching: true
+    cache_strategy: "redis"
+    enable_connection_pooling: true
+    enable_query_optimization: true
+    enable_indexing: true
+    enable_pagination: true
+    enable_compression: true
+    enable_lazy_loading: true
+    enable_background_tasks: true
+
+  # Monitoring and observability
+  monitoring_config:
+    include_metrics: true
+    include_health_checks: true
+    include_logging: true
+    include_tracing: true
+    include_alerting: true
+    include_dashboard: true
+    include_profiling: true
+    include_error_tracking: true
+    include_performance_monitoring: true
+
+  # Security features
+  security_config:
+    include_input_sanitization: true
+    include_output_encoding: true
+    include_csrf_protection: true
+    include_xss_protection: true
+    include_sql_injection_protection: true
+    include_rate_limiting: true
+    include_api_security: true
+    include_data_encryption: true
+    include_audit_logs: true
+    include_compliance_checks: true
+
+  # Testing configuration
+  testing_config:
+    include_unit_tests: true
+    include_integration_tests: true
+    include_e2e_tests: true
+    include_performance_tests: true
+    include_security_tests: true
+    include_contract_tests: true
+    include_mocks: true
+    include_fixtures: true
+    include_test_coverage: true
+
+  # Documentation configuration
+  documentation_config:
+    include_api_docs: true
+    include_user_guide: true
+    include_developer_guide: true
+    include_deployment_guide: true
+    include_architecture_docs: true
+    include_troubleshooting_guide: true
+    include_changelog: true
+    include_examples: true
+
+  # Deployment configuration
+  deployment_config:
+    include_docker: true
+    include_kubernetes: true
+    include_ci_cd: true
+    include_monitoring: true
+    include_scaling: true
+    include_load_balancing: true
+    include_ssl: true
+    include_health_checks: true
+    include_rolling_updates: true
+
+  # Development tools
+  dev_tools_config:
+    include_linting: true
+    include_formatting: true
+    include_type_checking: true
+    include_pre_commit_hooks: true
+    include_code_analysis: true
+    include_dependency_management: true
+    include_hot_reload: true
+    include_debugging_tools: true
+
+  # API design patterns
+  design_patterns:
+    include_repository_pattern: true
+    include_service_pattern: true
+    include_dto_pattern: true
+    include_factory_pattern: true
+    include_observer_pattern: true
+    include_strategy_pattern: true
+    include_decorator_pattern: true
+    include_command_pattern: true
+
+  # API standards compliance
+  standards_compliance:
+    rest_level_3: true
+    openapi_3_0: true
+    json_api: true
+    hal: true
+    oauth_2_0: true
+    jwt_standards: true
+    cors_standards: true
+    http_standards: true
+
+  # Framework specific configurations
+  frameworks:
+    fastapi:
+      version: "0.100.0"
+      include_dependency_injection: true
+      include_background_tasks: true
+      include_websockets: true
+      include_graphql: true
+      include_async_support: true
+      include_middleware: true
+      include_exceptions: true
+
+    flask:
+      version: "2.3"
+      include_flask_restful: true
+      include_flask_jwt_extended: true
+      include_flask_sqlalchemy: true
+      include_flask_migrate: true
+      include_flask_cors: true
+      include_flask_limiter: true
+
+  # Dependencies
+  dependencies:
+    core: ["fastapi", "uvicorn", "pydantic", "python-multipart"]
+    database: ["sqlalchemy", "alembic", "psycopg2", "redis"]
+    auth: ["python-jose", "passlib", "bcrypt", "python-dotenv"]
+    validation: ["email-validator", "phonenumbers", "pycountry"]
+    monitoring: ["prometheus-client", "structlog", "opentelemetry"]
+    testing: ["pytest", "pytest-asyncio", "httpx", "factory-boy"]
+    dev: ["black", "mypy", "flake8", "isort", "pre-commit"]
+
+  # Code generation settings
+  code_generation:
+    include_type_hints: true
+    include_docstrings: true
+    include_error_handling: true
+    include_logging: true
+    include_configuration: true
+    include_tests: true
+    include_documentation: true
+    include_examples: true
+
+  # AI model settings
+  ai_model: "qwen3-coder"
+  temperature: 0.2
+  max_tokens: 6000
+  confidence_threshold: 0.8
+
+  # Template variables
+  template_variables:
+    api_name: "{{api_name}}"
+    api_version: "{{api_version}}"
+    database_url: "{{database_url}}"
+    secret_key: "{{secret_key}}"
+    cors_origins: "{{cors_origins}}"
+    rate_limit: "{{rate_limit}}"
+
+  # Predefined endpoints
+  predefined_endpoints:
+    authentication:
+      - login
+      - logout
+      - register
+      - refresh_token
+      - forgot_password
+      - reset_password
+
+    users:
+      - list_users
+      - get_user
+      - create_user
+      - update_user
+      - delete_user
+      - change_password
+      - update_profile
+
+    common:
+      - health_check
+      - status
+      - metrics
+      - documentation
+      - openapi_spec
+
+  # Quality checks
+  quality_checks:
+    include_code_quality: true
+    include_api_quality: true
+    include_security_quality: true
+    include_performance_quality: true
+    include_documentation_quality: true
+    include_test_quality: true
+
+  # Documentation
+  documentation:
+    include_readme: true
+    include_api_docs: true
+    include_user_guide: true
+    include_developer_guide: true
+    include_deployment_guide: true
+    include_troubleshooting_guide: true
+    include_changelog: true
