@@ -1,0 +1,92 @@
+
+> duckbot-ai-launcher@1.0.0 start
+> electron .
+
+
+Loaded existing Electron configuration
+Launcher modules directory found
+Available launcher modules: [ 'deepcode', 'model-training' ]
+Trying MCP connection to: ws://127.0.0.1:8789
+Trying chat connection to: ws://localhost:8790
+DuckBot Electron Launcher ready
+Configuration system initialized successfully
+Configuration system ready
+MCP connection error for ws://127.0.0.1:8789: connect ECONNREFUSED 127.0.0.1:8789
+Trying MCP connection to: ws://100.100.100.100:8789
+MCP connection closed for: ws://127.0.0.1:8789
+Chat connection error for ws://localhost:8790: connect ECONNREFUSED ::1:8790
+Trying chat connection to: ws://100.100.100.100:8790
+Chat connection closed for: ws://localhost:8790
+Unhandled Rejection at: Promise {
+  <rejected> Error: An object could not be cloned.
+      at t.ipcRendererInternal.send (node:electron/js2c/renderer_init:2:11703)
+      at EventEmitter.<anonymous> (node:electron/js2c/renderer_init:2:11175)
+} reason: Error: An object could not be cloned.
+    at t.ipcRendererInternal.send (node:electron/js2c/renderer_init:2:11703)
+    at EventEmitter.<anonymous> (node:electron/js2c/renderer_init:2:11175)
+Trying MCP connection to: ws://127.0.0.1:8789
+MCP connection error for ws://127.0.0.1:8789: connect ECONNREFUSED 127.0.0.1:8789
+Trying MCP connection to: ws://100.100.100.100:8789
+MCP connection closed for: ws://127.0.0.1:8789
+Trying chat connection to: ws://localhost:8790
+Chat connection error for ws://localhost:8790: connect ECONNREFUSED ::1:8790
+Trying chat connection to: ws://100.100.100.100:8790
+Chat connection closed for: ws://localhost:8790
+Failed to parse modular launcher modes: SyntaxError: Unexpected non-whitespace character after JSON at position 4
+    at JSON.parse (<anonymous>)
+    at ChildProcess.<anonymous> (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\electron-launcher\main.js:160:44)
+    at ChildProcess.emit (node:events:513:28)
+    at maybeClose (node:internal/child_process:1091:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:302:5)
+Trying MCP connection to: ws://127.0.0.1:8789
+MCP connection error for ws://127.0.0.1:8789: connect ECONNREFUSED 127.0.0.1:8789
+Trying MCP connection to: ws://100.100.100.100:8789
+MCP connection closed for: ws://127.0.0.1:8789
+Trying chat connection to: ws://localhost:8790
+Chat connection error for ws://localhost:8790: connect ECONNREFUSED ::1:8790
+Trying chat connection to: ws://100.100.100.100:8790
+Chat connection closed for: ws://localhost:8790
+MCP connection error for ws://100.100.100.100:8789: connect ETIMEDOUT 100.100.100.100:8789
+Trying MCP connection to: ws://localhost:8789
+MCP connection closed for: ws://100.100.100.100:8789
+Chat connection error for ws://100.100.100.100:8790: connect ETIMEDOUT 100.100.100.100:8790
+Trying chat connection to: ws://127.0.0.1:8790
+Chat connection closed for: ws://100.100.100.100:8790
+Chat connection error for ws://127.0.0.1:8790: connect ECONNREFUSED 127.0.0.1:8790
+All chat connection endpoints failed
+Scheduling chat retry 2/3 in 20000ms
+Chat connection closed for: ws://127.0.0.1:8790
+MCP connection error for ws://localhost:8789: connect ECONNREFUSED ::1:8789
+All MCP connection endpoints failed
+Scheduling MCP retry 2/3 in 20000ms
+MCP connection closed for: ws://localhost:8789
+Trying MCP connection to: ws://127.0.0.1:8789
+Trying chat connection to: ws://localhost:8790
+MCP connection error for ws://127.0.0.1:8789: connect ECONNREFUSED 127.0.0.1:8789
+Trying MCP connection to: ws://100.100.100.100:8789
+MCP connection closed for: ws://127.0.0.1:8789
+Chat connection error for ws://localhost:8790: connect ECONNREFUSED ::1:8790
+Trying chat connection to: ws://100.100.100.100:8790
+Chat connection closed for: ws://localhost:8790
+Trying MCP connection to: ws://127.0.0.1:8789
+Trying chat connection to: ws://localhost:8790
+MCP connection error for ws://100.100.100.100:8789: connect ETIMEDOUT 100.100.100.100:8789
+Trying MCP connection to: ws://100.100.100.100:8789
+MCP connection closed for: ws://100.100.100.100:8789
+Chat connection error for ws://100.100.100.100:8790: connect ETIMEDOUT 100.100.100.100:8790
+Trying chat connection to: ws://100.100.100.100:8790
+Chat connection closed for: ws://100.100.100.100:8790
+MCP connection error for ws://127.0.0.1:8789: connect ECONNREFUSED 127.0.0.1:8789
+Trying MCP connection to: ws://localhost:8789
+MCP connection closed for: ws://127.0.0.1:8789
+MCP connection error for ws://localhost:8789: connect ECONNREFUSED ::1:8789
+All MCP connection endpoints failed
+Scheduling MCP retry 3/3 in 40000ms
+MCP connection closed for: ws://localhost:8789
+Chat connection error for ws://localhost:8790: connect ECONNREFUSED ::1:8790
+Trying chat connection to: ws://127.0.0.1:8790
+Chat connection closed for: ws://localhost:8790
+Chat connection error for ws://127.0.0.1:8790: connect ECONNREFUSED 127.0.0.1:8790
+All chat connection endpoints failed
+Scheduling chat retry 3/3 in 40000ms
+Chat connection closed for: ws://127.0.0.1:8790

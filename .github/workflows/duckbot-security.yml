@@ -1,0 +1,286 @@
+name: DuckBot Security Scanning
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install security tools
+      run: |
+        python -m pip install --upgrade pip
+        pip install bandit safety semgrep truffleHog
+
+    - name: Run Bandit security scan
+      run: |
+        bandit -r duckbot/ -f json -o bandit-report.json || true
+        bandit -r duckbot/ -f html -o bandit-report.html || true
+
+    - name: Run Safety check
+      run: |
+        safety check --json --output safety-report.json || true
+        safety check --html --output safety-report.html || true
+
+    - name: Run Semgrep
+      run: |
+        semgrep --config=p/semgrep-rule-pack --json=semgrep-report.json . || true
+        semgrep --config=p/semgrep-rule-pack --sarif --output=semgrep-report.sarif . || true
+
+    - name: Run TruffleHog
+      run: |
+        trufflehog filesystem --json --output=trufflehog-report.json . || true
+        trufflehog filesystem --html --output=trufflehog-report.html . || true
+
+    - name: Run CodeQL Analysis
+      uses: github/codeql-action/init@v2
+      with:
+        languages: python
+
+    - name: Autobuild
+      uses: github/codeql-action/autobuild@v2
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v2
+
+    - name: Upload security reports
+      uses: actions/upload-artifact@v3
+      with:
+        name: security-reports
+        path: |
+          bandit-report.json
+          bandit-report.html
+          safety-report.json
+          safety-report.html
+          semgrep-report.json
+          semgrep-report.sarif
+          trufflehog-report.json
+          trufflehog-report.html
+        retention-days: 30
+
+    - name: Create issues for critical findings
+      if: github.event_name == 'schedule'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const path = require('path');
+
+          // Read security reports
+          const reports = {
+            bandit: JSON.parse(fs.readFileSync('bandit-report.json', 'utf8')),
+            safety: JSON.parse(fs.readFileSync('safety-report.json', 'utf8')),
+            semgrep: JSON.parse(fs.readFileSync('semgrep-report.json', 'utf8')),
+            trufflehog: JSON.parse(fs.readFileSync('trufflehog-report.json', 'utf8'))
+          };
+
+          // Process critical findings
+          const criticalIssues = [];
+
+          // Process Bandit findings
+          if (reports.bandit.results) {
+            reports.bandit.results.forEach(result => {
+              if (result.issue_severity === 'HIGH' || result.issue_severity === 'CRITICAL') {
+                criticalIssues.push({
+                  tool: 'Bandit',
+                  severity: result.issue_severity,
+                  file: result.filename,
+                  line: result.line_number,
+                  title: result.test_name,
+                  description: result.issue_text
+                });
+              }
+            });
+          }
+
+          // Process Safety findings
+          if (reports.safety.vulnerabilities) {
+            reports.safety.vulnerabilities.forEach(vuln => {
+              if (vuln.severity === 'CRITICAL' || vuln.severity === 'HIGH') {
+                criticalIssues.push({
+                  tool: 'Safety',
+                  severity: vuln.severity,
+                  file: vuln.package,
+                  line: vuln.version,
+                  title: vuln.id,
+                  description: vuln.advisory
+                });
+              }
+            });
+          }
+
+          // Process Semgrep findings
+          if (reports.semgrep.results) {
+            reports.semgrep.results.forEach(result => {
+              if (result.extra.severity === 'ERROR') {
+                criticalIssues.push({
+                  tool: 'Semgrep',
+                  severity: 'HIGH',
+                  file: result.path,
+                  line: result.start.line,
+                  title: result.check_id,
+                  description: result.message
+                });
+              }
+            });
+          }
+
+          // Process TruffleHog findings
+          if (reports.trufflehog.detected) {
+            reports.trufflehog.detected.forEach(finding => {
+              if (finding.severity === 'CRITICAL' || finding.severity === 'HIGH') {
+                criticalIssues.push({
+                  tool: 'TruffleHog',
+                  severity: finding.severity,
+                  file: finding.file,
+                  line: finding.line,
+                  title: finding.detectorType,
+                  description: finding.description
+                });
+              }
+            });
+          }
+
+          // Create issues for critical findings
+          for (const issue of criticalIssues) {
+            const title = `🔒 Security Issue: ${issue.title} in ${issue.file}`;
+            const body = `## Security Vulnerability Found\n\n**Tool:** ${issue.tool}\n**Severity:** ${issue.severity}\n**File:** ${issue.file}\n**Line:** ${issue.line}\n\n### Description\n${issue.description}\n\n### Steps to Reproduce\n1. Navigate to \`${issue.file}\`\n2. Look at line ${issue.line}\n3. Review the code for security issues\n\n### Recommended Fix\n\n\`\`\`\n# Add your fix here\n\`\`\`\n\n### Additional Context\n- This issue was automatically created by DuckBot security scanning\n- Priority: ${issue.severity}\n- Tool: ${issue.tool}\n\n---\n*This issue was automatically generated by the DuckBot security workflow.*`;
+
+            // Check if issue already exists
+            const existingIssues = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'security, automated'
+            });
+
+            const issueExists = existingIssues.data.some(existingIssue =>
+              existingIssue.title.includes(issue.title) &&
+              existingIssue.title.includes(issue.file)
+            );
+
+            if (!issueExists) {
+              await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: title,
+                body: body,
+                labels: ['security', 'automated', 'critical', `tool:${issue.tool.toLowerCase()}`]
+              });
+
+              console.log(`Created security issue: ${title}`);
+            }
+          }
+
+    - name: Comment on PR with security findings
+      if: github.event_name == 'pull_request'
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const prNumber = context.issue.number;
+
+          // Read security reports
+          const reports = {
+            bandit: JSON.parse(fs.readFileSync('bandit-report.json', 'utf8')),
+            safety: JSON.parse(fs.readFileSync('safety-report.json', 'utf8')),
+            semgrep: JSON.parse(fs.readFileSync('semgrep-report.json', 'utf8')),
+            trufflehog: JSON.parse(fs.readFileSync('trufflehog-report.json', 'utf8'))
+          };
+
+          let comment = '## 🔒 Security Scan Results\n\n';
+
+          // Bandit results
+          if (reports.bandit.results && reports.bandit.results.length > 0) {
+            comment += '### Bandit Python Security Scanner\n\n';
+            const highIssues = reports.bandit.results.filter(r => r.issue_severity === 'HIGH');
+            const mediumIssues = reports.bandit.results.filter(r => r.issue_severity === 'MEDIUM');
+            const lowIssues = reports.bandit.results.filter(r => r.issue_severity === 'LOW');
+
+            if (highIssues.length > 0) {
+              comment += `🚨 **${highIssues.length} High severity issues found**\n`;
+              highIssues.forEach(issue => {
+                comment += `- \`${issue.filename}:${issue.line_number}\` - ${issue.test_name}\n`;
+              });
+              comment += '\n';
+            }
+
+            if (mediumIssues.length > 0) {
+              comment += `⚠️ **${mediumIssues.length} Medium severity issues found**\n`;
+              mediumIssues.forEach(issue => {
+                comment += `- \`${issue.filename}:${issue.line_number}\` - ${issue.test_name}\n`;
+              });
+              comment += '\n';
+            }
+
+            if (lowIssues.length > 0) {
+              comment += `ℹ️ **${lowIssues.length} Low severity issues found**\n`;
+              lowIssues.forEach(issue => {
+                comment += `- \`${issue.filename}:${issue.line_number}\` - ${issue.test_name}\n`;
+              });
+              comment += '\n';
+            }
+          } else {
+            comment += '### Bandit Python Security Scanner\n✅ No security issues found\n\n';
+          }
+
+          // Safety results
+          if (reports.safety.vulnerabilities && reports.safety.vulnerabilities.length > 0) {
+            comment += '### Safety Dependency Scanner\n\n';
+            comment += `🚨 **${reports.safety.vulnerabilities.length} vulnerable dependencies found**\n`;
+            reports.safety.vulnerabilities.forEach(vuln => {
+              comment += `- \`${vuln.package}==${vuln.version}\` - ${vuln.advisory}\n`;
+            });
+            comment += '\n';
+          } else {
+            comment += '### Safety Dependency Scanner\n✅ No vulnerable dependencies found\n\n';
+          }
+
+          // Semgrep results
+          if (reports.semgrep.results && reports.semgrep.results.length > 0) {
+            comment += '### Semgrep Static Analysis\n\n';
+            comment += `⚠️ **${reports.semgrep.results.length} code quality issues found**\n`;
+            reports.semgrep.results.forEach(result => {
+              comment += `- \`${result.path}:${result.start.line}\` - ${result.check_id}\n`;
+            });
+            comment += '\n';
+          } else {
+            comment += '### Semgrep Static Analysis\n✅ No code quality issues found\n\n';
+          }
+
+          // TruffleHog results
+          if (reports.trufflehog.detected && reports.trufflehog.detected.length > 0) {
+            comment += '### TruffleHog Secret Scanner\n\n';
+            comment += `🚨 **${reports.trufflehog.detected.length} potential secrets found**\n`;
+            reports.trufflehog.detected.forEach(finding => {
+              comment += `- \`${finding.file}:${finding.line}\` - ${finding.detectorType}\n`;
+            });
+            comment += '\n';
+          } else {
+            comment += '### TruffleHog Secret Scanner\n✅ No secrets found\n\n';
+          }
+
+          comment += '---\n🤖 This security report was automatically generated by DuckBot.\n';
+          comment += 'View detailed reports in the "security-reports" artifacts.';
+
+          // Post comment
+          await github.rest.issues.createComment({
+            issue_number: prNumber,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });

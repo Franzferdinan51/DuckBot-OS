@@ -1,0 +1,277 @@
+name: DuckBot Workflow Automation
+
+on:
+  issues:
+    types: [opened, labeled, assigned, closed]
+  pull_request:
+    types: [opened, synchronize, closed, review_requested, ready_for_review]
+  push:
+    branches: [ main, develop ]
+  release:
+    types: [published, created, edited]
+  schedule:
+    - cron: '0 2 * * *'  # Daily at 2 AM UTC
+  workflow_dispatch:
+
+jobs:
+  workflow-automation:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install aiohttp pydantic yaml
+
+    - name: Run DuckBot Workflow Automation
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        REPOSITORY: ${{ github.repository }}
+        WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+        EVENT_TYPE: ${{ github.event_name }}
+        EVENT_ACTION: ${{ github.event.action }}
+        EVENT_PAYLOAD: ${{ toJSON(github.event) }}
+      run: |
+        python -c "
+        import asyncio
+        import json
+        import os
+        from duckbot.integrations.github_workflows import (
+            create_github_workflow_manager, WorkflowConfig, WorkflowType
+        )
+        from pathlib import Path
+
+        async def main():
+            # Load configuration
+            config_path = Path('config/github_workflows_config.json')
+            if config_path.exists():
+                with open(config_path) as f:
+                    config_data = json.load(f)
+            else:
+                config_data = {
+                    'github_token': os.getenv('GITHUB_TOKEN'),
+                    'repository': os.getenv('REPOSITORY'),
+                    'webhook_secret': os.getenv('WEBHOOK_SECRET'),
+                    'enabled_workflows': list(WorkflowType),
+                    'ai_review_enabled': False,  # Disabled in CI for cost reasons
+                    'cost_tracking_enabled': False,
+                    'notification_channels': []
+                }
+
+            config = WorkflowConfig(**config_data)
+
+            # Create workflow manager
+            manager = await create_github_workflow_manager(config)
+
+            # Handle event if present
+            if os.getenv('EVENT_PAYLOAD'):
+                event_type = os.getenv('EVENT_TYPE')
+                payload = json.loads(os.getenv('EVENT_PAYLOAD'))
+
+                result = await manager.handle_webhook(event_type, payload)
+                print(f'Workflow result: {result}')
+
+            # Run scheduled tasks
+            if os.getenv('EVENT_TYPE') == 'schedule':
+                # Run maintenance tasks
+                maintenance_result = await manager.execute_workflow(WorkflowType.REPOSITORY_MAINTENANCE)
+                print(f'Maintenance result: {maintenance_result}')
+
+                # Run security scan
+                security_result = await manager.execute_workflow(WorkflowType.SECURITY_SCANNING)
+                print(f'Security result: {security_result}')
+
+            await manager.shutdown()
+
+        asyncio.run(main())
+        "
+
+  issue-automation:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'issues'
+    steps:
+    - name: Process Issue
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const issue = context.payload.issue;
+          const action = context.payload.action;
+
+          console.log(`Processing issue #${issue.number}: ${action}`);
+
+          // Auto-label based on content
+          if (action === 'opened') {
+            const title = issue.title.toLowerCase();
+            const body = (issue.body || '').toLowerCase();
+            const content = title + ' ' + body;
+
+            const labels = [];
+
+            // Priority labels
+            if (content.includes('critical') || content.includes('urgent') || content.includes('blocking')) {
+              labels.push('priority:critical');
+            } else if (content.includes('high') || content.includes('important')) {
+              labels.push('priority:high');
+            } else if (content.includes('low') || content.includes('minor')) {
+              labels.push('priority:low');
+            } else {
+              labels.push('priority:medium');
+            }
+
+            // Type labels
+            if (content.includes('bug') || content.includes('error') || content.includes('broken')) {
+              labels.push('type:bug');
+            } else if (content.includes('feature') || content.includes('add') || content.includes('implement')) {
+              labels.push('type:feature');
+            } else if (content.includes('documentation') || content.includes('readme') || content.includes('guide')) {
+              labels.push('type:documentation');
+            } else {
+              labels.push('type:question');
+            }
+
+            // Add labels
+            if (labels.length > 0) {
+              await github.rest.issues.addLabels({
+                issue_number: issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                labels: labels
+              });
+            }
+
+            // Add welcome comment
+            await github.rest.issues.createComment({
+              issue_number: issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `Thank you for opening this issue! 🎉\n\nI've automatically added some labels to help categorize your issue. Our team will review it shortly.\n\n**Labels added:** ${labels.join(', ')}\n\nPlease make sure to:\n- ✅ Read our [contributing guidelines](CONTRIBUTING.md)\n- ✅ Check if this issue hasn't been reported before\n- ✅ Provide enough detail for us to reproduce the issue`
+            });
+          }
+
+  pr-automation:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+    - name: Process Pull Request
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const pull_request = context.payload.pull_request;
+          const action = context.payload.action;
+
+          console.log(`Processing PR #${pull_request.number}: ${action}`);
+
+          if (action === 'opened') {
+            // Auto-size labeling
+            const sizeLabels = {
+              'size:XS': 5,
+              'size:S': 10,
+              'size:M': 25,
+              'size:L': 50,
+              'size:XL': 100
+            };
+
+            const filesChanged = pull_request.changed_files;
+            let sizeLabel = 'size:XL';
+
+            for (const [label, threshold] of Object.entries(sizeLabels)) {
+              if (filesChanged <= threshold) {
+                sizeLabel = label;
+                break;
+              }
+            }
+
+            // Add labels
+            await github.rest.issues.addLabels({
+              issue_number: pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: [sizeLabel, 'needs-review']
+            });
+
+            // Add welcome comment
+            const comment = `Thank you for your contribution! 🎉\n\nI've added some labels to your pull request:\n\n📊 **Size:** ${sizeLabel}\n📁 **Files changed:** ${pull_request.changed_files}\n➕ **Additions:** ${pull_request.additions}\n➖ **Deletions:** ${pull_request.deletions}\n\nYour PR will be reviewed shortly. Please make sure to:\n- ✅ Read our [contributing guidelines](CONTRIBUTING.md)\n- ✅ Ensure all tests are passing\n- ✅ Update documentation if needed\n- ✅ Follow our code style guidelines\n\n🤖 This comment was automatically generated by DuckBot workflow automation.`;
+
+            await github.rest.issues.createComment({
+              issue_number: pull_request.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          }
+
+  release-automation:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'published'
+    steps:
+    - name: Process Release
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const release = context.payload.release;
+
+          console.log(`Processing release: ${release.name}`);
+
+          // Create release announcement issue
+          const announcementBody = `## 🎉 New Release: ${release.name}\n\n**Version:** ${release.tag_name}\n**Published:** ${new Date(release.published_at).toLocaleDateString()}\n\n### Changes\n${release.body || 'No changelog provided.'}\n\n### Assets\n${release.assets.map(asset => `- [${asset.name}](${asset.browser_download_url}) (${(asset.size / 1024 / 1024).toFixed(2)} MB)`).join('\n')}\n\n### Installation\n\`\`\`bash\npip install duckbot-enhanced==${release.tag_name}\n\`\`\n\n### Links\n- [Release Page](${release.html_url})\n- [Assets](${release.assets_url})\n\n---\n*This issue was automatically created by DuckBot workflow automation.*`;
+
+          await github.rest.issues.create({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            title: `🎉 Release Announcement: ${release.name}`,
+            body: announcementBody,
+            labels: ['release', 'announcement']
+          });
+
+  repository-maintenance:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    steps:
+    - name: Repository Maintenance
+      uses: actions/github-script@v6
+      with:
+        script: |
+          // Clean up old branches (older than 30 days)
+          const branches = await github.rest.repos.listBranches({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          const thirtyDaysAgo = new Date();
+          thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+
+          for (const branch of branches.data) {
+            if (branch.name !== 'main' && branch.name !== 'develop') {
+              try {
+                const branchInfo = await github.rest.repos.getBranch({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  branch: branch.name
+                });
+
+                const lastCommit = new Date(branchInfo.data.commit.commit.author.date);
+
+                if (lastCommit < thirtyDaysAgo) {
+                  console.log(`Branch ${branch.name} is older than 30 days, consider cleanup`);
+                }
+              } catch (error) {
+                console.log(`Could not get info for branch ${branch.name}`);
+              }
+            }
+          }
+
+          // Update repository statistics
+          const repoInfo = await github.rest.repos.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo
+          });
+
+          console.log(`Repository stats: ${repoInfo.data.stargazers_count} stars, ${repoInfo.data.forks_count} forks, ${repoInfo.data.open_issues_count} issues`);

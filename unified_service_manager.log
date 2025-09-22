@@ -1,0 +1,75 @@
+2025-09-16 23:45:37,206 - duckbot.core.service_manager - INFO - Registered service: LM Studio Server (lm_studio)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: ComfyUI Image Generator (comfyui)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: DuckBot WebUI (webui)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: Server Manager (server_manager)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: VibeVoice TTS (vibevoice)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: Mining Manager (mining_manager)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: UI-TARS MCP Server (ui_tars_mcp)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: ByteBot Desktop Automation (bytebot)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: Qwen-Agent Integration (qwen_agent)
+2025-09-16 23:45:37,207 - duckbot.core.service_manager - INFO - Registered service: Archon Multi-Agent Framework (archon_agent)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: Browser-Use Integration (browser_use)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: SQLite Database (database)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: Logging System (logging)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: AI Cache Manager (cache)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: System Monitoring (monitoring)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: n8n Workflow Engine (n8n)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: OpenWebUI Interface (openwebui)
+2025-09-16 23:45:37,208 - duckbot.core.service_manager - INFO - Registered service: Discord Bot (discord_bot)
+2025-09-16 23:45:37,274 - root - WARNING - DuckBot modules not available: cannot import name 'MonitoringSystem' from 'duckbot.core.monitoring_system' (C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\duckbot\core\monitoring_system.py)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: LM Studio Server (lm_studio)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: ComfyUI Image Generator (comfyui)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: DuckBot WebUI (webui)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Server Manager (server_manager)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: VibeVoice TTS (vibevoice)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Mining Manager (mining_manager)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: UI-TARS MCP Server (ui_tars_mcp)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: ByteBot Desktop Automation (bytebot)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Qwen-Agent Integration (qwen_agent)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Archon Multi-Agent Framework (archon_agent)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Browser-Use Integration (browser_use)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: SQLite Database (database)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Logging System (logging)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: AI Cache Manager (cache)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: System Monitoring (monitoring)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: n8n Workflow Engine (n8n)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: OpenWebUI Interface (openwebui)
+2025-09-19 17:04:33,960 - duckbot.core.service_manager - INFO - Registered service: Discord Bot (discord_bot)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: LM Studio Server (lm_studio)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: ComfyUI Image Generator (comfyui)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: DuckBot WebUI (webui)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Server Manager (server_manager)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: VibeVoice TTS (vibevoice)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Mining Manager (mining_manager)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: UI-TARS MCP Server (ui_tars_mcp)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: ByteBot Desktop Automation (bytebot)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Qwen-Agent Integration (qwen_agent)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Archon Multi-Agent Framework (archon_agent)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Browser-Use Integration (browser_use)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: SQLite Database (database)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Logging System (logging)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: AI Cache Manager (cache)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: System Monitoring (monitoring)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: n8n Workflow Engine (n8n)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: OpenWebUI Interface (openwebui)
+2025-09-19 17:07:59,275 - duckbot.core.service_manager - INFO - Registered service: Discord Bot (discord_bot)
+2025-09-19 17:07:59,427 - duckbot.core.ai_configuration_manager - ERROR - Error loading AI configuration: [Errno 2] No such file or directory: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\duckbot\\config\\ai_config.json'
+2025-09-19 17:07:59,427 - duckbot.core.ai_configuration_manager - WARNING - Loaded default AI configuration
+2025-09-19 17:07:59,427 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Provider 'openrouter' requires API key but none provided", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-19 17:07:59,427 - duckbot.core.ai_configuration_manager - WARNING - Disabled provider 'openrouter' due to missing API key
+2025-09-19 17:08:01,849 - duckbot.core.cost_management - WARNING - Analytics integration not available
+2025-09-19 17:08:01,850 - duckbot.integrations.vibevoice_client - INFO - [OK] VibeVoice integration initialized (manager created)
+2025-09-19 17:08:23,429 - tensorflow - WARNING - From C:\Users\Ryan\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\LocalCache\local-packages\Python311\site-packages\tf_keras\src\losses.py:2976: The name tf.losses.sparse_softmax_cross_entropy is deprecated. Please use tf.compat.v1.losses.sparse_softmax_cross_entropy instead.
+
+2025-09-19 17:08:24,038 - datasets - INFO - PyTorch version 2.8.0 available.
+2025-09-19 17:08:24,040 - datasets - INFO - TensorFlow version 2.18.0 available.
+2025-09-19 17:08:24,502 - sentence_transformers.SentenceTransformer - INFO - Use pytorch device_name: cpu
+2025-09-19 17:08:24,502 - sentence_transformers.SentenceTransformer - INFO - Load pretrained SentenceTransformer: all-MiniLM-L6-v2
+2025-09-19 17:08:25,892 - duckbot.ai_router - WARNING - RAG module not available
+2025-09-19 17:08:25,892 - duckbot.ai_router - WARNING - Action reasoning logger not available
+2025-09-19 17:08:25,892 - duckbot.ai_router - WARNING - Dynamic model manager not available
+2025-09-19 17:08:25,892 - duckbot.ai_router - WARNING - Local feature parity not available
+2025-09-19 17:08:25,892 - duckbot.ai_router - WARNING - Qwen-Agent integration not available
+2025-09-19 17:08:25,896 - duckbot.integrations.docker_mcp_gateway - INFO - Docker MCP Gateway integration initialized
+2025-09-19 17:08:25,952 - duckbot.integrations.ui_tars_integration - WARNING - UI-TARS CLI not installed
+2025-09-19 17:08:26,032 - duckbot.integrations.mcp_server - INFO - DuckBot integrations initialized for MCP: ['ui_tars', 'bytebot', 'archon', 'wsl', 'cost_tracker', 'server_manager']
