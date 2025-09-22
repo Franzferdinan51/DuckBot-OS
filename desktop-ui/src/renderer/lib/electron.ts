@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { useAppStore } from '@stores/useAppStore'
-import { ServiceStatus, SystemMetrics, Agent, CostData, Alert } from '@types'
+import { ServiceStatus, SystemMetrics, Agent, CostData, Alert, BudgetData, CostExportOptions } from '@types'
 
 export function initElectronListeners() {
   const {
@@ -291,6 +291,87 @@ export function useElectron() {
     window.electronAPI.showNotification({ title, body, silent })
   }
 
+  const updateBudgetSettings = async (budget: BudgetData) => {
+    try {
+      await window.electronAPI.updateBudgetSettings(budget)
+      addAlert({
+        type: 'success',
+        title: 'Budget Updated',
+        message: 'Budget settings have been updated successfully'
+      })
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to update budget'
+      setError(errorMessage)
+      addAlert({
+        type: 'error',
+        title: 'Budget Update Failed',
+        message: errorMessage
+      })
+      throw error
+    }
+  }
+
+  const exportCostData = async (options: CostExportOptions) => {
+    try {
+      const result = await window.electronAPI.exportCostData(options)
+      addAlert({
+        type: 'success',
+        title: 'Export Complete',
+        message: 'Cost data exported successfully'
+      })
+      return result
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to export cost data'
+      setError(errorMessage)
+      addAlert({
+        type: 'error',
+        title: 'Export Failed',
+        message: errorMessage
+      })
+      throw error
+    }
+  }
+
+  const dismissCostAlert = async (alertId: string) => {
+    try {
+      await window.electronAPI.dismissCostAlert(alertId)
+      // Update local state to remove the alert
+      const store = useAppStore.getState()
+      const currentCostData = store.costData
+      if (currentCostData?.alerts) {
+        store.updateCostData({
+          ...currentCostData,
+          alerts: currentCostData.alerts.map(alert =>
+            alert.id === alertId ? { ...alert, resolved: true } : alert
+          )
+        })
+      }
+    } catch (error) {
+      console.error('Failed to dismiss cost alert:', error)
+    }
+  }
+
+  const implementOptimization = async (optimizationId: string) => {
+    try {
+      const result = await window.electronAPI.implementOptimization(optimizationId)
+      addAlert({
+        type: 'success',
+        title: 'Optimization Implemented',
+        message: 'Cost optimization has been applied successfully'
+      })
+      return result
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to implement optimization'
+      setError(errorMessage)
+      addAlert({
+        type: 'error',
+        title: 'Optimization Failed',
+        message: errorMessage
+      })
+      throw error
+    }
+  }
+
   return {
     startService,
     stopService,
@@ -302,6 +383,10 @@ export function useElectron() {
     controlAgent,
     updateConfig,
     showNotification,
+    updateBudgetSettings,
+    exportCostData,
+    dismissCostAlert,
+    implementOptimization,
     loading
   }
 }

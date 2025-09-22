@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { Toaster } from '@radix-ui/react-toast'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import { Layout } from '@components/Layout'
 import { Dashboard } from '@components/Dashboard'
@@ -9,6 +8,7 @@ import { Agents } from '@components/Agents'
 import { Chat } from '@components/Chat'
 import { Automation } from '@components/Automation'
 import { Settings } from '@components/Settings'
+import { CostTrackingDashboard } from '@components/cost'
 import { useAppStore } from '@stores/useAppStore'
 import { initElectronListeners } from '@lib/electron'
 import { ThemeProvider } from '@components/theme-provider'
@@ -68,11 +68,14 @@ function AppContent() {
           <Route path="/agents" element={<Agents />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/automation" element={<Automation />} />
+          <Route path="/costs" element={<CostTrackingDashboard />} />
+          <Route path="/costs/overview" element={<CostTrackingDashboard />} />
+          <Route path="/costs/transactions" element={<CostTrackingDashboard />} />
+          <Route path="/costs/budget" element={<CostTrackingDashboard />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="*" element={<Dashboard />} />
         </Routes>
       </Layout>
-      <Toaster />
     </div>
   )
 }

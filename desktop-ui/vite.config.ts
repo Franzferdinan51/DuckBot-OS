@@ -17,6 +17,9 @@ export default defineConfig({
           build: {
             outDir: 'dist',
           },
+          rollupOptions: {
+            external: ['electron', 'fs', 'fs/promises', 'path', 'child_process', 'app']
+          }
         },
       },
       {
@@ -28,6 +31,9 @@ export default defineConfig({
           build: {
             outDir: 'dist',
           },
+          rollupOptions: {
+            external: ['electron', 'fs', 'fs/promises', 'path', 'child_process', 'app']
+          }
         },
       },
     ]),

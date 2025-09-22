@@ -38,3 +38,6 @@ export * from './chart-container'
 
 // Icons (using Lucide React)
 export * from 'lucide-react'
+
+// Cost tracking components
+export { CostTrackingDashboard } from '../cost'
