@@ -15,7 +15,7 @@
           "name": "NVIDIA GeForce RTX 3080",
           "vram_mb": 10240,
           "vram_gb": 10.0,
-          "driver_version": "580.97",
+          "driver_version": "581.29",
           "compute_capability": "8.6"
         }
       ],
@@ -31,18 +31,18 @@
       "cores_logical": 32,
       "max_frequency_mhz": 4201.0,
       "current_frequency_mhz": 4201.0,
-      "usage_percent": 9.7,
+      "usage_percent": 7.3,
       "max_clock_speed": 4201,
       "name": "9 7950X3D 16-Core Processor 16 32"
     },
     "memory": {
       "total_gb": 127.6,
-      "available_gb": 85.3,
-      "used_gb": 42.3,
-      "usage_percent": 33.1,
+      "available_gb": 90.6,
+      "used_gb": 37.0,
+      "usage_percent": 29.0,
       "swap_total_gb": 8.0,
-      "swap_used_gb": 2.2,
-      "swap_usage_percent": 27.2
+      "swap_used_gb": 0.0,
+      "swap_usage_percent": 0.0
     },
     "storage": {
       "disks": [
@@ -51,9 +51,9 @@
           "mountpoint": "C:\\",
           "fstype": "NTFS",
           "total_gb": 930.7,
-          "used_gb": 837.4,
-          "free_gb": 93.3,
-          "usage_percent": 90.0
+          "used_gb": 847.3,
+          "free_gb": 83.4,
+          "usage_percent": 91.0
         },
         {
           "device": "D:\\",
@@ -66,7 +66,7 @@
         }
       ],
       "total_space_gb": 1840.9,
-      "free_space_gb": 748.1999999999999
+      "free_space_gb": 738.3
     }
   },
   "performance_tier": "high_end",
@@ -88,5 +88,5 @@
     "concurrent_models": 3,
     "local_fallback_model": "microsoft/phi-3-mini-4k-instruct-q4.gguf"
   },
-  "detection_timestamp": "2025-09-17T04:01:33.940342"
+  "detection_timestamp": "2025-09-23T02:30:36.106893"
 }

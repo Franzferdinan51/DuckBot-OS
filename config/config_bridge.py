@@ -30,6 +30,8 @@ class ElectronLauncherConfig:
     mcp_host: str = "127.0.0.1"
     mcp_port: int = 8789
     webui_port: int = 8787
+    qwen3_omni_ui_port: int = 8788
+    qwen3_omni_ws_port: int = 8796
     ai_router_port: int = 8790
 
     # Feature flags
@@ -105,6 +107,7 @@ class ConfigBridge:
 
         # Extract port configurations
         webui_config = services.get('webui', {})
+        qwen3_omni_ui_config = services.get('qwen3_omni_ui', {})
         monitoring_config = services.get('monitoring', {})
         ai_router_config = services.get('ai_router', {})
 
@@ -117,6 +120,8 @@ class ConfigBridge:
             mcp_host=network.get('default_host', '127.0.0.1'),
             mcp_port=monitoring_config.get('default_port', 8789),
             webui_port=webui_config.get('default_port', 8787),
+            qwen3_omni_ui_port=qwen3_omni_ui_config.get('default_port', 8788),
+            qwen3_omni_ws_port=qwen3_omni_ui_config.get('websocket_port', 8796),
             ai_router_port=ai_router_config.get('default_port', 8790),
 
             # Feature flags
@@ -169,6 +174,19 @@ class ConfigBridge:
                 'command': f'python duckbot/enhanced_webui.py --port {services.get("webui", {}).get("default_port", 8787)}',
                 'ports': [services.get('webui', {}).get('default_port', 8787)],
                 'enabled': features.get('webui_enabled', True)
+            }
+
+        # Qwen3-Omni-UI Mode
+        if services.get('qwen3_omni_ui', {}).get('enabled', True):
+            startup_modes['qwen3-omni-ui'] = {
+                'name': 'Qwen3-Omni Advanced UI',
+                'description': 'Advanced AI interface with multimodal capabilities',
+                'icon': '🎯',
+                'category': 'advanced',
+                'requires': ['openrouter'] if ai_providers.get('openrouter', {}).get('enabled', False) else [],
+                'command': f'python desktop-ui/src/main/main.py --port {services.get("qwen3_omni_ui", {}).get("default_port", 8788)}',
+                'ports': [services.get('qwen3_omni_ui', {}).get('default_port', 8788), services.get('qwen3_omni_ui', {}).get('websocket_port', 8796)],
+                'enabled': features.get('advanced_ui_enabled', True)
             }
 
         # System Monitoring Mode

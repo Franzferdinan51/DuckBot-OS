@@ -11,7 +11,7 @@ import yaml
 import os
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional, Union
+from typing import Dict, Any, Optional, Union, List
 from dataclasses import dataclass, asdict
 from datetime import datetime
 
@@ -47,6 +47,14 @@ class WebUIConfig:
     enable_websocket: bool = True
     enable_file_upload: bool = True
     max_upload_size: int = 100 * 1024 * 1024  # 100MB
+    # Qwen3-Omni-UI Configuration
+    qwen3_omni_ui_enabled: bool = True
+    qwen3_omni_ui_host: str = "127.0.0.1"
+    qwen3_omni_ui_port: int = 8788
+    qwen3_omni_ws_port: int = 8796
+    qwen3_omni_ws_path: str = "/ws"
+    qwen3_omni_ui_debug: bool = False
+    qwen3_omni_ui_max_concurrent: int = 50
 
 @dataclass
 class SystemConfig:

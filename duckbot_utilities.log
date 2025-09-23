@@ -1,0 +1,22 @@
+2025-09-23 02:27:09,320 - duckbot.core.ai_configuration_manager - ERROR - Error loading AI configuration: [Errno 2] No such file or directory: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\duckbot\\config\\ai_config.json'
+2025-09-23 02:27:09,320 - duckbot.core.ai_configuration_manager - WARNING - Loaded default AI configuration
+2025-09-23 02:27:09,320 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Default provider 'qwen3_omni' not found", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-23 02:27:11,983 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-23 02:27:56,460 - duckbot.core.ai_configuration_manager - ERROR - Error loading AI configuration: [Errno 2] No such file or directory: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\duckbot\\config\\ai_config.json'
+2025-09-23 02:27:56,460 - duckbot.core.ai_configuration_manager - WARNING - Loaded default AI configuration
+2025-09-23 02:27:56,460 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Default provider 'qwen3_omni' not found", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-23 02:27:58,994 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-23 02:28:33,496 - duckbot.core.ai_configuration_manager - ERROR - Error loading AI configuration: [Errno 2] No such file or directory: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\duckbot\\config\\ai_config.json'
+2025-09-23 02:28:33,496 - duckbot.core.ai_configuration_manager - WARNING - Loaded default AI configuration
+2025-09-23 02:28:33,496 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Default provider 'qwen3_omni' not found", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-23 02:28:36,051 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-23 02:28:40,230 - duckbot.core.ai_provider_manager - INFO - [BRAIN] Main brain established: qwen/qwen3-coder:free (LM Studio)
+2025-09-23 02:29:16,922 - duckbot.core.ai_configuration_manager - ERROR - Error loading AI configuration: [Errno 2] No such file or directory: 'C:\\Users\\Ryan\\Desktop\\DuckBot-Consolidated-v4.2\\duckbot\\config\\ai_config.json'
+2025-09-23 02:29:16,922 - duckbot.core.ai_configuration_manager - WARNING - Loaded default AI configuration
+2025-09-23 02:29:16,922 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Default provider 'qwen3_omni' not found", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-23 02:29:19,478 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-23 02:29:23,622 - duckbot.core.ai_provider_manager - INFO - [BRAIN] Main brain established: qwen/qwen3-coder:free (LM Studio)
+2025-09-23 02:29:55,863 - duckbot.core.ai_configuration_manager - INFO - Loaded 0 AI providers from configuration
+2025-09-23 02:29:55,863 - duckbot.core.ai_configuration_manager - WARNING - Configuration validation errors: ["Default provider 'qwen3_omni' not found", "Fallback provider 'lm_studio' not found", "Fallback provider 'openrouter' not found", "Fallback provider 'gemini' not found", "Fallback provider 'duckbot' not found"]
+2025-09-23 02:29:58,403 - duckbot.core.hardware_detector - INFO - Hardware configuration saved to: C:\Users\Ryan\Desktop\DuckBot-Consolidated-v4.2\hardware_config.json
+2025-09-23 02:30:02,557 - duckbot.core.ai_provider_manager - INFO - [BRAIN] Main brain established: qwen/qwen3-coder:free (LM Studio)

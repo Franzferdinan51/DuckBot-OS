@@ -16,6 +16,21 @@ from collections import defaultdict, deque
 from datetime import datetime, timedelta
 import time
 
+# Unified model specification for all providers
+@dataclass
+class UnifiedModelSpec:
+    id: str
+    name: str
+    size_gb: float
+    ram_required_gb: float
+    vram_required_gb: float
+    capabilities: List[str]
+    performance_score: int
+    load_time_seconds: float
+    specialty_bonus: Dict[str, int]
+    provider: str
+    api_endpoint: Optional[str] = None
+
 # Import configuration manager
 from .ai_configuration_manager import AIConfigurationManager, ProviderConfig
 
@@ -26,6 +41,8 @@ try:
 except ImportError:
     AI_ROUTING_AVAILABLE = False
     DynamicModelManager = object
+    ModelSpec = None
+    UnifiedModelSpec = None
 
 try:
     from ..integrations.claude_code_integration import claude_code_integration
@@ -54,6 +71,15 @@ try:
 except ImportError:
     VIBEVOICE_AVAILABLE = False
     vibevoice_integration = None
+
+# Import Qwen3-Omni integration
+try:
+    from .qwen3_omni_integration import qwen3_omni_integration, Qwen3OmniIntegration
+    QWEN3_OMNI_AVAILABLE = True
+except ImportError:
+    QWEN3_OMNI_AVAILABLE = False
+    qwen3_omni_integration = None
+    Qwen3OmniIntegration = None
 
 # Import intelligent caching
 try:
@@ -109,6 +135,9 @@ class AIProviderManager:
         self.provider_status: Dict[str, ProviderStatus] = {}
         self.circuit_breakers: Dict[str, CircuitBreakerState] = {}
 
+        # Initialize providers dict
+        self.providers: Dict[str, Dict[str, Any]] = {}
+
         # Initialize intelligent caching
         self.cache = None
         if INTELLIGENT_CACHE_AVAILABLE:
@@ -140,10 +169,11 @@ class AIProviderManager:
         # Main brain model - always kept loaded for system orchestration
         self.main_brain_model = None
         self.main_brain_provider = None
+        self.qwen3_omni_instance = None
         self._initialize_main_brain()
 
-        # Start health monitoring
-        self._start_health_monitoring()
+        # Start health monitoring (lazy initialization)
+        self.health_monitor_started = False
 
     def _initialize_providers(self):
         """Initialize provider instances based on configuration"""
@@ -170,6 +200,12 @@ class AIProviderManager:
             elif provider_name == "vibevoice" and VIBEVOICE_AVAILABLE:
                 provider_instance = vibevoice_integration
                 available = vibevoice_integration and vibevoice_integration.available
+            elif provider_name == "qwen3_omni" and QWEN3_OMNI_AVAILABLE:
+                provider_instance = qwen3_omni_integration
+                available = qwen3_omni_integration and qwen3_omni_integration.is_available()
+                # Ensure model is loaded for Qwen3-Omni
+                if available and not qwen3_omni_integration.is_loaded:
+                    asyncio.create_task(qwen3_omni_integration.load_model())
             elif provider_name == "duckbot":
                 # Internal DuckBot provider
                 provider_instance = self._create_duckbot_provider(provider_config)
@@ -184,6 +220,14 @@ class AIProviderManager:
                 available = True
 
             self.provider_instances[provider_name] = provider_instance
+
+            # Initialize providers dict
+            self.providers[provider_name] = {
+                "available": available,
+                "enabled": provider_config.enabled,
+                "instance": provider_instance,
+                "config": provider_config
+            }
 
             # Initialize status and circuit breaker
             self.provider_status[provider_name] = ProviderStatus(
@@ -344,10 +388,46 @@ class AIProviderManager:
 
         return OpenRouterProvider(config)
 
-    def _start_health_monitoring(self):
+    def _create_qwen3_omni_provider(self, config: ProviderConfig):
+        """Create Qwen3-Omni provider instance"""
+        class Qwen3OmniProvider:
+            def __init__(self, config, integration_instance):
+                self.config = config
+                self.integration = integration_instance
+                self.available = integration_instance and integration_instance.is_available()
+
+            async def execute_task(self, task: Dict[str, Any]) -> Dict[str, Any]:
+                if not self.available or not self.integration:
+                    return {"success": False, "error": "Qwen3-Omni not available"}
+
+                # Execute task using Qwen3-Omni integration
+                return await self.integration.execute_task(task)
+
+            def is_available(self):
+                return self.available and self.integration and self.integration.is_available()
+
+            def get_status(self):
+                if self.integration:
+                    return self.integration.get_status()
+                return {"available": False, "error": "Integration not available"}
+
+        return Qwen3OmniProvider(config, qwen3_omni_integration)
+
+    async def start_health_monitoring(self):
         """Start background health monitoring for providers"""
-        if self.config_manager.fallback_config.enabled:
+        if not self.health_monitor_started and self.config_manager.fallback_config.enabled:
+            self.health_monitor_started = True
             asyncio.create_task(self._health_monitor_loop())
+
+    def _start_health_monitoring(self):
+        """Legacy method for backward compatibility"""
+        try:
+            loop = asyncio.get_running_loop()
+            if loop.is_running():
+                loop.create_task(self._health_monitor_loop())
+        except RuntimeError:
+            # No event loop running, will start later
+            pass
 
     async def _health_monitor_loop(self):
         """Background health monitoring loop"""
@@ -452,7 +532,7 @@ class AIProviderManager:
                 )
         
         # Add Claude Code models
-        if self.providers["claude_code"]["available"]:
+        if self.providers.get("claude_code", {}).get("available", False):
             claude_models = [
                 ("anthropic/claude-3.5-sonnet", "Claude 3.5 Sonnet", 85),
                 ("anthropic/claude-3-haiku", "Claude 3 Haiku", 70),
@@ -475,7 +555,7 @@ class AIProviderManager:
                 )
         
         # Add Qwen-Agent models
-        if self.providers["qwen_agent"]["available"]:
+        if self.providers.get("qwen_agent", {}).get("available", False):
             models["qwen/qwen3-coder:free"] = UnifiedModelSpec(
                 id="qwen/qwen3-coder:free",
                 name="Qwen3 Coder (Free Tier)",
@@ -491,7 +571,7 @@ class AIProviderManager:
             )
         
         # Add Z.ai Claude models
-        if self.providers["zai_claude"]["available"]:
+        if self.providers.get("zai_claude", {}).get("available", False):
             models["claude-3-5-sonnet-20241022"] = UnifiedModelSpec(
                 id="claude-3-5-sonnet-20241022",
                 name="Claude 3.5 Sonnet (Z.ai)",
@@ -505,13 +585,30 @@ class AIProviderManager:
                 provider="zai_claude",
                 api_endpoint="https://api.z.ai/v1/chat/completions"
             )
-        
+
+        # Add Qwen3-Omni models
+        if QWEN3_OMNI_AVAILABLE:
+            models["Qwen/Qwen3-Omni"] = UnifiedModelSpec(
+                id="Qwen/Qwen3-Omni",
+                name="Qwen3-Omni (Main Brain)",
+                size_gb=15.0,  # Local model size estimate
+                ram_required_gb=16.0,
+                vram_required_gb=12.0,
+                capabilities=["coding", "general", "analysis", "reasoning", "multimodal", "voice"],
+                performance_score=95,
+                load_time_seconds=30.0,  # Longer load time for large model
+                specialty_bonus={"code": 40, "general": 30, "analysis": 25, "reasoning": 25, "multimodal": 50, "voice": 45},
+                provider="qwen3_omni",
+                api_endpoint="local"
+            )
+
         return models
     
     def _initialize_main_brain(self):
         """Initialize and load the main brain model for system orchestration"""
-        # Priority order for main brain selection
+        # Priority order for main brain selection - Qwen3-Omni first
         main_brain_candidates = [
+            ("Qwen/Qwen3-Omni", "qwen3_omni"),
             ("qwen/qwen3-coder:free", "qwen_agent"),
             ("anthropic/claude-3.5-sonnet", "claude_code"),
             ("claude-3-5-sonnet-20241022", "zai_claude"),
@@ -526,11 +623,16 @@ class AIProviderManager:
         
         # Try cloud providers
         for model_id, provider in main_brain_candidates:
-            if (provider in self.providers and 
+            if (provider in self.providers and
                 self.providers[provider]["available"] and
-                model_id in self.model_database):
+                (model_id in self.model_database or provider == "qwen3_omni")):
                 self.main_brain_model = model_id
                 self.main_brain_provider = provider
+                # For Qwen3-Omni, ensure it's loaded
+                if provider == "qwen3_omni" and QWEN3_OMNI_AVAILABLE:
+                    self.qwen3_omni_instance = qwen3_omni_integration
+                    if not qwen3_omni_integration.is_loaded:
+                        asyncio.create_task(qwen3_omni_integration.load_model())
                 logger.info(f"[BRAIN] Main brain established: {model_id} ({provider})")
                 return
         
@@ -717,6 +819,11 @@ class AIProviderManager:
             # Estimate cost
             cost_estimate = self._estimate_cost(result.get("usage", {}), "qwen_agent")
             result["cost_estimate"] = cost_estimate
+            return result
+
+        elif provider_name == "qwen3_omni" and qwen3_omni_integration:
+            # Use Qwen3-Omni integration
+            result = await qwen3_omni_integration.execute_task(task)
             return result
 
         elif provider_name == "zai_claude" and zai_claude_integration:

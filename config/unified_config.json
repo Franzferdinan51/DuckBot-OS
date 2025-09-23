@@ -9,7 +9,14 @@
     "interface_mode": "classic",
     "enable_websocket": true,
     "enable_file_upload": true,
-    "max_upload_size": 104857600
+    "max_upload_size": 104857600,
+    "qwen3_omni_ui_enabled": true,
+    "qwen3_omni_ui_host": "127.0.0.1",
+    "qwen3_omni_ui_port": 8788,
+    "qwen3_omni_ws_port": 8796,
+    "qwen3_omni_ws_path": "/ws",
+    "qwen3_omni_ui_debug": false,
+    "qwen3_omni_ui_max_concurrent": 50
   },
   "system": {
     "log_level": "INFO",

@@ -41,6 +41,7 @@ class DuckBotPortAllocator:
     SERVICE_PORTS = {
         # Core Services
         "webui": ServicePort("WebUI", 8787, "Main DuckBot WebUI", "http", True),
+        "qwen3_omni_ui": ServicePort("Qwen3-Omni-UI", 8788, "Qwen3-Omni advanced UI interface", "http", True),
         "monitoring": ServicePort("Monitoring", 8789, "AI Ecosystem Manager", "http", True),
         "ai_router": ServicePort("AI Router", 8790, "AI routing and management", "http", True),
 
@@ -48,6 +49,7 @@ class DuckBotPortAllocator:
         "websocket_mcp": ServicePort("WebSocket MCP", 8791, "WebSocket MCP server", "ws", True),
         "websocket_chat": ServicePort("WebSocket Chat", 8792, "WebSocket chat server", "ws", True),
         "websocket_api": ServicePort("WebSocket API", 8793, "WebSocket API gateway", "ws", False),
+        "qwen3_omni_ws": ServicePort("Qwen3-Omni WebSocket", 8796, "Qwen3-Omni WebSocket endpoint", "ws", True),
 
         # MCP Server (dedicated)
         "mcp_server": ServicePort("MCP Server", 8794, "Dedicated MCP server", "http", True),
@@ -175,10 +177,12 @@ def get_port_from_env(service_name: str, default: int) -> int:
 
 # Standard port exports
 DUCKBOT_WEBUI_PORT = get_port_from_env("webui", 8787)
+DUCKBOT_QWEN3_OMNI_UI_PORT = get_port_from_env("qwen3_omni_ui", 8788)
 DUCKBOT_MONITORING_PORT = get_port_from_env("monitoring", 8789)
 DUCKBOT_AI_ROUTER_PORT = get_port_from_env("ai_router", 8790)
 DUCKBOT_WEBSOCKET_MCP_PORT = get_port_from_env("websocket_mcp", 8791)
 DUCKBOT_WEBSOCKET_CHAT_PORT = get_port_from_env("websocket_chat", 8792)
+DUCKBOT_QWEN3_OMNI_WS_PORT = get_port_from_env("qwen3_omni_ws", 8796)
 DUCKBOT_MCP_SERVER_PORT = get_port_from_env("mcp_server", 8794)
 DUCKBOT_REACT_DEV_PORT = get_port_from_env("react_dev", 3000)
 

@@ -312,6 +312,17 @@ class EcosystemManager:
                     'critical': True,
                     'dependencies': ['comfyui']
                 },
+                'qwen3_omni_ui': {
+                    'name': 'Qwen3-Omni-UI',
+                    'port': 8788,
+                    'health_endpoint': 'http://localhost:8788/health',
+                    'startup_delay': 10,
+                    'restart_attempts': 3,
+                    'restart_delay': 30,
+                    'timeout': 60,
+                    'critical': False,
+                    'dependencies': []
+                },
                 'open-webui': {
                     'name': 'Open WebUI',
                     'port': 8080,
@@ -1406,6 +1417,98 @@ ENABLE_AUTHENTICATION=false
         except Exception as e:
             logger.warning(f"Failed to create sample notebooks: {e}")
 
+    def start_qwen3_omni_ui(self) -> Optional[subprocess.Popen]:
+        """Start Qwen3-Omni-UI with enterprise configuration"""
+        logger.info("[TARGET] Starting Qwen3-Omni-UI...")
+
+        if not self.check_port_available(8788):
+            logger.warning("[WARN] Port 8788 already in use")
+            return None
+
+        self.service_status['qwen3_omni_ui'] = ServiceStatus.STARTING
+
+        try:
+            # Check if Node.js is available
+            try:
+                subprocess.run(['node', '--version'], capture_output=True, check=True)
+            except (subprocess.CalledProcessError, FileNotFoundError):
+                logger.error("[FAIL] Node.js not found. Please install Node.js 16+")
+                self.service_status['qwen3_omni_ui'] = ServiceStatus.FAILED
+                return None
+
+            # Check if desktop-ui directory exists
+            desktop_ui_dir = self.base_dir / "desktop-ui"
+            if not desktop_ui_dir.exists():
+                logger.error("[FAIL] desktop-ui directory not found")
+                self.service_status['qwen3_omni_ui'] = ServiceStatus.FAILED
+                return None
+
+            # Change to desktop-ui directory
+            os.chdir(str(desktop_ui_dir))
+
+            # Check if node_modules exists
+            if not (desktop_ui_dir / "node_modules").exists():
+                logger.info("[INFO] Installing desktop-ui dependencies...")
+                try:
+                    subprocess.run(['npm', 'install'], cwd=str(desktop_ui_dir),
+                                 capture_output=True, text=True, check=True)
+                except subprocess.CalledProcessError as e:
+                    logger.error(f"[FAIL] Failed to install dependencies: {e}")
+                    self.service_status['qwen3_omni_ui'] = ServiceStatus.FAILED
+                    return None
+
+            # Start the Electron app
+            logger.info("[LAUNCH] Starting Qwen3-Omni-UI Electron app...")
+
+            # Set environment variables for the UI
+            env = os.environ.copy()
+            env.update({
+                'QWEN3_OMNI_UI_PORT': '8788',
+                'QWEN3_OMNI_WS_PORT': '8796',
+                'QWEN3_OMNI_WS_PATH': '/ws',
+                'NODE_ENV': 'production'
+            })
+
+            # Try different startup methods
+            startup_methods = [
+                # Method 1: npm run
+                ['npm', 'run', 'electron:serve'],
+                # Method 2: npm start
+                ['npm', 'start'],
+                # Method 3: Direct electron
+                ['npx', 'electron', '.']
+            ]
+
+            for method in startup_methods:
+                try:
+                    process = subprocess.Popen(
+                        method,
+                        cwd=str(desktop_ui_dir),
+                        env=env,
+                        stdout=subprocess.PIPE,
+                        stderr=subprocess.PIPE,
+                        text=True
+                    )
+
+                    logger.info(f"[OK] Qwen3-Omni-UI started with method: {' '.join(method)} (PID: {process.pid})")
+                    return process
+
+                except FileNotFoundError:
+                    logger.warning(f"[WARN] Method not available: {' '.join(method)}")
+                    continue
+                except Exception as e:
+                    logger.warning(f"[WARN] Method failed: {' '.join(method)} - {e}")
+                    continue
+
+            logger.error("[FAIL] Could not start Qwen3-Omni-UI with any method")
+            self.service_status['qwen3_omni_ui'] = ServiceStatus.FAILED
+            return None
+
+        except Exception as e:
+            logger.error(f"[FAIL] Failed to start Qwen3-Omni-UI: {e}")
+            self.service_status['qwen3_omni_ui'] = ServiceStatus.FAILED
+            return None
+
     def start_duckbot(self) -> Optional[subprocess.Popen]:
         """Start DuckBot with dependency checking"""
         logger.info("[EMOJI] Starting DuckBot Discord bot...")
@@ -1664,6 +1767,7 @@ ENABLE_AUTHENTICATION=false
             'jupyter': self.start_jupyter,
             'lm_studio': self.start_lm_studio,
             'open-webui': self.start_open_webui,
+            'qwen3_omni_ui': self.start_qwen3_omni_ui,
             'duckbot': self.start_duckbot
         }
         
@@ -1760,6 +1864,7 @@ ENABLE_AUTHENTICATION=false
             ("[EMOJI] Open Notebook", "http://localhost:8502", "AI Notebook Interface", 'open_notebook'),
             ("[GLOBE] Open WebUI", "http://localhost:8080", "Web-based Chat UI", 'open-webui'),
             ("[CHART] Jupyter", "http://localhost:8889", "Data Analysis", 'jupyter'),
+            ("[TARGET] Qwen3-Omni-UI", "http://localhost:8788", "Advanced AI Interface", 'qwen3_omni_ui'),
             ("[EMOJI] DuckBot", "Discord", "Main Bot Interface", 'duckbot')
         ]
         
