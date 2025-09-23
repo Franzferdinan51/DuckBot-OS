@@ -4,7 +4,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-DuckBot Enhanced v4.2 is a comprehensive AI-powered operating system featuring desktop automation, multi-agent coordination, local AI capabilities, and cross-platform integration. The system supports both cloud-based AI services and complete local-only privacy modes with full feature parity. This is a consolidated architecture that has achieved 85% reduction in batch files, 90% in utilities, and 75% in core modules while maintaining all functionality.
+DuckBot Enhanced v4.2 is a comprehensive AI-powered operating system featuring Qwen3-Omni as the main brain, desktop automation, multi-agent coordination, local AI capabilities, and cross-platform integration. The system supports both cloud-based AI services and complete local-only privacy modes with full feature parity. This is a consolidated architecture that has achieved 85% reduction in batch files, 90% in utilities, and 75% in core modules while maintaining all functionality.
+
+## Key Architecture Update: Qwen3-Omni Integration
+
+The system now features **Qwen3-Omni as the primary AI brain** with comprehensive multimodal capabilities:
+- **Main Brain**: Qwen3-Omni-30B-A3B-Instruct with Flash Attention 2
+- **FastAPI Server**: OpenAI-compatible API server on port 5000
+- **Combined Service**: Brain and server run in single process for reliability
+- **UI Integration**: React/TypeScript UI with proper endpoint configuration
 
 ## Architecture
 
@@ -107,12 +115,17 @@ class AIEcosystemManager:
 
 ### Quick Start
 ```bash
+# 🧠 QWEN3-OMNI MAIN BRAIN STARTUP
+python start_qwen_brain_and_server.py   # Combined brain + server (port 5000)
+python start_qwen_brain.py             # Brain only (voice assistant)
+python qwen3_omni_server.py            # API server only
+
 # 🏠 LOCAL-ONLY MODE - Privacy First
 START_LOCAL_ONLY.bat                    # One-click local privacy mode
 python start_local_ecosystem.py         # Local-only startup script
 
 # 🌐 FULL LAUNCHER - All Options
-launcher/CONSOLIDATED_DUCKBOT_LAUNCHER.bat  # Main Windows launcher
+START_ELECTRON_LAUNCHER.bat             # Main Windows launcher with Qwen3-Omni
 
 # Direct Python commands
 python start_ecosystem.py               # Enterprise service orchestration
@@ -123,6 +136,12 @@ python -m duckbot.webui                 # Professional dashboard
 
 ### Testing and Diagnostics
 ```bash
+# Qwen3-Omni specific testing
+python test_qwen3_omni.py                # Qwen3-Omni integration test
+python test_launcher_simple.bat           # Qwen3-Omni launcher test
+TEST_MODEL_LOADING.bat                   # Model loading diagnostics
+TEST_TRANSFORMERS.bat                    # Transformers library test
+
 # Comprehensive testing
 python tests/unified_test_suite.py      # Complete unified test suite
 python tests/test_all_features.py        # Complete feature validation
@@ -142,6 +161,14 @@ black duckbot/                           # Code formatting
 
 ### Component Development
 ```bash
+# Qwen3-Omni UI Development
+cd qwen3-omni-ui && npm run dev             # React UI dev server (port 5173)
+cd qwen3-omni-ui && npm run build           # Production build
+
+# Qwen3-Omni Server Development
+python qwen3_omni_server.py                # API server only (port 5000)
+python start_qwen_brain_and_server.py     # Combined brain + server
+
 # WebUI development
 python -m duckbot.enhanced_webui --host 127.0.0.1 --port 8787
 
@@ -166,7 +193,16 @@ python -c "from duckbot.core.service_manager import UnifiedServiceManager; manag
 - `config/ai_config.json` - AI provider and model settings
 - `config/ecosystem_config.yaml` - Service management
 - `config/hardware_config.json` - Hardware detection and optimization
+- `config/qwen3_omni_config.json` - Qwen3-Omni model configuration
 - `.env` - Environment variables (API keys, feature toggles)
+
+### Important Ports
+- **5000**: Qwen3-Omni API server (main brain)
+- **5173**: Qwen3-Omni UI development server
+- **8787**: Enhanced WebUI
+- **8788**: Terminal interface
+- **8789**: AI ecosystem manager
+- **1234**: LM Studio server (local fallback)
 
 ### Environment Variables
 ```bash
@@ -224,6 +260,15 @@ The system uses AI for intelligent management:
 - **Platform-Specific Features**: Adaptive functionality based on platform
 - **Unicode Support**: Full UTF-8 encoding throughout
 
+### Browser-Use Integration Development
+**Key Patterns for browser-use integration:**
+- Use `uv` instead of `pip` for dependency management
+- Follow async patterns with proper typing (`str | None` instead of `Optional[str]`)
+- Use Pydantic v2 models for all data structures
+- Event-driven architecture with service/watchdog pattern
+- CDP integration via `cdp-use` wrapper
+- **Never create random example files** - test inline if needed
+
 ### Core Module Organization
 The project uses a consolidated architecture with key modules in `duckbot/core/`:
 - `ai_provider_manager.py` - Unified AI provider integration
@@ -238,10 +283,28 @@ The project uses a consolidated architecture with key modules in `duckbot/core/`
 
 ```
 DuckBot-Consolidated-v4.2/
-├── launcher/CONSOLIDATED_DUCKBOT_LAUNCHER.bat  # Main Windows launcher
+├── START_ELECTRON_LAUNCHER.bat         # Main Windows launcher
 ├── START_LOCAL_ONLY.bat               # Local-only privacy mode
 ├── start_ecosystem.py                 # Service orchestration
 ├── ai_ecosystem_manager.py            # AI-enhanced management
+
+# Qwen3-Omni Integration (NEW)
+├── qwen3_omni_server.py              # FastAPI server (port 5000)
+├── start_qwen_brain.py               # Brain startup script
+├── start_qwen_brain_and_server.py    # Combined brain + server
+├── qwen3-omni-ui/                    # React/TypeScript UI
+│   ├── src/                          # UI source code
+│   ├── package.json                  # Node.js dependencies
+│   └── test-api-connection.html      # Connectivity testing
+├── config/qwen3_omni_config.json     # Qwen3-Omni configuration
+
+# Model Management (NEW)
+├── DOWNLOAD_MODEL.bat                 # Hugging Face model download
+├── CHECK_MODEL_FILES.bat              # Model file verification
+├── TEST_MODEL_LOADING.bat             # Model loading diagnostics
+├── HF_LOGIN.bat                       # Hugging Face authentication
+└── models/                           # Downloaded model files
+
 ├── requirements.txt                   # Python dependencies
 ├── duckbot/                          # Core application
 │   ├── core/                          # 12 consolidated core modules
@@ -252,7 +315,8 @@ DuckBot-Consolidated-v4.2/
 │   │   ├── hardware_detector.py      # Hardware detection
 │   │   ├── logging_setup.py          # Unified logging
 │   │   ├── cost_management.py        # Cost tracking
-│   │   └── utilities.py              # Consolidated utilities
+│   │   ├── utilities.py              # Consolidated utilities
+│   │   └── qwen3_omni_integration.py # Qwen3-Omni brain integration
 │   ├── integrations/                  # 15+ integration modules
 │   │   ├── archon_integration.py     # Multi-agent framework
 │   │   ├── bytebot_integration.py    # Desktop automation
@@ -312,9 +376,18 @@ The project includes the `browser-use` library for AI-powered web automation:
 - **AI Enhancement**: Leverage AI for intelligent system management
 
 ### Common Issues
+
+#### Qwen3-Omni Specific Issues
+- **Port 8000 Connection Errors**: UI trying to connect to old port - clear browser localStorage or use `qwen3-omni-ui/clear-settings.html`
+- **Model Loading Failures**: Use `TEST_MODEL_LOADING.bat` for diagnostics, check GPU memory availability
+- **API Method Not Found**: Server calling `generate_response` instead of `generate_text` - this has been fixed in latest version
+- **Unicode Character Errors**: Fixed in startup scripts - ASCII characters used instead of Unicode
+- **Service Communication Issues**: Use combined brain and server (`start_qwen_brain_and_server.py`) for reliability
+
+#### General Issues
 - **ModuleNotFoundError**: Run dependency installation via launcher or `python -m pip install -r docs/requirements.txt`
 - **WebUI Access**: Check token URL in terminal output, ensure localhost binding
-- **Port Conflicts**: Common ports 8787 (WebUI), 8788 (Terminal), 8789 (Monitoring)
+- **Port Conflicts**: Common ports 5000 (Qwen3-Omni), 5173 (UI dev), 8787 (WebUI), 8788 (Terminal), 8789 (Monitoring)
 - **LM Studio Detection**: Ensure local server is running before starting local-only mode
 - **Unicode Errors**: System enforces UTF-8 encoding throughout
 

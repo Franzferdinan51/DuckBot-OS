@@ -9,12 +9,41 @@ import sys
 import os
 import time
 import signal
+import socket
 
 # Add current directory to path
 sys.path.append(os.getcwd())
 
 from duckbot.core.qwen3_omni_integration import qwen3_omni_integration
 from qwen3_omni_server import app, uvicorn
+
+def get_local_ip():
+    """Get local IP address for network access"""
+    try:
+        # Connect to a remote server to determine local IP
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.connect(("8.8.8.8", 80))
+            local_ip = s.getsockname()[0]
+        return local_ip
+    except Exception:
+        return "127.0.0.1"
+
+def get_mcp_server_info():
+    """Get MCP server connection information"""
+    try:
+        from config.port_allocation import DUCKBOT_MCP_SERVER_PORT
+        port = DUCKBOT_MCP_SERVER_PORT
+    except ImportError:
+        port = 8794
+
+    local_ip = get_local_ip()
+    return {
+        "local_url": f"http://localhost:{port}",
+        "network_url": f"http://{local_ip}:{port}",
+        "local_ws": f"ws://localhost:{port}",
+        "network_ws": f"ws://{local_ip}:{port}",
+        "port": port
+    }
 
 async def start_brain_and_server():
     """Start the Qwen3-Omni AI Brain and API server"""
@@ -49,6 +78,20 @@ async def start_brain_and_server():
         print('')
         print('QWEN3-OMNI AI BRAIN IS READY!')
         print('Starting API server on http://localhost:5000')
+        print('')
+        # Add MCP server information
+        mcp_info = get_mcp_server_info()
+        print('🔌 MCP Server Connection Information:')
+        print(f'   Type: STDIO (Standard Input/Output) - Primary Mode')
+        print(f'   Fallback: HTTP Server (Port 8000)')
+        print(f'   Local Access:    {mcp_info["local_url"]}')
+        print(f'   Network Access:  {mcp_info["network_url"]}')
+        print(f'   WebSocket Local:  {mcp_info["local_ws"]}')
+        print(f'   WebSocket Network: {mcp_info["network_ws"]}')
+        print('')
+        print('   STDIO mode for direct process communication')
+        print('   HTTP fallback available at localhost:8000')
+        print('   Connect external MCP clients using these addresses')
         print('')
         print('Press Ctrl+C to exit.')
         print('')
