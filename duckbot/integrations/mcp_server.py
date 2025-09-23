@@ -2178,6 +2178,10 @@ class DuckBotMCPServer:
         """Run fallback server implementation"""
         import uvicorn
         from fastapi import FastAPI
+        from fastapi.responses import EventSourceResponse
+        import asyncio
+        import json
+        from datetime import datetime
 
         app = FastAPI(title="DuckBot MCP Fallback Server")
 
@@ -2219,6 +2223,108 @@ class DuckBotMCPServer:
                     for resource in self.resources.values()
                 ]
             }
+
+        # SSE (Server-Sent Events) endpoints for real-time communication
+        @app.get("/events")
+        async def sse_events():
+            """SSE endpoint for real-time MCP events"""
+            async def event_generator():
+                event_id = 0
+                while True:
+                    event_id += 1
+
+                    # Send heartbeat event
+                    heartbeat_data = {
+                        "id": event_id,
+                        "type": "heartbeat",
+                        "timestamp": datetime.now().isoformat(),
+                        "source": "mcp_server",
+                        "data": {
+                            "status": "active",
+                            "tools_count": len(self.tools),
+                            "resources_count": len(self.resources)
+                        }
+                    }
+                    yield f"data: {json.dumps(heartbeat_data)}\n\n"
+
+                    await asyncio.sleep(5)  # Send heartbeat every 5 seconds
+
+            return EventSourceResponse(event_generator())
+
+        @app.get("/events/tools")
+        async def sse_tools_events():
+            """SSE endpoint for tool execution events"""
+            async def tool_event_generator():
+                event_id = 0
+                while True:
+                    event_id += 1
+
+                    # Send tools availability event
+                    tools_data = {
+                        "id": event_id,
+                        "type": "tools_update",
+                        "timestamp": datetime.now().isoformat(),
+                        "source": "mcp_server",
+                        "data": {
+                            "available_tools": [
+                                {
+                                    "name": tool["name"],
+                                    "description": tool["description"],
+                                    "available": True
+                                }
+                                for tool in self.tools.values()
+                            ]
+                        }
+                    }
+                    yield f"data: {json.dumps(tools_data)}\n\n"
+
+                    await asyncio.sleep(10)  # Update every 10 seconds
+
+            return EventSourceResponse(tool_event_generator())
+
+        @app.get("/events/system")
+        async def sse_system_events():
+            """SSE endpoint for system monitoring events"""
+            async def system_event_generator():
+                try:
+                    import psutil
+                except ImportError:
+                    psutil = None
+
+                event_id = 0
+                while True:
+                    event_id += 1
+
+                    # Collect system metrics
+                    system_data = {
+                        "id": event_id,
+                        "type": "system_metrics",
+                        "timestamp": datetime.now().isoformat(),
+                        "source": "mcp_server",
+                        "data": {
+                            "mcp_server_status": "running",
+                            "host": host,
+                            "port": port,
+                            "active_integrations": len(self.integration_instances)
+                        }
+                    }
+
+                    # Add system metrics if psutil is available
+                    if psutil:
+                        try:
+                            system_data["data"].update({
+                                "cpu_usage": psutil.cpu_percent(),
+                                "memory_usage": psutil.virtual_memory().percent,
+                                "disk_usage": psutil.disk_usage('/').percent if hasattr(psutil, 'disk_usage') else None
+                            })
+                        except Exception:
+                            pass  # Ignore metrics collection errors
+
+                    yield f"data: {json.dumps(system_data)}\n\n"
+
+                    await asyncio.sleep(15)  # Update every 15 seconds
+
+            return EventSourceResponse(system_event_generator())
 
         await uvicorn.run(app, host=host, port=port)
 
