@@ -1,6 +1,6 @@
 {
   "qwen3_omni": {
-    "model_id": "Qwen/Qwen3-Omni",
+    "model_id": "./models/Qwen3-Omni-30B-A3B-Instruct",
     "device": "auto",
     "dtype": "auto",
     "use_flash_attention": true,

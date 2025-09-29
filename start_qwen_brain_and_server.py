@@ -10,6 +10,7 @@ import os
 import time
 import signal
 import socket
+import threading
 
 # Add current directory to path
 sys.path.append(os.getcwd())
@@ -45,6 +46,22 @@ def get_mcp_server_info():
         "port": port
     }
 
+async def start_mcp_server():
+    """Start the MCP server concurrently"""
+    try:
+        from duckbot.integrations.mcp_server import create_mcp_server
+
+        print('MCP Server starting on http://localhost:8794')
+
+        # Create and start the MCP server
+        mcp_server_instance = create_mcp_server()
+        await mcp_server_instance.start(host="0.0.0.0", port=8794)
+
+    except Exception as e:
+        print(f'Error starting MCP server: {e}')
+        import traceback
+        traceback.print_exc()
+
 async def start_brain_and_server():
     """Start the Qwen3-Omni AI Brain and API server"""
     try:
@@ -77,14 +94,22 @@ async def start_brain_and_server():
 
         print('')
         print('QWEN3-OMNI AI BRAIN IS READY!')
+
+        # Start MCP server concurrently
+        print('Starting MCP Server...')
+        mcp_task = asyncio.create_task(start_mcp_server())
+
+        # Give MCP server a moment to start
+        await asyncio.sleep(2)
+
         print('Starting API server on http://localhost:5000')
         print('')
         # Add MCP server information
         mcp_info = get_mcp_server_info()
-        print('🔌 MCP Server Connection Information:')
+        print('[MCP] MCP Server Connection Information:')
         print(f'   Primary: STDIO (Standard Input/Output)')
         print(f'   SSE: Server-Sent Events - Connect via URL')
-        print(f'   HTTP: REST API (Port 8000)')
+        print(f'   HTTP: REST API (Port 8794)')
         print(f'   Local Access:    {mcp_info["local_url"]}')
         print(f'   Network Access:  {mcp_info["network_url"]}')
         print(f'   SSE Local:       {mcp_info["local_url"]}/events')
@@ -95,7 +120,7 @@ async def start_brain_and_server():
         print('   SSE endpoints support real-time event streaming via HTTP')
         print('   Connect external clients using SSE for live updates')
         print('   STDIO mode for direct process communication')
-        print('   HTTP REST API available at localhost:8000')
+        print('   HTTP REST API available at localhost:8794')
         print('')
         print('Press Ctrl+C to exit.')
         print('')
@@ -111,8 +136,21 @@ async def start_brain_and_server():
 
         server = uvicorn.Server(config)
 
-        # Start the server
-        await server.serve()
+        # Start both servers concurrently
+        print('Starting both API server and MCP server...')
+        api_task = asyncio.create_task(server.serve())
+
+        # Wait for both tasks (this will run until one of them fails)
+        try:
+            await asyncio.gather(api_task, mcp_task)
+        except Exception as e:
+            print(f'Server error: {e}')
+            # Cancel the other task if one fails
+            if not api_task.done():
+                api_task.cancel()
+            if not mcp_task.done():
+                mcp_task.cancel()
+            raise
 
     except KeyboardInterrupt:
         print('\nQwen3-Omni AI Brain + Server stopped by user.')

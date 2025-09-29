@@ -30,7 +30,12 @@ try:
         AutoModelForCausalLM,
         AutoModelForVision2Seq,
         AutoProcessor,
-        Qwen2VLForConditionalGeneration,
+        Qwen2AudioForConditionalGeneration,
+        Qwen2AudioProcessor,
+        Qwen2_5OmniForConditionalGeneration,
+        Qwen2_5OmniProcessor,
+        Qwen3OmniMoeForConditionalGeneration,
+        Qwen3OmniMoeProcessor,
         Qwen2TokenizerFast,
         pipeline
     )
@@ -41,7 +46,12 @@ except ImportError:
     AutoModelForCausalLM = None
     AutoModelForVision2Seq = None
     AutoProcessor = None
-    Qwen2VLForConditionalGeneration = None
+    Qwen2AudioForConditionalGeneration = None
+    Qwen2AudioProcessor = None
+    Qwen2_5OmniForConditionalGeneration = None
+    Qwen2_5OmniProcessor = None
+    Qwen3OmniMoeForConditionalGeneration = None
+    Qwen3OmniMoeProcessor = None
     Qwen2TokenizerFast = None
     pipeline = None
 
@@ -80,7 +90,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class Qwen3OmniConfig:
     """Configuration for Qwen3-Omni integration"""
-    model_id: str = "Qwen/Qwen3-Omni"
+    model_id: str = "./models/Qwen3-Omni-30B-A3B-Instruct"
     device: str = "auto"
     dtype: str = "auto"
     use_flash_attention: bool = True
@@ -213,31 +223,28 @@ class Qwen3OmniIntegration:
                 load_kwargs["device_map"] = "cpu"
                 load_kwargs["torch_dtype"] = torch.float32
 
-            # Load model
-            self.model = Qwen2VLForConditionalGeneration.from_pretrained(
+            # Load model using correct Qwen3OmniMoe architecture
+            self.model = Qwen3OmniMoeForConditionalGeneration.from_pretrained(
                 self.config.model_id,
                 **load_kwargs
             )
+            logger.info("Qwen3OmniMoeForConditionalGeneration loaded successfully")
 
-            # Load tokenizer
-            self.tokenizer = Qwen2TokenizerFast.from_pretrained(
-                self.config.model_id,
-                trust_remote_code=self.config.trust_remote_code,
-                use_fast=self.config.use_fast_tokenizer,
-                cache_dir=self.config.cache_dir,
-            )
-
-            # Load processor for multimodal inputs
+            # Load processor for multimodal inputs (Qwen3-Omni specific)
             try:
-                self.processor = AutoProcessor.from_pretrained(
+                self.processor = Qwen3OmniMoeProcessor.from_pretrained(
                     self.config.model_id,
                     trust_remote_code=self.config.trust_remote_code,
                     cache_dir=self.config.cache_dir,
                 )
-                logger.info("Multimodal processor loaded successfully")
+                logger.info("Qwen3OmniMoeProcessor loaded successfully")
+
+                # Get tokenizer from processor
+                self.tokenizer = self.processor.tokenizer
+                logger.info("Qwen3-Omni processor and tokenizer loaded successfully")
             except Exception as e:
-                logger.warning(f"Failed to load multimodal processor: {e}")
-                self.processor = None
+                logger.error(f"Failed to load Qwen3-Omni processor: {e}")
+                raise
 
             # Initialize audio pipeline if available
             if AUDIO_PROCESSING_AVAILABLE:
@@ -383,28 +390,37 @@ class Qwen3OmniIntegration:
                 "pad_token_id": self.tokenizer.eos_token_id,
             }
 
-            # Prepare inputs for model
+            # Prepare inputs for model - Qwen3OmniMoe has specific requirements
             inputs = self.tokenizer(full_prompt, return_tensors="pt", truncation=True, max_length=self.config.max_length)
-
-            # Add image tokens if available
-            if image_tensor is not None and hasattr(self.model, 'prepare_inputs_for_generation'):
-                inputs = {
-                    **inputs,
-                    "pixel_values": image_tensor.to(self.device),
-                    "image_sizes": [(image_tensor.shape[-2], image_tensor.shape[-1])]
-                }
 
             # Move to device
             inputs = {k: v.to(self.device) for k, v in inputs.items()}
 
+            # For Qwen3OmniMoe, we may need to handle multimodal inputs differently
+            if image_tensor is not None:
+                # For now, just use text input for Qwen3OmniMoe
+                # TODO: Implement proper multimodal input handling for Qwen3OmniMoe
+                pass
+
             # Generate response
             with torch.no_grad():
-                if self.config.use_flash_attention and FLASH_ATTENTION_AVAILABLE:
-                    # Use flash attention for generation
-                    with torch.backends.cuda.sdp_kernel(enable_flash=True):
+                try:
+                    if self.config.use_flash_attention and FLASH_ATTENTION_AVAILABLE:
+                        # Use flash attention for generation
+                        with torch.backends.cuda.sdp_kernel(enable_flash=True):
+                            outputs = self.model.generate(**inputs, **generation_kwargs)
+                    else:
                         outputs = self.model.generate(**inputs, **generation_kwargs)
-                else:
-                    outputs = self.model.generate(**inputs, **generation_kwargs)
+                except Exception as e:
+                    # Fallback to simpler generation parameters
+                    logger.warning(f"Generation with complex parameters failed: {e}")
+                    simple_kwargs = {
+                        "max_new_tokens": min(512, self.config.max_length),
+                        "temperature": 0.7,
+                        "do_sample": True,
+                        "pad_token_id": self.tokenizer.eos_token_id,
+                    }
+                    outputs = self.model.generate(**inputs, **simple_kwargs)
 
             # Decode response
             response_text = self.tokenizer.decode(outputs[0], skip_special_tokens=True)

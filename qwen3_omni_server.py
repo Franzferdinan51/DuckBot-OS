@@ -222,6 +222,64 @@ async def stream_chat_completion(conversation: List[Dict], model: str) -> AsyncG
         }
         yield f"data: {json.dumps(error_chunk)}\n\n"
 
+@app.get("/events")
+async def sse_events(request: Request):
+    """Server-Sent Events endpoint for real-time updates"""
+    async def event_generator():
+        event_id = 0
+        while True:
+            try:
+                event_id += 1
+                
+                # Check model status
+                try:
+                    status = qwen3_omni_integration.get_status()
+                except Exception:
+                    # If status check fails, report loading status
+                    status = {"available": False, "device": "unknown", "flash_attention": False}
+                
+                # Send heartbeat event
+                heartbeat_data = {
+                    "id": event_id,
+                    "type": "heartbeat",
+                    "timestamp": int(time.time()),
+                    "data": {
+                        "model_loaded": status["available"],
+                        "device": status.get("device", "unknown"),
+                        "flash_attention": status.get("flash_attention", False),
+                        "status": "healthy" if status["available"] else "loading"
+                    }
+                }
+                
+                yield f"data: {json.dumps(heartbeat_data)}\n\n"
+                
+                # Wait before sending next event
+                await asyncio.sleep(10)  # Send heartbeat every 10 seconds
+                
+            except asyncio.CancelledError:
+                logger.info("SSE connection cancelled")
+                break
+            except Exception as e:
+                logger.error(f"Error in SSE generator: {e}")
+                error_data = {
+                    "type": "error",
+                    "message": str(e),
+                    "timestamp": int(time.time())
+                }
+                yield f"data: {json.dumps(error_data)}\n\n"
+                break
+    
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+            "Access-Control-Allow-Origin": "*"
+        }
+    )
+
+
 @app.get("/")
 async def root():
     """Root endpoint with API info"""
@@ -231,6 +289,7 @@ async def root():
         "endpoints": [
             "GET /health - Health check",
             "POST /v1/chat/completions - OpenAI-compatible chat completion",
+            "GET /events - Server-Sent Events for real-time updates",
             "GET / - This info page"
         ]
     }

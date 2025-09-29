@@ -8,7 +8,7 @@
   "openrouter_url": "https://openrouter.ai/api/v1",
   "openrouter_model": "qwen/qwen3-coder:free",
   "qwen3_omni": {
-    "model_id": "Qwen/Qwen3-Omni",
+    "model_id": "./models/Qwen3-Omni-30B-A3B-Instruct",
     "device": "auto",
     "use_flash_attention": true,
     "load_in_4bit": false,

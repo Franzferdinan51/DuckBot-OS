@@ -183,7 +183,7 @@ class DuckBotMCPServer:
     def _initialize_fallback_server(self):
         """Initialize fallback MCP-like server"""
         logger.info("Initializing fallback MCP server")
-        self.server = self._create_fallback_server()
+        self.server = None  # Signal that we should use the fallback HTTP server
         return True
 
     def _create_fallback_server(self):
@@ -195,6 +195,8 @@ class DuckBotMCPServer:
 
             async def start(self, host: str, port: int):
                 logger.info(f"Fallback MCP server starting on {host}:{port}")
+                # Note: The actual server will be started in _run_fallback_server
+                # This is just a placeholder
 
             async def stop(self):
                 logger.info("Fallback MCP server stopped")
@@ -2178,10 +2180,17 @@ class DuckBotMCPServer:
         """Run fallback server implementation"""
         import uvicorn
         from fastapi import FastAPI
-        from fastapi.responses import EventSourceResponse
         import asyncio
         import json
         from datetime import datetime
+
+        # Try to import EventSourceResponse, but continue without it if not available
+        try:
+            from sse_starlette import EventSourceResponse
+            EVENT_SOURCE_AVAILABLE = True
+        except ImportError:
+            EVENT_SOURCE_AVAILABLE = False
+            print("EventSourceResponse not available, SSE endpoints will be disabled")
 
         app = FastAPI(title="DuckBot MCP Fallback Server")
 
@@ -2225,108 +2234,125 @@ class DuckBotMCPServer:
             }
 
         # SSE (Server-Sent Events) endpoints for real-time communication
-        @app.get("/events")
-        async def sse_events():
-            """SSE endpoint for real-time MCP events"""
-            async def event_generator():
-                event_id = 0
-                while True:
-                    event_id += 1
+        if EVENT_SOURCE_AVAILABLE:
+            @app.get("/events")
+            async def sse_events():
+                """SSE endpoint for real-time MCP events"""
+                async def event_generator():
+                    event_id = 0
+                    while True:
+                        event_id += 1
 
-                    # Send heartbeat event
-                    heartbeat_data = {
-                        "id": event_id,
-                        "type": "heartbeat",
-                        "timestamp": datetime.now().isoformat(),
-                        "source": "mcp_server",
-                        "data": {
-                            "status": "active",
-                            "tools_count": len(self.tools),
-                            "resources_count": len(self.resources)
+                        # Send heartbeat event
+                        heartbeat_data = {
+                            "id": event_id,
+                            "type": "heartbeat",
+                            "timestamp": datetime.now().isoformat(),
+                            "source": "mcp_server",
+                            "data": {
+                                "status": "active",
+                                "tools_count": len(self.tools),
+                                "resources_count": len(self.resources)
+                            }
                         }
-                    }
-                    yield f"data: {json.dumps(heartbeat_data)}\n\n"
+                        yield f"data: {json.dumps(heartbeat_data)}\n\n"
 
-                    await asyncio.sleep(5)  # Send heartbeat every 5 seconds
+                        await asyncio.sleep(5)  # Send heartbeat every 5 seconds
 
-            return EventSourceResponse(event_generator())
+                return EventSourceResponse(event_generator())
 
-        @app.get("/events/tools")
-        async def sse_tools_events():
-            """SSE endpoint for tool execution events"""
-            async def tool_event_generator():
-                event_id = 0
-                while True:
-                    event_id += 1
+            @app.get("/events/tools")
+            async def sse_tools_events():
+                """SSE endpoint for tool execution events"""
+                async def tool_event_generator():
+                    event_id = 0
+                    while True:
+                        event_id += 1
 
-                    # Send tools availability event
-                    tools_data = {
-                        "id": event_id,
-                        "type": "tools_update",
-                        "timestamp": datetime.now().isoformat(),
-                        "source": "mcp_server",
-                        "data": {
-                            "available_tools": [
-                                {
-                                    "name": tool["name"],
-                                    "description": tool["description"],
-                                    "available": True
-                                }
-                                for tool in self.tools.values()
-                            ]
+                        # Send tools availability event
+                        tools_data = {
+                            "id": event_id,
+                            "type": "tools_update",
+                            "timestamp": datetime.now().isoformat(),
+                            "source": "mcp_server",
+                            "data": {
+                                "available_tools": [
+                                    {
+                                        "name": tool["name"],
+                                        "description": tool["description"],
+                                        "available": True
+                                    }
+                                    for tool in self.tools.values()
+                                ]
+                            }
                         }
-                    }
-                    yield f"data: {json.dumps(tools_data)}\n\n"
+                        yield f"data: {json.dumps(tools_data)}\n\n"
 
-                    await asyncio.sleep(10)  # Update every 10 seconds
+                        await asyncio.sleep(10)  # Update every 10 seconds
 
-            return EventSourceResponse(tool_event_generator())
+                return EventSourceResponse(tool_event_generator())
 
-        @app.get("/events/system")
-        async def sse_system_events():
-            """SSE endpoint for system monitoring events"""
-            async def system_event_generator():
-                try:
-                    import psutil
-                except ImportError:
-                    psutil = None
+            @app.get("/events/system")
+            async def sse_system_events():
+                """SSE endpoint for system monitoring events"""
+                async def system_event_generator():
+                    try:
+                        import psutil
+                    except ImportError:
+                        psutil = None
 
-                event_id = 0
-                while True:
-                    event_id += 1
+                    event_id = 0
+                    while True:
+                        event_id += 1
 
-                    # Collect system metrics
-                    system_data = {
-                        "id": event_id,
-                        "type": "system_metrics",
-                        "timestamp": datetime.now().isoformat(),
-                        "source": "mcp_server",
-                        "data": {
-                            "mcp_server_status": "running",
-                            "host": host,
-                            "port": port,
-                            "active_integrations": len(self.integration_instances)
+                        # Collect system metrics
+                        system_data = {
+                            "id": event_id,
+                            "type": "system_metrics",
+                            "timestamp": datetime.now().isoformat(),
+                            "source": "mcp_server",
+                            "data": {
+                                "mcp_server_status": "running",
+                                "host": host,
+                                "port": port,
+                                "active_integrations": len(self.integration_instances)
+                            }
                         }
-                    }
 
-                    # Add system metrics if psutil is available
-                    if psutil:
-                        try:
-                            system_data["data"].update({
-                                "cpu_usage": psutil.cpu_percent(),
-                                "memory_usage": psutil.virtual_memory().percent,
-                                "disk_usage": psutil.disk_usage('/').percent if hasattr(psutil, 'disk_usage') else None
-                            })
-                        except Exception:
-                            pass  # Ignore metrics collection errors
+                        # Add system metrics if psutil is available
+                        if psutil:
+                            try:
+                                system_data["data"].update({
+                                    "cpu_usage": psutil.cpu_percent(),
+                                    "memory_usage": psutil.virtual_memory().percent,
+                                    "disk_usage": psutil.disk_usage('/').percent if hasattr(psutil, 'disk_usage') else None
+                                })
+                            except Exception:
+                                pass  # Ignore metrics collection errors
 
-                    yield f"data: {json.dumps(system_data)}\n\n"
+                        yield f"data: {json.dumps(system_data)}\n\n"
 
-                    await asyncio.sleep(15)  # Update every 15 seconds
+                        await asyncio.sleep(15)  # Update every 15 seconds
 
-            return EventSourceResponse(system_event_generator())
+                return EventSourceResponse(system_event_generator())
+        else:
+            # Provide simple JSON endpoints when SSE is not available
+            @app.get("/events")
+            async def events_status():
+                return {"status": "SSE not available", "message": "EventSourceResponse not found in FastAPI"}
 
-        await uvicorn.run(app, host=host, port=port)
+            @app.get("/events/tools")
+            async def tools_status():
+                return {"status": "SSE not available", "message": "EventSourceResponse not found in FastAPI"}
+
+            @app.get("/events/system")
+            async def system_status():
+                return {"status": "SSE not available", "message": "EventSourceResponse not found in FastAPI"}
+
+        # Use uvicorn.Server for non-blocking server
+        config = uvicorn.Config(app, host=host, port=port)
+        server = uvicorn.Server(config)
+        await server.serve()
 
     async def stop(self):
         """Stop the MCP server"""
@@ -2380,6 +2406,10 @@ mcp_server = DuckBotMCPServer()
 async def start_mcp_server(host: str = "127.0.0.1", port: int = 8790):
     """Start the DuckBot MCP server"""
     await mcp_server.start(host, port)
+
+def create_mcp_server():
+    """Create a new MCP server instance"""
+    return DuckBotMCPServer()
 
 async def stop_mcp_server():
     """Stop the DuckBot MCP server"""
